@@ -6,7 +6,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
-import type { DevtoolsConfigOptions, FlatConfig, FlatConfigItem } from './types.js';
+import type { DevtoolsConfigOptions, FlatConfigItem } from './types.js';
 
 export const defaultIgnores = [
   '**/ios/**',
@@ -32,7 +32,7 @@ export const defaultRestrictedImports = [
   },
 ] as const;
 
-export function createConfig(options: DevtoolsConfigOptions): FlatConfig {
+export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof tseslint.config> {
   const normalizedOptions = {
     allowDefaultProject: [],
     additionalIgnores: [],
