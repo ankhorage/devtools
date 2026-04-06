@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import { describe, expect, it } from 'bun:test';
 
-import { createConfig } from '../src/eslint';
+import { createConfig } from './eslint.js';
 
 describe('createConfig sanity check', () => {
   const baseOptions = {
