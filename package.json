@@ -1,7 +1,7 @@
 {
   "name": "@ankhorage/devtools",
   "version": "1.0.1",
-  "description": "Shared Lint and Format Configuration for Ankhorage",
+  "description": "Shared Lint, Format, and Workflow Configuration for Ankhorage",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -13,10 +13,13 @@
     },
     "./prettier": {
       "require": "./dist/prettier.cjs"
-    }
+    },
+    "./workflows/ci.yml": "./workflows/ci.yml",
+    "./workflows/release.yml": "./workflows/release.yml"
   },
   "files": [
     "dist",
+    "workflows",
     "README.md",
     "LICENSE",
     "examples"
@@ -42,7 +45,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
     "@types/node": "^25.2.3",
-    "bun-types": "^1.3.11",
+    "bun-types": "^1.3.13",
     "typescript": "^5.9.3"
   }
 }
