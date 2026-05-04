@@ -2,6 +2,14 @@
   "name": "@ankhorage/devtools",
   "version": "1.0.1",
   "description": "Shared Lint and Format Configuration for Ankhorage",
+  "homepage": "https://github.com/ankhorage/devtools#readme",
+  "bugs": {
+    "url": "https://github.com/ankhorage/devtools/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ankhorage/devtools.git"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public"
