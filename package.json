@@ -50,10 +50,10 @@
   ],
   "scripts": {
     "build": "tsc && cp src/prettier.cjs dist/prettier.cjs",
-    "knip": "ankhorage-knip",
-    "lint": "ankhorage-eslint .",
-    "format": "ankhorage-prettier --write .",
-    "format:check": "ankhorage-prettier --check .",
+    "knip": "knip",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "bun test",
     "version-packages": "changeset version"
   },
