@@ -1,9 +1,9 @@
 import type tseslint from 'typescript-eslint';
 
-export type FlatConfig = ReturnType<typeof tseslint.config>;
+type FlatConfig = ReturnType<typeof tseslint.config>;
 export type FlatConfigItem = FlatConfig[number];
 
-export interface RestrictedImport {
+interface RestrictedImport {
   name: string;
   message: string;
 }
