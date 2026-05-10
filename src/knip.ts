@@ -8,15 +8,15 @@ export interface DevtoolsKnipConfigOptions {
   workspaces?: KnipConfig['workspaces'];
 }
 
-export const defaultKnipProject = ['src/**/*.{ts,tsx,js,jsx}'] as const;
-
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
-  const config: KnipConfig = {
-    project: [...defaultKnipProject, ...(options.project ?? [])],
-  };
+  const config: KnipConfig = {};
 
   if (options.entry !== undefined) {
     config.entry = options.entry;
+  }
+
+  if (options.project !== undefined) {
+    config.project = options.project;
   }
 
   if (options.ignore !== undefined) {
