@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/devtools",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Shared Lint and Format Configuration for Ankhorage",
   "homepage": "https://github.com/ankhorage/devtools#readme",
   "bugs": {

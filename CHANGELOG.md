@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+### Patch Changes
+
+- 963db2b: Add a shared Knip config export and CI validation support.
+
 ## 1.0.2
 
 ### Patch Changes
