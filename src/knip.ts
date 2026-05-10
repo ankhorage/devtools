@@ -5,6 +5,7 @@ export interface DevtoolsKnipConfigOptions {
   project?: string[];
   ignore?: string[];
   ignoreDependencies?: string[];
+  ignoreFiles?: KnipConfig['ignoreFiles'];
   workspaces?: KnipConfig['workspaces'];
 }
 
@@ -25,6 +26,10 @@ export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipC
 
   if (options.ignoreDependencies !== undefined) {
     config.ignoreDependencies = options.ignoreDependencies;
+  }
+
+  if (options.ignoreFiles !== undefined) {
+    config.ignoreFiles = options.ignoreFiles;
   }
 
   if (options.workspaces !== undefined) {
