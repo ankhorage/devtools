@@ -4,7 +4,7 @@ export interface DevtoolsKnipWorkspaceConfigOptions {
   entry?: string[];
   project?: string[];
   ignore?: string[];
-  ignoreDependencies?: Array<string | RegExp>;
+  ignoreDependencies?: (string | RegExp)[];
   ignoreFiles?: string[];
 }
 
