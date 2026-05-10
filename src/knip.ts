@@ -1,40 +1,26 @@
 import type { KnipConfig } from 'knip';
 
-export interface DevtoolsKnipConfigOptions {
+export interface DevtoolsKnipWorkspaceConfigOptions {
   entry?: string[];
   project?: string[];
   ignore?: string[];
-  ignoreDependencies?: string[];
-  ignoreFiles?: KnipConfig['ignoreFiles'];
-  workspaces?: KnipConfig['workspaces'];
+  ignoreDependencies?: Array<string | RegExp>;
+  ignoreFiles?: string[];
+}
+
+export interface DevtoolsKnipConfigOptions extends DevtoolsKnipWorkspaceConfigOptions {
+  workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
 }
 
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
-  const config: KnipConfig = {};
-
-  if (options.entry !== undefined) {
-    config.entry = options.entry;
-  }
-
-  if (options.project !== undefined) {
-    config.project = options.project;
-  }
-
-  if (options.ignore !== undefined) {
-    config.ignore = options.ignore;
-  }
-
-  if (options.ignoreDependencies !== undefined) {
-    config.ignoreDependencies = options.ignoreDependencies;
-  }
-
-  if (options.ignoreFiles !== undefined) {
-    config.ignoreFiles = options.ignoreFiles;
-  }
-
-  if (options.workspaces !== undefined) {
-    config.workspaces = options.workspaces;
-  }
-
-  return config;
+  return {
+    ...(options.entry === undefined ? {} : { entry: options.entry }),
+    ...(options.project === undefined ? {} : { project: options.project }),
+    ...(options.ignore === undefined ? {} : { ignore: options.ignore }),
+    ...(options.ignoreDependencies === undefined
+      ? {}
+      : { ignoreDependencies: options.ignoreDependencies }),
+    ...(options.ignoreFiles === undefined ? {} : { ignoreFiles: options.ignoreFiles }),
+    ...(options.workspaces === undefined ? {} : { workspaces: options.workspaces }),
+  } satisfies KnipConfig;
 }
