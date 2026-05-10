@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
 
@@ -9,8 +9,24 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
+function findPackageJsonPath(packageName: string): string {
+  let currentDirectory = dirname(require.resolve(packageName));
+
+  while (currentDirectory !== dirname(currentDirectory)) {
+    const packageJsonPath = join(currentDirectory, 'package.json');
+
+    if (existsSync(packageJsonPath)) {
+      return packageJsonPath;
+    }
+
+    currentDirectory = dirname(currentDirectory);
+  }
+
+  throw new Error(`Could not find package metadata for ${packageName}.`);
+}
+
 function readPackageBinPath(packageName: string, binName: string): string {
-  const packageJsonPath = require.resolve(`${packageName}/package.json`);
+  const packageJsonPath = findPackageJsonPath(packageName);
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as unknown;
 
   if (!isRecord(packageJson)) {
