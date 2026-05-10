@@ -16,7 +16,7 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 - Flat ESLint config (latest standard)
 - Preconfigured plugin ecosystem
 - Prettier integration
-- Shared Knip config factory
+- Shared Knip config factories
 - `ankhorage-eslint`, `ankhorage-prettier`, and `ankhorage-knip` binaries
 - Monorepo-friendly
 
@@ -98,7 +98,41 @@ export default createKnipConfig({
 });
 ```
 
-The shared config intentionally keeps defaults narrow so Knip can use its own zero-config package discovery. Prefer explicit `entry`, `project`, `ignoreBinaries`, `ignoreDependencies`, or `ignoreFiles` over broad ignores.
+For workspaces-based monorepos, use the monorepo preset:
+
+```ts
+import { createKnipMonorepoConfig } from '@ankhorage/devtools/knip';
+
+export default createKnipMonorepoConfig({
+  root: {
+    ignoreFiles: ['.prettierrc.js', 'eslint.config.js'],
+  },
+});
+```
+
+By default, the monorepo preset configures Knip workspaces for the root package, `packages/*`, and `apps/*`. Repos can override those defaults or add extra workspace globs:
+
+```ts
+import { createKnipMonorepoConfig } from '@ankhorage/devtools/knip';
+
+export default createKnipMonorepoConfig({
+  workspaceGlobs: ['packages/*', 'apps/*', 'examples/*'],
+  workspaceDefaults: {
+    ignoreFiles: ['fixtures/**'],
+  },
+  workspaces: {
+    '.': {
+      ignoreFiles: ['.prettierrc.js', 'eslint.config.js'],
+    },
+    'apps/editor': {
+      ignoreFiles: ['babel.config.js'],
+      ignoreDependencies: ['babel-preset-expo'],
+    },
+  },
+});
+```
+
+The shared config intentionally keeps defaults narrow so Knip can still report real unused files, exports, dependencies, and binaries. Prefer explicit `entry`, `project`, `ignoreBinaries`, `ignoreDependencies`, or `ignoreFiles` over broad ignores.
 
 ### CI
 
