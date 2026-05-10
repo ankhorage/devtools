@@ -68,7 +68,7 @@ Add a package script:
 }
 ```
 
-Repos can append narrow repo-specific patterns without replacing the shared defaults:
+Repos can add narrow repo-specific patterns when needed:
 
 ```ts
 import { createKnipConfig } from '@ankhorage/devtools/knip';
@@ -80,7 +80,7 @@ export default createKnipConfig({
 });
 ```
 
-Prefer explicit `entry`, `project`, or Knip plugin configuration over broad ignores when tool config files are reported as unused.
+The shared config intentionally keeps defaults narrow so Knip does not fail on unmatched optional paths. Prefer explicit `entry`, `project`, or Knip plugin configuration over broad ignores when tool config files are reported as unused.
 
 ### CI
 
