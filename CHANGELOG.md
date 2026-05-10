@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.6
+
+### Patch Changes
+
+- 39f21fb: Add a monorepo Knip config preset for workspace-based repositories.
+
 ## 1.0.5
 
 ### Patch Changes
