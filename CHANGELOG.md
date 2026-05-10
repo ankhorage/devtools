@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.5
+
+### Patch Changes
+
+- 2092776: Fix bundled tool binary wrappers for packages that do not export their package metadata.
+
 ## 1.0.4
 
 ### Patch Changes
