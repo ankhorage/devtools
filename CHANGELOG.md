@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.4
+
+### Patch Changes
+
+- dff66a6: Expose bundled `ankhorage-eslint`, `ankhorage-prettier`, and `ankhorage-knip` binaries for consuming repositories.
+
 ## 1.0.3
 
 ### Patch Changes
