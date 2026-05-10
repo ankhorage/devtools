@@ -13,6 +13,15 @@ export interface DevtoolsKnipConfigOptions extends DevtoolsKnipWorkspaceConfigOp
   workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
 }
 
+export interface DevtoolsKnipMonorepoConfigOptions {
+  root?: DevtoolsKnipWorkspaceConfigOptions;
+  workspaceDefaults?: DevtoolsKnipWorkspaceConfigOptions;
+  workspaceGlobs?: string[];
+  workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
+}
+
+const DEFAULT_MONOREPO_WORKSPACE_GLOBS = ['packages/*', 'apps/*'] as const;
+
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
   return {
     ...(options.entry === undefined ? {} : { entry: options.entry }),
@@ -25,4 +34,27 @@ export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipC
     ...(options.ignoreFiles === undefined ? {} : { ignoreFiles: options.ignoreFiles }),
     ...(options.workspaces === undefined ? {} : { workspaces: options.workspaces }),
   } satisfies KnipConfig;
+}
+
+export function createKnipMonorepoConfig(
+  options: DevtoolsKnipMonorepoConfigOptions = {},
+): KnipConfig {
+  const explicitWorkspaces = options.workspaces ?? {};
+  const workspaceGlobs = options.workspaceGlobs ?? [...DEFAULT_MONOREPO_WORKSPACE_GLOBS];
+  const workspaces: Record<string, DevtoolsKnipWorkspaceConfigOptions> = {
+    '.': options.root ?? {},
+  };
+
+  for (const workspaceGlob of workspaceGlobs) {
+    workspaces[workspaceGlob] = {
+      ...(options.workspaceDefaults ?? {}),
+      ...(explicitWorkspaces[workspaceGlob] ?? {}),
+    };
+  }
+
+  for (const [workspaceGlob, workspaceConfig] of Object.entries(explicitWorkspaces)) {
+    workspaces[workspaceGlob] = workspaceConfig;
+  }
+
+  return createKnipConfig({ workspaces });
 }
