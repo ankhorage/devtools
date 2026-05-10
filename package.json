@@ -18,14 +18,20 @@
     "typescript",
     "eslint",
     "prettier",
+    "knip",
     "linting",
     "formatting",
+    "static-analysis",
     "developer-tools"
   ],
   "exports": {
     "./eslint": {
       "types": "./dist/eslint.d.ts",
       "import": "./dist/eslint.js"
+    },
+    "./knip": {
+      "types": "./dist/knip.d.ts",
+      "import": "./dist/knip.js"
     },
     "./prettier": {
       "require": "./dist/prettier.cjs"
@@ -39,6 +45,7 @@
   ],
   "scripts": {
     "build": "tsc && cp src/prettier.cjs dist/prettier.cjs",
+    "knip": "knip",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
