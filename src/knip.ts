@@ -4,6 +4,7 @@ export interface DevtoolsKnipWorkspaceConfigOptions {
   entry?: string[];
   project?: string[];
   ignore?: string[];
+  ignoreBinaries?: string[];
   ignoreDependencies?: (string | RegExp)[];
   ignoreFiles?: string[];
 }
@@ -17,6 +18,7 @@ export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipC
     ...(options.entry === undefined ? {} : { entry: options.entry }),
     ...(options.project === undefined ? {} : { project: options.project }),
     ...(options.ignore === undefined ? {} : { ignore: options.ignore }),
+    ...(options.ignoreBinaries === undefined ? {} : { ignoreBinaries: options.ignoreBinaries }),
     ...(options.ignoreDependencies === undefined
       ? {}
       : { ignoreDependencies: options.ignoreDependencies }),

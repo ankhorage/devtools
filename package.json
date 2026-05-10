@@ -24,6 +24,11 @@
     "static-analysis",
     "developer-tools"
   ],
+  "bin": {
+    "ankhorage-eslint": "./dist/eslint-cli.js",
+    "ankhorage-knip": "./dist/knip-cli.js",
+    "ankhorage-prettier": "./dist/prettier-cli.js"
+  },
   "exports": {
     "./eslint": {
       "types": "./dist/eslint.d.ts",
@@ -47,6 +52,7 @@
     "build": "tsc && cp src/prettier.cjs dist/prettier.cjs",
     "knip": "knip",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "bun test",

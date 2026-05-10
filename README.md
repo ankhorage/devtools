@@ -7,6 +7,7 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 - Consistent linting across repos
 - Zero-config Prettier setup
 - Shared Knip static-analysis defaults
+- Bundled tool binaries for ESLint, Prettier, and Knip
 - Strict TypeScript rules without compromise
 - One source of truth for tooling
 
@@ -16,6 +17,7 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 - Preconfigured plugin ecosystem
 - Prettier integration
 - Shared Knip config factory
+- `ankhorage-eslint`, `ankhorage-prettier`, and `ankhorage-knip` binaries
 - Monorepo-friendly
 
 ## Installation
@@ -24,28 +26,52 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 bun add -D @ankhorage/devtools
 ```
 
-Install the tools used by your local scripts as development dependencies:
-
-```bash
-bun add -D eslint prettier knip
-```
+The package owns the ESLint, Prettier, and Knip toolchain. Consuming repos should not install `eslint`, `prettier`, or `knip` directly unless they intentionally need a different version from the shared Ankhorage toolchain.
 
 ## Usage
 
+### Scripts
+
+Use the devtools-owned binaries in package scripts:
+
+```json
+{
+  "scripts": {
+    "lint": "ankhorage-eslint . --max-warnings=0",
+    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
+    "format": "ankhorage-prettier --write .",
+    "format:check": "ankhorage-prettier --check .",
+    "knip": "ankhorage-knip"
+  }
+}
+```
+
 ### ESLint
 
-```js
-import config from '@ankhorage/devtools/eslint';
+Create an `eslint.config.js` file:
 
-export default config();
+```js
+import { createConfig } from '@ankhorage/devtools/eslint';
+
+export default createConfig({
+  files: ['src/**/*.{ts,tsx}'],
+  project: ['./tsconfig.json'],
+  tsconfigRootDir: import.meta.dirname,
+});
 ```
 
 ### Prettier
 
-```json
-{
-  "extends": "@ankhorage/devtools/prettier"
-}
+Create a Prettier config file:
+
+```js
+export { default } from '@ankhorage/devtools/prettier';
+```
+
+CommonJS repos can use:
+
+```js
+module.exports = require('@ankhorage/devtools/prettier');
 ```
 
 ### Knip
@@ -58,16 +84,6 @@ import { createKnipConfig } from '@ankhorage/devtools/knip';
 export default createKnipConfig();
 ```
 
-Add a package script:
-
-```json
-{
-  "scripts": {
-    "knip": "knip"
-  }
-}
-```
-
 Repos can add narrow repo-specific patterns when needed:
 
 ```ts
@@ -77,16 +93,24 @@ export default createKnipConfig({
   entry: ['scripts/release.ts'],
   project: ['scripts/**/*.ts'],
   ignore: ['fixtures/**'],
+  ignoreBinaries: ['custom-tool'],
+  ignoreFiles: ['examples/fixture.ts'],
 });
 ```
 
-The shared config intentionally keeps defaults narrow so Knip does not fail on unmatched optional paths. Prefer explicit `entry`, `project`, or Knip plugin configuration over broad ignores when tool config files are reported as unused.
+The shared config intentionally keeps defaults narrow so Knip can use its own zero-config package discovery. Prefer explicit `entry`, `project`, `ignoreBinaries`, `ignoreDependencies`, or `ignoreFiles` over broad ignores.
 
 ### CI
 
-Run Knip in CI after dependencies are installed:
+Run the scripts in CI after dependencies are installed:
 
 ```yaml
+- name: Run lint
+  run: bun run lint
+
+- name: Run format check
+  run: bun run format:check
+
 - name: Run Knip
   run: bun run knip
 ```
@@ -124,9 +148,9 @@ This package centralizes tooling so all projects stay aligned.
 
 Includes:
 
-- ESLint configuration
-- Prettier configuration
-- Knip configuration
+- ESLint configuration and binary wrapper
+- Prettier configuration and binary wrapper
+- Knip configuration and binary wrapper
 
 Excludes:
 
