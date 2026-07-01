@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- a8db13b: Add Ankh provider metadata and provider-backed devtools commands for lint, format, and knip.
+
 ## 1.0.6
 
 ### Patch Changes
