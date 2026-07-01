@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-import { runPackageBin } from './internal/runPackageBin.js';
+import { runStandaloneDevtoolsCommand } from './internal/runStandaloneDevtoolsCommand.js';
 
-runPackageBin('knip', 'knip');
+const result = await runStandaloneDevtoolsCommand('knip', process.argv.slice(2));
+process.exit(result.exitCode);

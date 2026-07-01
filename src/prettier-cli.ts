@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-import { runPackageBin } from './internal/runPackageBin.js';
+import { runStandaloneDevtoolsCommand } from './internal/runStandaloneDevtoolsCommand.js';
 
-runPackageBin('prettier', 'prettier');
+const result = await runStandaloneDevtoolsCommand('format', process.argv.slice(2));
+process.exit(result.exitCode);

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-import { runPackageBin } from './internal/runPackageBin.js';
+import { runStandaloneDevtoolsCommand } from './internal/runStandaloneDevtoolsCommand.js';
 
-runPackageBin('eslint', 'eslint');
+const result = await runStandaloneDevtoolsCommand('lint', process.argv.slice(2));
+process.exit(result.exitCode);
