@@ -44,6 +44,7 @@ describe('package metadata', () => {
         'changeset:status',
         'docs',
         'docs:check',
+        'doctor',
         'format',
         'format:check',
         'knip',
