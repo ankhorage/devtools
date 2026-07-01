@@ -8,6 +8,7 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 - Zero-config Prettier setup
 - Shared Knip static-analysis defaults
 - Bundled tool binaries for ESLint, Prettier, and Knip
+- Ankh provider commands for lint, format, and Knip
 - Strict TypeScript rules without compromise
 - One source of truth for tooling
 
@@ -18,6 +19,7 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 - Prettier integration
 - Shared Knip config factory
 - `ankhorage-eslint`, `ankhorage-prettier`, and `ankhorage-knip` binaries
+- `ankh devtools lint`, `ankh devtools format`, and `ankh devtools knip`
 - Monorepo-friendly
 
 ## Installation
@@ -27,6 +29,16 @@ bun add -D @ankhorage/devtools
 ```
 
 The package owns the ESLint, Prettier, and Knip toolchain. Consuming repos should not install `eslint`, `prettier`, or `knip` directly unless they intentionally need a different version from the shared Ankhorage toolchain.
+
+It also participates in Ankh package discovery with:
+
+- category: `devtools`
+- capabilities:
+  - `devtools.lint`
+  - `devtools.format`
+  - `devtools.knip`
+
+`@ankhorage/devtools` owns primitive lint/format/knip tooling. Local emulator, app, and workstation workflows belong in `@ankhorage/dev`.
 
 ## Usage
 
@@ -45,6 +57,22 @@ Use the devtools-owned binaries in package scripts:
   }
 }
 ```
+
+### Ankh commands
+
+When discovered by `@ankhorage/ankh`, the package exposes:
+
+```bash
+ankh devtools lint -- --max-warnings=0 .
+ankh devtools format -- --check .
+ankh devtools knip -- --production
+```
+
+These provider-backed commands delegate to the same underlying tools as the standalone binaries:
+
+- `ankh devtools lint` -> `ankhorage-eslint`
+- `ankh devtools format` -> `ankhorage-prettier`
+- `ankh devtools knip` -> `ankhorage-knip`
 
 ### ESLint
 
@@ -151,8 +179,10 @@ Includes:
 - ESLint configuration and binary wrapper
 - Prettier configuration and binary wrapper
 - Knip configuration and binary wrapper
+- Ankh provider descriptors and handlers for lint, format, and Knip
 
 Excludes:
 
 - runtime code
 - build tooling
+- local dev workflows

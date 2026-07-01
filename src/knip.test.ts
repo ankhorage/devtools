@@ -19,11 +19,13 @@ describe('createKnipConfig', () => {
       ignoreFiles: ['examples/package/prettier.config.cjs'],
     });
 
-    expect(config.entry).toEqual(['scripts/release.ts']);
-    expect(config.project).toEqual(['scripts/**/*.ts']);
-    expect(config.ignore).toEqual(['fixtures/**']);
-    expect(config.ignoreBinaries).toEqual(['eslint', 'prettier']);
-    expect(config.ignoreDependencies).toEqual(['optional-package']);
-    expect(config.ignoreFiles).toEqual(['examples/package/prettier.config.cjs']);
+    expect(config).toEqual({
+      entry: ['scripts/release.ts'],
+      project: ['scripts/**/*.ts'],
+      ignore: ['fixtures/**'],
+      ignoreBinaries: ['eslint', 'prettier'],
+      ignoreDependencies: ['optional-package'],
+      ignoreFiles: ['examples/package/prettier.config.cjs'],
+    });
   });
 });
