@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- 4bd331e: Expose the package command provider.
+
 ## 1.1.0
 
 ### Minor Changes
