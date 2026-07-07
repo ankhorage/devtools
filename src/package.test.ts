@@ -12,7 +12,7 @@ describe('package metadata', () => {
     expect(packageJson.type).toBe('module');
     expect(packageJson.ankh).toEqual({
       category: 'devtools',
-      provider: './dist/ankh.provider.js',
+      provider: './dist/cli/index.js',
       capabilities: ['devtools.lint', 'devtools.format', 'devtools.knip'],
     });
 
@@ -23,6 +23,10 @@ describe('package metadata', () => {
     });
 
     expect(packageJson.exports).toEqual({
+      './cli': {
+        types: './dist/cli/index.d.ts',
+        import: './dist/cli/index.js',
+      },
       './eslint': {
         types: './dist/eslint.d.ts',
         import: './dist/eslint.js',

@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs';
 
 import type { AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
-import { getDevtoolsCommands } from './internal/devtoolsCommands.js';
-import { runDevtoolsCommand } from './internal/runDevtoolsCommand.js';
+import { getDevtoolsCommands } from '../internal/devtoolsCommands.js';
+import { runDevtoolsCommand } from '../internal/runDevtoolsCommand.js';
 
 const packageVersion = readPackageVersion();
 const commands = getDevtoolsCommands();
@@ -31,7 +31,7 @@ export default provider;
 
 function readPackageVersion(): string {
   const packageJson = JSON.parse(
-    readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
+    readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
   ) as unknown;
 
   if (!isRecord(packageJson) || !isNonEmptyString(packageJson.version)) {

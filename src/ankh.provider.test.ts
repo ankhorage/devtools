@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'bun:test';
 
-import provider from './ankh.provider.js';
+import provider from './cli/index.js';
 import { getDevtoolsCommands } from './internal/devtoolsCommands.js';
 
-describe('Ankh provider', () => {
+describe('devtools package provider', () => {
   it('exposes only the shipped devtools commands and capabilities', () => {
     const commands = getDevtoolsCommands();
 
