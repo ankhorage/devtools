@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
-import { createConfig } from './eslint.js';
+import { createConfig, defaultRestrictedImports } from './eslint.js';
 
 describe('createConfig sanity check', () => {
   const baseOptions = {
@@ -13,5 +13,19 @@ describe('createConfig sanity check', () => {
     const config = createConfig(baseOptions);
     expect(Array.isArray(config)).toBe(true);
     expect(config.length).toBeGreaterThan(0);
+  });
+
+  it('allows the owning Studio DnD package and rejects only the upstream package', () => {
+    expect(defaultRestrictedImports).toEqual([
+      {
+        name: 'react-native-reanimated-dnd',
+        message:
+          "Forbidden in Ankhorage packages. Use '@ankhorage/react-native-reanimated-dnd-web' directly.",
+      },
+    ]);
+
+    const serializedRules = JSON.stringify(defaultRestrictedImports);
+    expect(serializedRules).toContain('@ankhorage/react-native-reanimated-dnd-web');
+    expect(serializedRules).not.toContain('@ankh/dnd');
   });
 });
