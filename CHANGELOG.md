@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2
+
+### Patch Changes
+
+- 13d368e: Allow direct imports from `@ankhorage/react-native-reanimated-dnd-web`, keep the upstream native package restricted, and remove the retired `@ankh/dnd` recommendation.
+
 ## 1.1.1
 
 ### Patch Changes
