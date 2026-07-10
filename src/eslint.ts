@@ -24,11 +24,8 @@ export const defaultIgnores = [
 export const defaultRestrictedImports = [
   {
     name: 'react-native-reanimated-dnd',
-    message: "Forbidden in monorepo. Use '@ankh/dnd' (boundary) instead.",
-  },
-  {
-    name: '@ankhorage/react-native-reanimated-dnd-web',
-    message: "Forbidden in monorepo. Use '@ankh/dnd' (boundary) instead.",
+    message:
+      "Forbidden in Ankhorage packages. Use '@ankhorage/react-native-reanimated-dnd-web' directly.",
   },
 ] as const;
 
