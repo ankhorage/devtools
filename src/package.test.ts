@@ -52,21 +52,18 @@ describe('package metadata', () => {
 
     const { build } = packageJson.scripts as Record<string, string>;
     expect(build).toContain('src/tools/workflows/files');
+    expect(build).toContain('dist/tools/workflows/files');
     expect(build).toContain('src/tools/vscode/files');
+    expect(build).toContain('dist/tools/vscode/files');
     expect(build).toContain('src/tools/prettier/index.cjs');
+    expect(build).toContain('dist/tools/prettier/index.cjs');
   });
 
-  it('resolves managed assets from the built package after build', () => {
-    expect(existsSync(new URL('../dist/tools/workflows/files/ci.yml', import.meta.url))).toBe(true);
-    expect(existsSync(new URL('../dist/tools/workflows/files/release.yml', import.meta.url))).toBe(
-      true,
-    );
-    expect(existsSync(new URL('../dist/tools/vscode/files/settings.json', import.meta.url))).toBe(
-      true,
-    );
-    expect(existsSync(new URL('../dist/tools/vscode/files/extensions.json', import.meta.url))).toBe(
-      true,
-    );
+  it('ships every canonical managed asset in the source tree', () => {
+    expect(existsSync(new URL('./tools/workflows/files/ci.yml', import.meta.url))).toBe(true);
+    expect(existsSync(new URL('./tools/workflows/files/release.yml', import.meta.url))).toBe(true);
+    expect(existsSync(new URL('./tools/vscode/files/settings.json', import.meta.url))).toBe(true);
+    expect(existsSync(new URL('./tools/vscode/files/extensions.json', import.meta.url))).toBe(true);
   });
 
   it('documents only the canonical devtools command surface', () => {
