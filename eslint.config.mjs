@@ -1,4 +1,4 @@
-import { createConfig } from './dist/eslint.js';
+import { createConfig } from './dist/tools/eslint/index.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 

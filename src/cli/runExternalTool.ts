@@ -4,25 +4,23 @@ import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, extname, join, resolve } from 'node:path';
 
-import type { DevtoolsCommandDefinition, DevtoolsToolName } from './devtoolsCommands.js';
+import type { DevtoolsExternalCommandDefinition } from './commands.js';
 
 const require = createRequire(import.meta.url);
 
-export type { DevtoolsCommandDefinition, DevtoolsToolName };
-
 export interface DevtoolsRunResult {
-  exitCode: number;
+  readonly exitCode: number;
 }
 
 interface DevtoolsRunnerOptions {
-  cwd?: string;
-  env?: NodeJS.ProcessEnv;
+  readonly cwd?: string;
+  readonly env?: NodeJS.ProcessEnv;
 }
 
 interface ResolvedExecutionTarget {
-  command: string;
-  args: readonly string[];
-  shell: boolean;
+  readonly command: string;
+  readonly args: readonly string[];
+  readonly shell: boolean;
 }
 
 interface SpawnedProcess {
@@ -37,17 +35,17 @@ type SpawnProcess = (
   command: string,
   args: readonly string[],
   options: {
-    cwd: string;
-    env: NodeJS.ProcessEnv;
-    shell: boolean;
-    stdio: 'inherit';
+    readonly cwd: string;
+    readonly env: NodeJS.ProcessEnv;
+    readonly shell: boolean;
+    readonly stdio: 'inherit';
   },
 ) => SpawnedProcess;
 
 interface DevtoolsRunnerDependencies {
   readonly logError: (message: string) => void;
   readonly resolveExecutionTarget: (
-    command: DevtoolsCommandDefinition,
+    command: DevtoolsExternalCommandDefinition,
   ) => Promise<ResolvedExecutionTarget>;
   readonly spawnProcess: SpawnProcess;
 }
@@ -60,16 +58,16 @@ const defaultRunnerDependencies: DevtoolsRunnerDependencies = {
   spawnProcess: (command, args, options) => spawn(command, args, options),
 };
 
-export async function runDevtoolsCommand(
-  command: DevtoolsCommandDefinition,
+export async function runExternalTool(
+  command: DevtoolsExternalCommandDefinition,
   argv: readonly string[],
   options?: DevtoolsRunnerOptions,
 ): Promise<DevtoolsRunResult> {
-  return runDevtoolsCommandWithDependencies(command, argv, options, defaultRunnerDependencies);
+  return await runExternalToolWithDependencies(command, argv, options, defaultRunnerDependencies);
 }
 
-export async function runDevtoolsCommandWithDependencies(
-  command: DevtoolsCommandDefinition,
+export async function runExternalToolWithDependencies(
+  command: DevtoolsExternalCommandDefinition,
   argv: readonly string[],
   options: DevtoolsRunnerOptions | undefined,
   dependencies: DevtoolsRunnerDependencies,
@@ -80,7 +78,6 @@ export async function runDevtoolsCommandWithDependencies(
     executionTarget = await dependencies.resolveExecutionTarget(command);
   } catch (error) {
     dependencies.logError(`Failed to resolve ${command.binName}: ${getErrorMessage(error)}`);
-
     return { exitCode: 1 };
   }
 
@@ -128,7 +125,7 @@ export async function runDevtoolsCommandWithDependencies(
 }
 
 async function resolveExecutionTarget(
-  command: DevtoolsCommandDefinition,
+  command: DevtoolsExternalCommandDefinition,
 ): Promise<ResolvedExecutionTarget> {
   const binPath = await readPackageBinPath(command.packageName, command.binName);
   if (await shouldExecuteWithNode(binPath)) {

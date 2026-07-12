@@ -1,7 +1,7 @@
 {
   "name": "@ankhorage/devtools",
   "version": "1.1.2",
-  "description": "Shared Lint and Format Configuration for Ankhorage",
+  "description": "Shared development tools and repository standards for Ankhorage",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/devtools#readme",
   "bugs": {
@@ -21,7 +21,13 @@
     "capabilities": [
       "devtools.lint",
       "devtools.format",
-      "devtools.knip"
+      "devtools.knip",
+      "devtools.sync",
+      "devtools.status",
+      "devtools.workflows.sync",
+      "devtools.workflows.status",
+      "devtools.vscode.sync",
+      "devtools.vscode.status"
     ]
   },
   "keywords": [
@@ -29,15 +35,15 @@
     "eslint",
     "prettier",
     "knip",
-    "linting",
-    "formatting",
-    "static-analysis",
+    "github-actions",
+    "vscode",
+    "repository-sync",
     "developer-tools"
   ],
   "bin": {
-    "ankhorage-eslint": "./dist/eslint-cli.js",
-    "ankhorage-knip": "./dist/knip-cli.js",
-    "ankhorage-prettier": "./dist/prettier-cli.js"
+    "ankhorage-eslint": "./dist/cli/bin/eslint.js",
+    "ankhorage-knip": "./dist/cli/bin/knip.js",
+    "ankhorage-prettier": "./dist/cli/bin/prettier.js"
   },
   "exports": {
     "./cli": {
@@ -45,15 +51,15 @@
       "import": "./dist/cli/index.js"
     },
     "./eslint": {
-      "types": "./dist/eslint.d.ts",
-      "import": "./dist/eslint.js"
+      "types": "./dist/tools/eslint/index.d.ts",
+      "import": "./dist/tools/eslint/index.js"
     },
     "./knip": {
-      "types": "./dist/knip.d.ts",
-      "import": "./dist/knip.js"
+      "types": "./dist/tools/knip/index.d.ts",
+      "import": "./dist/tools/knip/index.js"
     },
     "./prettier": {
-      "require": "./dist/prettier.cjs"
+      "require": "./dist/tools/prettier/index.cjs"
     }
   },
   "files": [
@@ -63,7 +69,7 @@
     "examples"
   ],
   "scripts": {
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && cp src/prettier.cjs dist/prettier.cjs",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files",
     "typecheck": "bun x tsc --noEmit -p tsconfig.test.json",
     "doctor": "ankhorage-doctor validate .",
     "knip": "knip",

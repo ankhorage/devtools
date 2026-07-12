@@ -55,9 +55,7 @@ export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof 
     {
       ignores: [...defaultIgnores, ...normalizedOptions.additionalIgnores],
     },
-
     js.configs.recommended,
-
     ...tseslint.configs.recommendedTypeChecked.map((config) => ({
       ...config,
       files: normalizedOptions.files,
@@ -66,7 +64,6 @@ export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof 
       ...config,
       files: normalizedOptions.files,
     })),
-
     {
       files: normalizedOptions.files,
       languageOptions: {
@@ -89,20 +86,16 @@ export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof 
         '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
         '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
         '@typescript-eslint/prefer-nullish-coalescing': 'error',
-
         'no-restricted-imports': [
           'error',
           {
             paths: combinedRestrictedImports,
           },
         ],
-
         'prefer-destructuring': 'off',
         '@typescript-eslint/prefer-destructuring': 'error',
-
         'simple-import-sort/imports': 'error',
         'simple-import-sort/exports': 'error',
-
         'unused-imports/no-unused-imports': 'error',
         'unused-imports/no-unused-vars': [
           'error',
@@ -113,19 +106,16 @@ export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof 
             argsIgnorePattern: '^_',
           },
         ],
-
         'import/order': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
-
         '@typescript-eslint/no-explicit-any': 'error',
-
         'prettier/prettier': 'error',
-
         'no-console': 'off',
       },
     },
-
     ...normalizedOptions.overrides,
     ...(normalizedOptions.includePrettier ? [prettierConfig as FlatConfigItem] : []),
   );
 }
+
+export type { DevtoolsConfigOptions, FlatConfigItem } from './types.js';

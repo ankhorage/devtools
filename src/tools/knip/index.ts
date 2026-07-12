@@ -1,23 +1,23 @@
 import type { KnipConfig } from 'knip';
 
 export interface DevtoolsKnipWorkspaceConfigOptions {
-  entry?: string[];
-  project?: string[];
-  ignore?: string[];
-  ignoreBinaries?: string[];
-  ignoreDependencies?: (string | RegExp)[];
-  ignoreFiles?: string[];
+  readonly entry?: string[];
+  readonly project?: string[];
+  readonly ignore?: string[];
+  readonly ignoreBinaries?: string[];
+  readonly ignoreDependencies?: (string | RegExp)[];
+  readonly ignoreFiles?: string[];
 }
 
 export interface DevtoolsKnipConfigOptions extends DevtoolsKnipWorkspaceConfigOptions {
-  workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
+  readonly workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
 }
 
 export interface DevtoolsKnipMonorepoConfigOptions {
-  root?: DevtoolsKnipWorkspaceConfigOptions;
-  workspaceDefaults?: DevtoolsKnipWorkspaceConfigOptions;
-  workspaceGlobs?: string[];
-  workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
+  readonly root?: DevtoolsKnipWorkspaceConfigOptions;
+  readonly workspaceDefaults?: DevtoolsKnipWorkspaceConfigOptions;
+  readonly workspaceGlobs?: string[];
+  readonly workspaces?: Record<string, DevtoolsKnipWorkspaceConfigOptions>;
 }
 
 const DEFAULT_MONOREPO_WORKSPACE_GLOBS = ['packages/*', 'apps/*'] as const;
