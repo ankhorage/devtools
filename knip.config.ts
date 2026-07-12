@@ -1,4 +1,4 @@
-import { createKnipConfig } from './src/knip.js';
+import { createKnipConfig } from './src/tools/knip/index.js';
 
 export default createKnipConfig({
   ignoreFiles: [
