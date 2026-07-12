@@ -6,8 +6,8 @@ export interface ManagedFileDefinition {
   readonly sourceUrl: URL;
 }
 
-export type ManagedFileState = 'current' | 'missing' | 'outdated';
-export type ManagedFileSyncAction =
+type ManagedFileState = 'current' | 'missing' | 'outdated';
+type ManagedFileSyncAction =
   | 'unchanged'
   | 'created'
   | 'updated'
