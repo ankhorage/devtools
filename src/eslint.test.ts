@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
-import { createConfig, defaultRestrictedImports } from './eslint.js';
+import { createConfig, defaultRestrictedImports } from './tools/eslint/index.js';
 
 describe('createConfig sanity check', () => {
   const baseOptions = {
