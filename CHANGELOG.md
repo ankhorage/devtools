@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- 4d844ad: Add canonical GitHub Actions and VS Code synchronization commands, move tool implementations under `src/tools`, and expose the complete `ankh devtools` provider surface.
+
 ## 1.1.2
 
 ### Patch Changes
