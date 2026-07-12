@@ -1,26 +1,29 @@
 # devtools
 
-Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
+Shared development tools and repository standards for Ankhorage TypeScript projects.
 
-## What you get
+## What it owns
 
-- Consistent linting across repos
-- Zero-config Prettier setup
-- Shared Knip static-analysis defaults
-- Bundled tool binaries for ESLint, Prettier, and Knip
-- Ankh provider commands for lint, format, and Knip
-- Strict TypeScript rules without compromise
-- One source of truth for tooling
+`@ankhorage/devtools` is the single source of truth for these equal, separate concerns:
 
-## Features
+```text
+src/
+├── cli/
+└── tools/
+    ├── eslint/
+    ├── prettier/
+    ├── knip/
+    ├── workflows/
+    └── vscode/
+```
 
-- Flat ESLint config (latest standard)
-- Preconfigured plugin ecosystem
-- Prettier integration
-- Shared Knip config factories
-- `ankhorage-eslint`, `ankhorage-prettier`, and `ankhorage-knip` binaries
-- `ankh devtools lint`, `ankh devtools format`, and `ankh devtools knip`
-- Monorepo-friendly
+- `eslint`: shared flat ESLint configuration and the bundled ESLint runner
+- `prettier`: shared Prettier configuration and the bundled Prettier runner
+- `knip`: shared Knip configuration and the bundled Knip runner
+- `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
+- `vscode`: canonical `.vscode/settings.json` and `extensions.json`
+
+There is no generic template layer around these concerns. Each tool owns its canonical files and behavior.
 
 ## Installation
 
@@ -28,23 +31,43 @@ Shared ESLint, Prettier, and Knip configuration for modern TypeScript projects.
 bun add -D @ankhorage/devtools
 ```
 
-The package owns the ESLint, Prettier, and Knip toolchain. Consuming repos should not install `eslint`, `prettier`, or `knip` directly unless they intentionally need a different version from the shared Ankhorage toolchain.
+The package owns the ESLint, Prettier, and Knip versions used by consuming repositories. Do not install those tools directly unless a repository intentionally opts out of the shared Ankhorage toolchain.
 
-It also participates in Ankh package discovery with:
+## Ankh provider
 
-- category: `devtools`
-- capabilities:
-  - `devtools.lint`
-  - `devtools.format`
-  - `devtools.knip`
+The package is discovered under the `devtools` category and exposes these capabilities:
 
-`@ankhorage/devtools` owns primitive lint/format/knip tooling. Local emulator, app, and workstation workflows belong in `@ankhorage/dev`.
+- `devtools.lint`
+- `devtools.format`
+- `devtools.knip`
+- `devtools.sync`
+- `devtools.status`
+- `devtools.workflows.sync`
+- `devtools.workflows.status`
+- `devtools.vscode.sync`
+- `devtools.vscode.status`
 
-## Usage
+The canonical command prefix is always:
 
-### Scripts
+```bash
+ankh devtools ...
+```
 
-Use the devtools-owned binaries in package scripts:
+## Tool commands
+
+```bash
+ankh devtools lint -- --max-warnings=0 .
+ankh devtools format -- --check .
+ankh devtools knip -- --production
+```
+
+These commands delegate to the same bundled tools as the package binaries:
+
+- `ankh devtools lint` → `ankhorage-eslint`
+- `ankh devtools format` → `ankhorage-prettier`
+- `ankh devtools knip` → `ankhorage-knip`
+
+Recommended package scripts:
 
 ```json
 {
@@ -58,25 +81,127 @@ Use the devtools-owned binaries in package scripts:
 }
 ```
 
-### Ankh commands
+## Repository synchronization
 
-When discovered by `@ankhorage/ankh`, the package exposes:
+### Synchronize all managed files
 
 ```bash
-ankh devtools lint -- --max-warnings=0 .
-ankh devtools format -- --check .
-ankh devtools knip -- --production
+ankh devtools sync .
 ```
 
-These provider-backed commands delegate to the same underlying tools as the standalone binaries:
+The target path is optional and defaults to the current working directory:
 
-- `ankh devtools lint` -> `ankhorage-eslint`
-- `ankh devtools format` -> `ankhorage-prettier`
-- `ankh devtools knip` -> `ankhorage-knip`
+```bash
+ankh devtools sync
+```
 
-### ESLint
+### Report drift without changing files
 
-Create an `eslint.config.js` file:
+```bash
+ankh devtools status .
+```
+
+`status` exits with code `1` when any managed file is missing or outdated. It exits with code `0` when all managed files are current.
+
+Example output:
+
+```text
+✓ .github/workflows/ci.yml
+✗ .github/workflows/release.yml outdated
++ .vscode/settings.json missing
+✓ .vscode/extensions.json
+```
+
+### Synchronize one concern
+
+```bash
+ankh devtools workflows sync .
+ankh devtools vscode sync .
+```
+
+### Report one concern
+
+```bash
+ankh devtools workflows status .
+ankh devtools vscode status .
+```
+
+### Preview synchronization
+
+```bash
+ankh devtools sync . --dry-run
+ankh devtools workflows sync . --dry-run
+ankh devtools vscode sync . --dry-run
+```
+
+A dry run reports `would create` and `would update` actions without writing any files.
+
+## Synchronization guarantees
+
+Synchronization is deterministic and idempotent:
+
+- missing managed files are created
+- outdated managed files are replaced with the canonical package version
+- current managed files are left untouched
+- unrelated files are never modified
+- unknown files in `.github/workflows` and `.vscode` are never deleted
+- repeating `sync` after a successful run produces only `unchanged` results
+- invalid target paths and write failures return a non-zero exit code
+
+The canonical files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.
+
+## Managed GitHub Actions workflows
+
+`workflows` owns exactly:
+
+```text
+.github/workflows/ci.yml
+.github/workflows/release.yml
+```
+
+The CI workflow:
+
+- checks out full history
+- installs the pinned Bun version
+- installs dependencies with `bun install --frozen-lockfile`
+- runs `bunx @ankhorage/ankh doctor validate .`
+- conditionally runs build, lint, format check, Knip, tests, and typecheck when scripts exist
+- conditionally runs `changeset:status` for pull requests when the script exists
+
+The release workflow:
+
+- checks out full history
+- configures Bun and Node for npm publishing
+- installs dependencies with the frozen lockfile
+- conditionally builds
+- runs the Changesets release PR/publish flow
+- protects release execution with a concurrency group
+- skips cleanly when no Changesets configuration exists
+
+## Managed VS Code configuration
+
+`vscode` owns exactly:
+
+```text
+.vscode/settings.json
+.vscode/extensions.json
+```
+
+The shared settings use the workspace TypeScript SDK, enable the workspace-SDK prompt, configure intentional ESLint save actions, and enforce basic whitespace/newline consistency.
+
+The extension recommendations are limited to the standard Ankhorage workflow:
+
+- Bun
+- ESLint
+- Prettier
+- YAML
+- GitHub Actions
+
+`launch.json` is intentionally not managed globally. Libraries, CLIs, Expo packages, services, and integration repositories require different debug configurations.
+
+## ESLint
+
+Create `eslint.config.mjs`:
 
 ```js
 import { createConfig } from '@ankhorage/devtools/eslint';
@@ -88,23 +213,21 @@ export default createConfig({
 });
 ```
 
-### Prettier
+## Prettier
 
-Create a Prettier config file:
+ES modules:
 
 ```js
 export { default } from '@ankhorage/devtools/prettier';
 ```
 
-CommonJS repos can use:
+CommonJS:
 
 ```js
 module.exports = require('@ankhorage/devtools/prettier');
 ```
 
-### Knip
-
-Create a repo-local `knip.config.ts` file:
+## Knip
 
 ```ts
 import { createKnipConfig } from '@ankhorage/devtools/knip';
@@ -112,111 +235,15 @@ import { createKnipConfig } from '@ankhorage/devtools/knip';
 export default createKnipConfig();
 ```
 
-Repos can add narrow repo-specific patterns when needed:
+Monorepos can use `createKnipMonorepoConfig` and add narrow repository-specific entries, projects, ignores, binaries, dependencies, or workspace overrides.
 
-```ts
-import { createKnipConfig } from '@ankhorage/devtools/knip';
+## Adding another managed concern
 
-export default createKnipConfig({
-  entry: ['scripts/release.ts'],
-  project: ['scripts/**/*.ts'],
-  ignore: ['fixtures/**'],
-  ignoreBinaries: ['custom-tool'],
-  ignoreFiles: ['examples/fixture.ts'],
-});
-```
+A new concern should:
 
-For workspaces-based monorepos, use the monorepo preset:
-
-```ts
-import { createKnipMonorepoConfig } from '@ankhorage/devtools/knip';
-
-export default createKnipMonorepoConfig({
-  root: {
-    ignoreFiles: ['.prettierrc.js', 'eslint.config.js'],
-  },
-});
-```
-
-By default, the monorepo preset configures Knip workspaces for the root package, `packages/*`, and `apps/*`. Repos can override those defaults or add extra workspace globs:
-
-```ts
-import { createKnipMonorepoConfig } from '@ankhorage/devtools/knip';
-
-export default createKnipMonorepoConfig({
-  workspaceGlobs: ['packages/*', 'apps/*', 'examples/*'],
-  workspaceDefaults: {
-    ignoreFiles: ['fixtures/**'],
-  },
-  workspaces: {
-    '.': {
-      ignoreFiles: ['.prettierrc.js', 'eslint.config.js'],
-    },
-    'apps/editor': {
-      ignoreFiles: ['babel.config.js'],
-      ignoreDependencies: ['babel-preset-expo'],
-    },
-  },
-});
-```
-
-The shared config intentionally keeps defaults narrow so Knip can still report real unused files, exports, dependencies, and binaries. Prefer explicit `entry`, `project`, `ignoreBinaries`, `ignoreDependencies`, or `ignoreFiles` over broad ignores.
-
-### CI
-
-Run the scripts in CI after dependencies are installed:
-
-```yaml
-- name: Run lint
-  run: bun run lint
-
-- name: Run format check
-  run: bun run format:check
-
-- name: Run Knip
-  run: bun run knip
-```
-
-For workflows that support optional scripts, use the same guard style as the other devtools checks:
-
-```yaml
-- name: Run Knip
-  run: |
-    if node -e "const p=require('./package.json'); process.exit(p.scripts?.knip ? 0 : 1)"; then
-      bun run knip
-    else
-      echo "No knip script found; skipping."
-    fi
-```
-
-## Use Cases
-
-- Monorepos with shared standards
-- Teams that want strict, predictable linting
-- Projects avoiding duplicated config
-- Repos that need consistent unused-file, unused-export, and dependency checks
-
-## Why this exists
-
-Maintaining ESLint, Prettier, and Knip configs across multiple repositories leads to:
-
-- duplication
-- inconsistency
-- drift over time
-
-This package centralizes tooling so all projects stay aligned.
-
-## Scope
-
-Includes:
-
-- ESLint configuration and binary wrapper
-- Prettier configuration and binary wrapper
-- Knip configuration and binary wrapper
-- Ankh provider descriptors and handlers for lint, format, and Knip
-
-Excludes:
-
-- runtime code
-- build tooling
-- local dev workflows
+1. live in its own sibling directory under `src/tools`
+2. define only the files and behavior it owns
+3. expose deterministic status and synchronization through the shared managed-file engine
+4. add provider commands under `ankh devtools`
+5. include source-tree, built-package, dry-run, status, and idempotence coverage
+6. document overwrite and exit-code behavior
