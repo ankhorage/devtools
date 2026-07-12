@@ -4,7 +4,7 @@ import provider from './cli/index.js';
 import { getDevtoolsCommands } from './internal/devtoolsCommands.js';
 
 describe('devtools package provider', () => {
-  it('exposes only the shipped devtools commands and capabilities', () => {
+  it('exposes the canonical devtools command surface', () => {
     const commands = getDevtoolsCommands();
 
     expect(provider.id).toBe('@ankhorage/devtools');
@@ -21,6 +21,12 @@ describe('devtools package provider', () => {
       'lint',
       'format',
       'knip',
+      'sync',
+      'status',
+      'workflows sync',
+      'workflows status',
+      'vscode sync',
+      'vscode status',
     ]);
   });
 
