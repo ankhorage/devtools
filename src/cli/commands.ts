@@ -1,8 +1,8 @@
 export type DevtoolsToolName = 'format' | 'knip' | 'lint';
-export type DevtoolsManagedScope = 'all' | 'vscode' | 'workflows';
-export type DevtoolsManagedOperation = 'status' | 'sync';
+type DevtoolsManagedScope = 'all' | 'vscode' | 'workflows';
+type DevtoolsManagedOperation = 'status' | 'sync';
 
-export type DevtoolsCapability =
+type DevtoolsCapability =
   | 'devtools.format'
   | 'devtools.knip'
   | 'devtools.lint'
