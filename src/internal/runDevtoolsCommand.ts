@@ -4,11 +4,14 @@ import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, extname, join, resolve } from 'node:path';
 
-import type { DevtoolsCommandDefinition, DevtoolsToolName } from './devtoolsCommands.js';
+import type {
+  BinaryDevtoolsCommandDefinition,
+  DevtoolsToolName,
+} from './devtoolsCommands.js';
 
 const require = createRequire(import.meta.url);
 
-export type { DevtoolsCommandDefinition, DevtoolsToolName };
+export type { BinaryDevtoolsCommandDefinition, DevtoolsToolName };
 
 export interface DevtoolsRunResult {
   exitCode: number;
@@ -47,7 +50,7 @@ type SpawnProcess = (
 interface DevtoolsRunnerDependencies {
   readonly logError: (message: string) => void;
   readonly resolveExecutionTarget: (
-    command: DevtoolsCommandDefinition,
+    command: BinaryDevtoolsCommandDefinition,
   ) => Promise<ResolvedExecutionTarget>;
   readonly spawnProcess: SpawnProcess;
 }
@@ -61,7 +64,7 @@ const defaultRunnerDependencies: DevtoolsRunnerDependencies = {
 };
 
 export async function runDevtoolsCommand(
-  command: DevtoolsCommandDefinition,
+  command: BinaryDevtoolsCommandDefinition,
   argv: readonly string[],
   options?: DevtoolsRunnerOptions,
 ): Promise<DevtoolsRunResult> {
@@ -69,7 +72,7 @@ export async function runDevtoolsCommand(
 }
 
 export async function runDevtoolsCommandWithDependencies(
-  command: DevtoolsCommandDefinition,
+  command: BinaryDevtoolsCommandDefinition,
   argv: readonly string[],
   options: DevtoolsRunnerOptions | undefined,
   dependencies: DevtoolsRunnerDependencies,
@@ -80,7 +83,6 @@ export async function runDevtoolsCommandWithDependencies(
     executionTarget = await dependencies.resolveExecutionTarget(command);
   } catch (error) {
     dependencies.logError(`Failed to resolve ${command.binName}: ${getErrorMessage(error)}`);
-
     return { exitCode: 1 };
   }
 
@@ -89,12 +91,8 @@ export async function runDevtoolsCommandWithDependencies(
 
   return await new Promise<DevtoolsRunResult>((resolveResult) => {
     let settled = false;
-
     const settle = (result: DevtoolsRunResult) => {
-      if (settled) {
-        return;
-      }
-
+      if (settled) return;
       settled = true;
       resolveResult(result);
     };
@@ -102,12 +100,7 @@ export async function runDevtoolsCommandWithDependencies(
     const child = dependencies.spawnProcess(
       executionTarget.command,
       [...executionTarget.args, ...argv],
-      {
-        cwd,
-        env,
-        shell: executionTarget.shell,
-        stdio: 'inherit',
-      },
+      { cwd, env, shell: executionTarget.shell, stdio: 'inherit' },
     );
 
     child.on('error', (error) => {
@@ -121,80 +114,52 @@ export async function runDevtoolsCommandWithDependencies(
         settle({ exitCode: 1 });
         return;
       }
-
       settle({ exitCode: code ?? 1 });
     });
   });
 }
 
 async function resolveExecutionTarget(
-  command: DevtoolsCommandDefinition,
+  command: BinaryDevtoolsCommandDefinition,
 ): Promise<ResolvedExecutionTarget> {
   const binPath = await readPackageBinPath(command.packageName, command.binName);
   if (await shouldExecuteWithNode(binPath)) {
-    return {
-      command: process.execPath,
-      args: [binPath],
-      shell: false,
-    };
+    return { command: process.execPath, args: [binPath], shell: false };
   }
-
-  return {
-    command: binPath,
-    args: [],
-    shell: process.platform === 'win32',
-  };
+  return { command: binPath, args: [], shell: process.platform === 'win32' };
 }
 
 function findPackageJsonPath(packageName: string): string {
   let currentDirectory = dirname(require.resolve(packageName));
-
   while (currentDirectory !== dirname(currentDirectory)) {
     const packageJsonPath = join(currentDirectory, 'package.json');
-
-    if (existsSync(packageJsonPath)) {
-      return packageJsonPath;
-    }
-
+    if (existsSync(packageJsonPath)) return packageJsonPath;
     currentDirectory = dirname(currentDirectory);
   }
-
   throw new Error(`Could not find package metadata for ${packageName}.`);
 }
 
 async function readPackageBinPath(packageName: string, binName: string): Promise<string> {
   const packageJsonPath = findPackageJsonPath(packageName);
   const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8')) as unknown;
-
   if (!isRecord(packageJson)) {
     throw new Error(`Package metadata for ${packageName} is not an object.`);
   }
 
   const { bin } = packageJson;
   let relativeBinPath: string | undefined;
-
-  if (typeof bin === 'string') {
-    relativeBinPath = bin;
-  } else if (isRecord(bin)) {
-    const namedBin = bin[binName];
-    if (typeof namedBin === 'string') {
-      relativeBinPath = namedBin;
-    }
-  }
+  if (typeof bin === 'string') relativeBinPath = bin;
+  else if (isRecord(bin) && typeof bin[binName] === 'string') relativeBinPath = bin[binName];
 
   if (relativeBinPath === undefined) {
     throw new Error(`Package ${packageName} does not expose a ${binName} binary.`);
   }
-
   return resolve(dirname(packageJsonPath), relativeBinPath);
 }
 
 async function shouldExecuteWithNode(binPath: string): Promise<boolean> {
   const extension = extname(binPath).toLowerCase();
-  if (extension === '.cjs' || extension === '.js' || extension === '.mjs') {
-    return true;
-  }
-
+  if (extension === '.cjs' || extension === '.js' || extension === '.mjs') return true;
   const firstLine = (await readFile(binPath, 'utf8')).split('\n', 1)[0] ?? '';
   return firstLine.startsWith('#!') && firstLine.includes('node');
 }
