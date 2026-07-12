@@ -31,7 +31,7 @@ describe('devtools package provider', () => {
   });
 
   it('binds exactly one handler for every command descriptor', () => {
-    const handlerPaths = (provider.handlers ?? []).map((handler) => handler.path.join(' ')).sort();
+    const handlerPaths = provider.handlers.map((handler) => handler.path.join(' ')).sort();
     const commandPaths = provider.commands.map((command) => command.path.join(' ')).sort();
 
     expect(handlerPaths).toEqual(commandPaths);
