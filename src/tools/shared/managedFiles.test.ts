@@ -59,9 +59,16 @@ describe('managed file synchronization', () => {
   it('defaults targets to cwd and rejects invalid targets', async () => {
     const fixture = await createFixture();
     expect(await resolveManagedTargetDirectory(fixture.target, undefined)).toBe(fixture.target);
-    await expect(resolveManagedTargetDirectory(fixture.target, 'does-not-exist')).rejects.toThrow(
-      'Target directory does not exist',
-    );
+
+    let thrownError: unknown;
+    try {
+      await resolveManagedTargetDirectory(fixture.target, 'does-not-exist');
+    } catch (error) {
+      thrownError = error;
+    }
+
+    expect(thrownError).toBeInstanceOf(Error);
+    expect((thrownError as Error).message).toContain('Target directory does not exist');
   });
 });
 
