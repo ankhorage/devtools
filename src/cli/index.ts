@@ -4,6 +4,7 @@ import type { AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
 import { getDevtoolsCommands } from '../internal/devtoolsCommands.js';
 import { runDevtoolsCommand } from '../internal/runDevtoolsCommand.js';
+import { runManagedDevtoolsCommand } from '../internal/runManagedDevtoolsCommand.js';
 
 const packageVersion = readPackageVersion();
 const commands = getDevtoolsCommands();
@@ -21,7 +22,10 @@ const provider = {
   handlers: commands.map((command) => ({
     path: [...command.path],
     handler: async (request) => {
-      const result = await runDevtoolsCommand(command, request.argv);
+      const result =
+        command.kind === 'binary'
+          ? await runDevtoolsCommand(command, request.argv, { cwd: request.context.cwd })
+          : await runManagedDevtoolsCommand(command, request.argv, request.context);
       return { exitCode: result.exitCode };
     },
   })),
