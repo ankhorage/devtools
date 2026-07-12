@@ -1,8 +1,8 @@
 import type { DevtoolsCommandDefinition } from './commands.js';
 import { runExternalTool } from './runExternalTool.js';
 import {
-  runRepositoryCommand,
   type DevtoolsRepositoryCommandContext,
+  runRepositoryCommand,
 } from './runRepositoryCommand.js';
 
 export interface DevtoolsProviderCommandContext extends DevtoolsRepositoryCommandContext {

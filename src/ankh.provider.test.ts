@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 
-import provider from './cli/index.js';
 import { getDevtoolsCommands } from './cli/commands.js';
+import provider from './cli/index.js';
 
 describe('devtools package provider', () => {
   it('exposes the complete canonical devtools command surface', () => {
@@ -31,9 +31,7 @@ describe('devtools package provider', () => {
   });
 
   it('binds exactly one handler for every command descriptor', () => {
-    const handlerPaths = (provider.handlers ?? [])
-      .map((handler) => handler.path.join(' '))
-      .sort();
+    const handlerPaths = (provider.handlers ?? []).map((handler) => handler.path.join(' ')).sort();
     const commandPaths = provider.commands.map((command) => command.path.join(' ')).sort();
 
     expect(handlerPaths).toEqual(commandPaths);

@@ -6,9 +6,9 @@ import { afterEach, describe, expect, it } from 'bun:test';
 
 import {
   inspectManagedFiles,
+  type ManagedFileDefinition,
   resolveManagedTargetDirectory,
   syncManagedFiles,
-  type ManagedFileDefinition,
 } from './managedFiles.js';
 
 const temporaryDirectories: string[] = [];
@@ -28,21 +28,21 @@ describe('managed file synchronization', () => {
       { relativePath: '.managed/example.txt', state: 'missing' },
     ]);
 
-    expect(
-      await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false }),
-    ).toEqual([{ relativePath: '.managed/example.txt', action: 'created' }]);
+    expect(await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false })).toEqual([
+      { relativePath: '.managed/example.txt', action: 'created' },
+    ]);
     expect(await readFile(join(fixture.target, '.managed/example.txt'), 'utf8')).toBe(
       'canonical\n',
     );
     expect(await readFile(join(fixture.target, 'unrelated.txt'), 'utf8')).toBe('keep me\n');
 
     await writeFile(join(fixture.target, '.managed/example.txt'), 'outdated\n');
-    expect(
-      await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false }),
-    ).toEqual([{ relativePath: '.managed/example.txt', action: 'updated' }]);
-    expect(
-      await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false }),
-    ).toEqual([{ relativePath: '.managed/example.txt', action: 'unchanged' }]);
+    expect(await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false })).toEqual([
+      { relativePath: '.managed/example.txt', action: 'updated' },
+    ]);
+    expect(await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false })).toEqual([
+      { relativePath: '.managed/example.txt', action: 'unchanged' },
+    ]);
   });
 
   it('reports dry-run actions without writing files', async () => {
@@ -59,9 +59,9 @@ describe('managed file synchronization', () => {
   it('defaults targets to cwd and rejects invalid targets', async () => {
     const fixture = await createFixture();
     expect(await resolveManagedTargetDirectory(fixture.target, undefined)).toBe(fixture.target);
-    await expect(
-      resolveManagedTargetDirectory(fixture.target, 'does-not-exist'),
-    ).rejects.toThrow('Target directory does not exist');
+    await expect(resolveManagedTargetDirectory(fixture.target, 'does-not-exist')).rejects.toThrow(
+      'Target directory does not exist',
+    );
   });
 });
 

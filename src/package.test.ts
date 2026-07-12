@@ -50,7 +50,7 @@ describe('package metadata', () => {
       },
     });
 
-    const build = (packageJson.scripts as Record<string, string>).build;
+    const { build } = packageJson.scripts as Record<string, string>;
     expect(build).toContain('src/tools/workflows/files');
     expect(build).toContain('src/tools/vscode/files');
     expect(build).toContain('src/tools/prettier/index.cjs');

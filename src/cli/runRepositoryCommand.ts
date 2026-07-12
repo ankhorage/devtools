@@ -1,10 +1,10 @@
 import {
   inspectManagedFiles,
-  resolveManagedTargetDirectory,
-  syncManagedFiles,
   type ManagedFileDefinition,
   type ManagedFileStatus,
   type ManagedFileSyncResult,
+  resolveManagedTargetDirectory,
+  syncManagedFiles,
 } from '../tools/shared/managedFiles.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
 import { workflowManagedFiles } from '../tools/workflows/index.js';

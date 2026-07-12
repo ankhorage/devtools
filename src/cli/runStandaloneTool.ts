@@ -1,5 +1,5 @@
-import { getDevtoolsToolCommand, type DevtoolsToolName } from './commands.js';
-import { runExternalTool, type DevtoolsRunResult } from './runExternalTool.js';
+import { type DevtoolsToolName, getDevtoolsToolCommand } from './commands.js';
+import { type DevtoolsRunResult, runExternalTool } from './runExternalTool.js';
 
 export async function runStandaloneTool(
   toolName: DevtoolsToolName,
