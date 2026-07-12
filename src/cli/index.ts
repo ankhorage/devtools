@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs';
 
 import type { AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
-import { getDevtoolsCommands } from '../internal/devtoolsCommands.js';
-import { runDevtoolsCommand } from '../internal/runDevtoolsCommand.js';
+import { getDevtoolsCommands } from './commands.js';
+import { runProviderCommand } from './runProviderCommand.js';
 
 const packageVersion = readPackageVersion();
 const commands = getDevtoolsCommands();
@@ -21,8 +21,7 @@ const provider = {
   handlers: commands.map((command) => ({
     path: [...command.path],
     handler: async (request) => {
-      const result = await runDevtoolsCommand(command, request.argv);
-      return { exitCode: result.exitCode };
+      return await runProviderCommand(command, request.argv, request.context);
     },
   })),
 } satisfies AnkhRuntimeCommandProvider;
