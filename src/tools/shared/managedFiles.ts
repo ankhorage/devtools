@@ -7,12 +7,7 @@ export interface ManagedFileDefinition {
 }
 
 type ManagedFileState = 'current' | 'missing' | 'outdated';
-type ManagedFileSyncAction =
-  | 'unchanged'
-  | 'created'
-  | 'updated'
-  | 'would-create'
-  | 'would-update';
+type ManagedFileSyncAction = 'unchanged' | 'created' | 'updated' | 'would-create' | 'would-update';
 
 export interface ManagedFileStatus {
   readonly relativePath: string;
