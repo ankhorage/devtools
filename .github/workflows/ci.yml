@@ -48,7 +48,7 @@ jobs:
 
       - name: Capture lint diagnostics
         if: failure()
-        run: bun run lint -- --format json > lint-results.json || true
+        run: bunx eslint . --format json > lint-results.json 2>&1 || true
 
       - name: Upload lint diagnostics
         if: failure()
