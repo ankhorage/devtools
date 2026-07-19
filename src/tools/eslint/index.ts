@@ -138,6 +138,7 @@ function createBaseConfig(options: NormalizedConfigOptions): FlatConfigItem {
 
 function createTypeScriptRules(): NonNullable<FlatConfigItem['rules']> {
   return {
+    'no-unused-vars': 'off',
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
