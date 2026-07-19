@@ -54,7 +54,9 @@ describe('package metadata', () => {
         import: './dist/tools/knip/index.js',
       },
       './prettier': {
+        import: './dist/tools/prettier/index.cjs',
         require: './dist/tools/prettier/index.cjs',
+        default: './dist/tools/prettier/index.cjs',
       },
     });
 
