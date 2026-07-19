@@ -1,8 +1,8 @@
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
-export type ManagedFileMode = 'create-only' | 'replace';
-export type ManagedFileRenderer = (targetDirectory: string) => Promise<string> | string;
+type ManagedFileMode = 'create-only' | 'replace';
+type ManagedFileRenderer = (targetDirectory: string) => Promise<string> | string;
 
 export interface ManagedFileDefinition {
   readonly relativePath: string;
