@@ -1,0 +1,40 @@
+name: Update branch lockfile
+
+on:
+  push:
+    branches:
+      - agent/automate-devtools-setup
+
+permissions:
+  contents: write
+
+jobs:
+  update-lock:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/automate-devtools-setup
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - name: Update lockfile
+        run: bun install
+
+      - name: Commit lockfile
+        run: |
+          if git diff --quiet -- bun.lock; then
+            echo "bun.lock is current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bun.lock
+          git commit -m "Update Bun lockfile"
+          git push
