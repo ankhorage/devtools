@@ -3,9 +3,6 @@ $ eslint .
 /home/runner/work/devtools/devtools/src/cli/commands.ts
   169:60  warning  Generic Object Injection Sink  security/detect-object-injection
 
-/home/runner/work/devtools/devtools/src/cli/runExternalTool.test.ts
-  16:29  error  Arrow function has too many lines (51). Maximum allowed is 50  max-lines-per-function
-
 /home/runner/work/devtools/devtools/src/cli/runExternalTool.ts
   176:22  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
 
@@ -16,19 +13,8 @@ $ eslint .
 /home/runner/work/devtools/devtools/src/cli/runRepositoryCommand.ts
   133:10  warning  Generic Object Injection Sink  security/detect-object-injection
 
-/home/runner/work/devtools/devtools/src/package.test.ts
-  17:30  error  Arrow function has too many lines (60). Maximum allowed is 50  max-lines-per-function
-
-/home/runner/work/devtools/devtools/src/tools/eslint/index.ts
-   16:3   error  'DevtoolsEslintProfile' is defined but never used                                                                                                                                                        unused-imports/no-unused-imports
-   83:20  error  Replace `...tseslint.configs.recommendedTypeChecked,·...tseslint.configs.stylisticTypeChecked` with `⏎····...tseslint.configs.recommendedTypeChecked,⏎····...tseslint.configs.stylisticTypeChecked,⏎··`  prettier/prettier
-  133:28  error  Replace `⏎··options:·NormalizedConfigOptions,⏎` with `options:·NormalizedConfigOptions`                                                                                                                  prettier/prettier
-  157:32  error  Replace `⏎······'error',⏎······{·max:·50,·skipBlankLines:·true,·skipComments:·true·},⏎····` with `'error',·{·max:·50,·skipBlankLines:·true,·skipComments:·true·}`                                        prettier/prettier
-
 /home/runner/work/devtools/devtools/src/tools/eslint/profile.ts
-  16:38  error    Replace `options:·DevtoolsConfigOptions` with `⏎··options:·DevtoolsConfigOptions,⏎`  prettier/prettier
-  49:10  error    Unnecessary conditional, value is always truthy                                      @typescript-eslint/no-unnecessary-condition
-  94:7   warning  Generic Object Injection Sink                                                        security/detect-object-injection
+  96:7  warning  Generic Object Injection Sink  security/detect-object-injection
 
 /home/runner/work/devtools/devtools/src/tools/knip/index.ts
   49:5   warning  Generic Object Injection Sink  security/detect-object-injection
@@ -48,11 +34,6 @@ $ eslint .
   159:12  warning  Generic Object Injection Sink  security/detect-object-injection
   174:70  warning  Generic Object Injection Sink  security/detect-object-injection
 
-/home/runner/work/devtools/devtools/src/tools/shared/managedFiles.ts
-  151:21  error  Replace ``Managed·file·must·define·exactly·one·content·source:·${definition.relativePath}`` with `⏎······`Managed·file·must·define·exactly·one·content·source:·${definition.relativePath}`,⏎····`  prettier/prettier
+✖ 18 problems (0 errors, 18 warnings)
 
-✖ 27 problems (9 errors, 18 warnings)
-  6 errors and 0 warnings potentially fixable with the `--fix` option.
-
-error: script "lint" exited with code 1
-exit_code=1
+exit_code=0
