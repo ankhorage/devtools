@@ -25,6 +25,51 @@ test('merges standard scripts and the shared devtools dependency', () => {
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
 });
 
+test('preserves devtools as a runtime dependency for ankh', () => {
+  const updated = applyManagedPackageContract(
+    {
+      name: '@ankhorage/ankh',
+      dependencies: {
+        '@ankhorage/devtools': '^1.2.1',
+        yaml: '^2.8.1',
+      },
+      devDependencies: {
+        '@ankhorage/devtools': '^1.2.1',
+        eslint: '^10.0.0',
+        typescript: '^5.9.3',
+      },
+    },
+    '2.3.4',
+  );
+
+  expect(updated).toMatchObject({
+    dependencies: {
+      '@ankhorage/devtools': '^2.3.4',
+      yaml: '^2.8.1',
+    },
+    devDependencies: {
+      typescript: '^5.9.3',
+    },
+  });
+  expect(readNestedValue(updated, 'devDependencies', '@ankhorage/devtools')).toBeUndefined();
+  expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
+  expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
+});
+
+test('detects incorrect devtools dependency placement for ankh', () => {
+  const manifest = applyManagedPackageContract({ name: '@ankhorage/ankh' }, '2.3.4');
+  const misplaced = {
+    ...manifest,
+    dependencies: {},
+    devDependencies: {
+      ...readNestedRecord(manifest, 'devDependencies'),
+      '@ankhorage/devtools': '^2.3.4',
+    },
+  };
+
+  expect(isManagedPackageContractCurrent(misplaced, '2.3.4')).toBe(false);
+});
+
 test('detects managed package drift without caring about unrelated fields', () => {
   const manifest = applyManagedPackageContract({ name: 'fixture', private: true }, '2.3.4');
   expect(isManagedPackageContractCurrent(manifest, '2.3.4')).toBe(true);
@@ -48,6 +93,14 @@ function readNestedValue(
 ): unknown {
   const nested = object[property];
   return isRecord(nested) ? nested[nestedProperty] : undefined;
+}
+
+function readNestedRecord(
+  object: Record<string, unknown>,
+  property: string,
+): Record<string, unknown> {
+  const nested = object[property];
+  return isRecord(nested) ? nested : {};
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
