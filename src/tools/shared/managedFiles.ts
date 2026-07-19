@@ -148,7 +148,9 @@ function assertSingleContentSource(definition: ManagedFileDefinition): void {
     (value) => value !== undefined,
   ).length;
   if (sourceCount !== 1) {
-    throw new Error(`Managed file must define exactly one content source: ${definition.relativePath}`);
+    throw new Error(
+      `Managed file must define exactly one content source: ${definition.relativePath}`,
+    );
   }
 }
 
