@@ -1,18 +1,63 @@
 $ eslint .
 
-Oops! Something went wrong! :(
+/home/runner/work/devtools/devtools/src/cli/commands.test.ts
+  34:76  error  Replace `⏎······'devtools.eslint.sync',⏎····` with `'devtools.eslint.sync'`  prettier/prettier
 
-ESLint: 10.2.0
+/home/runner/work/devtools/devtools/src/cli/commands.ts
+  169:60  warning  Generic Object Injection Sink  security/detect-object-injection
 
-Error: ENOENT: no such file or directory, open '/home/runner/work/devtools/devtools/examples/monorepo/package.json'
-    at readFileSync (node:fs:440:20)
-    at readDetectionInput (file:///home/runner/work/devtools/devtools/dist/tools/eslint/profile.js:23:31)
-    at resolveEslintProfile (file:///home/runner/work/devtools/devtools/dist/tools/eslint/profile.js:10:59)
-    at createConfig (file:///home/runner/work/devtools/devtools/dist/tools/eslint/index.js:33:21)
-    at file:///home/runner/work/devtools/devtools/examples/monorepo/eslint.config.mjs?mtime=1784425806778:7:16
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
-    at async dynamicImportConfig (/home/runner/work/devtools/devtools/node_modules/eslint/lib/config/config-loader.js:185:17)
-    at async loadConfigFile (/home/runner/work/devtools/devtools/node_modules/eslint/lib/config/config-loader.js:275:9)
-    at async ConfigLoader.calculateConfigArray (/home/runner/work/devtools/devtools/node_modules/eslint/lib/config/config-loader.js:588:23)
-exit_code=2
+/home/runner/work/devtools/devtools/src/cli/runExternalTool.test.ts
+  16:29  error  Arrow function has too many lines (51). Maximum allowed is 50  max-lines-per-function
+
+/home/runner/work/devtools/devtools/src/cli/runExternalTool.ts
+  176:22  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/cli/runRepositoryCommand.test.ts
+  141:18  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+  142:29  warning  Generic Object Injection Sink               security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/cli/runRepositoryCommand.ts
+  133:10  warning  Generic Object Injection Sink  security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/package.test.ts
+  17:30  error  Arrow function has too many lines (60). Maximum allowed is 50  max-lines-per-function
+
+/home/runner/work/devtools/devtools/src/tools/eslint/index.ts
+   16:3   error  'DevtoolsEslintProfile' is defined but never used                                                                                                                                                        unused-imports/no-unused-imports
+   83:20  error  Replace `...tseslint.configs.recommendedTypeChecked,·...tseslint.configs.stylisticTypeChecked` with `⏎····...tseslint.configs.recommendedTypeChecked,⏎····...tseslint.configs.stylisticTypeChecked,⏎··`  prettier/prettier
+  102:7   error  Unsafe assignment of an error typed value                                                                                                                                                                @typescript-eslint/no-unsafe-assignment
+  133:28  error  Replace `⏎··options:·NormalizedConfigOptions,⏎` with `options:·NormalizedConfigOptions`                                                                                                                  prettier/prettier
+  157:32  error  Replace `⏎······'error',⏎······{·max:·50,·skipBlankLines:·true,·skipComments:·true·},⏎····` with `'error',·{·max:·50,·skipBlankLines:·true,·skipComments:·true·}`                                        prettier/prettier
+  207:16  error  Unsafe assignment of an error typed value                                                                                                                                                                @typescript-eslint/no-unsafe-assignment
+
+/home/runner/work/devtools/devtools/src/tools/eslint/profile.ts
+  16:38  error    Replace `options:·DevtoolsConfigOptions` with `⏎··options:·DevtoolsConfigOptions,⏎`  prettier/prettier
+  49:10  error    Unnecessary conditional, value is always truthy                                      @typescript-eslint/no-unnecessary-condition
+  94:7   warning  Generic Object Injection Sink                                                        security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/tools/knip/index.ts
+  49:5   warning  Generic Object Injection Sink  security/detect-object-injection
+  51:11  warning  Generic Object Injection Sink  security/detect-object-injection
+  56:5   warning  Generic Object Injection Sink  security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/tools/package/index.test.ts
+  49:18  warning  Variable Assigned to Object Injection Sink  security/detect-object-injection
+  50:29  warning  Generic Object Injection Sink               security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/tools/package/index.ts
+   96:3   warning  Generic Object Injection Sink  security/detect-object-injection
+   99:10  warning  Generic Object Injection Sink  security/detect-object-injection
+  123:53  warning  Generic Object Injection Sink  security/detect-object-injection
+  124:5   warning  Generic Object Injection Sink  security/detect-object-injection
+  125:5   warning  Generic Object Injection Sink  security/detect-object-injection
+  159:12  warning  Generic Object Injection Sink  security/detect-object-injection
+  174:70  warning  Generic Object Injection Sink  security/detect-object-injection
+
+/home/runner/work/devtools/devtools/src/tools/shared/managedFiles.ts
+  151:21  error  Replace ``Managed·file·must·define·exactly·one·content·source:·${definition.relativePath}`` with `⏎······`Managed·file·must·define·exactly·one·content·source:·${definition.relativePath}`,⏎····`  prettier/prettier
+
+✖ 30 problems (12 errors, 18 warnings)
+  7 errors and 0 warnings potentially fixable with the `--fix` option.
+
+error: script "lint" exited with code 1
+exit_code=1
