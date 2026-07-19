@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.3
+
+### Patch Changes
+
+- 599c140: Disable ESLint's core `no-unused-vars` rule for the shared TypeScript configuration and keep `unused-imports/no-unused-vars` as the TypeScript-aware unused-variable policy, including underscore-prefixed intentional omissions.
+
 ## 1.3.2
 
 ### Patch Changes
