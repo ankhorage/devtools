@@ -1,6 +1,2 @@
 $ knip
-Unused exported types (2)
-ManagedFileMode      type  src/tools/shared/managedFiles.ts:4:13
-ManagedFileRenderer  type  src/tools/shared/managedFiles.ts:5:13
-error: script "knip" exited with code 1
-exit_code=1
+exit_code=0
