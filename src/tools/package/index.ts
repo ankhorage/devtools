@@ -2,8 +2,10 @@
  * Synchronize the consumer `package.json` contract owned by `@ankhorage/devtools`.
  *
  * Package synchronization is merge-aware. It installs the current `@ankhorage/devtools` version
- * as a development dependency, removes individually installed toolchain packages that devtools now
- * owns, and writes the canonical `lint`, `lint:fix`, `format`, `format:check`, and `knip` scripts.
+ * as a development dependency for normal consumers, while `@ankhorage/ankh` keeps devtools as a
+ * runtime dependency because the CLI loads it as a bundled core provider. Individually installed
+ * toolchain packages that devtools now owns are removed, and the canonical `lint`, `lint:fix`,
+ * `format`, `format:check`, and `knip` scripts are written.
  * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
  *
  * Status compares only the fields owned by this contract, so unrelated repository customization
@@ -23,6 +25,7 @@ import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managed
 
 const PACKAGE_PATH = 'package.json';
 const DEVTOOLS_PACKAGE_NAME = '@ankhorage/devtools';
+const ANKH_PACKAGE_NAME = '@ankhorage/ankh';
 
 const STANDARD_SCRIPTS = {
   lint: 'ankhorage-eslint . --max-warnings=0',
@@ -110,10 +113,9 @@ export function applyManagedPackageContract(
 
   const scripts = { ...toRecord(manifest.scripts), ...STANDARD_SCRIPTS };
   const devDependencies = removeOwnedDependencies(toRecord(manifest.devDependencies));
-  devDependencies[DEVTOOLS_PACKAGE_NAME] = `^${devtoolsVersion}`;
-
   const dependencies = toRecord(manifest.dependencies);
-  delete dependencies[DEVTOOLS_PACKAGE_NAME];
+
+  applyDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion);
 
   return {
     ...manifest,
@@ -138,8 +140,7 @@ export function isManagedPackageContractCurrent(
   return (
     hasStandardScripts(scripts) &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
-    devDependencies[DEVTOOLS_PACKAGE_NAME] === `^${devtoolsVersion}` &&
-    dependencies[DEVTOOLS_PACKAGE_NAME] === undefined
+    hasCurrentDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion)
   );
 }
 
@@ -167,6 +168,43 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
     }
     throw error;
   }
+}
+
+function applyDevtoolsDependencyPlacement(
+  manifest: Record<string, unknown>,
+  dependencies: Record<string, unknown>,
+  devDependencies: Record<string, unknown>,
+  devtoolsVersion: string,
+): void {
+  const versionRange = `^${devtoolsVersion}`;
+  if (manifest.name === ANKH_PACKAGE_NAME) {
+    dependencies[DEVTOOLS_PACKAGE_NAME] = versionRange;
+    delete devDependencies[DEVTOOLS_PACKAGE_NAME];
+    return;
+  }
+
+  devDependencies[DEVTOOLS_PACKAGE_NAME] = versionRange;
+  delete dependencies[DEVTOOLS_PACKAGE_NAME];
+}
+
+function hasCurrentDevtoolsDependencyPlacement(
+  manifest: Record<string, unknown>,
+  dependencies: Record<string, unknown>,
+  devDependencies: Record<string, unknown>,
+  devtoolsVersion: string,
+): boolean {
+  const versionRange = `^${devtoolsVersion}`;
+  if (manifest.name === ANKH_PACKAGE_NAME) {
+    return (
+      dependencies[DEVTOOLS_PACKAGE_NAME] === versionRange &&
+      devDependencies[DEVTOOLS_PACKAGE_NAME] === undefined
+    );
+  }
+
+  return (
+    devDependencies[DEVTOOLS_PACKAGE_NAME] === versionRange &&
+    dependencies[DEVTOOLS_PACKAGE_NAME] === undefined
+  );
 }
 
 function removeOwnedDependencies(
