@@ -13,7 +13,6 @@ import tseslint from 'typescript-eslint';
 import { resolveEslintProfile } from './profile.js';
 import type {
   DevtoolsConfigOptions,
-  DevtoolsEslintProfile,
   FlatConfigItem,
   ResolvedDevtoolsEslintProfile,
   RestrictedImport,
@@ -80,7 +79,10 @@ function normalizeOptions(options: DevtoolsConfigOptions): NormalizedConfigOptio
 }
 
 function createTypeCheckedConfigs(options: NormalizedConfigOptions): FlatConfigItem[] {
-  const configs = [...tseslint.configs.recommendedTypeChecked, ...tseslint.configs.stylisticTypeChecked];
+  const configs = [
+    ...tseslint.configs.recommendedTypeChecked,
+    ...tseslint.configs.stylisticTypeChecked,
+  ];
   return configs.map((config) => ({ ...config, files: options.files }));
 }
 
@@ -130,9 +132,7 @@ function createTypeScriptRules(): NonNullable<FlatConfigItem['rules']> {
   };
 }
 
-function createImportRules(
-  options: NormalizedConfigOptions,
-): NonNullable<FlatConfigItem['rules']> {
+function createImportRules(options: NormalizedConfigOptions): NonNullable<FlatConfigItem['rules']> {
   return {
     'no-restricted-imports': [
       'error',
@@ -154,10 +154,7 @@ function createImportRules(
 
 function createQualityRules(): NonNullable<FlatConfigItem['rules']> {
   return {
-    'max-lines-per-function': [
-      'error',
-      { max: 50, skipBlankLines: true, skipComments: true },
-    ],
+    'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
     'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }],
     complexity: ['error', { max: 15, variant: 'modified' }],
   };
