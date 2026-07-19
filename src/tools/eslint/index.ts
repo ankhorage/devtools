@@ -112,7 +112,7 @@ function createBaseConfig(options: NormalizedConfigOptions): FlatConfigItem {
   };
 }
 
-function createTypeScriptRules() {
+function createTypeScriptRules(): NonNullable<FlatConfigItem['rules']> {
   return {
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/prefer-readonly': 'error',
@@ -127,10 +127,12 @@ function createTypeScriptRules() {
     '@typescript-eslint/prefer-destructuring': 'error',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
-  } as const;
+  };
 }
 
-function createImportRules(options: NormalizedConfigOptions) {
+function createImportRules(
+  options: NormalizedConfigOptions,
+): NonNullable<FlatConfigItem['rules']> {
   return {
     'no-restricted-imports': [
       'error',
@@ -147,10 +149,10 @@ function createImportRules(options: NormalizedConfigOptions) {
     'import/order': 'off',
     'prettier/prettier': 'error',
     'no-console': 'off',
-  } as const;
+  };
 }
 
-function createQualityRules() {
+function createQualityRules(): NonNullable<FlatConfigItem['rules']> {
   return {
     'max-lines-per-function': [
       'error',
@@ -158,14 +160,14 @@ function createQualityRules() {
     ],
     'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }],
     complexity: ['error', { max: 15, variant: 'modified' }],
-  } as const;
+  };
 }
 
-function createSecurityRules() {
+function createSecurityRules(): NonNullable<FlatConfigItem['rules']> {
   return {
     'security/detect-object-injection': 'warn',
     'security/detect-non-literal-require': 'error',
-  } as const;
+  };
 }
 
 function createProfileConfigs(
