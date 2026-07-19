@@ -1,13 +1,21 @@
 declare module 'eslint-plugin-security' {
-  import type { Linter } from 'eslint';
+  import type { Rule } from 'eslint';
 
-  const plugin: Linter.Plugin;
+  interface SecurityPlugin {
+    readonly rules: Record<string, Rule.RuleModule>;
+  }
+
+  const plugin: SecurityPlugin;
   export default plugin;
 }
 
 declare module 'eslint-plugin-react-native' {
-  import type { Linter } from 'eslint';
+  import type { Rule } from 'eslint';
 
-  const plugin: Linter.Plugin;
+  interface ReactNativePlugin {
+    readonly rules: Record<string, Rule.RuleModule>;
+  }
+
+  const plugin: ReactNativePlugin;
   export default plugin;
 }
