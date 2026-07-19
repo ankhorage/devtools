@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { afterEach, describe, expect, it } from 'bun:test';
+import { afterEach, describe, expect, it, test } from 'bun:test';
 
 import {
   inspectManagedFiles,
@@ -27,7 +27,6 @@ describe('managed file synchronization', () => {
     expect(await inspectManagedFiles(fixture.target, fixture.definitions)).toEqual([
       { relativePath: '.managed/example.txt', state: 'missing' },
     ]);
-
     expect(await syncManagedFiles(fixture.target, fixture.definitions, { dryRun: false })).toEqual([
       { relativePath: '.managed/example.txt', action: 'created' },
     ]);
@@ -67,9 +66,44 @@ describe('managed file synchronization', () => {
       thrownError = error;
     }
 
-    expect(thrownError).toBeInstanceOf(Error);
-    expect((thrownError as Error).message).toContain('Target directory does not exist');
+    if (!(thrownError instanceof Error)) {
+      throw new Error('Expected resolveManagedTargetDirectory to throw an Error.');
+    }
+    expect(thrownError.message).toContain('Target directory does not exist');
   });
+});
+
+test('create-only managed files preserve repository-owned edits', async () => {
+  const fixture = await createFixture();
+  const definitions = fixture.definitions.map((definition) => ({
+    ...definition,
+    mode: 'create-only' as const,
+  }));
+
+  await syncManagedFiles(fixture.target, definitions, { dryRun: false });
+  await writeFile(join(fixture.target, '.managed/example.txt'), 'custom\n');
+  expect(await inspectManagedFiles(fixture.target, definitions)).toEqual([
+    { relativePath: '.managed/example.txt', state: 'current' },
+  ]);
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: false })).toEqual([
+    { relativePath: '.managed/example.txt', action: 'unchanged' },
+  ]);
+  expect(await readFile(join(fixture.target, '.managed/example.txt'), 'utf8')).toBe('custom\n');
+});
+
+test('rendered managed files can derive canonical content from the target repository', async () => {
+  const fixture = await createFixture();
+  const definitions: readonly ManagedFileDefinition[] = [
+    {
+      relativePath: '.managed/rendered.txt',
+      render: (targetDirectory) => `target=${targetDirectory}\n`,
+    },
+  ];
+
+  await syncManagedFiles(fixture.target, definitions, { dryRun: false });
+  expect(await readFile(join(fixture.target, '.managed/rendered.txt'), 'utf8')).toBe(
+    `target=${fixture.target}\n`,
+  );
 });
 
 async function createFixture(): Promise<{
