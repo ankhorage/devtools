@@ -13,7 +13,9 @@ import type {
   ResolvedDevtoolsEslintProfile,
 } from './types.js';
 
-export function resolveEslintProfile(options: DevtoolsConfigOptions): ResolvedDevtoolsEslintProfile {
+export function resolveEslintProfile(
+  options: DevtoolsConfigOptions,
+): ResolvedDevtoolsEslintProfile {
   const requestedProfile = options.profile ?? 'auto';
   if (requestedProfile !== 'auto') {
     return requestedProfile;
@@ -46,7 +48,7 @@ function resolveProjectPackageJsonPath(options: DevtoolsConfigOptions): string |
   }
 
   let directory = resolve(options.tsconfigRootDir);
-  while (true) {
+  for (;;) {
     const candidate = resolve(directory, 'package.json');
     if (existsSync(candidate)) {
       return candidate;
