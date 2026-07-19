@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1
+
+### Patch Changes
+
+- 42c66a4: Preserve `@ankhorage/devtools` as a runtime dependency when synchronizing `@ankhorage/ankh` package metadata.
+
 ## 1.3.0
 
 ### Minor Changes
