@@ -78,7 +78,7 @@ export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof 
 
   return tseslint.config(
     { ignores: [...defaultIgnores, ...normalized.additionalIgnores] },
-    js.configs.recommended,
+    { ...js.configs.recommended, files: normalized.files },
     ...createTypeCheckedConfigs(normalized),
     createBaseConfig(normalized),
     ...createProfileConfigs(profile, normalized.files),
