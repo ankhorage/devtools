@@ -19,6 +19,7 @@
  *
  * @readme
  */
+import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
@@ -222,7 +223,7 @@ function createReactConfig(files: string[]): FlatConfigItem {
 function createReactNativeConfig(files: string[]): FlatConfigItem {
   return {
     files,
-    plugins: { 'react-native': reactNativePlugin },
+    plugins: { 'react-native': fixupPluginRules(reactNativePlugin) },
     rules: {
       'react-native/no-inline-styles': 'warn',
       'react-native/no-unused-styles': 'error',
