@@ -1,3 +1,20 @@
+/***
+ * Synchronize the consumer `package.json` contract owned by `@ankhorage/devtools`.
+ *
+ * Package synchronization is merge-aware. It installs the current `@ankhorage/devtools` version
+ * as a development dependency, removes individually installed toolchain packages that devtools now
+ * owns, and writes the canonical `lint`, `lint:fix`, `format`, `format:check`, and `knip` scripts.
+ * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
+ *
+ * Status compares only the fields owned by this contract, so unrelated repository customization
+ * does not count as drift. `--dry-run` reports whether `package.json` would be created or updated
+ * without writing it, and repeated synchronization is idempotent.
+ *
+ * The devtools package itself is excluded from the consumer contract to avoid rewriting its own
+ * manifest.
+ *
+ * @readme
+ */
 import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
