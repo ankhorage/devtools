@@ -15,6 +15,13 @@ describe('createConfig sanity check', () => {
     expect(config.length).toBeGreaterThan(0);
   });
 
+  it('scopes the recommended JavaScript rules to the configured files', () => {
+    const config = createConfig(baseOptions);
+    const recommendedConfig = config.at(1);
+
+    expect(recommendedConfig?.files).toEqual(baseOptions.files);
+  });
+
   it('allows the owning Studio DnD package and rejects only the upstream package', () => {
     expect(defaultRestrictedImports).toEqual([
       {
