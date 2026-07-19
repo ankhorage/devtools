@@ -1,0 +1,18 @@
+$ eslint .
+
+Oops! Something went wrong! :(
+
+ESLint: 10.2.0
+
+Error: ENOENT: no such file or directory, open '/home/runner/work/devtools/devtools/examples/monorepo/package.json'
+    at readFileSync (node:fs:440:20)
+    at readDetectionInput (file:///home/runner/work/devtools/devtools/dist/tools/eslint/profile.js:23:31)
+    at resolveEslintProfile (file:///home/runner/work/devtools/devtools/dist/tools/eslint/profile.js:10:59)
+    at createConfig (file:///home/runner/work/devtools/devtools/dist/tools/eslint/index.js:33:21)
+    at file:///home/runner/work/devtools/devtools/examples/monorepo/eslint.config.mjs?mtime=1784425806778:7:16
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async dynamicImportConfig (/home/runner/work/devtools/devtools/node_modules/eslint/lib/config/config-loader.js:185:17)
+    at async loadConfigFile (/home/runner/work/devtools/devtools/node_modules/eslint/lib/config/config-loader.js:275:9)
+    at async ConfigLoader.calculateConfigArray (/home/runner/work/devtools/devtools/node_modules/eslint/lib/config/config-loader.js:588:23)
+exit_code=2
