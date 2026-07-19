@@ -8,6 +8,14 @@ const capabilities = [
   'devtools.knip',
   'devtools.sync',
   'devtools.status',
+  'devtools.eslint.sync',
+  'devtools.eslint.status',
+  'devtools.prettier.sync',
+  'devtools.prettier.status',
+  'devtools.knip.sync',
+  'devtools.knip.status',
+  'devtools.package.sync',
+  'devtools.package.status',
   'devtools.workflows.sync',
   'devtools.workflows.status',
   'devtools.vscode.sync',
@@ -46,7 +54,9 @@ describe('package metadata', () => {
         import: './dist/tools/knip/index.js',
       },
       './prettier': {
+        import: './dist/tools/prettier/index.cjs',
         require: './dist/tools/prettier/index.cjs',
+        default: './dist/tools/prettier/index.cjs',
       },
     });
 

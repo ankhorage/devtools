@@ -10,11 +10,21 @@ describe('README documentation validation', () => {
       'ankh devtools knip',
       'ankh devtools sync',
       'ankh devtools status',
+      'ankh devtools eslint sync',
+      'ankh devtools prettier sync',
+      'ankh devtools knip sync',
+      'ankh devtools package sync',
       'ankh devtools workflows sync',
       'ankh devtools vscode sync',
+      'devtools.eslint.sync',
+      'devtools.prettier.sync',
+      'devtools.knip.sync',
+      'devtools.package.sync',
       'devtools.workflows.sync',
       'devtools.vscode.sync',
       '--dry-run',
+      "profile: 'auto'",
+      '@ankhorage/utility/project',
     ].join('\n');
 
     expect(getReadmeDocumentationErrors(readme)).toEqual([]);

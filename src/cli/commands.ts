@@ -1,5 +1,12 @@
 export type DevtoolsToolName = 'format' | 'knip' | 'lint';
-type DevtoolsManagedScope = 'all' | 'vscode' | 'workflows';
+type DevtoolsManagedScope =
+  | 'all'
+  | 'eslint'
+  | 'knip'
+  | 'package'
+  | 'prettier'
+  | 'vscode'
+  | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
 type DevtoolsCapability =
@@ -8,6 +15,14 @@ type DevtoolsCapability =
   | 'devtools.lint'
   | 'devtools.status'
   | 'devtools.sync'
+  | 'devtools.eslint.status'
+  | 'devtools.eslint.sync'
+  | 'devtools.knip.status'
+  | 'devtools.knip.sync'
+  | 'devtools.package.status'
+  | 'devtools.package.sync'
+  | 'devtools.prettier.status'
+  | 'devtools.prettier.sync'
   | 'devtools.vscode.status'
   | 'devtools.vscode.sync'
   | 'devtools.workflows.status'
@@ -37,81 +52,107 @@ export type DevtoolsCommandDefinition =
   | DevtoolsRepositoryCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
-  {
-    kind: 'external',
-    toolName: 'lint',
-    path: ['lint'],
-    capability: 'devtools.lint',
-    summary: 'Run the shared ESLint toolchain.',
-    packageName: 'eslint',
-    binName: 'eslint',
-  },
-  {
-    kind: 'external',
-    toolName: 'format',
-    path: ['format'],
-    capability: 'devtools.format',
-    summary: 'Run the shared Prettier toolchain.',
-    packageName: 'prettier',
-    binName: 'prettier',
-  },
-  {
-    kind: 'external',
-    toolName: 'knip',
-    path: ['knip'],
-    capability: 'devtools.knip',
-    summary: 'Run the shared Knip toolchain.',
-    packageName: 'knip',
-    binName: 'knip',
-  },
-  {
-    kind: 'repository',
-    path: ['sync'],
-    capability: 'devtools.sync',
-    summary: 'Synchronize all centrally managed repository files.',
-    scope: 'all',
-    operation: 'sync',
-  },
-  {
-    kind: 'repository',
-    path: ['status'],
-    capability: 'devtools.status',
-    summary: 'Report drift for all centrally managed repository files.',
-    scope: 'all',
-    operation: 'status',
-  },
-  {
-    kind: 'repository',
-    path: ['workflows', 'sync'],
-    capability: 'devtools.workflows.sync',
-    summary: 'Synchronize the canonical GitHub Actions workflows.',
-    scope: 'workflows',
-    operation: 'sync',
-  },
-  {
-    kind: 'repository',
-    path: ['workflows', 'status'],
-    capability: 'devtools.workflows.status',
-    summary: 'Report drift for the canonical GitHub Actions workflows.',
-    scope: 'workflows',
-    operation: 'status',
-  },
-  {
-    kind: 'repository',
-    path: ['vscode', 'sync'],
-    capability: 'devtools.vscode.sync',
-    summary: 'Synchronize the canonical VS Code workspace configuration.',
-    scope: 'vscode',
-    operation: 'sync',
-  },
-  {
-    kind: 'repository',
-    path: ['vscode', 'status'],
-    capability: 'devtools.vscode.status',
-    summary: 'Report drift for the canonical VS Code workspace configuration.',
-    scope: 'vscode',
-    operation: 'status',
-  },
+  externalCommand('lint', 'devtools.lint', 'Run the shared ESLint toolchain.', 'eslint'),
+  externalCommand('format', 'devtools.format', 'Run the shared Prettier toolchain.', 'prettier'),
+  externalCommand('knip', 'devtools.knip', 'Run the shared Knip toolchain.', 'knip'),
+  repositoryCommand(
+    ['sync'],
+    'devtools.sync',
+    'Synchronize all managed repository setup.',
+    'all',
+    'sync',
+  ),
+  repositoryCommand(
+    ['status'],
+    'devtools.status',
+    'Report drift for all managed repository setup.',
+    'all',
+    'status',
+  ),
+  repositoryCommand(
+    ['eslint', 'sync'],
+    'devtools.eslint.sync',
+    'Synchronize the shared ESLint setup.',
+    'eslint',
+    'sync',
+  ),
+  repositoryCommand(
+    ['eslint', 'status'],
+    'devtools.eslint.status',
+    'Report drift for the shared ESLint setup.',
+    'eslint',
+    'status',
+  ),
+  repositoryCommand(
+    ['prettier', 'sync'],
+    'devtools.prettier.sync',
+    'Synchronize the shared Prettier setup.',
+    'prettier',
+    'sync',
+  ),
+  repositoryCommand(
+    ['prettier', 'status'],
+    'devtools.prettier.status',
+    'Report drift for the shared Prettier setup.',
+    'prettier',
+    'status',
+  ),
+  repositoryCommand(
+    ['knip', 'sync'],
+    'devtools.knip.sync',
+    'Synchronize the shared Knip setup.',
+    'knip',
+    'sync',
+  ),
+  repositoryCommand(
+    ['knip', 'status'],
+    'devtools.knip.status',
+    'Report drift for the shared Knip setup.',
+    'knip',
+    'status',
+  ),
+  repositoryCommand(
+    ['package', 'sync'],
+    'devtools.package.sync',
+    'Synchronize the shared package.json contract.',
+    'package',
+    'sync',
+  ),
+  repositoryCommand(
+    ['package', 'status'],
+    'devtools.package.status',
+    'Report drift for the shared package.json contract.',
+    'package',
+    'status',
+  ),
+  repositoryCommand(
+    ['workflows', 'sync'],
+    'devtools.workflows.sync',
+    'Synchronize the canonical GitHub Actions workflows.',
+    'workflows',
+    'sync',
+  ),
+  repositoryCommand(
+    ['workflows', 'status'],
+    'devtools.workflows.status',
+    'Report drift for the canonical GitHub Actions workflows.',
+    'workflows',
+    'status',
+  ),
+  repositoryCommand(
+    ['vscode', 'sync'],
+    'devtools.vscode.sync',
+    'Synchronize the canonical VS Code workspace configuration.',
+    'vscode',
+    'sync',
+  ),
+  repositoryCommand(
+    ['vscode', 'status'],
+    'devtools.vscode.status',
+    'Report drift for the canonical VS Code workspace configuration.',
+    'vscode',
+    'status',
+  ),
 ] as const satisfies readonly DevtoolsCommandDefinition[];
 
 export function getDevtoolsCommands(): readonly DevtoolsCommandDefinition[] {
@@ -140,4 +181,31 @@ export function getDevtoolsToolCommand(
   }
 
   throw new Error(`Unknown devtools tool command: ${toolName}`);
+}
+
+function externalCommand(
+  toolName: DevtoolsToolName,
+  capability: Extract<DevtoolsCapability, 'devtools.format' | 'devtools.knip' | 'devtools.lint'>,
+  summary: string,
+  packageName: DevtoolsExternalCommandDefinition['packageName'],
+): DevtoolsExternalCommandDefinition {
+  return {
+    kind: 'external',
+    toolName,
+    path: [toolName],
+    capability,
+    summary,
+    packageName,
+    binName: packageName,
+  };
+}
+
+function repositoryCommand(
+  path: DevtoolsRepositoryCommandDefinition['path'],
+  capability: DevtoolsCapability,
+  summary: string,
+  scope: DevtoolsManagedScope,
+  operation: DevtoolsManagedOperation,
+): DevtoolsRepositoryCommandDefinition {
+  return { kind: 'repository', path, capability, summary, scope, operation };
 }

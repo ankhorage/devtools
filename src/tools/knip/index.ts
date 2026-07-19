@@ -1,3 +1,16 @@
+/***
+ * Build shared Knip configuration while preserving repository-specific discovery.
+ *
+ * `createKnipConfig` keeps Knip zero-config behavior by default and only emits settings that the
+ * consumer explicitly provides. Repositories can add narrow entries, project globs, ignored files,
+ * binaries, dependencies, and workspace overrides without duplicating the shared Knip version.
+ *
+ * `createKnipMonorepoConfig` adds a root workspace plus conventional `packages/*` and `apps/*`
+ * workspace globs. Callers can override those globs, provide workspace defaults, and replace or
+ * extend individual workspace configuration deterministically.
+ *
+ * @readme
+ */
 import type { KnipConfig } from 'knip';
 
 export interface DevtoolsKnipWorkspaceConfigOptions {

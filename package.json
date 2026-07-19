@@ -24,6 +24,14 @@
       "devtools.knip",
       "devtools.sync",
       "devtools.status",
+      "devtools.eslint.sync",
+      "devtools.eslint.status",
+      "devtools.prettier.sync",
+      "devtools.prettier.status",
+      "devtools.knip.sync",
+      "devtools.knip.status",
+      "devtools.package.sync",
+      "devtools.package.status",
       "devtools.workflows.sync",
       "devtools.workflows.status",
       "devtools.vscode.sync",
@@ -59,7 +67,9 @@
       "import": "./dist/tools/knip/index.js"
     },
     "./prettier": {
-      "require": "./dist/tools/prettier/index.cjs"
+      "import": "./dist/tools/prettier/index.cjs",
+      "require": "./dist/tools/prettier/index.cjs",
+      "default": "./dist/tools/prettier/index.cjs"
     }
   },
   "files": [
@@ -85,11 +95,16 @@
     "version-packages": "changeset version"
   },
   "dependencies": {
+    "@ankhorage/utility": "^0.1.1",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-native": "^5.0.0",
+    "eslint-plugin-security": "^4.0.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.4.1",
     "knip": "^6.12.2",
