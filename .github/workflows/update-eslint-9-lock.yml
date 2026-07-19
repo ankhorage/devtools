@@ -1,0 +1,34 @@
+name: Update ESLint 9 lockfile
+
+on:
+  push:
+    branches:
+      - fix/eslint-9-react-native-compat
+
+permissions:
+  contents: write
+
+jobs:
+  update-lockfile:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/eslint-9-react-native-compat
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.13'
+
+      - run: bun install
+
+      - name: Commit lockfile and remove helper workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/update-eslint-9-lock.yml
+          git add bun.lock
+          git commit -m "Update ESLint 9 lockfile"
+          git push
