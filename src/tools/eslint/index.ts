@@ -1,3 +1,24 @@
+/***
+ * Create the shared strict ESLint flat configuration used by consuming repositories.
+ *
+ * The default `profile: 'auto'` reads the nearest `package.json` from `tsconfigRootDir` and uses
+ * `@ankhorage/utility/project` to select overlapping project traits. React Native and Expo select
+ * the `react-native` profile, React and Next.js select `react`, and other projects use `base`.
+ * Consumers can explicitly select `base`, `react`, or `react-native` when automatic detection is
+ * not appropriate.
+ *
+ * Every profile includes the shared TypeScript, import, unused-import, Prettier, security, and
+ * quality rules. The common quality limits are 50 effective lines per function, 300 effective
+ * lines per file, and modified cyclomatic complexity 15. React adds React and Hooks correctness
+ * rules; React Native composes the React profile and adds focused React Native rules.
+ *
+ * Repository-specific behavior stays additive: `additionalIgnores`, `restrictedImports`, and
+ * `overrides` extend the central policy instead of replacing it. Narrow local overrides remain the
+ * supported migration mechanism for legacy violations while organization-wide defaults stay
+ * strict.
+ *
+ * @readme
+ */
 import js from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
