@@ -1,3 +1,11 @@
+import { eslintManagedFiles } from '../tools/eslint/managed.js';
+import { knipManagedFiles } from '../tools/knip/managed.js';
+import {
+  inspectPackageManifest,
+  readCurrentDevtoolsVersion,
+  syncPackageManifest,
+} from '../tools/package/index.js';
+import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import {
   inspectManagedFiles,
   type ManagedFileDefinition,
@@ -30,35 +38,14 @@ export async function runRepositoryCommand(
   argv: readonly string[],
   context: DevtoolsRepositoryCommandContext,
 ): Promise<DevtoolsRepositoryCommandResult> {
-  let parsedArguments: ParsedRepositoryArguments;
-
   try {
-    parsedArguments = parseRepositoryArguments(argv, command.operation === 'sync');
-  } catch (error) {
-    context.writeStderr(`${getErrorMessage(error)}\n`);
-    return { exitCode: 1 };
-  }
+    const parsed = parseRepositoryArguments(argv, command.operation === 'sync');
+    const targetDirectory = await resolveManagedTargetDirectory(context.cwd, parsed.targetPath);
+    const devtoolsVersion = readCurrentDevtoolsVersion();
 
-  try {
-    const targetDirectory = await resolveManagedTargetDirectory(
-      context.cwd,
-      parsedArguments.targetPath,
-    );
-    const definitions = getManagedFiles(command.scope);
-
-    if (command.operation === 'status') {
-      const statuses = await inspectManagedFiles(targetDirectory, definitions);
-      writeStatusOutput(statuses, context);
-      return {
-        exitCode: statuses.some((status) => status.state !== 'current') ? 1 : 0,
-      };
-    }
-
-    const results = await syncManagedFiles(targetDirectory, definitions, {
-      dryRun: parsedArguments.dryRun,
-    });
-    writeSyncOutput(results, context);
-    return { exitCode: 0 };
+    return command.operation === 'status'
+      ? await runStatus(command.scope, targetDirectory, devtoolsVersion, context)
+      : await runSync(command.scope, targetDirectory, devtoolsVersion, parsed.dryRun, context);
   } catch (error) {
     context.writeStderr(`${getErrorMessage(error)}\n`);
     return { exitCode: 1 };
@@ -84,29 +71,66 @@ export function parseRepositoryArguments(
     if (argument.startsWith('-')) {
       throw new Error(`Unknown option: ${argument}`);
     }
-
     if (targetPath !== undefined) {
       throw new Error('Only one target path may be provided.');
     }
-
     targetPath = argument;
   }
 
   return { dryRun, targetPath };
 }
 
+async function runStatus(
+  scope: DevtoolsRepositoryCommandDefinition['scope'],
+  targetDirectory: string,
+  devtoolsVersion: string,
+  context: DevtoolsRepositoryCommandContext,
+): Promise<DevtoolsRepositoryCommandResult> {
+  const statuses: ManagedFileStatus[] = [];
+  if (scope === 'all' || scope === 'package') {
+    statuses.push(await inspectPackageManifest(targetDirectory, devtoolsVersion));
+  }
+  statuses.push(...(await inspectManagedFiles(targetDirectory, getManagedFiles(scope))));
+
+  writeStatusOutput(statuses, context);
+  return { exitCode: statuses.some((status) => status.state !== 'current') ? 1 : 0 };
+}
+
+async function runSync(
+  scope: DevtoolsRepositoryCommandDefinition['scope'],
+  targetDirectory: string,
+  devtoolsVersion: string,
+  dryRun: boolean,
+  context: DevtoolsRepositoryCommandContext,
+): Promise<DevtoolsRepositoryCommandResult> {
+  const results: ManagedFileSyncResult[] = [];
+  if (scope === 'all' || scope === 'package') {
+    results.push(await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun }));
+  }
+  results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
+
+  writeSyncOutput(results, context);
+  return { exitCode: 0 };
+}
+
 function getManagedFiles(
   scope: DevtoolsRepositoryCommandDefinition['scope'],
 ): readonly ManagedFileDefinition[] {
-  if (scope === 'workflows') {
-    return workflowManagedFiles;
-  }
+  const definitionsByScope = {
+    eslint: eslintManagedFiles,
+    knip: knipManagedFiles,
+    prettier: prettierManagedFiles,
+    vscode: vscodeManagedFiles,
+    workflows: workflowManagedFiles,
+  } as const;
 
-  if (scope === 'vscode') {
-    return vscodeManagedFiles;
+  if (scope === 'all') {
+    return Object.values(definitionsByScope).flat();
   }
-
-  return [...workflowManagedFiles, ...vscodeManagedFiles];
+  if (scope === 'package') {
+    return [];
+  }
+  return definitionsByScope[scope];
 }
 
 function writeStatusOutput(
@@ -138,11 +162,9 @@ function getActionPrefix(action: ManagedFileSyncResult['action']): string {
   if (action === 'unchanged') {
     return '✓';
   }
-
   if (action === 'created' || action === 'would-create') {
     return '+';
   }
-
   return '↻';
 }
 
