@@ -1,6 +1,2 @@
 $ rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files
-src/tools/eslint/index.ts(106,5): error TS2322: Type '{ 'security/detect-object-injection': "warn"; 'security/detect-non-literal-require': "error"; 'max-lines-per-function': readonly ["error", { readonly max: 50; readonly skipBlankLines: true; readonly skipComments: true; }]; ... 23 more ...; '@typescript-eslint/no-explicit-any': "error"; }' is not assignable to type 'Partial<Record<string, RuleEntry>>'.
-  Property ''max-lines-per-function'' is incompatible with index signature.
-    Type 'readonly ["error", { readonly max: 50; readonly skipBlankLines: true; readonly skipComments: true; }]' is not assignable to type 'RuleEntry | undefined'.
-      The type 'readonly ["error", { readonly max: 50; readonly skipBlankLines: true; readonly skipComments: true; }]' is 'readonly' and cannot be assigned to the mutable type 'RuleLevelAndOptions'.
-exit_code=2
+exit_code=0
