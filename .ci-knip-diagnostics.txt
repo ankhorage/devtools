@@ -1,2 +1,0 @@
-$ knip
-exit_code=0
