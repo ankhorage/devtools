@@ -1,18 +1,17 @@
 $ prettier --write .
-[90m.changeset/automate-devtools-setup.md[39m 47ms (unchanged)
-[90m.changeset/config.json[39m 30ms (unchanged)
-[90m.changeset/README.md[39m 6ms (unchanged)
-[90m.github/workflows/ci.yml[39m 12ms (unchanged)
-[90m.github/workflows/debug-format.yml[39m 5ms (unchanged)
-[90m.github/workflows/format-branch.yml[39m 5ms (unchanged)
-[90m.github/workflows/release.yml[39m 6ms (unchanged)
-[90m.vscode/extensions.json[39m 4ms (unchanged)
-[90m.vscode/settings.json[39m 5ms (unchanged)
-[90mCHANGELOG.md[39m 25ms (unchanged)
-eslint.config.mjs 22ms
-[90mexamples/monorepo/eslint.config.mjs[39m 5ms (unchanged)
+[90m.changeset/automate-devtools-setup.md[39m 50ms (unchanged)
+[90m.changeset/config.json[39m 27ms (unchanged)
+[90m.changeset/README.md[39m 5ms (unchanged)
+[90m.github/workflows/ci.yml[39m 10ms (unchanged)
+[90m.github/workflows/debug-format.yml[39m 3ms (unchanged)
+[90m.github/workflows/release.yml[39m 7ms (unchanged)
+[90m.vscode/extensions.json[39m 1ms (unchanged)
+[90m.vscode/settings.json[39m 3ms (unchanged)
+[90mCHANGELOG.md[39m 16ms (unchanged)
+[90meslint.config.mjs[39m 12ms (unchanged)
+[90mexamples/monorepo/eslint.config.mjs[39m 4ms (unchanged)
 [[31merror[39m] Invalid configuration for file "/home/runner/work/devtools/devtools/examples/package/.prettierignore":
 [[31merror[39m] Cannot find module '/home/runner/work/devtools/devtools/dist/tools/prettier/index.cjs'
 exit_code=2
- eslint.config.mjs | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ .ci-format-diagnostics.txt | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
