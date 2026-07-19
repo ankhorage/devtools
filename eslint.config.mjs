@@ -13,10 +13,7 @@ export default createConfig({
     {
       files: ['src/cli/runExternalTool.test.ts', 'src/package.test.ts'],
       rules: {
-        'max-lines-per-function': [
-          'error',
-          { max: 75, skipBlankLines: true, skipComments: true },
-        ],
+        'max-lines-per-function': ['error', { max: 75, skipBlankLines: true, skipComments: true }],
       },
     },
   ],
