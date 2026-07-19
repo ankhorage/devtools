@@ -1,3 +1,4 @@
+# Temporary branch-only diagnostic workflow.
 name: Capture Knip diagnostics
 
 on:
