@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.4
+
+### Patch Changes
+
+- 062a084: Scope the recommended ESLint rules to each `createConfig()` file set so composing multiple shared configs does not leak core rules such as `no-unused-vars` across unrelated TypeScript files.
+
 ## 1.3.3
 
 ### Patch Changes
