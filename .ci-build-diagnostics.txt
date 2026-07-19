@@ -1,2 +1,0 @@
-$ rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files
-exit_code=0
