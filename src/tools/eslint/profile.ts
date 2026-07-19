@@ -1,5 +1,5 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 
 import {
   detectProject,
@@ -19,8 +19,9 @@ export function resolveEslintProfile(options: DevtoolsConfigOptions): ResolvedDe
     return requestedProfile;
   }
 
-  const packageJsonPath = resolve(options.tsconfigRootDir, options.packageJsonPath ?? 'package.json');
-  return resolveEslintProfileFromDetectionInput('auto', readDetectionInput(packageJsonPath));
+  const packageJsonPath = resolveProjectPackageJsonPath(options);
+  const input = packageJsonPath === null ? {} : readDetectionInput(packageJsonPath);
+  return resolveEslintProfileFromDetectionInput('auto', input);
 }
 
 export function resolveEslintProfileFromDetectionInput(
@@ -37,6 +38,26 @@ export function resolveEslintProfileFromDetectionInput(
   }
 
   return traits.has('react') ? 'react' : 'base';
+}
+
+function resolveProjectPackageJsonPath(options: DevtoolsConfigOptions): string | null {
+  if (options.packageJsonPath !== undefined) {
+    return resolve(options.tsconfigRootDir, options.packageJsonPath);
+  }
+
+  let directory = resolve(options.tsconfigRootDir);
+  while (true) {
+    const candidate = resolve(directory, 'package.json');
+    if (existsSync(candidate)) {
+      return candidate;
+    }
+
+    const parent = dirname(directory);
+    if (parent === directory) {
+      return null;
+    }
+    directory = parent;
+  }
 }
 
 function readDetectionInput(packageJsonPath: string): ProjectDetectionInput {
