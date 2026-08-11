@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+### Minor Changes
+
+- 90aa531: Centralize Bun 1.3.14 as the managed repository runtime policy. Repository sync now aligns `packageManager`, `@types/bun`, generated GitHub workflows, and the Bun lockfile from the same policy.
+
 ## 1.3.4
 
 ### Patch Changes
