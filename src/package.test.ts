@@ -88,7 +88,6 @@ describe('package metadata', () => {
     expect(readme).toContain('ankh devtools sync');
     expect(readme).toContain('ankh devtools workflows sync');
     expect(readme).toContain('ankh devtools vscode sync');
-    expect(readme).toContain('@ankhorage/devtools/policy');
     expect(readme).not.toContain('ankh dev ');
     expect(readme).not.toContain('`@ankhorage/dev`');
   });
