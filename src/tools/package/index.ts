@@ -8,12 +8,12 @@
  * `format`, `format:check`, and `knip` scripts are written.
  * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
  *
+ * The Bun runtime policy is shared by every repository, including devtools itself. Devtools skips
+ * only its consumer dependency/script normalization so it never attempts to install itself.
+ *
  * Status compares only the fields owned by this contract, so unrelated repository customization
  * does not count as drift. `--dry-run` reports whether `package.json` would be created or updated
  * without writing it, and repeated synchronization is idempotent.
- *
- * The devtools package itself is excluded from the consumer contract to avoid rewriting its own
- * manifest.
  *
  * @readme
  */
@@ -110,7 +110,7 @@ export function applyManagedPackageContract(
   devtoolsVersion: string,
 ): Record<string, unknown> {
   if (manifest.name === DEVTOOLS_PACKAGE_NAME) {
-    return manifest;
+    return applyBunRuntimePolicy(manifest);
   }
 
   const scripts = { ...toRecord(manifest.scripts), ...STANDARD_SCRIPTS };
@@ -118,21 +118,22 @@ export function applyManagedPackageContract(
   const dependencies = toRecord(manifest.dependencies);
 
   applyDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion);
-  devDependencies[BUN_TYPES_PACKAGE_NAME] = bunRuntimePolicy.typesRange;
 
-  return {
+  return applyBunRuntimePolicy({
     ...manifest,
     ...normalizedDependencies(manifest, dependencies),
-    packageManager: bunRuntimePolicy.packageManager,
     scripts,
     devDependencies,
-  };
+  });
 }
 
 export function isManagedPackageContractCurrent(
   manifest: Record<string, unknown>,
   devtoolsVersion: string,
 ): boolean {
+  if (!hasCurrentBunRuntimePolicy(manifest)) {
+    return false;
+  }
   if (manifest.name === DEVTOOLS_PACKAGE_NAME) {
     return true;
   }
@@ -142,8 +143,6 @@ export function isManagedPackageContractCurrent(
   const dependencies = toRecord(manifest.dependencies);
 
   return (
-    manifest.packageManager === bunRuntimePolicy.packageManager &&
-    devDependencies[BUN_TYPES_PACKAGE_NAME] === bunRuntimePolicy.typesRange &&
     hasStandardScripts(scripts) &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
     hasCurrentDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion)
@@ -174,6 +173,24 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
     }
     throw error;
   }
+}
+
+function applyBunRuntimePolicy(manifest: Record<string, unknown>): Record<string, unknown> {
+  const devDependencies = toRecord(manifest.devDependencies);
+  devDependencies[BUN_TYPES_PACKAGE_NAME] = bunRuntimePolicy.typesRange;
+  return {
+    ...manifest,
+    packageManager: bunRuntimePolicy.packageManager,
+    devDependencies,
+  };
+}
+
+function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean {
+  const devDependencies = toRecord(manifest.devDependencies);
+  return (
+    manifest.packageManager === bunRuntimePolicy.packageManager &&
+    devDependencies[BUN_TYPES_PACKAGE_NAME] === bunRuntimePolicy.typesRange
+  );
 }
 
 function applyDevtoolsDependencyPlacement(
