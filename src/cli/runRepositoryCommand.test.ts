@@ -104,7 +104,8 @@ test('supports dry-run and validates arguments', async () => {
   const sync = getRepositoryCommand(['sync']);
 
   expect((await runRepositoryCommand(sync, ['--dry-run'], context)).exitCode).toBe(0);
-  expect(context.stdout.join('')).toContain('would create');
+  expect(context.stdout.join('')).toContain('package.json would create');
+  expect(context.stdout.join('')).toContain('bun.lock would create');
   expect(await Bun.file(join(target, 'package.json')).exists()).toBe(false);
   expect(await Bun.file(join(target, '.github/workflows/ci.yml')).exists()).toBe(false);
   expect(context.dependencySyncs).toBe(0);
@@ -141,9 +142,9 @@ function createContext(target: string) {
     get dependencySyncs() {
       return state.dependencySyncs;
     },
-    syncDependencies: async () => {
+    syncDependencies: () => {
       state.dependencySyncs += 1;
-      return { relativePath: 'bun.lock', action: 'created' as const };
+      return Promise.resolve({ relativePath: 'bun.lock', action: 'created' as const });
     },
     writeStdout: (text: string) => stdout.push(text),
     writeStderr: (text: string) => stderr.push(text),
