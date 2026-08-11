@@ -9,6 +9,7 @@ Shared development tools and repository standards for Ankhorage TypeScript proje
 ```text
 src/
 ├── cli/
+├── policy/
 └── tools/
     ├── eslint/
     ├── prettier/
@@ -18,14 +19,15 @@ src/
     └── vscode/
 ```
 
+- `policy`: shared repository runtime policy, including the canonical Bun version
 - `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner
 - `prettier`: shared Prettier configuration and the bundled Prettier runner
 - `knip`: shared Knip configuration helpers and the bundled Knip runner
-- `package`: merge-aware synchronization of the shared `package.json` tooling contract
+- `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
 - `vscode`: canonical `.vscode/settings.json` and `extensions.json`
 
-The package owns the supported ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories.
+The package owns the supported ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.
 
 ## Bootstrap
 
@@ -34,7 +36,6 @@ For a repository that does not yet depend on the shared toolchain:
 ```bash
 bun add -D @ankhorage/devtools
 bunx @ankhorage/ankh devtools sync .
-bun install
 ```
 
 After the first install, the normal workflow is:
@@ -45,7 +46,9 @@ ankh devtools sync
 
 The target path is optional and defaults to the current working directory.
 
-Synchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, and removes direct devDependencies for tools/plugins owned by devtools. Unrelated package metadata, dependencies, and scripts are preserved.
+Synchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, applies the managed Bun runtime policy, and removes direct devDependencies for tools/plugins owned by devtools. When package metadata changes, sync runs `bun install` so installed dependencies and `bun.lock` match the synchronized manifest. Unrelated package metadata, dependencies, and scripts are preserved.
+
+`devtools sync` does not upgrade the globally installed Bun executable. The managed version applies to repository metadata, Bun types, and GitHub workflows.
 
 ## Ankh provider
 
@@ -150,6 +153,8 @@ Synchronization is deterministic and idempotent:
 
 - missing managed artifacts are created
 - outdated centrally owned artifacts are updated
+- the managed Bun runtime version is applied consistently to package metadata and workflows
+- package changes are followed by `bun install`, keeping installed dependencies and `bun.lock` synchronized
 - current artifacts are left untouched
 - unrelated files and package fields are preserved
 - repeated sync produces only `unchanged` results
@@ -247,20 +252,36 @@ export default createKnipConfig();
 
 `knip.config.ts` is create-only after bootstrap so repositories can retain narrow local entries, projects, ignores, binaries, dependencies, or switch to `createKnipMonorepoConfig()` without synchronization overwriting those extensions.
 
+## Managed Bun runtime policy
+
+The canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:
+
+```text
+Bun runtime       1.3.14
+packageManager    bun@1.3.14
+@types/bun        ^1.3.14
+```
+
+Changing the policy in devtools therefore updates the repository-facing Bun version consistently instead of maintaining independent version literals in multiple templates.
+
 ## Managed package contract
 
 `ankh devtools package sync` merge-updates `package.json` rather than replacing it.
 
 It owns:
 
-- the `@ankhorage/devtools` devDependency version range
+- the `@ankhorage/devtools` dependency version range
+- `packageManager` according to the managed Bun runtime policy
+- the `@types/bun` development dependency according to the managed Bun runtime policy
 - `lint`
 - `lint:fix`
 - `format`
 - `format:check`
 - `knip`
 
-It also removes direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.
+For normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.
+
+When this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.
 
 ## Managed GitHub Actions workflows
 
@@ -271,7 +292,7 @@ It also removes direct devDependencies for tools and ESLint plugins already prov
 .github/workflows/release.yml
 ```
 
-The CI workflow installs the pinned Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and Changesets checks.
+Both workflows render their `bun-version` from the same managed Bun runtime policy used for `package.json`. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and Changesets checks.
 
 ## Managed VS Code configuration
 
