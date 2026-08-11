@@ -11,9 +11,7 @@ export function planBunDependencySync(targetDirectory: string): ManagedFileSyncR
   };
 }
 
-export async function syncBunDependencies(
-  targetDirectory: string,
-): Promise<ManagedFileSyncResult> {
+export async function syncBunDependencies(targetDirectory: string): Promise<ManagedFileSyncResult> {
   const existed = existsSync(resolve(targetDirectory, 'bun.lock'));
   await runBunInstall(targetDirectory);
 
