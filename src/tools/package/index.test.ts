@@ -13,6 +13,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
   );
 
   expect(updated).toMatchObject({
+    packageManager: 'bun@1.3.14',
     scripts: {
       test: 'bun test',
       lint: 'ankhorage-eslint . --max-warnings=0',
@@ -20,6 +21,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
     devDependencies: {
       typescript: '^5.9.3',
       '@ankhorage/devtools': '^2.3.4',
+      '@types/bun': '^1.3.14',
     },
   });
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
@@ -43,12 +45,14 @@ test('preserves devtools as a runtime dependency for ankh', () => {
   );
 
   expect(updated).toMatchObject({
+    packageManager: 'bun@1.3.14',
     dependencies: {
       '@ankhorage/devtools': '^2.3.4',
       yaml: '^2.8.1',
     },
     devDependencies: {
       typescript: '^5.9.3',
+      '@types/bun': '^1.3.14',
     },
   });
   expect(readNestedValue(updated, 'devDependencies', '@ankhorage/devtools')).toBeUndefined();
@@ -75,15 +79,39 @@ test('detects managed package drift without caring about unrelated fields', () =
   expect(isManagedPackageContractCurrent(manifest, '2.3.4')).toBe(true);
   expect(isManagedPackageContractCurrent({ ...manifest, private: false }, '2.3.4')).toBe(true);
   expect(isManagedPackageContractCurrent(manifest, '2.3.5')).toBe(false);
+  expect(
+    isManagedPackageContractCurrent({ ...manifest, packageManager: 'bun@1.3.13' }, '2.3.4'),
+  ).toBe(false);
+  expect(
+    isManagedPackageContractCurrent(
+      {
+        ...manifest,
+        devDependencies: {
+          ...readNestedRecord(manifest, 'devDependencies'),
+          '@types/bun': '^1.3.13',
+        },
+      },
+      '2.3.4',
+    ),
+  ).toBe(false);
 });
 
-test('does not apply the consumer contract to devtools itself', () => {
+test('applies only the Bun policy to devtools itself', () => {
   const manifest = {
     name: '@ankhorage/devtools',
     dependencies: { eslint: '^10.2.0' },
+    scripts: { lint: 'eslint .' },
   };
-  expect(applyManagedPackageContract(manifest, '2.3.4')).toEqual(manifest);
-  expect(isManagedPackageContractCurrent(manifest, '2.3.4')).toBe(true);
+  const updated = applyManagedPackageContract(manifest, '2.3.4');
+
+  expect(updated).toMatchObject({
+    name: '@ankhorage/devtools',
+    packageManager: 'bun@1.3.14',
+    dependencies: { eslint: '^10.2.0' },
+    scripts: { lint: 'eslint .' },
+    devDependencies: { '@types/bun': '^1.3.14' },
+  });
+  expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });
 
 function readNestedValue(

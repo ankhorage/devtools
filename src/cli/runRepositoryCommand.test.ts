@@ -22,6 +22,9 @@ test('syncs only the selected concern and aggregate status reports drift', async
 
   expect((await runRepositoryCommand(workflowsSync, [], context)).exitCode).toBe(0);
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
+    "bun-version: '1.3.14'",
+  );
+  expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
     'bunx @ankhorage/ankh doctor validate .',
   );
   expect(await Bun.file(join(target, '.vscode/settings.json')).exists()).toBe(false);
@@ -51,6 +54,9 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(readNestedValue(packageJson, 'devDependencies', '@ankhorage/devtools')).toMatch(
     /^\^\d+\.\d+\.\d+$/u,
   );
+  expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe('^1.3.14');
+  expect(readProperty(packageJson, 'packageManager')).toBe('bun@1.3.14');
+  expect(context.dependencySyncs).toBe(1);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
   expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('export { default }');
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain('createKnipConfig');
@@ -76,6 +82,7 @@ test('preserves create-only local extensions across repeated synchronization', a
 
   expect(await readFile(join(target, 'eslint.local.config.mjs'), 'utf8')).toBe(localConfig);
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain("'custom.ts'");
+  expect(context.dependencySyncs).toBe(1);
 });
 
 test('preserves an existing ESLint config during first synchronization', async () => {
@@ -97,9 +104,11 @@ test('supports dry-run and validates arguments', async () => {
   const sync = getRepositoryCommand(['sync']);
 
   expect((await runRepositoryCommand(sync, ['--dry-run'], context)).exitCode).toBe(0);
-  expect(context.stdout.join('')).toContain('would create');
+  expect(context.stdout.join('')).toContain('package.json would create');
+  expect(context.stdout.join('')).toContain('bun.lock would create');
   expect(await Bun.file(join(target, 'package.json')).exists()).toBe(false);
   expect(await Bun.file(join(target, '.github/workflows/ci.yml')).exists()).toBe(false);
+  expect(context.dependencySyncs).toBe(0);
   expect(() => parseRepositoryArguments(['--dry-run'], false)).toThrow(
     '--dry-run is only valid for sync commands.',
   );
@@ -123,12 +132,20 @@ async function createTarget(): Promise<string> {
 }
 
 function createContext(target: string) {
+  const state = { dependencySyncs: 0 };
   const stdout: string[] = [];
   const stderr: string[] = [];
   return {
     cwd: target,
     stdout,
     stderr,
+    get dependencySyncs() {
+      return state.dependencySyncs;
+    },
+    syncDependencies: () => {
+      state.dependencySyncs += 1;
+      return Promise.resolve({ relativePath: 'bun.lock', action: 'created' as const });
+    },
     writeStdout: (text: string) => stdout.push(text),
     writeStderr: (text: string) => stderr.push(text),
   };
@@ -140,6 +157,10 @@ function readNestedValue(value: unknown, property: string, nestedProperty: strin
   }
   const nested = value[property];
   return isRecord(nested) ? nested[nestedProperty] : undefined;
+}
+
+function readProperty(value: unknown, property: string): unknown {
+  return isRecord(value) ? value[property] : undefined;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

@@ -5,6 +5,10 @@ import {
   readCurrentDevtoolsVersion,
   syncPackageManifest,
 } from '../tools/package/index.js';
+import {
+  planBunDependencySync,
+  syncBunDependencies,
+} from '../tools/package/syncBunDependencies.js';
 import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import {
   inspectManagedFiles,
@@ -20,6 +24,7 @@ import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
 
 export interface DevtoolsRepositoryCommandContext {
   readonly cwd: string;
+  readonly syncDependencies?: (targetDirectory: string) => Promise<ManagedFileSyncResult>;
   writeStdout(text: string): void;
   writeStderr(text: string): void;
 }
@@ -105,7 +110,16 @@ async function runSync(
 ): Promise<DevtoolsRepositoryCommandResult> {
   const results: ManagedFileSyncResult[] = [];
   if (scope === 'all' || scope === 'package') {
-    results.push(await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun }));
+    const packageResult = await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun });
+    results.push(packageResult);
+    if (packageResult.action !== 'unchanged') {
+      if (dryRun) {
+        results.push(planBunDependencySync(targetDirectory));
+      } else {
+        const syncDependencies = context.syncDependencies ?? syncBunDependencies;
+        results.push(await syncDependencies(targetDirectory));
+      }
+    }
   }
   results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
 
