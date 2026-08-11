@@ -4,12 +4,17 @@ import { resolve } from 'node:path';
 
 import type { ManagedFileSyncResult } from '../shared/managedFiles.js';
 
+export function planBunDependencySync(targetDirectory: string): ManagedFileSyncResult {
+  return {
+    relativePath: 'bun.lock',
+    action: existsSync(resolve(targetDirectory, 'bun.lock')) ? 'would-update' : 'would-create',
+  };
+}
+
 export async function syncBunDependencies(
   targetDirectory: string,
 ): Promise<ManagedFileSyncResult> {
-  const lockfilePath = resolve(targetDirectory, 'bun.lock');
-  const existed = existsSync(lockfilePath);
-
+  const existed = existsSync(resolve(targetDirectory, 'bun.lock'));
   await runBunInstall(targetDirectory);
 
   return {
