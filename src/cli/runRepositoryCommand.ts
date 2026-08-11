@@ -5,7 +5,10 @@ import {
   readCurrentDevtoolsVersion,
   syncPackageManifest,
 } from '../tools/package/index.js';
-import { syncBunDependencies } from '../tools/package/syncBunDependencies.js';
+import {
+  planBunDependencySync,
+  syncBunDependencies,
+} from '../tools/package/syncBunDependencies.js';
 import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import {
   inspectManagedFiles,
@@ -109,9 +112,13 @@ async function runSync(
   if (scope === 'all' || scope === 'package') {
     const packageResult = await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun });
     results.push(packageResult);
-    if (!dryRun && packageResult.action !== 'unchanged') {
-      const syncDependencies = context.syncDependencies ?? syncBunDependencies;
-      results.push(await syncDependencies(targetDirectory));
+    if (packageResult.action !== 'unchanged') {
+      if (dryRun) {
+        results.push(planBunDependencySync(targetDirectory));
+      } else {
+        const syncDependencies = context.syncDependencies ?? syncBunDependencies;
+        results.push(await syncDependencies(targetDirectory));
+      }
     }
   }
   results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
