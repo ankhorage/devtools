@@ -21,11 +21,13 @@ import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+import { bunRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managedFiles.js';
 
 const PACKAGE_PATH = 'package.json';
 const DEVTOOLS_PACKAGE_NAME = '@ankhorage/devtools';
 const ANKH_PACKAGE_NAME = '@ankhorage/ankh';
+const BUN_TYPES_PACKAGE_NAME = '@types/bun';
 
 const STANDARD_SCRIPTS = {
   lint: 'ankhorage-eslint . --max-warnings=0',
@@ -116,10 +118,12 @@ export function applyManagedPackageContract(
   const dependencies = toRecord(manifest.dependencies);
 
   applyDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion);
+  devDependencies[BUN_TYPES_PACKAGE_NAME] = bunRuntimePolicy.typesRange;
 
   return {
     ...manifest,
     ...normalizedDependencies(manifest, dependencies),
+    packageManager: bunRuntimePolicy.packageManager,
     scripts,
     devDependencies,
   };
@@ -138,6 +142,8 @@ export function isManagedPackageContractCurrent(
   const dependencies = toRecord(manifest.dependencies);
 
   return (
+    manifest.packageManager === bunRuntimePolicy.packageManager &&
+    devDependencies[BUN_TYPES_PACKAGE_NAME] === bunRuntimePolicy.typesRange &&
     hasStandardScripts(scripts) &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
     hasCurrentDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion)
