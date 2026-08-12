@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.1
+
+### Patch Changes
+
+- af12660: Expose the canonical Bun runtime policy through the public `@ankhorage/devtools/policy` package subpath so validation packages can consume it without duplicating the policy version.
+
 ## 1.4.0
 
 ### Minor Changes
