@@ -53,6 +53,10 @@ describe('package metadata', () => {
         types: './dist/tools/knip/index.d.ts',
         import: './dist/tools/knip/index.js',
       },
+      './policy': {
+        types: './dist/policy/bunRuntimePolicy.d.ts',
+        import: './dist/policy/bunRuntimePolicy.js',
+      },
       './prettier': {
         import: './dist/tools/prettier/index.cjs',
         require: './dist/tools/prettier/index.cjs',
