@@ -13,8 +13,11 @@ const INDEX_BARREL_FILES = [
   '**/index.cjs',
 ] as const;
 
-function hasForwardExportSource(context: Rule.RuleContext, node: Rule.Node): boolean {
+function isForwardExport(context: Rule.RuleContext, node: Rule.Node): boolean {
   const tokens = context.sourceCode.getTokens(node);
+  if (tokens.at(0)?.value !== 'export') {
+    return false;
+  }
   return tokens.some(
     (token, index) => token.value === 'from' && tokens.at(index + 1)?.type === 'String',
   );
@@ -30,12 +33,12 @@ const noForwardExportsRule: Rule.RuleModule = {
     },
   },
   create(context) {
-    const report = (node: Rule.Node) => context.report({ node, messageId: 'forwardExport' });
     return {
-      ExportAllDeclaration: report,
-      ExportNamedDeclaration(node) {
-        if (node.source !== null || hasForwardExportSource(context, node)) {
-          report(node);
+      Program(node) {
+        for (const statement of node.body) {
+          if (isForwardExport(context, statement)) {
+            context.report({ node: statement, messageId: 'forwardExport' });
+          }
         }
       },
     };
