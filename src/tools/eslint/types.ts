@@ -1,7 +1,6 @@
-import type tseslint from 'typescript-eslint';
+import type { Linter } from 'eslint';
 
-type FlatConfig = ReturnType<typeof tseslint.config>;
-export type FlatConfigItem = FlatConfig[number];
+export type FlatConfigItem = Linter.Config;
 
 export interface RestrictedImport {
   readonly name: string;

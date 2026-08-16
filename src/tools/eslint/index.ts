@@ -4,13 +4,13 @@
  * The default `profile: 'auto'` reads the nearest `package.json` from `tsconfigRootDir` and uses
  * `@ankhorage/utility/project` to select overlapping project traits. React Native and Expo select
  * the `react-native` profile, React and Next.js select `react`, and other projects use `base`.
- * Consumers can explicitly select `base`, `react`, or `react-native` when automatic detection is
- * not appropriate.
  *
  * Every profile includes the shared TypeScript, import, unused-import, Prettier, security, and
  * quality rules. The common quality limits are 50 effective lines per function, 300 effective
- * lines per file, and modified cyclomatic complexity 15. React adds React and Hooks correctness
- * rules; React Native composes the React profile and adds focused React Native rules.
+ * lines per file, and modified cyclomatic complexity 15. Forward exports are forbidden outside
+ * explicit `index.*` barrels so implementation files export only symbols they own. React adds
+ * React and Hooks correctness rules; React Native composes the React profile and adds focused
+ * React Native rules.
  *
  * Repository-specific behavior stays additive: `additionalIgnores`, `restrictedImports`, and
  * `overrides` extend the central policy instead of replacing it. Narrow local overrides remain the
@@ -21,6 +21,8 @@
  */
 import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
+import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
@@ -32,6 +34,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
+import { createModuleOwnershipConfig } from './moduleOwnership.js';
 import { resolveEslintProfile } from './profile.js';
 import type {
   DevtoolsConfigOptions,
@@ -72,18 +75,19 @@ interface NormalizedConfigOptions {
   readonly includePrettier: boolean;
 }
 
-export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof tseslint.config> {
+export function createConfig(options: DevtoolsConfigOptions): Linter.Config[] {
   const normalized = normalizeOptions(options);
   const profile = resolveEslintProfile(options);
 
-  return tseslint.config(
+  return defineConfig(
     { ignores: [...defaultIgnores, ...normalized.additionalIgnores] },
     { ...js.configs.recommended, files: normalized.files },
     ...createTypeCheckedConfigs(normalized),
     createBaseConfig(normalized),
+    createModuleOwnershipConfig(normalized.files),
     ...createProfileConfigs(profile, normalized.files),
     ...normalized.overrides,
-    ...(normalized.includePrettier ? [prettierConfig as FlatConfigItem] : []),
+    ...(normalized.includePrettier ? [prettierConfig] : []),
   );
 }
 
@@ -205,7 +209,10 @@ function createProfileConfigs(
 function createReactConfig(files: string[]): FlatConfigItem {
   return {
     files,
-    plugins: { react: reactPlugin, 'react-hooks': reactHooksPlugin },
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': fixupPluginRules({ rules: reactHooksPlugin.rules }),
+    },
     settings: { react: { version: 'detect' } },
     rules: {
       'react/no-danger': 'error',
