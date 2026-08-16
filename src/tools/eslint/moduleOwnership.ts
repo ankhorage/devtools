@@ -34,7 +34,7 @@ const noForwardExportsRule: Rule.RuleModule = {
   },
   create(context) {
     return {
-      'Program > *'(node) {
+      'Program > *'(node: Rule.Node) {
         if (isForwardExport(context, node)) {
           context.report({ node, messageId: 'forwardExport' });
         }
