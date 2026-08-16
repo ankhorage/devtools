@@ -49,6 +49,11 @@ async function createLintWorkspace(
   };
 }
 
+async function lintFresh(code: string, fileName: string): Promise<LintResult> {
+  const workspace = await createLintWorkspace();
+  return workspace.lint(code, fileName);
+}
+
 function ruleIds(result: LintResult): string[] {
   return result.messages.flatMap((message) => (message.ruleId === null ? [] : [message.ruleId]));
 }
@@ -98,10 +103,9 @@ it('keeps export sorting active inside index barrels', async () => {
 });
 
 it('rejects named, type, and star forward exports outside index barrels', async () => {
-  const workspace = await createLintWorkspace();
-  const named = await workspace.lint("export { value } from './value';\n", 'named.ts');
-  const typed = await workspace.lint("export type { Value } from './value';\n", 'typed.ts');
-  const star = await workspace.lint("export * from './value';\n", 'star.ts');
+  const named = await lintFresh("export { value } from './value';\n", 'named.ts');
+  const typed = await lintFresh("export type { Value } from './value';\n", 'typed.ts');
+  const star = await lintFresh("export * from './value';\n", 'star.ts');
 
   expect(ruleIds(named)).toContain('ankhorage/no-forward-exports');
   expect(ruleIds(typed)).toContain('ankhorage/no-forward-exports');
@@ -109,10 +113,9 @@ it('rejects named, type, and star forward exports outside index barrels', async 
 });
 
 it('allows declarations exported where they are defined and index barrel forward exports', async () => {
-  const workspace = await createLintWorkspace();
-  const value = await workspace.lint('export const value = 1;\n', 'owned.ts');
-  const type = await workspace.lint('export type Value = string;\n', 'owned-type.ts');
-  const barrel = await workspace.lint("export { value } from './value';\n", 'index.ts');
+  const value = await lintFresh('export const value = 1;\n', 'owned.ts');
+  const type = await lintFresh('export type Value = string;\n', 'owned-type.ts');
+  const barrel = await lintFresh("export { value } from './value';\n", 'index.ts');
 
   expect(ruleIds(value)).not.toContain('ankhorage/no-forward-exports');
   expect(ruleIds(type)).not.toContain('ankhorage/no-forward-exports');
