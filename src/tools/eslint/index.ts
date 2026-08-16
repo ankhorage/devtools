@@ -21,6 +21,8 @@
  */
 import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
+import type { Linter } from 'eslint';
+import { defineConfig } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
@@ -73,11 +75,11 @@ interface NormalizedConfigOptions {
   readonly includePrettier: boolean;
 }
 
-export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof tseslint.config> {
+export function createConfig(options: DevtoolsConfigOptions): Linter.Config[] {
   const normalized = normalizeOptions(options);
   const profile = resolveEslintProfile(options);
 
-  return tseslint.config(
+  return defineConfig(
     { ignores: [...defaultIgnores, ...normalized.additionalIgnores] },
     { ...js.configs.recommended, files: normalized.files },
     ...createTypeCheckedConfigs(normalized),
@@ -85,7 +87,7 @@ export function createConfig(options: DevtoolsConfigOptions): ReturnType<typeof 
     createModuleOwnershipConfig(normalized.files),
     ...createProfileConfigs(profile, normalized.files),
     ...normalized.overrides,
-    ...(normalized.includePrettier ? [prettierConfig as FlatConfigItem] : []),
+    ...(normalized.includePrettier ? [prettierConfig] : []),
   );
 }
 
