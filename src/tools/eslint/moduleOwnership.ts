@@ -1,3 +1,5 @@
+import type { ESLint, Rule } from 'eslint';
+
 import type { FlatConfigItem } from './types.js';
 
 const INDEX_BARREL_FILES = [
@@ -11,24 +13,37 @@ const INDEX_BARREL_FILES = [
   '**/index.cjs',
 ] as const;
 
+const noForwardExportsRule: Rule.RuleModule = {
+  meta: {
+    type: 'problem',
+    schema: [],
+    messages: {
+      forwardExport:
+        'Forward exports are forbidden outside index barrels. Import directly from the owning module.',
+    },
+  },
+  create(context) {
+    const report = (node: Rule.Node) => context.report({ node, messageId: 'forwardExport' });
+    return {
+      ExportAllDeclaration: report,
+      ExportNamedDeclaration(node) {
+        if (node.source !== null) {
+          report(node);
+        }
+      },
+    };
+  },
+};
+
+const moduleOwnershipPlugin = {
+  rules: { 'no-forward-exports': noForwardExportsRule },
+} satisfies ESLint.Plugin;
+
 export function createModuleOwnershipConfig(files: string[]): FlatConfigItem {
   return {
     files,
     ignores: [...INDEX_BARREL_FILES],
-    rules: {
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: 'ExportAllDeclaration',
-          message:
-            'Forward exports are forbidden outside index barrels. Import directly from the owning module.',
-        },
-        {
-          selector: 'ExportNamedDeclaration > Literal',
-          message:
-            'Forward exports are forbidden outside index barrels. An export belongs to the file where it is defined.',
-        },
-      ],
-    },
+    plugins: { ankhorage: moduleOwnershipPlugin },
+    rules: { 'ankhorage/no-forward-exports': 'error' },
   };
 }
