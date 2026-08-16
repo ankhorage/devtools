@@ -77,12 +77,14 @@ it('rejects named, type, and star forward exports outside index barrels', async 
   expect(ruleIds(star)).toContain('no-restricted-syntax');
 });
 
-it('allows owned exports and index barrel forward exports', async () => {
+it('allows declarations exported where they are defined and index barrel forward exports', async () => {
   const workspace = await createLintWorkspace();
-  const owned = await workspace.lint('export const value = 1;\n', 'owned.ts');
+  const value = await workspace.lint('export const value = 1;\n', 'owned.ts');
+  const type = await workspace.lint('export type Value = string;\n', 'owned-type.ts');
   const barrel = await workspace.lint("export { value } from './value';\n", 'index.ts');
 
-  expect(ruleIds(owned)).not.toContain('no-restricted-syntax');
+  expect(ruleIds(value)).not.toContain('no-restricted-syntax');
+  expect(ruleIds(type)).not.toContain('no-restricted-syntax');
   expect(ruleIds(barrel)).not.toContain('no-restricted-syntax');
 });
 
