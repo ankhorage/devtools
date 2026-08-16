@@ -28,6 +28,11 @@ export function createModuleOwnershipConfig(files: string[]): FlatConfigItem {
           message:
             'Forward exports are forbidden outside index barrels. An export belongs to the file where it is defined.',
         },
+        {
+          selector: 'ExportNamedDeclaration[exportKind="type"][source]',
+          message:
+            'Forward type exports are forbidden outside index barrels. A type export belongs to the file where it is defined.',
+        },
       ],
     },
   };
