@@ -209,7 +209,7 @@ function createProfileConfigs(
 function createReactConfig(files: string[]): FlatConfigItem {
   return {
     files,
-    plugins: { react: reactPlugin, 'react-hooks': reactHooksPlugin },
+    plugins: { react: reactPlugin, 'react-hooks': fixupPluginRules(reactHooksPlugin) },
     settings: { react: { version: 'detect' } },
     rules: {
       'react/no-danger': 'error',
