@@ -15,7 +15,9 @@ interface LintWorkspace {
   lint(code: string, fileName: string, fix?: boolean): Promise<LintResult>;
 }
 
-async function createLintWorkspace(profile: DevtoolsEslintProfile = 'base'): Promise<LintWorkspace> {
+async function createLintWorkspace(
+  profile: DevtoolsEslintProfile = 'base',
+): Promise<LintWorkspace> {
   const root = await mkdtemp(path.join(tmpdir(), 'ankhorage-eslint-'));
   await writeFile(
     path.join(root, 'tsconfig.json'),
