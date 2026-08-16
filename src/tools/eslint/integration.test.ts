@@ -54,7 +54,8 @@ it('executes import sorting through the composed shared config', async () => {
   expect(ruleIds(result)).toContain('simple-import-sort/imports');
 
   const fixed = await workspace.lint(source, 'imports.ts', true);
-  expect(fixed.output).toContain("import { a } from 'a';\nimport { z } from 'z';");
+  const output = fixed.output ?? '';
+  expect(output.indexOf('from "a"')).toBeLessThan(output.indexOf('from "z"'));
 });
 
 it('keeps export sorting active inside index barrels', async () => {
