@@ -3,9 +3,11 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 import { expect, it } from 'bun:test';
-import { ESLint, type LintResult } from 'eslint';
+import { ESLint } from 'eslint';
 
 import { createConfig } from './index.js';
+
+type LintResult = Awaited<ReturnType<ESLint['lintFiles']>>[number];
 
 interface LintWorkspace {
   readonly root: string;
@@ -36,7 +38,6 @@ async function createLintWorkspace(): Promise<LintWorkspace> {
         }),
       });
       const [result] = await eslint.lintFiles([filePath]);
-      if (result === undefined) throw new Error(`ESLint returned no result for ${fileName}.`);
       return result;
     },
   };
