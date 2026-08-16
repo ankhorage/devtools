@@ -94,7 +94,7 @@ it('keeps export sorting active inside index barrels', async () => {
   const source = "export { z } from './z';\nexport { a } from './a';\n";
   const result = await workspace.lint(source, 'index.ts');
   expect(ruleIds(result)).toContain('simple-import-sort/exports');
-  expect(ruleIds(result)).not.toContain('no-restricted-syntax');
+  expect(ruleIds(result)).not.toContain('ankhorage/no-forward-exports');
 });
 
 it('rejects named, type, and star forward exports outside index barrels', async () => {
@@ -103,9 +103,9 @@ it('rejects named, type, and star forward exports outside index barrels', async 
   const typed = await workspace.lint("export type { Value } from './value';\n", 'typed.ts');
   const star = await workspace.lint("export * from './value';\n", 'star.ts');
 
-  expect(ruleIds(named)).toContain('no-restricted-syntax');
-  expect(ruleIds(typed)).toContain('no-restricted-syntax');
-  expect(ruleIds(star)).toContain('no-restricted-syntax');
+  expect(ruleIds(named)).toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(typed)).toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(star)).toContain('ankhorage/no-forward-exports');
 });
 
 it('allows declarations exported where they are defined and index barrel forward exports', async () => {
@@ -114,9 +114,9 @@ it('allows declarations exported where they are defined and index barrel forward
   const type = await workspace.lint('export type Value = string;\n', 'owned-type.ts');
   const barrel = await workspace.lint("export { value } from './value';\n", 'index.ts');
 
-  expect(ruleIds(value)).not.toContain('no-restricted-syntax');
-  expect(ruleIds(type)).not.toContain('no-restricted-syntax');
-  expect(ruleIds(barrel)).not.toContain('no-restricted-syntax');
+  expect(ruleIds(value)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(type)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(barrel)).not.toContain('ankhorage/no-forward-exports');
 });
 
 it('keeps the central TypeScript, unused-import, formatting, and restricted-import rules active', async () => {
