@@ -29,9 +29,9 @@ export function createModuleOwnershipConfig(files: string[]): FlatConfigItem {
             'Forward exports are forbidden outside index barrels. An export belongs to the file where it is defined.',
         },
         {
-          selector: 'ExportNamedDeclaration[exportKind="type"][source]',
+          selector: 'ExportNamedDeclaration[exportKind="type"][declaration=null]',
           message:
-            'Forward type exports are forbidden outside index barrels. A type export belongs to the file where it is defined.',
+            'Grouped type exports are forbidden outside index barrels. Export the type where it is defined.',
         },
       ],
     },
