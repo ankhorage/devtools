@@ -8,9 +8,9 @@
  * Every profile includes the shared TypeScript, import, unused-import, Prettier, security, and
  * quality rules. The common quality limits are 50 effective lines per function, 300 effective
  * lines per file, and modified cyclomatic complexity 15. Forward exports are forbidden outside
- * explicit `index.*` barrels so implementation files export only symbols they own. React adds
- * React and Hooks correctness rules; React Native composes the React profile and adds focused
- * React Native rules.
+ * declared package entrypoints and explicit `index.*` barrels so implementation files export only
+ * symbols they own. React adds React and Hooks correctness rules; React Native composes the React
+ * profile and adds focused React Native rules.
  *
  * Repository-specific behavior stays additive: `additionalIgnores`, `restrictedImports`, and
  * `overrides` extend the central policy instead of replacing it. Narrow local overrides remain the
@@ -35,6 +35,7 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
 import { createModuleOwnershipConfig } from './moduleOwnership.js';
+import { resolvePackageEntrypointIgnores } from './packageEntrypoints.js';
 import { resolveEslintProfile } from './profile.js';
 import type {
   DevtoolsConfigOptions,
@@ -78,13 +79,14 @@ interface NormalizedConfigOptions {
 export function createConfig(options: DevtoolsConfigOptions): Linter.Config[] {
   const normalized = normalizeOptions(options);
   const profile = resolveEslintProfile(options);
+  const packageEntrypoints = resolvePackageEntrypointIgnores(options);
 
   return defineConfig(
     { ignores: [...defaultIgnores, ...normalized.additionalIgnores] },
     { ...js.configs.recommended, files: normalized.files },
     ...createTypeCheckedConfigs(normalized),
     createBaseConfig(normalized),
-    createModuleOwnershipConfig(normalized.files),
+    createModuleOwnershipConfig(normalized.files, packageEntrypoints),
     ...createProfileConfigs(profile, normalized.files),
     ...normalized.overrides,
     ...(normalized.includePrettier ? [prettierConfig] : []),
