@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1
+
+### Patch Changes
+
+- e9a2a20: Allow `ankhorage/no-forward-exports` in public package entrypoints declared through package metadata while keeping ordinary implementation modules ownership-strict.
+
 ## 1.5.0
 
 ### Minor Changes
