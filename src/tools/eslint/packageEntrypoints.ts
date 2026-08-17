@@ -7,7 +7,7 @@ import type { DevtoolsConfigOptions } from './types.js';
 const SOURCE_EXTENSIONS = ['ts', 'tsx', 'js', 'jsx', 'mts', 'cts', 'mjs', 'cjs'] as const;
 const OUTPUT_EXTENSION = /(?:\.d)?\.(?:ts|tsx|js|jsx|mts|cts|mjs|cjs)$/u;
 
-export function resolvePackageEntrypointIgnores(options: DevtoolsConfigOptions): string[] {
+export function resolvePackageEntrypointFiles(options: DevtoolsConfigOptions): string[] {
   const packageJsonPath = resolveProjectPackageJsonPath(options);
   if (packageJsonPath === null) return [];
 
