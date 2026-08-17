@@ -15,9 +15,7 @@ const INDEX_BARREL_FILES = [
 
 function isForwardExport(context: Rule.RuleContext, node: Rule.Node): boolean {
   const tokens = context.sourceCode.getTokens(node);
-  if (tokens.at(0)?.value !== 'export') {
-    return false;
-  }
+  if (tokens.at(0)?.value !== 'export') return false;
   return tokens.some(
     (token, index) => token.value === 'from' && tokens.at(index + 1)?.type === 'String',
   );
@@ -29,15 +27,13 @@ const noForwardExportsRule: Rule.RuleModule = {
     schema: [],
     messages: {
       forwardExport:
-        'Forward exports are forbidden outside index barrels. Import directly from the owning module.',
+        'Forward exports are forbidden outside package entrypoints and index barrels. Import directly from the owning module.',
     },
   },
   create(context) {
     return {
       'Program > *'(node: Rule.Node) {
-        if (isForwardExport(context, node)) {
-          context.report({ node, messageId: 'forwardExport' });
-        }
+        if (isForwardExport(context, node)) context.report({ node, messageId: 'forwardExport' });
       },
     };
   },
@@ -47,10 +43,13 @@ const moduleOwnershipPlugin = {
   rules: { 'no-forward-exports': noForwardExportsRule },
 } satisfies ESLint.Plugin;
 
-export function createModuleOwnershipConfig(files: string[]): FlatConfigItem {
+export function createModuleOwnershipConfig(
+  files: string[],
+  packageEntrypoints: string[] = [],
+): FlatConfigItem {
   return {
     files,
-    ignores: [...INDEX_BARREL_FILES],
+    ignores: [...INDEX_BARREL_FILES, ...packageEntrypoints],
     plugins: { ankhorage: moduleOwnershipPlugin },
     rules: { 'ankhorage/no-forward-exports': 'error' },
   };
