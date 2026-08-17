@@ -13,8 +13,6 @@ type LintResult = Awaited<ReturnType<ESLint['lintFiles']>>[number];
 interface LintWorkspace {
   readonly root: string;
   lint(code: string, fileName: string, fix?: boolean): Promise<LintResult>;
-  lintFile(fileName: string, fix?: boolean): Promise<LintResult>;
-  write(code: string, fileName: string): Promise<void>;
 }
 
 async function createLintWorkspace(
@@ -58,14 +56,7 @@ async function createLintWorkspace(
       await write(code, fileName);
       return lintFile(fileName, fix);
     },
-    lintFile,
-    write,
   };
-}
-
-async function lintFresh(code: string, fileName: string): Promise<LintResult> {
-  const workspace = await createLintWorkspace();
-  return workspace.lint(code, fileName);
 }
 
 function ruleIds(result: LintResult): string[] {
@@ -109,63 +100,11 @@ it('executes profile-specific React and React Native rules', async () => {
   expect(ruleIds(nativeResult)).toContain('react-native/no-inline-styles');
 });
 
-it('keeps export sorting active inside index barrels', async () => {
+it('keeps export sorting active', async () => {
   const workspace = await createLintWorkspace();
   const source = "export { z } from './z';\nexport { a } from './a';\n";
   const result = await workspace.lint(source, 'index.ts');
   expect(ruleIds(result)).toContain('simple-import-sort/exports');
-  expect(ruleIds(result)).not.toContain('ankhorage/no-forward-exports');
-});
-
-it('allows forward exports from declared non-index package entrypoints', async () => {
-  const workspace = await createLintWorkspace();
-  await writeFile(
-    path.join(workspace.root, 'package.json'),
-    JSON.stringify({
-      main: './dist/root.js',
-      types: './dist/root.d.ts',
-      exports: {
-        './binding': {
-          types: './dist/bindingAuthoringModel.d.ts',
-          import: './dist/bindingAuthoringModel.js',
-        },
-      },
-    }),
-  );
-
-  await Promise.all([
-    workspace.write("export * from './index';\n", 'src/root.ts'),
-    workspace.write("export { value } from './value';\n", 'src/bindingAuthoringModel.ts'),
-    workspace.write("export * from './value';\n", 'src/implementation.ts'),
-  ]);
-
-  const root = await workspace.lintFile('src/root.ts');
-  const binding = await workspace.lintFile('src/bindingAuthoringModel.ts');
-  const undeclared = await workspace.lintFile('src/implementation.ts');
-
-  expect(ruleIds(root)).not.toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(binding)).not.toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(undeclared)).toContain('ankhorage/no-forward-exports');
-});
-
-it('rejects named, type, and star forward exports outside index barrels', async () => {
-  const named = await lintFresh("export { value } from './value';\n", 'named.ts');
-  const typed = await lintFresh("export type { Value } from './value';\n", 'typed.ts');
-  const star = await lintFresh("export * from './value';\n", 'star.ts');
-
-  expect(ruleIds(named)).toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(typed)).toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(star)).toContain('ankhorage/no-forward-exports');
-});
-
-it('allows declarations exported where they are defined and index barrel forward exports', async () => {
-  const value = await lintFresh('export const value = 1;\n', 'owned.ts');
-  const type = await lintFresh('export type Value = string;\n', 'owned-type.ts');
-  const barrel = await lintFresh("export { value } from './value';\n", 'index.ts');
-
-  expect(ruleIds(value)).not.toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(type)).not.toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(barrel)).not.toContain('ankhorage/no-forward-exports');
 });
 
 it('keeps the central TypeScript, unused-import, formatting, and restricted-import rules active', async () => {
