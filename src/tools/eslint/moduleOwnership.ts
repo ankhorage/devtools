@@ -43,14 +43,20 @@ const moduleOwnershipPlugin = {
   rules: { 'no-forward-exports': noForwardExportsRule },
 } satisfies ESLint.Plugin;
 
-export function createModuleOwnershipConfig(
-  files: string[],
-  packageEntrypoints: string[] = [],
-): FlatConfigItem {
+export function createModuleOwnershipConfig(files: string[]): FlatConfigItem {
   return {
     files,
-    ignores: [...INDEX_BARREL_FILES, ...packageEntrypoints],
     plugins: { ankhorage: moduleOwnershipPlugin },
     rules: { 'ankhorage/no-forward-exports': 'error' },
+  };
+}
+
+export function createModuleOwnershipExemptionConfig(
+  packageEntrypoints: string[],
+): FlatConfigItem {
+  return {
+    files: [...INDEX_BARREL_FILES, ...packageEntrypoints],
+    plugins: { ankhorage: moduleOwnershipPlugin },
+    rules: { 'ankhorage/no-forward-exports': 'off' },
   };
 }
