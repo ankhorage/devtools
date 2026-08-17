@@ -102,6 +102,34 @@ it('keeps export sorting active inside index barrels', async () => {
   expect(ruleIds(result)).not.toContain('ankhorage/no-forward-exports');
 });
 
+it('allows forward exports from declared non-index package entrypoints', async () => {
+  const workspace = await createLintWorkspace();
+  await writeFile(
+    path.join(workspace.root, 'package.json'),
+    JSON.stringify({
+      main: './dist/root.js',
+      types: './dist/root.d.ts',
+      exports: {
+        './binding': {
+          types: './dist/bindingAuthoringModel.d.ts',
+          import: './dist/bindingAuthoringModel.js',
+        },
+      },
+    }),
+  );
+
+  const root = await workspace.lint("export * from './index';\n", 'src/root.ts');
+  const binding = await workspace.lint(
+    "export { value } from './value';\n",
+    'src/bindingAuthoringModel.ts',
+  );
+  const undeclared = await workspace.lint("export * from './value';\n", 'src/implementation.ts');
+
+  expect(ruleIds(root)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(binding)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(undeclared)).toContain('ankhorage/no-forward-exports');
+});
+
 it('rejects named, type, and star forward exports outside index barrels', async () => {
   const named = await lintFresh("export { value } from './value';\n", 'named.ts');
   const typed = await lintFresh("export type { Value } from './value';\n", 'typed.ts');
