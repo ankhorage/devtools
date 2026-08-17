@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 import { resolveProjectPackageJsonPath } from './packageJsonPath.js';
 import type { DevtoolsConfigOptions } from './types.js';
@@ -18,9 +18,7 @@ export function resolvePackageEntrypointFiles(options: DevtoolsConfigOptions): s
     ...collectStringTargets(packageJson.exports),
   ];
 
-  return [
-    ...new Set(targets.flatMap((target) => toSourceCandidates(target, packageJsonPath, options))),
-  ];
+  return [...new Set(targets.flatMap((target) => toSourceCandidates(target, packageJsonPath)))];
 }
 
 function readPackageJson(packageJsonPath: string): Record<string, unknown> {
@@ -38,11 +36,7 @@ function collectStringTargets(value: unknown): string[] {
   return Object.values(value).flatMap(collectStringTargets);
 }
 
-function toSourceCandidates(
-  target: string,
-  packageJsonPath: string,
-  options: DevtoolsConfigOptions,
-): string[] {
+function toSourceCandidates(target: string, packageJsonPath: string): string[] {
   const normalizedTarget = target.replace(/^\.\//u, '');
   const sourceTarget = normalizedTarget.startsWith('dist/')
     ? `src/${normalizedTarget.slice('dist/'.length)}`
@@ -51,8 +45,7 @@ function toSourceCandidates(
 
   const sourceBase = sourceTarget.replace(OUTPUT_EXTENSION, '');
   const absoluteBase = resolve(dirname(packageJsonPath), sourceBase);
-  const relativeBase = relative(options.tsconfigRootDir, absoluteBase).replaceAll('\\', '/');
-  return SOURCE_EXTENSIONS.map((extension) => `${relativeBase}.${extension}`);
+  return SOURCE_EXTENSIONS.map((extension) => `${absoluteBase}.${extension}`);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
