@@ -51,9 +51,7 @@ export function createModuleOwnershipConfig(files: string[]): FlatConfigItem {
   };
 }
 
-export function createModuleOwnershipExemptionConfig(
-  packageEntrypoints: string[],
-): FlatConfigItem {
+export function createModuleOwnershipExemptionConfig(packageEntrypoints: string[]): FlatConfigItem {
   return {
     files: [...INDEX_BARREL_FILES, ...packageEntrypoints],
     plugins: { ankhorage: moduleOwnershipPlugin },
