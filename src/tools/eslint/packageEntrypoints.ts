@@ -18,7 +18,9 @@ export function resolvePackageEntrypointIgnores(options: DevtoolsConfigOptions):
     ...collectStringTargets(packageJson.exports),
   ];
 
-  return [...new Set(targets.flatMap((target) => toSourceCandidates(target, packageJsonPath, options)))];
+  return [
+    ...new Set(targets.flatMap((target) => toSourceCandidates(target, packageJsonPath, options))),
+  ];
 }
 
 function readPackageJson(packageJsonPath: string): Record<string, unknown> {
