@@ -7,15 +7,20 @@ import type { DevtoolsConfigOptions } from './types.js';
 const SOURCE_EXTENSIONS = ['ts', 'tsx', 'js', 'jsx', 'mts', 'cts', 'mjs', 'cjs'] as const;
 const OUTPUT_EXTENSION = /(?:\.d)?\.(?:ts|tsx|js|jsx|mts|cts|mjs|cjs)$/u;
 
+/**
+ * Resolve package root entrypoint source files that may act as public barrels.
+ * Named subpath exports are public API surfaces, but they do not gain forwarding ownership.
+ */
 export function resolvePackageEntrypointFiles(options: DevtoolsConfigOptions): string[] {
   const packageJsonPath = resolveProjectPackageJsonPath(options);
   if (packageJsonPath === null) return [];
 
   const packageJson = readPackageJson(packageJsonPath);
+  const { main, types, exports: packageExports } = packageJson;
   const targets = [
-    ...collectStringTargets(packageJson.main),
-    ...collectStringTargets(packageJson.types),
-    ...collectStringTargets(packageJson.exports),
+    ...collectStringTargets(main),
+    ...collectStringTargets(types),
+    ...collectRootExportTargets(packageExports),
   ];
 
   return [...new Set(targets.flatMap((target) => toSourceCandidates(target, packageJsonPath)))];
@@ -27,6 +32,16 @@ function readPackageJson(packageJsonPath: string): Record<string, unknown> {
     throw new Error(`Expected package.json to contain a JSON object: ${packageJsonPath}`);
   }
   return parsed;
+}
+
+function collectRootExportTargets(value: unknown): string[] {
+  if (!isRecord(value)) return collectStringTargets(value);
+
+  const rootEntry = Object.entries(value).find(([key]) => key === '.')?.[1];
+  if (rootEntry !== undefined) return collectStringTargets(rootEntry);
+
+  const hasSubpathKeys = Object.keys(value).some((key) => key.startsWith('.'));
+  return hasSubpathKeys ? [] : collectStringTargets(value);
 }
 
 function collectStringTargets(value: unknown): string[] {

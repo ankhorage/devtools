@@ -117,7 +117,7 @@ it('keeps export sorting active inside index barrels', async () => {
   expect(ruleIds(result)).not.toContain('ankhorage/no-forward-exports');
 });
 
-it('allows forward exports from declared non-index package entrypoints', async () => {
+it('allows forward exports only from root package entrypoints and index barrels', async () => {
   const workspace = await createLintWorkspace();
   await writeFile(
     path.join(workspace.root, 'package.json'),
@@ -125,6 +125,10 @@ it('allows forward exports from declared non-index package entrypoints', async (
       main: './dist/root.js',
       types: './dist/root.d.ts',
       exports: {
+        '.': {
+          types: './dist/root.d.ts',
+          import: './dist/root.js',
+        },
         './binding': {
           types: './dist/bindingAuthoringModel.d.ts',
           import: './dist/bindingAuthoringModel.js',
@@ -134,21 +138,21 @@ it('allows forward exports from declared non-index package entrypoints', async (
   );
 
   await Promise.all([
-    workspace.write("export * from './index';\n", 'src/root.ts'),
+    workspace.write("export * from './value';\n", 'src/root.ts'),
     workspace.write("export { value } from './value';\n", 'src/bindingAuthoringModel.ts'),
     workspace.write("export * from './value';\n", 'src/implementation.ts'),
   ]);
 
   const root = await workspace.lintFile('src/root.ts');
-  const binding = await workspace.lintFile('src/bindingAuthoringModel.ts');
+  const namedSubpath = await workspace.lintFile('src/bindingAuthoringModel.ts');
   const undeclared = await workspace.lintFile('src/implementation.ts');
 
   expect(ruleIds(root)).not.toContain('ankhorage/no-forward-exports');
-  expect(ruleIds(binding)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(namedSubpath)).toContain('ankhorage/no-forward-exports');
   expect(ruleIds(undeclared)).toContain('ankhorage/no-forward-exports');
 });
 
-it('rejects named, type, and star forward exports outside index barrels', async () => {
+it('rejects named, type, and star direct forward exports outside barrels', async () => {
   const named = await lintFresh("export { value } from './value';\n", 'named.ts');
   const typed = await lintFresh("export type { Value } from './value';\n", 'typed.ts');
   const star = await lintFresh("export * from './value';\n", 'star.ts');
@@ -158,14 +162,44 @@ it('rejects named, type, and star forward exports outside index barrels', async 
   expect(ruleIds(star)).toContain('ankhorage/no-forward-exports');
 });
 
+it('rejects imported bindings re-exported through local export syntax', async () => {
+  const named = await lintFresh(
+    "import { value } from './value';\nexport { value };\n",
+    'named-indirect.ts',
+  );
+  const aliased = await lintFresh(
+    "import { value } from './value';\nexport { value as renamed };\n",
+    'aliased-indirect.ts',
+  );
+  const typed = await lintFresh(
+    "import type { Value } from './value';\nexport type { Value };\n",
+    'typed-indirect.ts',
+  );
+  const defaulted = await lintFresh(
+    "import value from './value';\nexport default value;\n",
+    'default-indirect.ts',
+  );
+
+  for (const result of [named, aliased, typed, defaulted]) {
+    expect(ruleIds(result)).toContain('ankhorage/no-forward-exports');
+  }
+});
+
 it('allows declarations exported where they are defined and index barrel forward exports', async () => {
   const value = await lintFresh('export const value = 1;\n', 'owned.ts');
+  const listed = await lintFresh('const value = 1;\nexport { value };\n', 'owned-listed.ts');
   const type = await lintFresh('export type Value = string;\n', 'owned-type.ts');
   const barrel = await lintFresh("export { value } from './value';\n", 'index.ts');
+  const indirectBarrel = await lintFresh(
+    "import { value } from './value';\nexport { value };\n",
+    'nested/index.ts',
+  );
 
   expect(ruleIds(value)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(listed)).not.toContain('ankhorage/no-forward-exports');
   expect(ruleIds(type)).not.toContain('ankhorage/no-forward-exports');
   expect(ruleIds(barrel)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(indirectBarrel)).not.toContain('ankhorage/no-forward-exports');
 });
 
 it('keeps the central TypeScript, unused-import, formatting, and restricted-import rules active', async () => {
