@@ -34,8 +34,11 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
-import { createModuleOwnershipConfig } from './moduleOwnership.js';
-import { resolvePackageEntrypointIgnores } from './packageEntrypoints.js';
+import {
+  createModuleOwnershipConfig,
+  createModuleOwnershipExemptionConfig,
+} from './moduleOwnership.js';
+import { resolvePackageEntrypointFiles } from './packageEntrypoints.js';
 import { resolveEslintProfile } from './profile.js';
 import type {
   DevtoolsConfigOptions,
@@ -79,14 +82,15 @@ interface NormalizedConfigOptions {
 export function createConfig(options: DevtoolsConfigOptions): Linter.Config[] {
   const normalized = normalizeOptions(options);
   const profile = resolveEslintProfile(options);
-  const packageEntrypoints = resolvePackageEntrypointIgnores(options);
+  const packageEntrypoints = resolvePackageEntrypointFiles(options);
 
   return defineConfig(
     { ignores: [...defaultIgnores, ...normalized.additionalIgnores] },
     { ...js.configs.recommended, files: normalized.files },
     ...createTypeCheckedConfigs(normalized),
     createBaseConfig(normalized),
-    createModuleOwnershipConfig(normalized.files, packageEntrypoints),
+    createModuleOwnershipConfig(normalized.files),
+    createModuleOwnershipExemptionConfig(packageEntrypoints),
     ...createProfileConfigs(profile, normalized.files),
     ...normalized.overrides,
     ...(normalized.includePrettier ? [prettierConfig] : []),
