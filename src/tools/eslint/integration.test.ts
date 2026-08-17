@@ -1,4 +1,4 @@
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -31,6 +31,7 @@ async function createLintWorkspace(
     root,
     async lint(code, fileName, fix = false) {
       const filePath = path.join(root, fileName);
+      await mkdir(path.dirname(filePath), { recursive: true });
       await writeFile(filePath, code);
       const eslint = new ESLint({
         cwd: root,
