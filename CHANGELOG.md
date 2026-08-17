@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.2
+
+### Patch Changes
+
+- 9066ccb: Remove the organization-wide `ankhorage/no-forward-exports` ESLint policy and its package-entrypoint resolver. Forward-export and module-ownership decisions are no longer enforced globally by Devtools.
+
 ## 1.5.1
 
 ### Patch Changes
