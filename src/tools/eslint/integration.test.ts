@@ -1,4 +1,4 @@
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -13,6 +13,8 @@ type LintResult = Awaited<ReturnType<ESLint['lintFiles']>>[number];
 interface LintWorkspace {
   readonly root: string;
   lint(code: string, fileName: string, fix?: boolean): Promise<LintResult>;
+  lintFile(fileName: string, fix?: boolean): Promise<LintResult>;
+  write(code: string, fileName: string): Promise<void>;
 }
 
 async function createLintWorkspace(
@@ -27,25 +29,37 @@ async function createLintWorkspace(
     }),
   );
 
+  async function write(code: string, fileName: string): Promise<void> {
+    const filePath = path.join(root, fileName);
+    await mkdir(path.dirname(filePath), { recursive: true });
+    await writeFile(filePath, code);
+  }
+
+  async function lintFile(fileName: string, fix = false): Promise<LintResult> {
+    const filePath = path.join(root, fileName);
+    const eslint = new ESLint({
+      cwd: root,
+      fix,
+      overrideConfigFile: true,
+      overrideConfig: createConfig({
+        tsconfigRootDir: root,
+        project: ['./tsconfig.json'],
+        files: ['**/*.{ts,tsx}'],
+        profile,
+      }),
+    });
+    const [result] = await eslint.lintFiles([filePath]);
+    return result;
+  }
+
   return {
     root,
     async lint(code, fileName, fix = false) {
-      const filePath = path.join(root, fileName);
-      await writeFile(filePath, code);
-      const eslint = new ESLint({
-        cwd: root,
-        fix,
-        overrideConfigFile: true,
-        overrideConfig: createConfig({
-          tsconfigRootDir: root,
-          project: ['./tsconfig.json'],
-          files: ['**/*.{ts,tsx}'],
-          profile,
-        }),
-      });
-      const [result] = await eslint.lintFiles([filePath]);
-      return result;
+      await write(code, fileName);
+      return lintFile(fileName, fix);
     },
+    lintFile,
+    write,
   };
 }
 
@@ -55,6 +69,7 @@ async function lintFresh(code: string, fileName: string): Promise<LintResult> {
 }
 
 function ruleIds(result: LintResult): string[] {
+  expect(result.messages.filter((message) => message.fatal === true)).toEqual([]);
   return result.messages.flatMap((message) => (message.ruleId === null ? [] : [message.ruleId]));
 }
 
@@ -100,6 +115,37 @@ it('keeps export sorting active inside index barrels', async () => {
   const result = await workspace.lint(source, 'index.ts');
   expect(ruleIds(result)).toContain('simple-import-sort/exports');
   expect(ruleIds(result)).not.toContain('ankhorage/no-forward-exports');
+});
+
+it('allows forward exports from declared non-index package entrypoints', async () => {
+  const workspace = await createLintWorkspace();
+  await writeFile(
+    path.join(workspace.root, 'package.json'),
+    JSON.stringify({
+      main: './dist/root.js',
+      types: './dist/root.d.ts',
+      exports: {
+        './binding': {
+          types: './dist/bindingAuthoringModel.d.ts',
+          import: './dist/bindingAuthoringModel.js',
+        },
+      },
+    }),
+  );
+
+  await Promise.all([
+    workspace.write("export * from './index';\n", 'src/root.ts'),
+    workspace.write("export { value } from './value';\n", 'src/bindingAuthoringModel.ts'),
+    workspace.write("export * from './value';\n", 'src/implementation.ts'),
+  ]);
+
+  const root = await workspace.lintFile('src/root.ts');
+  const binding = await workspace.lintFile('src/bindingAuthoringModel.ts');
+  const undeclared = await workspace.lintFile('src/implementation.ts');
+
+  expect(ruleIds(root)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(binding)).not.toContain('ankhorage/no-forward-exports');
+  expect(ruleIds(undeclared)).toContain('ankhorage/no-forward-exports');
 });
 
 it('rejects named, type, and star forward exports outside index barrels', async () => {
