@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node for npm publishing
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: '__ANKH_NODE_VERSION__'
           registry-url: https://registry.npmjs.org
 
       - name: Update npm
