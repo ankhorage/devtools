@@ -21,5 +21,4 @@ export const nodeRuntimePolicy = {
   engineRange: '24.x',
   major: 24,
   setupVersion: '24',
-  typesRange: '^24.13.3',
 } as const;
