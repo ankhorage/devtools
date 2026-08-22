@@ -24,6 +24,11 @@ jobs:
         with:
           bun-version: '__ANKH_BUN_VERSION__'
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '__ANKH_NODE_VERSION__'
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
