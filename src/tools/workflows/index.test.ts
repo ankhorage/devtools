@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
-import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy';
-import { workflowManagedFiles } from './index';
+import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
+import { workflowManagedFiles } from './index.js';
 
 describe('managed workflows', () => {
   test('render the canonical Bun and Node runtime policies', async () => {
