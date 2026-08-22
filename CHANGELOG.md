@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0
+
+### Minor Changes
+
+- ca42420: Add the canonical Node 24 LTS tooling policy and render managed CI/release workflows from the shared Bun and Node runtime baselines.
+
 ## 1.5.2
 
 ### Patch Changes
