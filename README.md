@@ -232,13 +232,15 @@ Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrid
 
 ## Prettier
 
-`ankh devtools prettier sync` owns `.prettierrc.js` and emits the correct ESM or CommonJS delegate based on the repository's `package.json` module type.
+`ankh devtools prettier sync` owns `.prettierrc.js`, emits the correct ESM or CommonJS wrapper based on the repository's `package.json` module type, and creates `prettier.local.config.js` once for narrow repository-specific options.
 
 The consumer delegates formatting policy to:
 
 ```text
 @ankhorage/devtools/prettier
 ```
+
+The wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; later synchronization never overwrites the local file.
 
 ## Knip
 
