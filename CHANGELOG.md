@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.1
+
+### Patch Changes
+
+- 2181e60: Write managed repository files before running the dependency install so a sync cannot invalidate its own packaged asset paths. Preserve repository-specific Prettier options in a create-only local configuration while keeping the shared wrapper centrally managed, without carrying former shared-only Devtools delegates into the local configuration.
+
 ## 1.6.0
 
 ### Minor Changes
