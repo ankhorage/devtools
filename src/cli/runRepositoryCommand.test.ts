@@ -113,6 +113,39 @@ test('preserves an existing Prettier config during first synchronization', async
   expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('localConfig.overrides');
 });
 
+test('migrates former shared-only Prettier wrappers to empty local configs', async () => {
+  const fixtures = [
+    {
+      packageJson: '{"name":"fixture","type":"module"}\n',
+      wrapper: "export { default } from '@ankhorage/devtools/prettier';\n",
+      expectedLocalConfig: 'export default {};\n',
+    },
+    {
+      packageJson: '{"name":"fixture"}\n',
+      wrapper: "module.exports = require('@ankhorage/devtools/prettier');\n",
+      expectedLocalConfig: 'module.exports = {};\n',
+    },
+  ] as const;
+
+  for (const fixture of fixtures) {
+    const target = await createTarget();
+    await writeFile(join(target, 'package.json'), fixture.packageJson);
+    await writeFile(join(target, '.prettierrc.js'), fixture.wrapper);
+    const context = createContext(target);
+
+    expect(
+      (await runRepositoryCommand(getRepositoryCommand(['prettier', 'sync']), [], context))
+        .exitCode,
+    ).toBe(0);
+    expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
+      fixture.expectedLocalConfig,
+    );
+    expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain(
+      'localConfig.overrides',
+    );
+  }
+});
+
 test('preserves an existing ESLint config during first synchronization', async () => {
   const target = await createTarget();
   await writeFile(join(target, 'package.json'), '{"name":"fixture","type":"module"}\n');

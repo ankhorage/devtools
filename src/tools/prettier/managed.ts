@@ -25,6 +25,10 @@ const EMPTY_ESM_LOCAL_CONFIG = `export default {};
 `;
 const EMPTY_COMMONJS_LOCAL_CONFIG = `module.exports = {};
 `;
+const LEGACY_ESM_CONFIG = `export { default } from '@ankhorage/devtools/prettier';
+`;
+const LEGACY_COMMONJS_CONFIG = `module.exports = require('@ankhorage/devtools/prettier');
+`;
 
 export const prettierManagedFiles = [
   {
@@ -46,7 +50,7 @@ async function renderInitialLocalConfig(targetDirectory: string): Promise<string
   const isModule = (await readPackageType(targetDirectory)) === 'module';
   try {
     const existingConfig = await readFile(resolve(targetDirectory, '.prettierrc.js'), 'utf8');
-    if (existingConfig !== ESM_CONFIG && existingConfig !== COMMONJS_CONFIG) return existingConfig;
+    if (!isSharedOnlyConfig(existingConfig)) return existingConfig;
   } catch (error) {
     if (!isNodeError(error) || error.code !== 'ENOENT') throw error;
   }
@@ -68,6 +72,10 @@ async function readPackageType(targetDirectory: string): Promise<string | undefi
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isSharedOnlyConfig(value: string): boolean {
+  return [ESM_CONFIG, COMMONJS_CONFIG, LEGACY_ESM_CONFIG, LEGACY_COMMONJS_CONFIG].includes(value);
 }
 
 function isNodeError(error: unknown): error is NodeJS.ErrnoException {

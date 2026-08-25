@@ -240,7 +240,7 @@ The consumer delegates formatting policy to:
 @ankhorage/devtools/prettier
 ```
 
-The wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; later synchronization never overwrites the local file.
+The wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.
 
 ## Knip
 
