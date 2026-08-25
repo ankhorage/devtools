@@ -291,10 +291,13 @@ When this managed package contract changes, synchronization runs `bun install`. 
 
 ```text
 .github/workflows/ci.yml
+.github/workflows/renovate.yml
 .github/workflows/release.yml
 ```
 
-Both workflows render their `bun-version` from the same managed Bun runtime policy used for `package.json`. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and Changesets checks.
+CI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and Changesets checks.
+
+The Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates, then dispatches CI for that bot-authored commit. It never checks out or executes pull-request code in the privileged `pull_request_target` context.
 
 ## Managed VS Code configuration
 

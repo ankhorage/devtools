@@ -9,6 +9,7 @@ const NODE_VERSION_TOKEN = '__ANKH_NODE_VERSION__';
 export const workflowManagedFiles = [
   createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
   createWorkflowDefinition('.github/workflows/release.yml', './files/release.yml'),
+  createWorkflowDefinition('.github/workflows/renovate.yml', './files/renovate.yml'),
 ] as const satisfies readonly ManagedFileDefinition[];
 
 function createWorkflowDefinition(relativePath: string, sourcePath: string): ManagedFileDefinition {
