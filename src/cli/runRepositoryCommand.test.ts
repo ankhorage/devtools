@@ -57,6 +57,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe('^1.3.14');
   expect(readProperty(packageJson, 'packageManager')).toBe('bun@1.3.14');
   expect(context.dependencySyncs).toBe(1);
+  expect(context.dependencySyncObservedManagedFiles).toBe(true);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
   expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('export { default }');
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain('createKnipConfig');
@@ -132,7 +133,7 @@ async function createTarget(): Promise<string> {
 }
 
 function createContext(target: string) {
-  const state = { dependencySyncs: 0 };
+  const state = { dependencySyncObservedManagedFiles: false, dependencySyncs: 0 };
   const stdout: string[] = [];
   const stderr: string[] = [];
   return {
@@ -142,9 +143,19 @@ function createContext(target: string) {
     get dependencySyncs() {
       return state.dependencySyncs;
     },
-    syncDependencies: () => {
+    get dependencySyncObservedManagedFiles() {
+      return state.dependencySyncObservedManagedFiles;
+    },
+    syncDependencies: async () => {
       state.dependencySyncs += 1;
-      return Promise.resolve({ relativePath: 'bun.lock', action: 'created' as const });
+      state.dependencySyncObservedManagedFiles = (
+        await Promise.all([
+          Bun.file(join(target, 'eslint.config.mjs')).exists(),
+          Bun.file(join(target, '.vscode/settings.json')).exists(),
+          Bun.file(join(target, '.github/workflows/ci.yml')).exists(),
+        ])
+      ).every(Boolean);
+      return { relativePath: 'bun.lock', action: 'created' as const };
     },
     writeStdout: (text: string) => stdout.push(text),
     writeStderr: (text: string) => stderr.push(text),

@@ -154,7 +154,7 @@ Synchronization is deterministic and idempotent:
 - missing managed artifacts are created
 - outdated centrally owned artifacts are updated
 - the managed Bun runtime version is applied consistently to package metadata and workflows
-- package changes are followed by `bun install`, keeping installed dependencies and `bun.lock` synchronized
+- package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync
 - current artifacts are left untouched
 - unrelated files and package fields are preserved
 - repeated sync produces only `unchanged` results
