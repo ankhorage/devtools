@@ -109,19 +109,21 @@ async function runSync(
   context: DevtoolsRepositoryCommandContext,
 ): Promise<DevtoolsRepositoryCommandResult> {
   const results: ManagedFileSyncResult[] = [];
+  let packageDependenciesChanged = false;
   if (scope === 'all' || scope === 'package') {
     const packageResult = await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun });
     results.push(packageResult);
-    if (packageResult.action !== 'unchanged') {
-      if (dryRun) {
-        results.push(planBunDependencySync(targetDirectory));
-      } else {
-        const syncDependencies = context.syncDependencies ?? syncBunDependencies;
-        results.push(await syncDependencies(targetDirectory));
-      }
-    }
+    packageDependenciesChanged = packageResult.action !== 'unchanged';
   }
   results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
+  if (packageDependenciesChanged) {
+    if (dryRun) {
+      results.push(planBunDependencySync(targetDirectory));
+    } else {
+      const syncDependencies = context.syncDependencies ?? syncBunDependencies;
+      results.push(await syncDependencies(targetDirectory));
+    }
+  }
 
   writeSyncOutput(results, context);
   return { exitCode: 0 };

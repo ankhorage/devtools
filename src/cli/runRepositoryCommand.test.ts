@@ -57,8 +57,12 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe('^1.3.14');
   expect(readProperty(packageJson, 'packageManager')).toBe('bun@1.3.14');
   expect(context.dependencySyncs).toBe(1);
+  expect(context.dependencySyncObservedManagedFiles).toBe(true);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
-  expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('export { default }');
+  expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('localConfig.overrides');
+  expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
+    'export default {};\n',
+  );
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain('createKnipConfig');
 });
 
@@ -74,15 +78,72 @@ test('preserves create-only local extensions across repeated synchronization', a
   },
 ];
 `;
+  const localPrettierConfig = `export default {
+  overrides: [{ files: '**/*.json', options: { printWidth: 1 } }],
+};
+`;
 
   await runRepositoryCommand(sync, [], context);
   await writeFile(join(target, 'eslint.local.config.mjs'), localConfig);
+  await writeFile(join(target, 'prettier.local.config.js'), localPrettierConfig);
   await writeFile(join(target, 'knip.config.ts'), "export default { entry: ['custom.ts'] };\n");
   await runRepositoryCommand(sync, [], context);
 
   expect(await readFile(join(target, 'eslint.local.config.mjs'), 'utf8')).toBe(localConfig);
+  expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
+    localPrettierConfig,
+  );
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain("'custom.ts'");
   expect(context.dependencySyncs).toBe(1);
+});
+
+test('preserves an existing Prettier config during first synchronization', async () => {
+  const target = await createTarget();
+  await writeFile(join(target, 'package.json'), '{"name":"fixture","type":"module"}\n');
+  const existingConfig = `export default {
+  overrides: [{ files: '**/*.yaml', options: { singleQuote: false } }],
+};
+`;
+  await writeFile(join(target, '.prettierrc.js'), existingConfig);
+  const context = createContext(target);
+  const sync = getRepositoryCommand(['prettier', 'sync']);
+
+  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(existingConfig);
+  expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('localConfig.overrides');
+});
+
+test('migrates former shared-only Prettier wrappers to empty local configs', async () => {
+  const fixtures = [
+    {
+      packageJson: '{"name":"fixture","type":"module"}\n',
+      wrapper: "export { default } from '@ankhorage/devtools/prettier';\n",
+      expectedLocalConfig: 'export default {};\n',
+    },
+    {
+      packageJson: '{"name":"fixture"}\n',
+      wrapper: "module.exports = require('@ankhorage/devtools/prettier');\n",
+      expectedLocalConfig: 'module.exports = {};\n',
+    },
+  ] as const;
+
+  for (const fixture of fixtures) {
+    const target = await createTarget();
+    await writeFile(join(target, 'package.json'), fixture.packageJson);
+    await writeFile(join(target, '.prettierrc.js'), fixture.wrapper);
+    const context = createContext(target);
+
+    expect(
+      (await runRepositoryCommand(getRepositoryCommand(['prettier', 'sync']), [], context))
+        .exitCode,
+    ).toBe(0);
+    expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
+      fixture.expectedLocalConfig,
+    );
+    expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain(
+      'localConfig.overrides',
+    );
+  }
 });
 
 test('preserves an existing ESLint config during first synchronization', async () => {
@@ -132,7 +193,7 @@ async function createTarget(): Promise<string> {
 }
 
 function createContext(target: string) {
-  const state = { dependencySyncs: 0 };
+  const state = { dependencySyncObservedManagedFiles: false, dependencySyncs: 0 };
   const stdout: string[] = [];
   const stderr: string[] = [];
   return {
@@ -142,9 +203,20 @@ function createContext(target: string) {
     get dependencySyncs() {
       return state.dependencySyncs;
     },
-    syncDependencies: () => {
+    get dependencySyncObservedManagedFiles() {
+      return state.dependencySyncObservedManagedFiles;
+    },
+    syncDependencies: async () => {
       state.dependencySyncs += 1;
-      return Promise.resolve({ relativePath: 'bun.lock', action: 'created' as const });
+      state.dependencySyncObservedManagedFiles = (
+        await Promise.all([
+          Bun.file(join(target, 'eslint.config.mjs')).exists(),
+          Bun.file(join(target, 'prettier.local.config.js')).exists(),
+          Bun.file(join(target, '.vscode/settings.json')).exists(),
+          Bun.file(join(target, '.github/workflows/ci.yml')).exists(),
+        ])
+      ).every(Boolean);
+      return { relativePath: 'bun.lock', action: 'created' as const };
     },
     writeStdout: (text: string) => stdout.push(text),
     writeStderr: (text: string) => stderr.push(text),
