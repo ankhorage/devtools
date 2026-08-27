@@ -101,7 +101,7 @@ The synchronized package scripts are:
     "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
-    "knip": "ankhorage-knip"
+    "knip:check": "ankhorage-knip"
   }
 }
 ```
