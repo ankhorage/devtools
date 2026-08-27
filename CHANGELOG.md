@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.7.0
+
+### Minor Changes
+
+- e2b6338: Distribute the secure Renovate Changeset workflow and enable CI dispatch for bot-authored Changeset commits.
+
+### Patch Changes
+
+- f581668: Rename the synchronized Knip package script to `knip:check` so Expo Doctor no longer rejects generated Expo applications for colliding with the installed `knip` binary.
+
 ## 1.6.1
 
 ### Patch Changes
