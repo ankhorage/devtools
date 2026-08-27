@@ -5,7 +5,7 @@
  * as a development dependency for normal consumers, while `@ankhorage/ankh` keeps devtools as a
  * runtime dependency because the CLI loads it as a bundled core provider. Individually installed
  * toolchain packages that devtools now owns are removed, and the canonical `lint`, `lint:fix`,
- * `format`, `format:check`, and `knip` scripts are written.
+ * `format`, `format:check`, and `knip:check` scripts are written.
  * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
  *
  * The Bun runtime policy is shared by every repository, including devtools itself. Devtools skips
@@ -34,7 +34,7 @@ const STANDARD_SCRIPTS = {
   'lint:fix': 'ankhorage-eslint . --fix --max-warnings=0',
   format: 'ankhorage-prettier --write .',
   'format:check': 'ankhorage-prettier --check .',
-  knip: 'ankhorage-knip',
+  'knip:check': 'ankhorage-knip',
 } as const;
 
 const DEVTOOLS_OWNED_DEV_DEPENDENCIES = [
@@ -113,7 +113,9 @@ export function applyManagedPackageContract(
     return applyBunRuntimePolicy(manifest);
   }
 
-  const scripts = { ...toRecord(manifest.scripts), ...STANDARD_SCRIPTS };
+  const scripts = { ...toRecord(manifest.scripts) };
+  delete scripts.knip;
+  Object.assign(scripts, STANDARD_SCRIPTS);
   const devDependencies = removeOwnedDependencies(toRecord(manifest.devDependencies));
   const dependencies = toRecord(manifest.dependencies);
 
@@ -249,7 +251,10 @@ function normalizedDependencies(
 }
 
 function hasStandardScripts(scripts: Record<string, unknown>): boolean {
-  return Object.entries(STANDARD_SCRIPTS).every(([name, command]) => scripts[name] === command);
+  return (
+    scripts.knip === undefined &&
+    Object.entries(STANDARD_SCRIPTS).every(([name, command]) => scripts[name] === command)
+  );
 }
 
 function serializePackageManifest(manifest: Record<string, unknown>): string {

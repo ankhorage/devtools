@@ -17,6 +17,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
     scripts: {
       test: 'bun test',
       lint: 'ankhorage-eslint . --max-warnings=0',
+      'knip:check': 'ankhorage-knip',
     },
     devDependencies: {
       typescript: '^5.9.3',
@@ -25,6 +26,21 @@ test('merges standard scripts and the shared devtools dependency', () => {
     },
   });
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
+  expect(readNestedValue(updated, 'scripts', 'knip')).toBeUndefined();
+});
+
+test('removes the obsolete knip script that conflicts with the installed binary', () => {
+  const updated = applyManagedPackageContract(
+    {
+      name: 'fixture',
+      scripts: { knip: 'ankhorage-knip' },
+    },
+    '2.3.4',
+  );
+
+  expect(readNestedValue(updated, 'scripts', 'knip')).toBeUndefined();
+  expect(readNestedValue(updated, 'scripts', 'knip:check')).toBe('ankhorage-knip');
+  expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });
 
 test('preserves devtools as a runtime dependency for ankh', () => {
