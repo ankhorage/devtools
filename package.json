@@ -86,7 +86,7 @@
     "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files",
     "typecheck": "bun x tsc --noEmit -p tsconfig.test.json",
     "doctor": "ankhorage-doctor validate .",
-    "knip:check": "knip",
+    "knip": "knip",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix --max-warnings=0",
     "format": "prettier --write .",
