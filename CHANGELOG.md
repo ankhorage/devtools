@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.2
+
+### Patch Changes
+
+- 60910fd: Update Devtools-owned dependencies: `@changesets/cli`, `@types/bun`, `@types/node`, `bun`, `eslint`, `eslint-plugin-prettier`, `knip`, `prettier`, `typescript-eslint`.
+
 ## 1.7.1
 
 ### Patch Changes
