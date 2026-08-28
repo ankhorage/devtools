@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0
+
+### Minor Changes
+
+- d266e7c: Centralize Changesets execution, package scripts, and managed workflow commands in Devtools.
+
 ## 1.7.2
 
 ### Patch Changes
