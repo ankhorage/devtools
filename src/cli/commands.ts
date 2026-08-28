@@ -1,12 +1,6 @@
 export type DevtoolsToolName = 'format' | 'knip' | 'lint';
 type DevtoolsManagedScope =
-  | 'all'
-  | 'eslint'
-  | 'knip'
-  | 'package'
-  | 'prettier'
-  | 'vscode'
-  | 'workflows';
+  'all' | 'eslint' | 'knip' | 'package' | 'prettier' | 'vscode' | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
 type DevtoolsCapability =
@@ -48,8 +42,7 @@ export interface DevtoolsRepositoryCommandDefinition extends DevtoolsCommandBase
 }
 
 export type DevtoolsCommandDefinition =
-  | DevtoolsExternalCommandDefinition
-  | DevtoolsRepositoryCommandDefinition;
+  DevtoolsExternalCommandDefinition | DevtoolsRepositoryCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
   externalCommand('lint', 'devtools.lint', 'Run the shared ESLint toolchain.', 'eslint'),
