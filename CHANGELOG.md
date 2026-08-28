@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.1
+
+### Patch Changes
+
+- 78a88ad: Activate the Devtools-owner Renovate policy with a single Bun version authority, current Ankh/Doctor validation baselines, and trusted, byte-stable owner artifact synchronization.
+
 ## 1.7.0
 
 ### Minor Changes
