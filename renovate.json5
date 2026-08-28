@@ -25,6 +25,7 @@
       matchDepNames: ['bun'],
       matchFileNames: ['src/policy/bunRuntimePolicy.ts'],
       matchManagers: ['custom.regex'],
+      enabled: true,
       groupName: 'Devtools-owned toolchain',
       rangeStrategy: 'replace',
       automerge: false,
