@@ -17,18 +17,20 @@
  *
  * @readme
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
 import { bunRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
+import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managedFiles.js';
 
 const PACKAGE_PATH = 'package.json';
 const DEVTOOLS_PACKAGE_NAME = '@ankhorage/devtools';
 const ANKH_PACKAGE_NAME = '@ankhorage/ankh';
 const BUN_TYPES_PACKAGE_NAME = '@types/bun';
+const CHANGESETS_CONFIG_PATH = '.changeset/config.json';
 
 const STANDARD_SCRIPTS = {
   lint: 'ankhorage-eslint . --max-warnings=0',
@@ -56,6 +58,7 @@ const DEVTOOLS_OWNED_DEV_DEPENDENCIES = [
 ] as const;
 
 interface PackageManifestSnapshot {
+  readonly changesetsConfigExists: boolean;
   readonly exists: boolean;
   readonly manifest: Record<string, unknown>;
 }
@@ -71,7 +74,11 @@ export async function inspectPackageManifest(
 
   return {
     relativePath: PACKAGE_PATH,
-    state: isManagedPackageContractCurrent(snapshot.manifest, devtoolsVersion)
+    state: isManagedPackageContractCurrent(
+      snapshot.manifest,
+      devtoolsVersion,
+      snapshot.changesetsConfigExists,
+    )
       ? 'current'
       : 'outdated',
   };
@@ -83,7 +90,14 @@ export async function syncPackageManifest(
   options: { readonly dryRun: boolean },
 ): Promise<ManagedFileSyncResult> {
   const snapshot = await readPackageManifest(targetDirectory);
-  if (snapshot.exists && isManagedPackageContractCurrent(snapshot.manifest, devtoolsVersion)) {
+  if (
+    snapshot.exists &&
+    isManagedPackageContractCurrent(
+      snapshot.manifest,
+      devtoolsVersion,
+      snapshot.changesetsConfigExists,
+    )
+  ) {
     return { relativePath: PACKAGE_PATH, action: 'unchanged' };
   }
 
@@ -94,7 +108,11 @@ export async function syncPackageManifest(
     };
   }
 
-  const updatedManifest = applyManagedPackageContract(snapshot.manifest, devtoolsVersion);
+  const updatedManifest = applyManagedPackageContract(
+    snapshot.manifest,
+    devtoolsVersion,
+    snapshot.changesetsConfigExists,
+  );
   await writeFile(
     resolve(targetDirectory, PACKAGE_PATH),
     serializePackageManifest(updatedManifest),
@@ -109,16 +127,23 @@ export async function syncPackageManifest(
 export function applyManagedPackageContract(
   manifest: Record<string, unknown>,
   devtoolsVersion: string,
+  changesetsConfigExists = false,
 ): Record<string, unknown> {
   if (manifest.name === DEVTOOLS_PACKAGE_NAME) {
     return applyBunRuntimePolicy(manifest, bunRuntimePolicy);
   }
 
   const scripts = { ...toRecord(manifest.scripts) };
+  const changesetsEnabled = isChangesetsEnabled(scripts, changesetsConfigExists);
   delete scripts.knip;
   Object.assign(scripts, STANDARD_SCRIPTS);
+  if (changesetsEnabled) {
+    Object.assign(scripts, changesetsPolicy.packageScripts);
+  }
   const devDependencies = removeOwnedDependencies(toRecord(manifest.devDependencies));
   const dependencies = toRecord(manifest.dependencies);
+  delete dependencies[changesetsPolicy.packageName];
+  delete devDependencies[changesetsPolicy.packageName];
 
   applyDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion);
 
@@ -136,6 +161,7 @@ export function applyManagedPackageContract(
 export function isManagedPackageContractCurrent(
   manifest: Record<string, unknown>,
   devtoolsVersion: string,
+  changesetsConfigExists = false,
 ): boolean {
   if (!hasCurrentBunRuntimePolicy(manifest)) {
     return false;
@@ -147,10 +173,14 @@ export function isManagedPackageContractCurrent(
   const scripts = toRecord(manifest.scripts);
   const devDependencies = toRecord(manifest.devDependencies);
   const dependencies = toRecord(manifest.dependencies);
+  const changesetsEnabled = isChangesetsEnabled(scripts, changesetsConfigExists);
 
   return (
     hasStandardScripts(scripts) &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
+    dependencies[changesetsPolicy.packageName] === undefined &&
+    devDependencies[changesetsPolicy.packageName] === undefined &&
+    hasCurrentChangesetsScripts(scripts, changesetsEnabled) &&
     hasCurrentDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion)
   );
 }
@@ -166,16 +196,17 @@ export function readCurrentDevtoolsVersion(): string {
 }
 
 async function readPackageManifest(targetDirectory: string): Promise<PackageManifestSnapshot> {
+  const changesetsConfigExists = existsSync(resolve(targetDirectory, CHANGESETS_CONFIG_PATH));
   try {
     const contents = await readFile(resolve(targetDirectory, PACKAGE_PATH), 'utf8');
     const parsed = JSON.parse(contents) as unknown;
     if (!isRecord(parsed)) {
       throw new Error(`Expected ${PACKAGE_PATH} to contain a JSON object.`);
     }
-    return { exists: true, manifest: parsed };
+    return { changesetsConfigExists, exists: true, manifest: parsed };
   } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') {
-      return { exists: false, manifest: {} };
+      return { changesetsConfigExists, exists: false, manifest: {} };
     }
     throw error;
   }
@@ -248,6 +279,30 @@ function hasStandardScripts(scripts: Record<string, unknown>): boolean {
   return (
     scripts.knip === undefined &&
     Object.entries(STANDARD_SCRIPTS).every(([name, command]) => scripts[name] === command)
+  );
+}
+
+function hasCurrentChangesetsScripts(
+  scripts: Record<string, unknown>,
+  changesetsEnabled: boolean,
+): boolean {
+  return (
+    !changesetsEnabled ||
+    Object.entries(changesetsPolicy.packageScripts).every(
+      ([name, command]) => scripts[name] === command,
+    )
+  );
+}
+
+function isChangesetsEnabled(
+  scripts: Record<string, unknown>,
+  changesetsConfigExists: boolean,
+): boolean {
+  return (
+    changesetsConfigExists ||
+    Object.keys(changesetsPolicy.packageScripts).some(
+      (scriptName) => scripts[scriptName] !== undefined,
+    )
   );
 }
 

@@ -7,6 +7,7 @@ describe('README documentation validation', () => {
   it('accepts a README that documents the complete command surface', () => {
     const readme = [
       'ankh devtools lint',
+      'ankh devtools changeset',
       'ankh devtools format',
       'ankh devtools knip',
       'ankh devtools sync',
@@ -26,6 +27,8 @@ describe('README documentation validation', () => {
       '--dry-run',
       "profile: 'auto'",
       '@ankhorage/utility/project',
+      'ankhorage-changeset',
+      '.changeset/config.json',
       '<!-- devtools-bun-policy:start -->',
       '<!-- devtools-bun-policy:end -->',
       'bun scripts/sync-renovate-owner.ts sync repository',

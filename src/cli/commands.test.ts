@@ -9,6 +9,7 @@ import {
 describe('devtools command table', () => {
   it('defines the exact provider-backed command surface', () => {
     expect(getDevtoolsCommands().map((command) => command.path.join(' '))).toEqual([
+      'changeset',
       'lint',
       'format',
       'knip',
@@ -30,6 +31,11 @@ describe('devtools command table', () => {
   });
 
   it('resolves single- and multi-segment command paths', () => {
+    expect(getDevtoolsToolCommand('changeset')).toMatchObject({
+      capability: 'devtools.changeset',
+      packageName: '@changesets/cli',
+      binName: 'changeset',
+    });
     expect(getDevtoolsToolCommand('lint').capability).toBe('devtools.lint');
     expect(findDevtoolsCommandByPath(['eslint', 'sync'])?.capability).toBe('devtools.eslint.sync');
     expect(findDevtoolsCommandByPath(['package', 'status'])?.capability).toBe(

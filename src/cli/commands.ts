@@ -1,9 +1,10 @@
-export type DevtoolsToolName = 'format' | 'knip' | 'lint';
+export type DevtoolsToolName = 'changeset' | 'format' | 'knip' | 'lint';
 type DevtoolsManagedScope =
   'all' | 'eslint' | 'knip' | 'package' | 'prettier' | 'vscode' | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
 type DevtoolsCapability =
+  | 'devtools.changeset'
   | 'devtools.format'
   | 'devtools.knip'
   | 'devtools.lint'
@@ -31,8 +32,8 @@ interface DevtoolsCommandBase {
 export interface DevtoolsExternalCommandDefinition extends DevtoolsCommandBase {
   readonly kind: 'external';
   readonly toolName: DevtoolsToolName;
-  readonly packageName: 'eslint' | 'knip' | 'prettier';
-  readonly binName: 'eslint' | 'knip' | 'prettier';
+  readonly packageName: '@changesets/cli' | 'eslint' | 'knip' | 'prettier';
+  readonly binName: 'changeset' | 'eslint' | 'knip' | 'prettier';
 }
 
 export interface DevtoolsRepositoryCommandDefinition extends DevtoolsCommandBase {
@@ -45,9 +46,22 @@ export type DevtoolsCommandDefinition =
   DevtoolsExternalCommandDefinition | DevtoolsRepositoryCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
-  externalCommand('lint', 'devtools.lint', 'Run the shared ESLint toolchain.', 'eslint'),
-  externalCommand('format', 'devtools.format', 'Run the shared Prettier toolchain.', 'prettier'),
-  externalCommand('knip', 'devtools.knip', 'Run the shared Knip toolchain.', 'knip'),
+  externalCommand(
+    'changeset',
+    'devtools.changeset',
+    'Run the shared Changesets toolchain.',
+    '@changesets/cli',
+    'changeset',
+  ),
+  externalCommand('lint', 'devtools.lint', 'Run the shared ESLint toolchain.', 'eslint', 'eslint'),
+  externalCommand(
+    'format',
+    'devtools.format',
+    'Run the shared Prettier toolchain.',
+    'prettier',
+    'prettier',
+  ),
+  externalCommand('knip', 'devtools.knip', 'Run the shared Knip toolchain.', 'knip', 'knip'),
   repositoryCommand(
     ['sync'],
     'devtools.sync',
@@ -178,9 +192,13 @@ export function getDevtoolsToolCommand(
 
 function externalCommand(
   toolName: DevtoolsToolName,
-  capability: Extract<DevtoolsCapability, 'devtools.format' | 'devtools.knip' | 'devtools.lint'>,
+  capability: Extract<
+    DevtoolsCapability,
+    'devtools.changeset' | 'devtools.format' | 'devtools.knip' | 'devtools.lint'
+  >,
   summary: string,
   packageName: DevtoolsExternalCommandDefinition['packageName'],
+  binName: DevtoolsExternalCommandDefinition['binName'],
 ): DevtoolsExternalCommandDefinition {
   return {
     kind: 'external',
@@ -189,7 +207,7 @@ function externalCommand(
     capability,
     summary,
     packageName,
-    binName: packageName,
+    binName,
   };
 }
 

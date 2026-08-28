@@ -53,8 +53,8 @@ jobs:
         if: hashFiles('.changeset/config.json') != ''
         uses: changesets/action@v1
         with:
-          version: bun run version-packages
-          publish: bunx changeset publish
+          version: __ANKH_CHANGESETS_VERSION_COMMAND__
+          publish: __ANKH_CHANGESETS_PUBLISH_COMMAND__
           commit: Version Packages
           title: Version Packages
         env:

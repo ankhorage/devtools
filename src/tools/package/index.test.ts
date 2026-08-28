@@ -28,6 +28,79 @@ test('merges standard scripts and the shared devtools dependency', () => {
   });
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
   expect(readNestedValue(updated, 'scripts', 'knip')).toBeUndefined();
+  expect(readNestedValue(updated, 'scripts', 'changeset')).toBeUndefined();
+});
+
+test('centralizes Changesets for repositories with config or release scripts', () => {
+  const fixtures = [
+    {
+      manifest: {
+        name: 'configured-fixture',
+        dependencies: { '@changesets/cli': '^2.30.0' },
+      },
+      changesetsConfigExists: true,
+    },
+    {
+      manifest: {
+        name: 'scripted-fixture',
+        scripts: { 'version-packages': 'changeset version' },
+        devDependencies: { '@changesets/cli': '^2.31.0' },
+      },
+      changesetsConfigExists: false,
+    },
+  ] as const;
+
+  for (const fixture of fixtures) {
+    const updated = applyManagedPackageContract(
+      fixture.manifest,
+      '2.3.4',
+      fixture.changesetsConfigExists,
+    );
+
+    expect(updated).toMatchObject({
+      scripts: {
+        changeset: 'ankhorage-changeset',
+        'changeset:status': 'ankhorage-changeset status --since=origin/main',
+        'version-packages': 'ankhorage-changeset version',
+      },
+    });
+    expect(readNestedValue(updated, 'dependencies', '@changesets/cli')).toBeUndefined();
+    expect(readNestedValue(updated, 'devDependencies', '@changesets/cli')).toBeUndefined();
+    expect(isManagedPackageContractCurrent(updated, '2.3.4', true)).toBe(true);
+  }
+});
+
+test('detects Changesets dependency and script drift', () => {
+  const manifest = applyManagedPackageContract(
+    { name: 'fixture', scripts: { changeset: 'changeset' } },
+    '2.3.4',
+  );
+
+  expect(isManagedPackageContractCurrent(manifest, '2.3.4')).toBe(true);
+  expect(
+    isManagedPackageContractCurrent(
+      {
+        ...manifest,
+        devDependencies: {
+          ...readNestedRecord(manifest, 'devDependencies'),
+          '@changesets/cli': '^2.31.1',
+        },
+      },
+      '2.3.4',
+    ),
+  ).toBe(false);
+  expect(
+    isManagedPackageContractCurrent(
+      {
+        ...manifest,
+        scripts: {
+          ...readNestedRecord(manifest, 'scripts'),
+          'changeset:status': 'changeset status --since=origin/main',
+        },
+      },
+      '2.3.4',
+    ),
+  ).toBe(false);
 });
 
 test('removes the obsolete knip script that conflicts with the installed binary', () => {

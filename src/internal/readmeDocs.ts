@@ -2,6 +2,7 @@ import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
 
 const REQUIRED_README_SNIPPETS = [
   'ankh devtools lint',
+  'ankh devtools changeset',
   'ankh devtools format',
   'ankh devtools knip',
   'ankh devtools sync',
@@ -21,6 +22,8 @@ const REQUIRED_README_SNIPPETS = [
   '--dry-run',
   "profile: 'auto'",
   '@ankhorage/utility/project',
+  'ankhorage-changeset',
+  '.changeset/config.json',
   '<!-- devtools-bun-policy:start -->',
   '<!-- devtools-bun-policy:end -->',
   'bun scripts/sync-renovate-owner.ts sync repository',

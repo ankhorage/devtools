@@ -54,7 +54,7 @@ jobs:
         uses: changesets/action@v1
         with:
           version: bun run version-packages
-          publish: bunx changeset publish
+          publish: bun run changeset -- publish
           commit: Version Packages
           title: Version Packages
         env:
