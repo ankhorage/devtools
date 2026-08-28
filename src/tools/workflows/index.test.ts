@@ -22,7 +22,7 @@ describe('managed workflows', () => {
     const rendered = await definition?.render?.('.');
 
     expect(rendered).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@19562fb89f575ed5469dbf1cb751f85212211374',
+      'ankhorage/renovate/.github/workflows/changeset.yml@7d4a5104b94e763ca5be34919f4fcfbb12efd526',
     );
     expect(rendered).toContain("github.actor == 'renovate[bot]'");
     expect(rendered).toContain('actions: write');
