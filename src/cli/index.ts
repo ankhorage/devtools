@@ -1,8 +1,9 @@
 /***
  * Run and synchronize the shared development toolchain through the Ankh CLI.
  *
- * `ankh devtools lint`, `ankh devtools format`, and `ankh devtools knip` execute the bundled
- * ESLint, Prettier, and Knip versions. Repository synchronization is available through
+ * `ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and
+ * `ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.
+ * Repository synchronization is available through
  * `ankh devtools sync` and `ankh devtools status`, with focused `eslint`, `prettier`, `knip`,
  * `package`, `workflows`, and `vscode` sync/status subcommands.
  *

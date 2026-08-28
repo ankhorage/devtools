@@ -20,6 +20,7 @@ src/
 ```
 
 - `policy`: shared repository runtime policy, including the canonical Bun version
+- `changesets`: package-resolved Changesets execution and release command policy
 - `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner
 - `prettier`: shared Prettier configuration and the bundled Prettier runner
 - `knip`: shared Knip configuration helpers and the bundled Knip runner
@@ -27,7 +28,7 @@ src/
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
 - `vscode`: canonical `.vscode/settings.json` and `extensions.json`
 
-The package owns the supported ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.
+The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.
 
 ## Bootstrap
 
@@ -55,6 +56,7 @@ Synchronization ensures `@ankhorage/devtools` is declared using the version of t
 The package is discovered under the `devtools` category and exposes these capabilities:
 
 - `devtools.lint`
+- `devtools.changeset`
 - `devtools.format`
 - `devtools.knip`
 - `devtools.sync`
@@ -81,6 +83,7 @@ ankh devtools ...
 ## Tool commands
 
 ```bash
+ankh devtools changeset -- status --since=origin/main
 ankh devtools lint -- --max-warnings=0 .
 ankh devtools format -- --check .
 ankh devtools knip -- --production
@@ -88,6 +91,7 @@ ankh devtools knip -- --production
 
 These delegate to the same bundled tools as the package binaries:
 
+- `ankh devtools changeset` → `ankhorage-changeset`
 - `ankh devtools lint` → `ankhorage-eslint`
 - `ankh devtools format` → `ankhorage-prettier`
 - `ankh devtools knip` → `ankhorage-knip`
@@ -97,11 +101,14 @@ The synchronized package scripts are:
 ```json
 {
   "scripts": {
+    "changeset": "ankhorage-changeset",
+    "changeset:status": "ankhorage-changeset status --since=origin/main",
     "lint": "ankhorage-eslint . --max-warnings=0",
     "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
-    "knip:check": "ankhorage-knip"
+    "knip:check": "ankhorage-knip",
+    "version-packages": "ankhorage-changeset version"
   }
 }
 ```
@@ -154,6 +161,7 @@ Synchronization is deterministic and idempotent:
 - missing managed artifacts are created
 - outdated centrally owned artifacts are updated
 - the managed Bun runtime version is applied consistently to package metadata and workflows
+- Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration
 - package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync
 - current artifacts are left untouched
 - unrelated files and package fields are preserved
@@ -277,6 +285,7 @@ Renovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.t
 It owns:
 
 - the `@ankhorage/devtools` dependency version range
+- removal of direct consumer `@changesets/cli` dependencies
 - `packageManager` according to the managed Bun runtime policy
 - the `@types/bun` development dependency according to the managed Bun runtime policy
 - `lint`
@@ -284,10 +293,13 @@ It owns:
 - `format`
 - `format:check`
 - `knip:check`
+- `changeset`, `changeset:status`, and `version-packages` for Changesets-enabled repositories
 
 For normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.
 
-When this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.
+When this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct dependencies for Changesets and direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.
+
+A repository participates in Changesets synchronization when `.changeset/config.json` exists or any of the canonical `changeset`, `changeset:status`, or `version-packages` script keys is present. This explicit rule migrates partially configured repositories while ensuring repositories without Changesets do not acquire release tooling. The repository continues to own `.changeset/config.json`, pending `.changeset/*.md` files, and its package release semantics. Direct `@changesets/cli` declarations, ambient `changeset` scripts, and `bunx changeset` workflow commands are not supported consumer forms.
 
 ## Managed GitHub Actions workflows
 
@@ -299,7 +311,7 @@ When this managed package contract changes, synchronization runs `bun install`. 
 .github/workflows/release.yml
 ```
 
-CI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and Changesets checks.
+CI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. They also render Changesets status, version, and publish commands from the same policy that owns the synchronized package scripts. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and Changesets checks. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable.
 
 The Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates, then dispatches CI for that bot-authored commit. It never checks out or executes pull-request code in the privileged `pull_request_target` context.
 

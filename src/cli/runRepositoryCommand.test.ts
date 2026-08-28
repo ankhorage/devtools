@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
@@ -59,6 +59,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
     bunRuntimePolicy.typesRange,
   );
   expect(readProperty(packageJson, 'packageManager')).toBe(bunRuntimePolicy.packageManager);
+  expect(readNestedValue(packageJson, 'scripts', 'changeset')).toBeUndefined();
   expect(context.dependencySyncs).toBe(1);
   expect(context.dependencySyncObservedManagedFiles).toBe(true);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
@@ -67,6 +68,50 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
     'export default {};\n',
   );
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain('createKnipConfig');
+});
+
+test('migrates a Changesets repository and keeps the second sync byte-stable', async () => {
+  const target = await createTarget();
+  await mkdir(join(target, '.changeset'));
+  await writeFile(join(target, '.changeset/config.json'), '{}\n');
+  await writeFile(
+    join(target, 'package.json'),
+    `${JSON.stringify(
+      {
+        name: 'changesets-fixture',
+        scripts: {
+          changeset: 'changeset',
+          'changeset:status': 'changeset status --since=origin/main',
+          'version-packages': 'changeset version',
+        },
+        devDependencies: { '@changesets/cli': '^2.31.0' },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  const context = createContext(target);
+  const status = getRepositoryCommand(['package', 'status']);
+  const sync = getRepositoryCommand(['package', 'sync']);
+
+  expect((await runRepositoryCommand(status, [], context)).exitCode).toBe(1);
+  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  const firstPackageJson = await readFile(join(target, 'package.json'), 'utf8');
+  const packageJson = JSON.parse(firstPackageJson) as unknown;
+
+  expect(readNestedValue(packageJson, 'scripts', 'changeset')).toBe('ankhorage-changeset');
+  expect(readNestedValue(packageJson, 'scripts', 'changeset:status')).toBe(
+    'ankhorage-changeset status --since=origin/main',
+  );
+  expect(readNestedValue(packageJson, 'scripts', 'version-packages')).toBe(
+    'ankhorage-changeset version',
+  );
+  expect(readNestedValue(packageJson, 'devDependencies', '@changesets/cli')).toBeUndefined();
+  expect(context.dependencySyncs).toBe(1);
+  expect((await runRepositoryCommand(status, [], context)).exitCode).toBe(0);
+  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  expect(await readFile(join(target, 'package.json'), 'utf8')).toBe(firstPackageJson);
+  expect(context.dependencySyncs).toBe(1);
 });
 
 test('preserves create-only local extensions across repeated synchronization', async () => {

@@ -19,6 +19,7 @@
     "category": "devtools",
     "provider": "./dist/cli/index.js",
     "capabilities": [
+      "devtools.changeset",
       "devtools.lint",
       "devtools.format",
       "devtools.knip",
@@ -49,6 +50,7 @@
     "developer-tools"
   ],
   "bin": {
+    "ankhorage-changeset": "./dist/cli/bin/changeset.js",
     "ankhorage-eslint": "./dist/cli/bin/eslint.js",
     "ankhorage-knip": "./dist/cli/bin/knip.js",
     "ankhorage-prettier": "./dist/cli/bin/prettier.js"
@@ -94,12 +96,13 @@
     "docs": "bun run docs:check",
     "docs:check": "bun scripts/check-docs.ts",
     "test": "bun test",
-    "changeset": "changeset",
-    "changeset:status": "changeset status --since=origin/main",
-    "version-packages": "changeset version"
+    "changeset": "bun src/cli/bin/changeset.ts",
+    "changeset:status": "bun src/cli/bin/changeset.ts status --since=origin/main",
+    "version-packages": "bun src/cli/bin/changeset.ts version"
   },
   "dependencies": {
     "@ankhorage/utility": "^0.2.0",
+    "@changesets/cli": "^2.31.1",
     "@eslint/compat": "^2.1.0",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.9.1",
@@ -118,8 +121,7 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.8.2",
-    "@ankhorage/doctor": "0.10.1",
-    "@changesets/cli": "^2.31.1",
+    "@ankhorage/doctor": "0.10.2",
     "@types/bun": "^1.4.0",
     "@types/node": "^25.9.5",
     "typescript": "^5.9.3"

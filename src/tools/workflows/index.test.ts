@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
+import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 import { workflowManagedFiles } from './index.js';
 
 describe('managed workflows', () => {
@@ -12,7 +13,18 @@ describe('managed workflows', () => {
       expect(rendered).toContain(`node-version: '${nodeRuntimePolicy.setupVersion}'`);
       expect(rendered).not.toContain('__ANKH_BUN_VERSION__');
       expect(rendered).not.toContain('__ANKH_NODE_VERSION__');
+      expect(rendered).not.toContain('__ANKH_CHANGESETS_');
     }
+  });
+
+  test('renders the canonical Changesets commands into CI and release', async () => {
+    const ci = await workflowManagedFiles[0].render?.('.');
+    const release = await workflowManagedFiles[1].render?.('.');
+
+    expect(ci).toContain(changesetsPolicy.workflowCommands.status);
+    expect(release).toContain(`version: ${changesetsPolicy.workflowCommands.version}`);
+    expect(release).toContain(`publish: ${changesetsPolicy.workflowCommands.publish}`);
+    expect(release).not.toContain('bunx changeset');
   });
 
   test('pins the Renovate Changeset workflow and dispatches CI', async () => {
