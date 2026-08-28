@@ -1,10 +1,6 @@
-import { readFile } from 'node:fs/promises';
-
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
-
-const BUN_VERSION_TOKEN = '__ANKH_BUN_VERSION__';
-const NODE_VERSION_TOKEN = '__ANKH_NODE_VERSION__';
+import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
 export const workflowManagedFiles = [
   createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
@@ -16,11 +12,10 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
   const sourceUrl = new URL(sourcePath, import.meta.url);
   return {
     relativePath,
-    render: async () => {
-      const template = await readFile(sourceUrl, 'utf8');
-      return template
-        .replaceAll(BUN_VERSION_TOKEN, bunRuntimePolicy.version)
-        .replaceAll(NODE_VERSION_TOKEN, nodeRuntimePolicy.setupVersion);
-    },
+    render: async () =>
+      await renderWorkflowAsync(sourceUrl, {
+        bunVersion: bunRuntimePolicy.version,
+        nodeVersion: nodeRuntimePolicy.setupVersion,
+      }),
   };
 }

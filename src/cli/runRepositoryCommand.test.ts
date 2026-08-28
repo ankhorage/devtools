@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
 
+import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
 import { findDevtoolsCommandByPath } from './commands.js';
 import { parseRepositoryArguments, runRepositoryCommand } from './runRepositoryCommand.js';
 
@@ -22,7 +23,7 @@ test('syncs only the selected concern and aggregate status reports drift', async
 
   expect((await runRepositoryCommand(workflowsSync, [], context)).exitCode).toBe(0);
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
-    "bun-version: '1.3.14'",
+    `bun-version: '${bunRuntimePolicy.version}'`,
   );
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
     'bunx @ankhorage/ankh doctor validate .',
@@ -54,8 +55,10 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(readNestedValue(packageJson, 'devDependencies', '@ankhorage/devtools')).toMatch(
     /^\^\d+\.\d+\.\d+$/u,
   );
-  expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe('^1.3.14');
-  expect(readProperty(packageJson, 'packageManager')).toBe('bun@1.3.14');
+  expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe(
+    bunRuntimePolicy.typesRange,
+  );
+  expect(readProperty(packageJson, 'packageManager')).toBe(bunRuntimePolicy.packageManager);
   expect(context.dependencySyncs).toBe(1);
   expect(context.dependencySyncObservedManagedFiles).toBe(true);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');

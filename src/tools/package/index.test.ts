@@ -1,5 +1,6 @@
 import { expect, test } from 'bun:test';
 
+import { bunRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import { applyManagedPackageContract, isManagedPackageContractCurrent } from './index.js';
 
 test('merges standard scripts and the shared devtools dependency', () => {
@@ -13,7 +14,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
   );
 
   expect(updated).toMatchObject({
-    packageManager: 'bun@1.3.14',
+    packageManager: bunRuntimePolicy.packageManager,
     scripts: {
       test: 'bun test',
       lint: 'ankhorage-eslint . --max-warnings=0',
@@ -22,7 +23,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
     devDependencies: {
       typescript: '^5.9.3',
       '@ankhorage/devtools': '^2.3.4',
-      '@types/bun': '^1.3.14',
+      '@types/bun': bunRuntimePolicy.typesRange,
     },
   });
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
@@ -61,14 +62,14 @@ test('preserves devtools as a runtime dependency for ankh', () => {
   );
 
   expect(updated).toMatchObject({
-    packageManager: 'bun@1.3.14',
+    packageManager: bunRuntimePolicy.packageManager,
     dependencies: {
       '@ankhorage/devtools': '^2.3.4',
       yaml: '^2.8.1',
     },
     devDependencies: {
       typescript: '^5.9.3',
-      '@types/bun': '^1.3.14',
+      '@types/bun': bunRuntimePolicy.typesRange,
     },
   });
   expect(readNestedValue(updated, 'devDependencies', '@ankhorage/devtools')).toBeUndefined();
@@ -96,7 +97,7 @@ test('detects managed package drift without caring about unrelated fields', () =
   expect(isManagedPackageContractCurrent({ ...manifest, private: false }, '2.3.4')).toBe(true);
   expect(isManagedPackageContractCurrent(manifest, '2.3.5')).toBe(false);
   expect(
-    isManagedPackageContractCurrent({ ...manifest, packageManager: 'bun@1.3.13' }, '2.3.4'),
+    isManagedPackageContractCurrent({ ...manifest, packageManager: 'bun@0.0.0' }, '2.3.4'),
   ).toBe(false);
   expect(
     isManagedPackageContractCurrent(
@@ -104,7 +105,7 @@ test('detects managed package drift without caring about unrelated fields', () =
         ...manifest,
         devDependencies: {
           ...readNestedRecord(manifest, 'devDependencies'),
-          '@types/bun': '^1.3.13',
+          '@types/bun': '^0.0.0',
         },
       },
       '2.3.4',
@@ -122,10 +123,10 @@ test('applies only the Bun policy to devtools itself', () => {
 
   expect(updated).toMatchObject({
     name: '@ankhorage/devtools',
-    packageManager: 'bun@1.3.14',
+    packageManager: bunRuntimePolicy.packageManager,
     dependencies: { eslint: '^10.2.0' },
     scripts: { lint: 'eslint .' },
-    devDependencies: { '@types/bun': '^1.3.14' },
+    devDependencies: { '@types/bun': bunRuntimePolicy.typesRange },
   });
   expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });

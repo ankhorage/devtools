@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
+import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
 import { getReadmeDocumentationErrors } from './readmeDocs.js';
 
 describe('README documentation validation', () => {
@@ -25,6 +26,13 @@ describe('README documentation validation', () => {
       '--dry-run',
       "profile: 'auto'",
       '@ankhorage/utility/project',
+      '<!-- devtools-bun-policy:start -->',
+      '<!-- devtools-bun-policy:end -->',
+      'bun scripts/sync-renovate-owner.ts sync repository',
+      'bun scripts/sync-renovate-owner.ts status',
+      bunRuntimePolicy.version,
+      bunRuntimePolicy.packageManager,
+      bunRuntimePolicy.typesRange,
     ].join('\n');
 
     expect(getReadmeDocumentationErrors(readme)).toEqual([]);

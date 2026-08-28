@@ -71,6 +71,10 @@ describe('package metadata', () => {
     expect(build).toContain('dist/tools/vscode/files');
     expect(build).toContain('src/tools/prettier/index.cjs');
     expect(build).toContain('dist/tools/prettier/index.cjs');
+    expect(packageJson.scripts).toMatchObject({ 'knip:check': 'knip' });
+    expect(packageJson.scripts).not.toHaveProperty('knip');
+    expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
+    expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
   });
 
   it('ships every canonical managed asset in the source tree', () => {

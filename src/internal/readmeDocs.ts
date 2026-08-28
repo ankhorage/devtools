@@ -1,3 +1,5 @@
+import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
+
 const REQUIRED_README_SNIPPETS = [
   'ankh devtools lint',
   'ankh devtools format',
@@ -19,6 +21,13 @@ const REQUIRED_README_SNIPPETS = [
   '--dry-run',
   "profile: 'auto'",
   '@ankhorage/utility/project',
+  '<!-- devtools-bun-policy:start -->',
+  '<!-- devtools-bun-policy:end -->',
+  'bun scripts/sync-renovate-owner.ts sync repository',
+  'bun scripts/sync-renovate-owner.ts status',
+  bunRuntimePolicy.version,
+  bunRuntimePolicy.packageManager,
+  bunRuntimePolicy.typesRange,
 ] as const;
 
 export function getReadmeDocumentationErrors(readmeContents: string): string[] {
