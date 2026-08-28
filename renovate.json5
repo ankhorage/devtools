@@ -1,12 +1,42 @@
 /***
  * Repository configuration
  *
- * Loads the canonical Ankhorage dependency-update policy from its default branch.
+ * Loads the canonical Ankhorage Devtools-owner dependency-update policy from its default branch.
  *
  * @usage
  * @readme
  */
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: ['github>ankhorage/renovate'],
+  extends: ['github>ankhorage/renovate:devtools-owner'],
+  customManagers: [
+    {
+      customType: 'regex',
+      managerFilePatterns: ['/^src\\/policy\\/bunRuntimePolicy\\.ts$/'],
+      matchStrings: ["const BUN_VERSION = '(?<currentValue>[^']+)';"],
+      depNameTemplate: 'bun',
+      datasourceTemplate: 'npm',
+    },
+  ],
+  packageRules: [
+    {
+      description: 'Update the single Devtools-owned Bun policy authority',
+      matchDatasources: ['npm'],
+      matchDepNames: ['bun'],
+      matchFileNames: ['src/policy/bunRuntimePolicy.ts'],
+      matchManagers: ['custom.regex'],
+      groupName: 'Devtools-owned toolchain',
+      rangeStrategy: 'replace',
+      automerge: false,
+      platformAutomerge: false,
+    },
+    {
+      description: 'Require review for major Devtools-owned toolchain updates',
+      matchDepNames: ['bun'],
+      matchManagers: ['custom.regex'],
+      matchUpdateTypes: ['major'],
+      automerge: false,
+      platformAutomerge: false,
+    },
+  ],
 }

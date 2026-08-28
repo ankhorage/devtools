@@ -258,13 +258,17 @@ export default createKnipConfig();
 
 The canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:
 
+<!-- devtools-bun-policy:start -->
+
 ```text
 Bun runtime       1.3.14
 packageManager    bun@1.3.14
 @types/bun        ^1.3.14
 ```
 
-Changing the policy in devtools therefore updates the repository-facing Bun version consistently instead of maintaining independent version literals in multiple templates.
+<!-- devtools-bun-policy:end -->
+
+Renovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.ts`. Its trusted base-branch workflow invokes `bun scripts/sync-renovate-owner.ts sync repository` to regenerate `packageManager`, `@types/bun`, the Bun workflow setup versions, this documentation block, and `bun.lock`, then runs `bun scripts/sync-renovate-owner.ts status repository` to reject stale generated artifacts. Do not synchronize those values manually in a Renovate branch.
 
 ## Managed package contract
 
@@ -279,7 +283,7 @@ It owns:
 - `lint:fix`
 - `format`
 - `format:check`
-- `knip`
+- `knip:check`
 
 For normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.
 

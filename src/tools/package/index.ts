@@ -21,6 +21,7 @@ import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
 import { bunRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managedFiles.js';
 
@@ -110,7 +111,7 @@ export function applyManagedPackageContract(
   devtoolsVersion: string,
 ): Record<string, unknown> {
   if (manifest.name === DEVTOOLS_PACKAGE_NAME) {
-    return applyBunRuntimePolicy(manifest);
+    return applyBunRuntimePolicy(manifest, bunRuntimePolicy);
   }
 
   const scripts = { ...toRecord(manifest.scripts) };
@@ -121,12 +122,15 @@ export function applyManagedPackageContract(
 
   applyDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion);
 
-  return applyBunRuntimePolicy({
-    ...manifest,
-    ...normalizedDependencies(manifest, dependencies),
-    scripts,
-    devDependencies,
-  });
+  return applyBunRuntimePolicy(
+    {
+      ...manifest,
+      ...normalizedDependencies(manifest, dependencies),
+      scripts,
+      devDependencies,
+    },
+    bunRuntimePolicy,
+  );
 }
 
 export function isManagedPackageContractCurrent(
@@ -175,16 +179,6 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
     }
     throw error;
   }
-}
-
-function applyBunRuntimePolicy(manifest: Record<string, unknown>): Record<string, unknown> {
-  const devDependencies = toRecord(manifest.devDependencies);
-  devDependencies[BUN_TYPES_PACKAGE_NAME] = bunRuntimePolicy.typesRange;
-  return {
-    ...manifest,
-    packageManager: bunRuntimePolicy.packageManager,
-    devDependencies,
-  };
 }
 
 function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean {
