@@ -13,6 +13,7 @@ export const changesetsPolicy = {
   },
   workflowCommands: {
     status: 'bun run changeset:status',
+    versionPackagesBaseBranch: 'git switch --force-create main origin/main',
     versionPackagesStatus: 'bun run changeset -- status',
     version: 'bun run version-packages',
     publish: 'bun run changeset -- publish',

@@ -37,6 +37,7 @@ describe('Devtools Renovate owner synchronization', () => {
     });
     expect(first.readme).toContain('Bun runtime       1.4.0');
     expect(first.ci).toContain("bun-version: '1.4.0'");
+    expect(first.ci).toContain('git switch --force-create main origin/main');
     expect(first.release).toContain("bun-version: '1.4.0'");
     expect(first.renovate).toContain('changeset.yml@7d4a5104b94e763ca5be34919f4fcfbb12efd526');
     expect(await readFile(unrelatedPath, 'utf8')).toBe('leave me alone\n');

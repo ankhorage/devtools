@@ -29,6 +29,7 @@ describe('README documentation validation', () => {
       '@ankhorage/utility/project',
       'ankhorage-changeset',
       'changeset-release/main',
+      'git switch --force-create main origin/main',
       'bun run changeset -- status',
       '.changeset/config.json',
       '<!-- devtools-bun-policy:start -->',

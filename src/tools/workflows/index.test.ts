@@ -22,6 +22,7 @@ describe('managed workflows', () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
     expect(ci).toContain(changesetsPolicy.workflowCommands.status);
+    expect(ci).toContain(changesetsPolicy.workflowCommands.versionPackagesBaseBranch);
     expect(ci).toContain(changesetsPolicy.workflowCommands.versionPackagesStatus);
     expect(release).toContain(`version: ${changesetsPolicy.workflowCommands.version}`);
     expect(release).toContain(`publish: ${changesetsPolicy.workflowCommands.publish}`);
@@ -38,10 +39,14 @@ describe('managed CI Changesets contract', () => {
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'changeset-release/main'
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.changeset ? 0 : 1)"; then
+            ${changesetsPolicy.workflowCommands.versionPackagesBaseBranch}
             ${changesetsPolicy.workflowCommands.versionPackagesStatus}
           else
             echo "No changeset script found; skipping."
           fi`,
+    );
+    expect(changesetsPolicy.workflowCommands.versionPackagesBaseBranch).toBe(
+      'git switch --force-create main origin/main',
     );
     expect(changesetsPolicy.workflowCommands.versionPackagesStatus).not.toContain('--since');
   });
