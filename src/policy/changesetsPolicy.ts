@@ -1,3 +1,5 @@
+const versionPackagesStatusArguments = ['status', '--since=HEAD'] as const;
+
 export const changesetsPolicy = {
   packageName: '@changesets/cli',
   binaryName: 'ankhorage-changeset',
@@ -11,9 +13,12 @@ export const changesetsPolicy = {
     'changeset:status': 'bun src/cli/bin/changeset.ts status --since=origin/main',
     'version-packages': 'bun src/cli/bin/changeset.ts version',
   },
+  workflowArguments: {
+    versionPackagesStatus: versionPackagesStatusArguments,
+  },
   workflowCommands: {
     status: 'bun run changeset:status',
-    versionPackagesStatus: 'bun run changeset -- status',
+    versionPackagesStatus: `bun run changeset -- ${versionPackagesStatusArguments.join(' ')}`,
     version: 'bun run version-packages',
     publish: 'bun run changeset -- publish',
   },

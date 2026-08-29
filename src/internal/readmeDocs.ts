@@ -24,7 +24,7 @@ const REQUIRED_README_SNIPPETS = [
   '@ankhorage/utility/project',
   'ankhorage-changeset',
   'changeset-release/main',
-  'bun run changeset -- status',
+  'bun run changeset -- status --since=HEAD',
   '.changeset/config.json',
   '<!-- devtools-bun-policy:start -->',
   '<!-- devtools-bun-policy:end -->',
