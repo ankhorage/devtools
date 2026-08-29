@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.2
+
+### Patch Changes
+
+- d2bf38b: Validate trusted Version Packages pull requests without requiring a new unreleased Changeset while preserving the strict missing-Changeset guard for ordinary pull requests.
+- 629711a: Validate Version Packages metadata against the detached release checkout itself so CI does not require a local `main` branch while preserving the strict ordinary-PR Changeset guard.
+
 ## 1.8.1
 
 ### Patch Changes
