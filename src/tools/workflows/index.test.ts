@@ -22,11 +22,48 @@ describe('managed workflows', () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
     expect(ci).toContain(changesetsPolicy.workflowCommands.status);
+    expect(ci).toContain(changesetsPolicy.workflowCommands.versionPackagesStatus);
     expect(release).toContain(`version: ${changesetsPolicy.workflowCommands.version}`);
     expect(release).toContain(`publish: ${changesetsPolicy.workflowCommands.publish}`);
     expect(release).not.toContain('bunx changeset');
   });
+});
 
+describe('managed CI Changesets contract', () => {
+  test('validates trusted Version Packages pull requests without requiring a new changeset', async () => {
+    const ci = await workflowManagedFiles[0].render?.('.');
+
+    expect(ci).toContain(
+      `      - name: Validate Version Packages metadata
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'changeset-release/main'
+        run: |
+          if node -e "const p=require('./package.json'); process.exit(p.scripts?.changeset ? 0 : 1)"; then
+            ${changesetsPolicy.workflowCommands.versionPackagesStatus}
+          else
+            echo "No changeset script found; skipping."
+          fi`,
+    );
+    expect(changesetsPolicy.workflowCommands.versionPackagesStatus).not.toContain('--since');
+  });
+
+  test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
+    const ci = await workflowManagedFiles[0].render?.('.');
+
+    expect(ci).toContain(
+      `      - name: Check changesets
+        if: github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main')
+        run: |
+          if node -e "const p=require('./package.json'); process.exit(p.scripts?.['changeset:status'] ? 0 : 1)"; then
+            ${changesetsPolicy.workflowCommands.status}
+          else
+            echo "No changeset:status script found; skipping."
+          fi`,
+    );
+    expect(changesetsPolicy.packageScripts['changeset:status']).toContain('--since=origin/main');
+  });
+});
+
+describe('managed Renovate workflow', () => {
   test('pins the Renovate Changeset workflow and dispatches CI', async () => {
     const definition = workflowManagedFiles.find(
       ({ relativePath }) => relativePath === '.github/workflows/renovate.yml',
