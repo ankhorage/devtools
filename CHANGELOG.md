@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.4
+
+### Patch Changes
+
+- c921e33: Update Devtools-owned dependencies: `@ankhorage/doctor`, `knip`, `typescript-eslint`.
+
 ## 1.8.3
 
 ### Patch Changes
