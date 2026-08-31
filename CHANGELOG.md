@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.3
+
+### Patch Changes
+
+- 654ac78: Pin consumer Renovate automation to the trust boundary that authorizes the upcoming managed agent-instruction and project-structure skill outputs.
+
 ## 1.8.2
 
 ### Patch Changes
