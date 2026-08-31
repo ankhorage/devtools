@@ -20,6 +20,11 @@
   ],
   packageRules: [
     {
+      description: 'Defer TypeScript 7 until the Devtools ESLint parser supports its compiler API',
+      matchDepNames: ['typescript'],
+      allowedVersions: '<7.0.0',
+    },
+    {
       description: 'Update the single Devtools-owned Bun policy authority',
       matchDatasources: ['npm'],
       matchDepNames: ['bun'],
