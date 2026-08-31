@@ -12,8 +12,15 @@ export interface ManagedFileDefinition {
   readonly mode?: ManagedFileMode;
 }
 
-type ManagedFileState = 'current' | 'missing' | 'outdated';
-type ManagedFileSyncAction = 'unchanged' | 'created' | 'updated' | 'would-create' | 'would-update';
+type ManagedFileState = 'current' | 'missing' | 'obsolete' | 'outdated';
+export type ManagedFileSyncAction =
+  | 'unchanged'
+  | 'created'
+  | 'removed'
+  | 'updated'
+  | 'would-create'
+  | 'would-remove'
+  | 'would-update';
 
 export interface ManagedFileStatus {
   readonly relativePath: string;

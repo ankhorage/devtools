@@ -1,3 +1,4 @@
+import { agentsManagedFiles } from '../tools/agents/index.js';
 import { eslintManagedFiles } from '../tools/eslint/managed.js';
 import { knipManagedFiles } from '../tools/knip/managed.js';
 import {
@@ -18,6 +19,7 @@ import {
   resolveManagedTargetDirectory,
   syncManagedFiles,
 } from '../tools/shared/managedFiles.js';
+import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
 import { workflowManagedFiles } from '../tools/workflows/index.js';
 import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
@@ -96,6 +98,9 @@ async function runStatus(
     statuses.push(await inspectPackageManifest(targetDirectory, devtoolsVersion));
   }
   statuses.push(...(await inspectManagedFiles(targetDirectory, getManagedFiles(scope))));
+  if (scope === 'all' || scope === 'skills') {
+    statuses.push(...(await inspectManagedSkills(targetDirectory, devtoolsVersion)));
+  }
 
   writeStatusOutput(statuses, context);
   return { exitCode: statuses.some((status) => status.state !== 'current') ? 1 : 0 };
@@ -116,6 +121,9 @@ async function runSync(
     packageDependenciesChanged = packageResult.action !== 'unchanged';
   }
   results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
+  if (scope === 'all' || scope === 'skills') {
+    results.push(...(await syncManagedSkills(targetDirectory, devtoolsVersion, { dryRun })));
+  }
   if (packageDependenciesChanged) {
     if (dryRun) {
       results.push(planBunDependencySync(targetDirectory));
@@ -133,9 +141,11 @@ function getManagedFiles(
   scope: DevtoolsRepositoryCommandDefinition['scope'],
 ): readonly ManagedFileDefinition[] {
   const definitionsByScope = {
+    agents: agentsManagedFiles,
     eslint: eslintManagedFiles,
     knip: knipManagedFiles,
     prettier: prettierManagedFiles,
+    skills: [],
     vscode: vscodeManagedFiles,
     workflows: workflowManagedFiles,
   } as const;
@@ -158,6 +168,8 @@ function writeStatusOutput(
       context.writeStdout(`✓ ${status.relativePath}\n`);
     } else if (status.state === 'missing') {
       context.writeStdout(`+ ${status.relativePath} missing\n`);
+    } else if (status.state === 'obsolete') {
+      context.writeStdout(`- ${status.relativePath} obsolete\n`);
     } else {
       context.writeStdout(`✗ ${status.relativePath} outdated\n`);
     }
@@ -181,6 +193,9 @@ function getActionPrefix(action: ManagedFileSyncResult['action']): string {
   if (action === 'created' || action === 'would-create') {
     return '+';
   }
+  if (action === 'removed' || action === 'would-remove') {
+    return '-';
+  }
   return '↻';
 }
 
@@ -190,10 +205,14 @@ function formatAction(action: ManagedFileSyncResult['action']): string {
       return 'created';
     case 'updated':
       return 'updated';
+    case 'removed':
+      return 'removed';
     case 'unchanged':
       return 'unchanged';
     case 'would-create':
       return 'would create';
+    case 'would-remove':
+      return 'would remove';
     case 'would-update':
       return 'would update';
   }

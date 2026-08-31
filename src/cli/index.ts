@@ -4,13 +4,13 @@
  * `ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and
  * `ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.
  * Repository synchronization is available through
- * `ankh devtools sync` and `ankh devtools status`, with focused `eslint`, `prettier`, `knip`,
- * `package`, `workflows`, and `vscode` sync/status subcommands.
+ * `ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,
+ * `prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.
  *
  * Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is
- * deterministic and idempotent: canonical managed files are created or updated, create-only
- * local extension files remain repository-owned, and package metadata is merge-updated without
- * replacing unrelated fields.
+ * deterministic and idempotent: canonical managed files and skill trees are created or updated,
+ * unrelated repository-local skills and create-only local extension files remain repository-owned,
+ * and package metadata is merge-updated without replacing unrelated fields.
  *
  * Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding
  * `@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a

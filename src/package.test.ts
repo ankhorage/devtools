@@ -10,6 +10,10 @@ const capabilities = [
   'devtools.knip',
   'devtools.sync',
   'devtools.status',
+  'devtools.agents.sync',
+  'devtools.agents.status',
+  'devtools.skills.sync',
+  'devtools.skills.status',
   'devtools.eslint.sync',
   'devtools.eslint.status',
   'devtools.prettier.sync',
@@ -72,6 +76,8 @@ describe('package metadata', () => {
     expect(build).toContain('dist/tools/workflows/files');
     expect(build).toContain('src/tools/vscode/files');
     expect(build).toContain('dist/tools/vscode/files');
+    expect(build).toContain('src/tools/skills/assets');
+    expect(build).toContain('dist/tools/skills/assets');
     expect(build).toContain('src/tools/prettier/index.cjs');
     expect(build).toContain('dist/tools/prettier/index.cjs');
     expect(packageJson.scripts).toMatchObject({ 'knip:check': 'knip' });
@@ -103,6 +109,19 @@ describe('package release contract', () => {
     expect(existsSync(new URL('./tools/workflows/files/release.yml', import.meta.url))).toBe(true);
     expect(existsSync(new URL('./tools/vscode/files/settings.json', import.meta.url))).toBe(true);
     expect(existsSync(new URL('./tools/vscode/files/extensions.json', import.meta.url))).toBe(true);
+    expect(
+      existsSync(
+        new URL('./tools/skills/assets/ankhorage-project-structure/SKILL.md', import.meta.url),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(new URL('./tools/skills/assets/ankhorage-coding-rules/SKILL.md', import.meta.url)),
+    ).toBe(true);
+    expect(
+      existsSync(
+        new URL('./tools/skills/assets/ankhorage-coding-rules/agents/openai.yaml', import.meta.url),
+      ),
+    ).toBe(true);
   });
 
   it('documents only the canonical devtools command surface', () => {
@@ -115,6 +134,9 @@ describe('package release contract', () => {
     expect(readme).toContain('ankhorage-changeset');
     expect(readme).toContain('ankh devtools workflows sync');
     expect(readme).toContain('ankh devtools vscode sync');
+    expect(readme).toContain('ankh devtools agents sync');
+    expect(readme).toContain('ankh devtools skills sync');
+    expect(readme).toContain('ankhorage-coding-rules');
     expect(readme).not.toContain('ankh dev ');
     expect(readme).not.toContain('`@ankhorage/dev`');
   });
