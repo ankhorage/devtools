@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0
+
+### Minor Changes
+
+- 7afe4e1: Distribute the implicitly invoked `ankhorage-coding-rules` baseline skill for canonical Git, lint, testing, Paradox documentation, validation, and pull-request delivery practices.
+- 7afe4e1: Add managed repository agent instructions and exact, ownership-aware synchronization for the canonical `ankhorage-project-structure` skill.
+
 ## 1.8.6
 
 ### Patch Changes
