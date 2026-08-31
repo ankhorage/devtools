@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.5
+
+### Patch Changes
+
+- f5cda2a: Pass the organization-managed Ankhorage Renovate Sync GitHub App credentials to the trusted
+  dependency synchronization workflow so its commits start normal pull-request CI automatically.
+
 ## 1.8.4
 
 ### Patch Changes
