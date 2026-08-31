@@ -38,7 +38,7 @@ describe('Devtools Renovate owner synchronization', () => {
     expect(first.readme).toContain('Bun runtime       1.4.0');
     expect(first.ci).toContain("bun-version: '1.4.0'");
     expect(first.release).toContain("bun-version: '1.4.0'");
-    expect(first.renovate).toContain('changeset.yml@4deba0b1e900c4fa9886b76cc0a0fee55df0f4aa');
+    expect(first.renovate).toMatch(/changeset\.yml@[0-9a-f]{40}/u);
     expect(await readFile(unrelatedPath, 'utf8')).toBe('leave me alone\n');
 
     await synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync });

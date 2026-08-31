@@ -146,7 +146,7 @@ describe('managed Renovate workflow', () => {
     const rendered = await definition?.render?.('.');
 
     expect(rendered).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@4deba0b1e900c4fa9886b76cc0a0fee55df0f4aa',
+      'ankhorage/renovate/.github/workflows/changeset.yml@1721d245371e879301d7a2e5299d1c5790d97459',
     );
     expect(rendered).toContain("github.actor == 'renovate[bot]'");
     expect(rendered).toContain('contents: read');
