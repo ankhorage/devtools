@@ -1,14 +1,6 @@
 export type DevtoolsToolName = 'changeset' | 'format' | 'knip' | 'lint';
 type DevtoolsManagedScope =
-  | 'agents'
-  | 'all'
-  | 'eslint'
-  | 'knip'
-  | 'package'
-  | 'prettier'
-  | 'skills'
-  | 'vscode'
-  | 'workflows';
+  'agents' | 'all' | 'eslint' | 'knip' | 'package' | 'prettier' | 'skills' | 'vscode' | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
 type DevtoolsCapability =
@@ -55,8 +47,7 @@ export interface DevtoolsRepositoryCommandDefinition extends DevtoolsCommandBase
 }
 
 export type DevtoolsCommandDefinition =
-  | DevtoolsExternalCommandDefinition
-  | DevtoolsRepositoryCommandDefinition;
+  DevtoolsExternalCommandDefinition | DevtoolsRepositoryCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
   externalCommand(

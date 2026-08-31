@@ -48,6 +48,9 @@ test('syncs agent instructions and repository skills independently', async () =>
   expect(
     await Bun.file(join(target, '.agents/skills/ankhorage-project-structure/SKILL.md')).exists(),
   ).toBe(true);
+  expect(
+    await Bun.file(join(target, '.agents/skills/ankhorage-coding-rules/SKILL.md')).exists(),
+  ).toBe(true);
   expect(await Bun.file(join(target, 'AGENTS.md')).exists()).toBe(false);
 
   expect(
@@ -93,6 +96,9 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(
     await readFile(join(target, '.agents/skills/ankhorage-project-structure/SKILL.md'), 'utf8'),
   ).toContain('name: ankhorage-project-structure');
+  expect(
+    await readFile(join(target, '.agents/skills/ankhorage-coding-rules/SKILL.md'), 'utf8'),
+  ).toContain('name: ankhorage-coding-rules');
 });
 
 test('migrates a Changesets repository and keeps the second sync byte-stable', async () => {
@@ -288,6 +294,7 @@ function createContext(target: string) {
           Bun.file(join(target, '.vscode/settings.json')).exists(),
           Bun.file(join(target, '.github/workflows/ci.yml')).exists(),
           Bun.file(join(target, 'AGENTS.md')).exists(),
+          Bun.file(join(target, '.agents/skills/ankhorage-coding-rules/SKILL.md')).exists(),
           Bun.file(join(target, '.agents/skills/ankhorage-project-structure/SKILL.md')).exists(),
         ])
       ).every(Boolean);

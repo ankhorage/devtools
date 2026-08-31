@@ -18,6 +18,7 @@ const REQUIRED_README_SNIPPETS = [
   'devtools.eslint.sync',
   'devtools.agents.sync',
   'devtools.skills.sync',
+  'ankhorage-coding-rules',
   'devtools.prettier.sync',
   'devtools.knip.sync',
   'devtools.package.sync',

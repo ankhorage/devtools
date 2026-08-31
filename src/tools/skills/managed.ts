@@ -18,7 +18,7 @@ import {
   SKILLS_ROOT,
 } from './manifest.js';
 
-const CANONICAL_SKILL_NAMES = ['ankhorage-project-structure'] as const;
+const CANONICAL_SKILL_NAMES = ['ankhorage-coding-rules', 'ankhorage-project-structure'] as const;
 
 interface ManagedSkillPlan {
   readonly contentsByPath: ReadonlyMap<string, Uint8Array>;

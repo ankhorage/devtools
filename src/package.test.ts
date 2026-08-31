@@ -111,6 +111,14 @@ describe('package release contract', () => {
         new URL('./tools/skills/assets/ankhorage-project-structure/SKILL.md', import.meta.url),
       ),
     ).toBe(true);
+    expect(
+      existsSync(new URL('./tools/skills/assets/ankhorage-coding-rules/SKILL.md', import.meta.url)),
+    ).toBe(true);
+    expect(
+      existsSync(
+        new URL('./tools/skills/assets/ankhorage-coding-rules/agents/openai.yaml', import.meta.url),
+      ),
+    ).toBe(true);
   });
 
   it('documents only the canonical devtools command surface', () => {
@@ -125,6 +133,7 @@ describe('package release contract', () => {
     expect(readme).toContain('ankh devtools vscode sync');
     expect(readme).toContain('ankh devtools agents sync');
     expect(readme).toContain('ankh devtools skills sync');
+    expect(readme).toContain('ankhorage-coding-rules');
     expect(readme).not.toContain('ankh dev ');
     expect(readme).not.toContain('`@ankhorage/dev`');
   });

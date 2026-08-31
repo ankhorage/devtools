@@ -16,22 +16,37 @@ afterEach(async () => {
 describe('managed repository skill synchronization', () => {
   it('replaces the canonical skill exactly and preserves unrelated skills', async () => {
     const target = await createTarget();
-    const managedSkill = join(target, '.agents/skills/ankhorage-project-structure');
+    const codingRulesSkill = join(target, '.agents/skills/ankhorage-coding-rules');
+    const projectStructureSkill = join(target, '.agents/skills/ankhorage-project-structure');
     const customSkill = join(target, '.agents/skills/custom-skill');
-    await mkdir(managedSkill, { recursive: true });
+    await mkdir(codingRulesSkill, { recursive: true });
+    await mkdir(projectStructureSkill, { recursive: true });
     await mkdir(customSkill, { recursive: true });
-    await writeFile(join(managedSkill, 'SKILL.md'), 'old skill\n');
-    await writeFile(join(managedSkill, 'stale.txt'), 'remove me\n');
+    await writeFile(join(codingRulesSkill, 'SKILL.md'), 'old coding rules\n');
+    await writeFile(join(projectStructureSkill, 'SKILL.md'), 'old project structure\n');
+    await writeFile(join(codingRulesSkill, 'stale.txt'), 'remove me\n');
+    await writeFile(join(projectStructureSkill, 'stale.txt'), 'remove me too\n');
     await writeFile(join(customSkill, 'SKILL.md'), 'keep me\n');
 
     const results = await syncManagedSkills(target, '1.9.0', { dryRun: false });
+    expect(results).toContainEqual({
+      relativePath: '.agents/skills/ankhorage-coding-rules/stale.txt',
+      action: 'removed',
+    });
     expect(results).toContainEqual({
       relativePath: '.agents/skills/ankhorage-project-structure/stale.txt',
       action: 'removed',
     });
     expect(await readFile(join(customSkill, 'SKILL.md'), 'utf8')).toBe('keep me\n');
-    expect(await Bun.file(join(managedSkill, 'stale.txt')).exists()).toBe(false);
-    expect(await readFile(join(managedSkill, 'SKILL.md'), 'utf8')).toContain(
+    expect(await Bun.file(join(codingRulesSkill, 'stale.txt')).exists()).toBe(false);
+    expect(await Bun.file(join(projectStructureSkill, 'stale.txt')).exists()).toBe(false);
+    expect(await readFile(join(codingRulesSkill, 'SKILL.md'), 'utf8')).toContain(
+      'name: ankhorage-coding-rules',
+    );
+    expect(await readFile(join(codingRulesSkill, 'agents/openai.yaml'), 'utf8')).toContain(
+      'allow_implicit_invocation: true',
+    );
+    expect(await readFile(join(projectStructureSkill, 'SKILL.md'), 'utf8')).toContain(
       'name: ankhorage-project-structure',
     );
   });
@@ -54,12 +69,15 @@ describe('managed repository skill ownership', () => {
     };
     expect(manifest.schemaVersion).toBe(1);
     expect(manifest.sourceDevtoolsVersion).toBe('1.9.0');
-    expect(Object.keys(manifest.skills)).toEqual(['ankhorage-project-structure']);
-    expect(
-      Object.values(manifest.skills['ankhorage-project-structure'].files).every((hash) =>
-        /^sha256:[a-f0-9]{64}$/u.test(hash),
-      ),
-    ).toBe(true);
+    expect(Object.keys(manifest.skills)).toEqual([
+      'ankhorage-coding-rules',
+      'ankhorage-project-structure',
+    ]);
+    for (const skill of Object.values(manifest.skills)) {
+      expect(Object.values(skill.files).every((hash) => /^sha256:[a-f0-9]{64}$/u.test(hash))).toBe(
+        true,
+      );
+    }
     expect(
       (await inspectManagedSkills(target, '1.9.0')).every((status) => status.state === 'current'),
     ).toBe(true);

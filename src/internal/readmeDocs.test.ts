@@ -28,6 +28,7 @@ describe('README documentation validation', () => {
       'devtools.vscode.sync',
       'devtools.agents.sync',
       'devtools.skills.sync',
+      'ankhorage-coding-rules',
       '--dry-run',
       "profile: 'auto'",
       '@ankhorage/utility/project',
