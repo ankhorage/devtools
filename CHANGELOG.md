@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.6
+
+### Patch Changes
+
+- 28ff6f0: Update Devtools-owned dependencies: `@changesets/cli`, `@types/node`, `eslint-plugin-simple-import-sort`, `typescript`.
+
 ## 1.8.5
 
 ### Patch Changes
