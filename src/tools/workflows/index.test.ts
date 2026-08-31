@@ -139,17 +139,24 @@ function runGit(target: string, args: readonly string[]): string {
 }
 
 describe('managed Renovate workflow', () => {
-  test('pins the Renovate Changeset workflow and dispatches CI', async () => {
+  test('pins the Renovate workflow and passes scoped App credentials', async () => {
     const definition = workflowManagedFiles.find(
       ({ relativePath }) => relativePath === '.github/workflows/renovate.yml',
     );
     const rendered = await definition?.render?.('.');
 
     expect(rendered).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@ae2cde4673bb58c6659bc5a7bd16739fb6f0db5e',
+      'ankhorage/renovate/.github/workflows/changeset.yml@b9a44c350b71b4292c8da69eb469888de60b68be',
     );
     expect(rendered).toContain("github.actor == 'renovate[bot]'");
-    expect(rendered).toContain('actions: write');
+    expect(rendered).toContain('contents: read');
+    expect(rendered).not.toContain('actions: write');
+    expect(rendered).toContain(
+      'renovate_sync_client_id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}',
+    );
+    expect(rendered).toContain(
+      'renovate_sync_private_key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}',
+    );
 
     const ci = await workflowManagedFiles[0].render?.('.');
     expect(ci).toContain('workflow_dispatch:');
