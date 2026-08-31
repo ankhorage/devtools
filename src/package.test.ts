@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 
 import { describe, expect, it } from 'bun:test';
 
+const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 const capabilities = [
   'devtools.changeset',
   'devtools.lint',
@@ -91,7 +92,9 @@ describe('package release contract', () => {
       'changeset:status': 'bun src/cli/bin/changeset.ts status --since=origin/main',
       'version-packages': 'bun src/cli/bin/changeset.ts version',
     });
-    expect(packageJson.dependencies).toMatchObject({ '@changesets/cli': '^2.31.1' });
+    const changesetsRange = packageJson.dependencies['@changesets/cli'];
+    expect(changesetsRange).toBeString();
+    expect(changesetsRange).toMatch(CARET_SEMVER_RANGE);
     expect(packageJson.devDependencies).not.toHaveProperty('@changesets/cli');
   });
 

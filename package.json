@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "@ankhorage/utility": "^0.2.0",
-    "@changesets/cli": "^2.31.1",
+    "@changesets/cli": "^3.0.1",
     "@eslint/compat": "^2.1.0",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.9.1",
@@ -113,7 +113,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-native": "^5.0.0",
     "eslint-plugin-security": "^4.0.1",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "knip": "^6.33.0",
     "prettier": "^3.9.6",
@@ -123,8 +123,8 @@
     "@ankhorage/ankh": "^0.8.4",
     "@ankhorage/doctor": "0.10.4",
     "@types/bun": "^1.4.0",
-    "@types/node": "^25.9.5",
-    "typescript": "^5.9.3"
+    "@types/node": "^26.4.0",
+    "typescript": "~6.0.3"
   },
   "packageManager": "bun@1.4.0"
 }
