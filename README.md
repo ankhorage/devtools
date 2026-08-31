@@ -11,6 +11,8 @@ src/
 ├── cli/
 ├── policy/
 └── tools/
+    ├── agents/
+    ├── skills/
     ├── eslint/
     ├── prettier/
     ├── knip/
@@ -21,6 +23,8 @@ src/
 
 - `policy`: shared repository runtime policy, including the canonical Bun version
 - `changesets`: package-resolved Changesets execution and release command policy
+- `agents`: canonical repository `AGENTS.md` rendered from stable package identity
+- `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`
 - `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner
 - `prettier`: shared Prettier configuration and the bundled Prettier runner
 - `knip`: shared Knip configuration helpers and the bundled Knip runner
@@ -61,6 +65,10 @@ The package is discovered under the `devtools` category and exposes these capabi
 - `devtools.knip`
 - `devtools.sync`
 - `devtools.status`
+- `devtools.agents.sync`
+- `devtools.agents.status`
+- `devtools.skills.sync`
+- `devtools.skills.status`
 - `devtools.eslint.sync`
 - `devtools.eslint.status`
 - `devtools.prettier.sync`
@@ -125,6 +133,8 @@ ankh devtools status .
 Synchronize one concern:
 
 ```bash
+ankh devtools agents sync .
+ankh devtools skills sync .
 ankh devtools eslint sync .
 ankh devtools prettier sync .
 ankh devtools knip sync .
@@ -136,6 +146,8 @@ ankh devtools vscode sync .
 Report one concern:
 
 ```bash
+ankh devtools agents status .
+ankh devtools skills status .
 ankh devtools eslint status .
 ankh devtools prettier status .
 ankh devtools knip status .
@@ -148,11 +160,13 @@ Preview synchronization without writing:
 
 ```bash
 ankh devtools sync . --dry-run
+ankh devtools agents sync . --dry-run
+ankh devtools skills sync . --dry-run
 ankh devtools eslint sync . --dry-run
 ankh devtools package sync . --dry-run
 ```
 
-A dry run reports `would create` and `would update` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.
+A dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.
 
 ## Synchronization guarantees
 
@@ -160,6 +174,7 @@ Synchronization is deterministic and idempotent:
 
 - missing managed artifacts are created
 - outdated centrally owned artifacts are updated
+- stale files in Devtools-owned skill trees are removed
 - the managed Bun runtime version is applied consistently to package metadata and workflows
 - Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration
 - package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync
@@ -169,7 +184,19 @@ Synchronization is deterministic and idempotent:
 - invalid target paths and write failures return a non-zero exit code
 - create-only repository extension files are never overwritten after creation
 
-The canonical workflow and VS Code files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.
+The canonical workflow, VS Code, and skill files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.
+
+## Managed agent instructions
+
+`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy and directs structural work to the managed project-structure skill.
+
+Only the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.
+
+## Managed repository skills
+
+`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-project-structure/` tree from the immutable copy shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in that one managed skill, and preserves every unrelated skill directory.
+
+`.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.
 
 ## ESLint profiles
 

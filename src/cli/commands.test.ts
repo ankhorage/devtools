@@ -6,28 +6,36 @@ import {
   getDevtoolsToolCommand,
 } from './commands.js';
 
+const repositoryCommandPaths = [
+  'changeset',
+  'lint',
+  'format',
+  'knip',
+  'sync',
+  'status',
+  'agents sync',
+  'agents status',
+  'skills sync',
+  'skills status',
+  'eslint sync',
+  'eslint status',
+  'prettier sync',
+  'prettier status',
+  'knip sync',
+  'knip status',
+  'package sync',
+  'package status',
+  'workflows sync',
+  'workflows status',
+  'vscode sync',
+  'vscode status',
+];
+
 describe('devtools command table', () => {
   it('defines the exact provider-backed command surface', () => {
-    expect(getDevtoolsCommands().map((command) => command.path.join(' '))).toEqual([
-      'changeset',
-      'lint',
-      'format',
-      'knip',
-      'sync',
-      'status',
-      'eslint sync',
-      'eslint status',
-      'prettier sync',
-      'prettier status',
-      'knip sync',
-      'knip status',
-      'package sync',
-      'package status',
-      'workflows sync',
-      'workflows status',
-      'vscode sync',
-      'vscode status',
-    ]);
+    expect(getDevtoolsCommands().map((command) => command.path.join(' '))).toEqual(
+      repositoryCommandPaths,
+    );
   });
 
   it('resolves single- and multi-segment command paths', () => {
@@ -37,6 +45,10 @@ describe('devtools command table', () => {
       binName: 'changeset',
     });
     expect(getDevtoolsToolCommand('lint').capability).toBe('devtools.lint');
+    expect(findDevtoolsCommandByPath(['agents', 'sync'])?.capability).toBe('devtools.agents.sync');
+    expect(findDevtoolsCommandByPath(['skills', 'status'])?.capability).toBe(
+      'devtools.skills.status',
+    );
     expect(findDevtoolsCommandByPath(['eslint', 'sync'])?.capability).toBe('devtools.eslint.sync');
     expect(findDevtoolsCommandByPath(['package', 'status'])?.capability).toBe(
       'devtools.package.status',

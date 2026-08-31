@@ -37,6 +37,25 @@ test('syncs only the selected concern and aggregate status reports drift', async
   expect(context.stderr).toEqual([]);
 });
 
+test('syncs agent instructions and repository skills independently', async () => {
+  const target = await createTarget();
+  await writeFile(join(target, 'package.json'), '{"name":"fixture"}\n');
+  const context = createContext(target);
+
+  expect(
+    (await runRepositoryCommand(getRepositoryCommand(['skills', 'sync']), [], context)).exitCode,
+  ).toBe(0);
+  expect(
+    await Bun.file(join(target, '.agents/skills/ankhorage-project-structure/SKILL.md')).exists(),
+  ).toBe(true);
+  expect(await Bun.file(join(target, 'AGENTS.md')).exists()).toBe(false);
+
+  expect(
+    (await runRepositoryCommand(getRepositoryCommand(['agents', 'sync']), [], context)).exitCode,
+  ).toBe(0);
+  expect(await readFile(join(target, 'AGENTS.md'), 'utf8')).toContain('Package: `fixture`');
+});
+
 test('syncs configs and merge-updates package.json without replacing unrelated fields', async () => {
   const target = await createTarget();
   await writeFile(
@@ -68,6 +87,12 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
     'export default {};\n',
   );
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain('createKnipConfig');
+  expect(await readFile(join(target, 'AGENTS.md'), 'utf8')).toContain(
+    'Only the current Ankhorage architecture is valid.',
+  );
+  expect(
+    await readFile(join(target, '.agents/skills/ankhorage-project-structure/SKILL.md'), 'utf8'),
+  ).toContain('name: ankhorage-project-structure');
 });
 
 test('migrates a Changesets repository and keeps the second sync byte-stable', async () => {
@@ -262,6 +287,8 @@ function createContext(target: string) {
           Bun.file(join(target, 'prettier.local.config.js')).exists(),
           Bun.file(join(target, '.vscode/settings.json')).exists(),
           Bun.file(join(target, '.github/workflows/ci.yml')).exists(),
+          Bun.file(join(target, 'AGENTS.md')).exists(),
+          Bun.file(join(target, '.agents/skills/ankhorage-project-structure/SKILL.md')).exists(),
         ])
       ).every(Boolean);
       return { relativePath: 'bun.lock', action: 'created' as const };

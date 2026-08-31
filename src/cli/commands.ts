@@ -1,6 +1,14 @@
 export type DevtoolsToolName = 'changeset' | 'format' | 'knip' | 'lint';
 type DevtoolsManagedScope =
-  'all' | 'eslint' | 'knip' | 'package' | 'prettier' | 'vscode' | 'workflows';
+  | 'agents'
+  | 'all'
+  | 'eslint'
+  | 'knip'
+  | 'package'
+  | 'prettier'
+  | 'skills'
+  | 'vscode'
+  | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
 type DevtoolsCapability =
@@ -10,6 +18,8 @@ type DevtoolsCapability =
   | 'devtools.lint'
   | 'devtools.status'
   | 'devtools.sync'
+  | 'devtools.agents.status'
+  | 'devtools.agents.sync'
   | 'devtools.eslint.status'
   | 'devtools.eslint.sync'
   | 'devtools.knip.status'
@@ -18,6 +28,8 @@ type DevtoolsCapability =
   | 'devtools.package.sync'
   | 'devtools.prettier.status'
   | 'devtools.prettier.sync'
+  | 'devtools.skills.status'
+  | 'devtools.skills.sync'
   | 'devtools.vscode.status'
   | 'devtools.vscode.sync'
   | 'devtools.workflows.status'
@@ -43,7 +55,8 @@ export interface DevtoolsRepositoryCommandDefinition extends DevtoolsCommandBase
 }
 
 export type DevtoolsCommandDefinition =
-  DevtoolsExternalCommandDefinition | DevtoolsRepositoryCommandDefinition;
+  | DevtoolsExternalCommandDefinition
+  | DevtoolsRepositoryCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
   externalCommand(
@@ -74,6 +87,34 @@ const DEVTOOLS_COMMANDS = [
     'devtools.status',
     'Report drift for all managed repository setup.',
     'all',
+    'status',
+  ),
+  repositoryCommand(
+    ['agents', 'sync'],
+    'devtools.agents.sync',
+    'Synchronize the canonical repository agent instructions.',
+    'agents',
+    'sync',
+  ),
+  repositoryCommand(
+    ['agents', 'status'],
+    'devtools.agents.status',
+    'Report drift for the canonical repository agent instructions.',
+    'agents',
+    'status',
+  ),
+  repositoryCommand(
+    ['skills', 'sync'],
+    'devtools.skills.sync',
+    'Synchronize canonical repository-local agent skills.',
+    'skills',
+    'sync',
+  ),
+  repositoryCommand(
+    ['skills', 'status'],
+    'devtools.skills.status',
+    'Report drift for canonical repository-local agent skills.',
+    'skills',
     'status',
   ),
   repositoryCommand(

@@ -25,6 +25,10 @@
       "devtools.knip",
       "devtools.sync",
       "devtools.status",
+      "devtools.agents.sync",
+      "devtools.agents.status",
+      "devtools.skills.sync",
+      "devtools.skills.status",
       "devtools.eslint.sync",
       "devtools.eslint.status",
       "devtools.prettier.sync",
@@ -85,7 +89,7 @@
     "examples"
   ],
   "scripts": {
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode dist/tools/skills && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files && cp -R src/tools/skills/assets dist/tools/skills/assets",
     "typecheck": "bun x tsc --noEmit -p tsconfig.test.json",
     "doctor": "ankhorage-doctor validate .",
     "knip:check": "knip",
