@@ -14,6 +14,16 @@ describe('Renovate configuration', () => {
     expect(source).toContain("matchUpdateTypes: ['major']");
   });
 
+  test('defers TypeScript 7 until the ESLint parser supports its compiler API', async () => {
+    const config = await readRenovateConfig();
+    const typescriptRule = config.packageRules.find((rule) =>
+      rule.matchDepNames?.includes('typescript'),
+    );
+
+    expect(typescriptRule?.allowedVersions).toBe('<7.0.0');
+    expect(typescriptRule?.matchDepNames).toEqual(['typescript']);
+  });
+
   test('escapes inherited default-deny only for the canonical Bun authority', async () => {
     const config = await readRenovateConfig();
     const inheritedRules: RenovatePackageRule[] = [
@@ -48,6 +58,7 @@ interface RenovateDependency {
 }
 
 interface RenovatePackageRule {
+  allowedVersions?: string;
   enabled?: boolean;
   matchDatasources?: string[];
   matchDepNames?: string[];
