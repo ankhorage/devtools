@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.4
+
+### Patch Changes
+
+- 557c9e4: Update Devtools-owned dependencies: `@ankhorage/ankh`.
+- 4288aff: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@types/node`.
+
 ## 1.9.3
 
 ### Patch Changes
