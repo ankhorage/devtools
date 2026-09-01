@@ -24,7 +24,7 @@
         "typescript-eslint": "^8.69.0",
       },
       "devDependencies": {
-        "@ankhorage/ankh": "^0.8.6",
+        "@ankhorage/ankh": "^0.8.7",
         "@ankhorage/doctor": "0.10.6",
         "@types/bun": "^1.4.0",
         "@types/node": "^26.4.1",
@@ -33,7 +33,7 @@
     },
   },
   "packages": {
-    "@ankhorage/ankh": ["@ankhorage/ankh@0.8.6", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1", "@ankhorage/devtools": "^1.9.2", "@ankhorage/doctor": "^0.10.4", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-+uvuOnQ4O/XpITEq3FMbpmGODqPkefIu/69O5vTcI4jAHFbeoL1k43rguHET9pNT/7s37LTiePB2b9uxMYE8jA=="],
+    "@ankhorage/ankh": ["@ankhorage/ankh@0.8.7", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1", "@ankhorage/devtools": "^1.9.2", "@ankhorage/doctor": "^0.10.5", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-8zY+62/LSY2gf5VUiaC/IBWgWMyvx4FrKqkE+BMtQrPJ+BcAuxbfWHMno/vFAYuLqamxIN2uDL3Mc6O79Jr3tw=="],
 
     "@ankhorage/color-theory": ["@ankhorage/color-theory@0.0.8", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-+JRLkvBUiPxFrRANyewRZxLv1sU5cKFOc3VBYB+b/eFngLFDIAqXf/a4e0A6gQE+lk6e3wb3FcGQYIyYB1Dqzg=="],
 
