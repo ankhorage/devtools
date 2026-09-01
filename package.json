@@ -119,12 +119,12 @@
     "eslint-plugin-security": "^4.0.1",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "knip": "^6.33.0",
+    "knip": "^6.34.0",
     "prettier": "^3.9.6",
     "typescript-eslint": "^8.69.0"
   },
   "devDependencies": {
-    "@ankhorage/ankh": "^0.8.4",
+    "@ankhorage/ankh": "^0.8.5",
     "@ankhorage/doctor": "0.10.4",
     "@types/bun": "^1.4.0",
     "@types/node": "^26.4.0",
