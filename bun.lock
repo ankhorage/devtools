@@ -25,9 +25,9 @@
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.8.6",
-        "@ankhorage/doctor": "0.10.5",
+        "@ankhorage/doctor": "0.10.6",
         "@types/bun": "^1.4.0",
-        "@types/node": "^26.4.0",
+        "@types/node": "^26.4.1",
         "typescript": "~6.0.3",
       },
     },
@@ -41,9 +41,9 @@
 
     "@ankhorage/devtools": ["@ankhorage/devtools@1.9.2", "", { "dependencies": { "@ankhorage/utility": "^0.2.0", "@changesets/cli": "^3.0.1", "@eslint/compat": "^2.1.0", "@eslint/js": "^10.0.1", "eslint": "^10.9.1", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.6", "eslint-plugin-react": "^7.37.5", "eslint-plugin-react-hooks": "^7.1.1", "eslint-plugin-react-native": "^5.0.0", "eslint-plugin-security": "^4.0.1", "eslint-plugin-simple-import-sort": "^14.0.0", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.34.0", "prettier": "^3.9.6", "typescript-eslint": "^8.69.0" }, "bin": { "ankhorage-changeset": "dist/cli/bin/changeset.js", "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-/KM9CiGrI9Ggk9/3vc2Q71bjj7XMazcNVDoc7i1fAntY9Tu3g1+XYKBdx/n8eJ2J5SMcqJWkVIYPnXgnMNjlKA=="],
 
-    "@ankhorage/doctor": ["@ankhorage/doctor@0.10.5", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1", "@ankhorage/supabase-auth": "^1.2.6" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-KUmYumbPH2Ku9/SBW42jM+Gw8QDU1yBb0Uzrn+4IivqOrN4Ji9y9xFPnB1JwsIRYDP8+bmjEvL6iKmsBngCqVQ=="],
+    "@ankhorage/doctor": ["@ankhorage/doctor@0.10.6", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1", "@ankhorage/supabase-auth": "^1.2.7" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-N9p3qb2xCebSfT3n30XqqeyVKvUUbbrj6JIRdBAyqJElQ+ppbZWrrOk4LskPuQVS2Uel21wj/De6XkVh9qJyrA=="],
 
-    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.6", "", { "dependencies": { "@ankhorage/contracts": "^7.8.0", "@noble/hashes": "2.3.0" } }, "sha512-EJhgnJkX3RgSB/2WRsUSEUJQZLh8D847KwGw0LCr4gXwqun672/87lAv5fMCMGODNDg6MgSccustb8FihR7h0A=="],
+    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.7", "", { "dependencies": { "@ankhorage/contracts": "^8.0.1", "@noble/hashes": "2.3.0" } }, "sha512-zkuWGO590VPnLIlEnmRQz9Rn3S5oPBGOje5PLbkioT/BYTUk5sGkChjh6WHwk3GOga6kiYbvtLnZEIDJ+ooDOA=="],
 
     "@ankhorage/utility": ["@ankhorage/utility@0.2.0", "", {}, "sha512-IeIaXDrt1Icx+QtVBLgzBJPdApgpGdKM0WwDSko4Jg0nETGYL6UN/d0vSHBmL66m9bZ+PL3U7dEfn3FDT31kSQ=="],
 
@@ -261,7 +261,7 @@
 
     "@types/json5": ["@types/json5@0.0.29", "", {}, ""],
 
-    "@types/node": ["@types/node@26.4.0", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-faiGnoIrLH/V8cibOMEAZ8pMw6oXqSukl29ra4mN8GdaB2ZewzeaLj+INpV5N+Z1eKWzY+IzaIZH2EIR6YZRNQ=="],
+    "@types/node": ["@types/node@26.4.1", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-k97ENvZWtvA6yqz5/FS6a7duDgOPEeOQOc2iKS/nY6mX6qJUKtLnWzQS+Xj6tXweyj6ZcTAK2Qecetnvi9nCLA=="],
 
     "@typescript-eslint/eslint-plugin": ["@typescript-eslint/eslint-plugin@8.69.0", "", { "dependencies": { "@eslint-community/regexpp": "^4.12.2", "@typescript-eslint/scope-manager": "8.69.0", "@typescript-eslint/type-utils": "8.69.0", "@typescript-eslint/utils": "8.69.0", "@typescript-eslint/visitor-keys": "8.69.0", "ignore": "^7.0.5", "natural-compare": "^1.4.0", "ts-api-utils": "^2.5.0" }, "peerDependencies": { "@typescript-eslint/parser": "^8.69.0", "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-t5jQTKPIgVW1PE6dR6H6Qz5gm8zjMlX5/2gRaOGd9eO6V7J+tQc6iWKukEe7dY8u9HyYasQ0yfF0/FSSTEO2gA=="],
 
@@ -774,8 +774,6 @@
     "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
 
     "zod-validation-error": ["zod-validation-error@4.0.2", "", { "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" } }, "sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ=="],
-
-    "@ankhorage/supabase-auth/@ankhorage/contracts": ["@ankhorage/contracts@7.9.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.0.8" } }, "sha512-a57wumzdovqSjdoFTEnh9g3S7BP41G+BxiUZq2RBQG6+ao07iEEXr/ysjeFPRAf1ftzlx0tZLAFh2XCSyd/2yg=="],
 
     "@babel/core/json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
 
