@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.2
+
+### Patch Changes
+
+- Pin the managed Renovate workflow to the immutable trust-policy commit that authorizes both
+  canonical Devtools-managed skill roots.
+- 5545d50: Update Devtools-owned dependencies: `@ankhorage/ankh`, `knip`.
+
 ## 1.9.1
 
 ### Patch Changes
