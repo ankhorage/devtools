@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.1
+
+### Patch Changes
+
+- e510692: Pin the managed Renovate workflow to the immutable merge commit so GitHub can resolve and start the reusable workflow.
+
 ## 1.9.0
 
 ### Minor Changes
