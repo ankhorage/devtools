@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.5
+
+### Patch Changes
+
+- 1a13592: Update Devtools-owned dependencies: `@ankhorage/ankh`.
+
 ## 1.10.4
 
 ### Patch Changes
