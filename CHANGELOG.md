@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.5
+
+### Patch Changes
+
+- 042a890: Update Devtools-owned dependencies: `@ankhorage/ankh`.
+
 ## 1.9.4
 
 ### Patch Changes
