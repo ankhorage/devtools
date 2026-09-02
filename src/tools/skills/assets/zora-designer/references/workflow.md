@@ -88,7 +88,9 @@ selected/focus states. Define narrow and wide behavior where applicable.
 For a series also define the shared shell, canonical route topology, state continuity, back/cancel
 behavior, shared recipes and terminology, and one common theme. A concept image series must remain
 ordered and visually coherent. Label every generated image as a concept; replace it with an actual
-runtime capture only after running the manifest.
+runtime capture only after running the manifest. Before final template release, retain the original
+files for every concept image, runtime capture, and final-screen runtime image with their measured
+dimensions, mode/state/order, origin, and provenance.
 
 ## 5. Audit a URL, image, or series
 
@@ -117,12 +119,24 @@ When the target repository is `@ankhorage/templates`, scaffold reviewed composit
 bun .agents/skills/zora-designer/scripts/scaffold-template.mjs scaffold-input.json
 ```
 
-The scaffold input provides the ready manifest, category, template ID, label, description, and
-target root. The helper verifies the Templates repository and owner validation, creates a normal
-variant `manifest.ts`, `template.ts`, and `index.ts`, and updates the category registry import and
-definition deterministically. It refuses existing targets, unsafe identifiers, blocked manifests,
-and non-Templates repositories. Review and validate the generated production diff; do not hand-hide
-a systemic skill or owner defect.
+The scaffold input provides the ready manifest, category, template ID, label, description, target
+root, artifact input, and optional `imagery` inventory. The helper verifies the Templates repository
+and owner validation, creates a normal variant `manifest.ts`, `template.ts`, `assets.ts`, and
+`index.ts`, updates the category registry import and definition deterministically, and writes
+`zora-designer.md` with durable visual-asset inventory.
+
+Each `imagery.conceptSeries` and `imagery.runtimeCaptures` entry supplies `id`, `sourcePath`,
+`contentType`, measured `width`/`height`, `mode`, `state`, `order`, `origin`, and `provenance`.
+Each `imagery.runtimeAssets` entry supplies `mediaId`, `name`, `sourcePath`, `contentType`, measured
+`width`/`height`, `origin`, and `provenance`. The helper preserves source bytes under deterministic
+template evidence/runtime paths, derives collision-safe generated-project paths, creates the
+canonical bundled media entries, and validates the complete asset bundle through the released
+Templates API. Supply only durable local source files: `blob:` and `data:` URLs, symlinks, missing
+files, unsupported image formats, incomplete metadata, and duplicate identities are blocked.
+
+The helper refuses existing targets, unsafe identifiers, blocked manifests, and non-Templates
+repositories. Review and validate the generated production diff; do not hand-hide a systemic skill
+or owner defect.
 
 ## 7. Delivery gates
 

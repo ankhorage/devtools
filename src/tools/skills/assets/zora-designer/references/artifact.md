@@ -31,6 +31,9 @@ is never invented:
 - `tokens`: current owner-computed token output, never copied token definitions;
 - `components`: metadata-backed recipe decisions and required states;
 - `screens`: ordered screen specifications and evidence relationships;
+- `imagery`: separate ordered `conceptSeries`, ordered `runtimeCaptures`, and `runtimeAssets` with
+  their durable template source path, generated-project target path where applicable, media ID,
+  dimensions, content type, byte size, origin, and provenance;
 - `validation`: scope, gates, application gate, owner/runtime drift, and blockers;
 - `auditInput`: criterion and release-gate assessments consumed by the canonical calculator;
 - `findings`, `risks`, `openDecisions`, and preserved `userNotes`.
@@ -79,7 +82,10 @@ score impact, risks, passed rules, and not-assessable criteria. Keep unavailable
 
 An image or series records each original source separately with dimensions and order. A URL records
 the capture viewport, theme mode, state, and reproduction. Concept images are labeled generated;
-runtime captures are labeled observed/measured and include their capture source.
+runtime captures are labeled observed/measured and include their capture source. Final runtime
+assets additionally record the manifest media ID, checked-in Template source path, and
+generated-project path. These are distinct inventories: a concept or runtime-capture screenshot
+does not prove the underlying screen image asset was retained.
 
 ## Output and persistence
 
