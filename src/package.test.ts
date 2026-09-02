@@ -122,6 +122,19 @@ describe('package release contract', () => {
         new URL('./tools/skills/assets/ankhorage-coding-rules/agents/openai.yaml', import.meta.url),
       ),
     ).toBe(true);
+    expect(
+      existsSync(new URL('./tools/skills/assets/zora-designer/SKILL.md', import.meta.url)),
+    ).toBe(true);
+    expect(
+      existsSync(
+        new URL('./tools/skills/assets/zora-designer/assets/audit-rubric.json', import.meta.url),
+      ),
+    ).toBe(true);
+    expect(
+      existsSync(
+        new URL('./tools/skills/assets/zora-designer/scripts/owner-api.mjs', import.meta.url),
+      ),
+    ).toBe(true);
   });
 
   it('documents only the canonical devtools command surface', () => {

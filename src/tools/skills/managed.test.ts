@@ -87,6 +87,39 @@ describe('managed repository skill ownership', () => {
       ),
     ).toBe(true);
   });
+
+  it('selects zora-designer for authoring profiles and removes it after profile drift', async () => {
+    const target = await createTarget();
+    await writeFile(
+      join(target, 'package.json'),
+      `${JSON.stringify({ name: '@ankhorage/zora' }, null, 2)}\n`,
+    );
+
+    await syncManagedSkills(target, '1.10.0', { dryRun: false });
+    const skillRoot = join(target, '.agents/skills/zora-designer');
+    const artifactReference = join(skillRoot, 'references/artifact.md');
+    expect(await Bun.file(join(skillRoot, 'SKILL.md')).exists()).toBe(true);
+    expect(await Bun.file(artifactReference).exists()).toBe(true);
+    const manifest = JSON.parse(
+      await readFile(join(target, '.agents/.devtools-manifest.json'), 'utf8'),
+    ) as { skills: Record<string, { files: Record<string, string> }> };
+    const managedPaths = Object.keys(manifest.skills['zora-designer'].files);
+    expect(managedPaths).toContain('.agents/skills/zora-designer/scripts/scaffold-template.mjs');
+    expect(managedPaths.every((path) => path.startsWith('.agents/skills/zora-designer/'))).toBe(
+      true,
+    );
+
+    await writeFile(
+      join(target, 'package.json'),
+      `${JSON.stringify({ name: '@ankhorage/contracts' }, null, 2)}\n`,
+    );
+    const results = await syncManagedSkills(target, '1.10.0', { dryRun: false });
+    expect(results).toContainEqual({
+      relativePath: '.agents/skills/zora-designer/SKILL.md',
+      action: 'removed',
+    });
+    expect(await Bun.file(skillRoot).exists()).toBe(false);
+  });
 });
 
 describe('managed repository skill safety', () => {

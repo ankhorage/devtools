@@ -17,8 +17,7 @@ import {
   resolveManagedPath,
   SKILLS_ROOT,
 } from './manifest.js';
-
-const CANONICAL_SKILL_NAMES = ['ankhorage-coding-rules', 'ankhorage-project-structure'] as const;
+import { type ManagedSkillName, selectManagedSkillNames } from './selection.js';
 
 interface ManagedSkillPlan {
   readonly contentsByPath: ReadonlyMap<string, Uint8Array>;
@@ -103,10 +102,12 @@ async function assertNoSymlinkSegments(
   }
 }
 
-async function collectCanonicalSkillFiles(): Promise<ReadonlyMap<string, Uint8Array>> {
+async function collectCanonicalSkillFiles(
+  skillNames: readonly ManagedSkillName[],
+): Promise<ReadonlyMap<string, Uint8Array>> {
   const contentsByPath = new Map<string, Uint8Array>();
 
-  for (const skillName of CANONICAL_SKILL_NAMES) {
+  for (const skillName of skillNames) {
     const sourceDirectory = fileURLToPath(new URL(`./assets/${skillName}/`, import.meta.url));
     const files = await readDirectoryFiles(sourceDirectory);
     assertSkillName(skillName, files);
@@ -122,10 +123,11 @@ async function collectObsoletePaths(
   targetDirectory: string,
   desiredPaths: ReadonlySet<string>,
   previousManifest: ManagedSkillsManifest | null,
+  skillNames: readonly ManagedSkillName[],
 ): Promise<readonly string[]> {
   const obsoletePaths = new Set<string>();
 
-  for (const skillName of CANONICAL_SKILL_NAMES) {
+  for (const skillName of skillNames) {
     const skillRoot = `${SKILLS_ROOT}/${skillName}`;
     for (const existingPath of await readTargetDirectoryFiles(targetDirectory, skillRoot)) {
       if (!desiredPaths.has(existingPath)) {
@@ -136,7 +138,7 @@ async function collectObsoletePaths(
 
   if (previousManifest !== null) {
     for (const [skillName, entry] of Object.entries(previousManifest.skills)) {
-      if (CANONICAL_SKILL_NAMES.includes(skillName as (typeof CANONICAL_SKILL_NAMES)[number])) {
+      if (skillNames.includes(skillName as ManagedSkillName)) {
         continue;
       }
       for (const managedPath of Object.keys(entry.files)) {
@@ -155,13 +157,10 @@ async function createManagedSkillPlan(
   devtoolsVersion: string,
 ): Promise<ManagedSkillPlan> {
   const previousManifest = await readManagedSkillsManifest(targetDirectory);
-  const contentsByPath = await collectCanonicalSkillFiles();
+  const skillNames = await selectManagedSkillNames(targetDirectory);
+  const contentsByPath = await collectCanonicalSkillFiles(skillNames);
   const desiredPaths = new Set(contentsByPath.keys());
-  const manifestContents = createManifestContents(
-    contentsByPath,
-    devtoolsVersion,
-    CANONICAL_SKILL_NAMES,
-  );
+  const manifestContents = createManifestContents(contentsByPath, devtoolsVersion, skillNames);
   const statuses: ManagedFileStatus[] = [];
 
   for (const [relativePath, contents] of [...contentsByPath.entries()].sort()) {
@@ -171,6 +170,7 @@ async function createManagedSkillPlan(
     targetDirectory,
     desiredPaths,
     previousManifest,
+    skillNames,
   )) {
     statuses.push({ relativePath, state: 'obsolete' });
   }
