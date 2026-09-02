@@ -2,10 +2,13 @@ import { readFile } from 'node:fs/promises';
 
 import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 
-export async function renderWorkflowAsync(
-  sourceUrl: URL,
-  policy: { readonly bunVersion: string; readonly nodeVersion: string },
-): Promise<string> {
+export interface WorkflowPolicy {
+  readonly bunVersion: string;
+  readonly nodeVersion: string;
+}
+
+/*** Renders one workflow template with the canonical runtime and Changesets policy. */
+export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy): Promise<string> {
   const template = await readFile(sourceUrl, 'utf8');
   return template
     .replaceAll(BUN_VERSION_TOKEN, policy.bunVersion)

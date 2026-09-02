@@ -69,6 +69,22 @@ describe('Devtools Renovate owner synchronization', () => {
   });
 });
 
+test('preserves the Renovate-managed digest during owner synchronization', async () => {
+  const target = await createTarget('1.4.0');
+  await synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync });
+  const workflowPath = join(target, '.github/workflows/renovate.yml');
+  const workflow = await readFile(workflowPath, 'utf8');
+  const preservedDigest = 'f'.repeat(40);
+  await writeFile(
+    workflowPath,
+    workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
+  );
+
+  await synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync });
+  await synchronizeRenovateOwnerAsync('status', target, { runLockfileAsync });
+  expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
+});
+
 async function createTarget(version: string): Promise<string> {
   const target = await mkdtemp(join(tmpdir(), 'devtools-owner-'));
   temporaryDirectories.push(target);

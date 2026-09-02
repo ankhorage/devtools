@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
 import { nodeRuntimePolicy } from '../policy/bunRuntimePolicy.js';
+import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from '../tools/workflows/renderWorkflowAsync.js';
 
 export async function synchronizeRenovateOwnerAsync(
@@ -98,8 +99,9 @@ async function createManagedDefinitionsAsync(
     },
     {
       relativePath: '.github/workflows/renovate.yml',
-      contents: await renderWorkflowAsync(
+      contents: await renderRenovateWorkflowAsync(
         new URL('../tools/workflows/files/renovate.yml', import.meta.url),
+        targetDirectory,
         workflowPolicy,
       ),
     },
