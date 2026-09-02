@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.1
+
+### Patch Changes
+
+- 457b684: Preserve the exact Renovate-managed reusable-workflow digest when synchronizing the canonical
+  consumer workflow.
+
 ## 1.10.0
 
 ### Minor Changes
