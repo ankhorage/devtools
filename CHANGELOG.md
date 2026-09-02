@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.0
+
+### Minor Changes
+
+- fbe8ede: Package and profile-select the `zora-designer` skill with released-owner orchestration, deterministic audit evidence and scoring, metadata-backed missing-element handling, portable design artifacts, and Templates starter scaffolding.
+
 ## 1.9.5
 
 ### Patch Changes
