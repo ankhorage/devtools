@@ -40,6 +40,13 @@ describe('managed workflows', () => {
     expect(ci).toContain(changesetsPolicy.workflowCommands.versionPackagesStatus);
     expect(release).toContain(`version: ${changesetsPolicy.workflowCommands.version}`);
     expect(release).toContain(`publish: ${changesetsPolicy.workflowCommands.publish}`);
+    expect(release).toContain('createGithubReleases: false');
+    expect(release).toContain('Finalize Changesets v3 tags and GitHub releases');
+    expect(release).toContain('git tag --points-at HEAD');
+    expect(release).toContain('git push origin "refs/tags/$tag"');
+    expect(release).toContain(
+      'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes',
+    );
     expect(release).not.toContain('bunx changeset');
   });
 });
