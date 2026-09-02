@@ -99,6 +99,15 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(
     await readFile(join(target, '.agents/skills/ankhorage-coding-rules/SKILL.md'), 'utf8'),
   ).toContain('name: ankhorage-coding-rules');
+  const workflowPath = join(target, '.github/workflows/renovate.yml');
+  const preservedDigest = 'f'.repeat(40);
+  const workflow = await readFile(workflowPath, 'utf8');
+  await writeFile(
+    workflowPath,
+    workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
+  );
+  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
 });
 
 test('migrates a Changesets repository and keeps the second sync byte-stable', async () => {

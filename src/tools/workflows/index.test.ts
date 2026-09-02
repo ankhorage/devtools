@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, describe, expect, test } from 'bun:test';
@@ -8,6 +8,7 @@ import { getDevtoolsToolCommand } from '../../cli/commands.js';
 import { runExternalTool } from '../../cli/runExternalTool.js';
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
+import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
 import { workflowManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
@@ -140,13 +141,11 @@ function runGit(target: string, args: readonly string[]): string {
 
 describe('managed Renovate workflow', () => {
   test('pins the Renovate workflow and passes scoped App credentials', async () => {
-    const definition = workflowManagedFiles.find(
-      ({ relativePath }) => relativePath === '.github/workflows/renovate.yml',
-    );
-    const rendered = await definition?.render?.('.');
+    const definition = getRenovateWorkflowDefinition();
+    const rendered = await definition.render?.('.');
 
-    expect(rendered).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@1721d245371e879301d7a2e5299d1c5790d97459',
+    expect(rendered).toMatch(
+      /ankhorage\/renovate\/\.github\/workflows\/changeset\.yml@[0-9a-f]{40}/u,
     );
     expect(rendered).toContain("github.actor == 'renovate[bot]'");
     expect(rendered).toContain('contents: read');
@@ -162,3 +161,74 @@ describe('managed Renovate workflow', () => {
     expect(ci).toContain('workflow_dispatch:');
   });
 });
+
+test('preserves a valid Renovate-managed digest across status, dry-run, and sync', async () => {
+  const target = await createWorkflowTarget();
+  const definition = getRenovateWorkflowDefinition();
+  const bootstrap = await definition.render?.(target);
+  if (bootstrap === undefined) throw new Error('Expected the Renovate workflow renderer.');
+
+  const preserved = bootstrap.replace(
+    /(changeset\.yml@)[0-9a-f]{40}/u,
+    `$1${PRESERVED_RENOVATE_DIGEST}`,
+  );
+  const workflowPath = join(target, definition.relativePath);
+  const outdated = preserved.replace('contents: read', 'contents: none');
+  await writeFile(workflowPath, outdated);
+
+  expect(await inspectManagedFiles(target, [definition])).toEqual([
+    { relativePath: definition.relativePath, state: 'outdated' },
+  ]);
+  expect(await syncManagedFiles(target, [definition], { dryRun: true })).toEqual([
+    { relativePath: definition.relativePath, action: 'would-update' },
+  ]);
+  expect(await readFile(workflowPath, 'utf8')).toBe(outdated);
+  expect(await syncManagedFiles(target, [definition], { dryRun: false })).toEqual([
+    { relativePath: definition.relativePath, action: 'updated' },
+  ]);
+  expect(await readFile(workflowPath, 'utf8')).toBe(preserved);
+  expect(await syncManagedFiles(target, [definition], { dryRun: false })).toEqual([
+    { relativePath: definition.relativePath, action: 'unchanged' },
+  ]);
+});
+
+test('rejects mutable and ambiguous Renovate workflow references', async () => {
+  const target = await createWorkflowTarget();
+  const definition = getRenovateWorkflowDefinition();
+  const bootstrap = await definition.render?.(target);
+  if (bootstrap === undefined) throw new Error('Expected the Renovate workflow renderer.');
+  const workflowPath = join(target, definition.relativePath);
+
+  await writeFile(
+    workflowPath,
+    bootstrap.replace(/changeset\.yml@[0-9a-f]{40}/u, 'changeset.yml@main'),
+  );
+  expect(definition.render?.(target)).rejects.toThrow(
+    'Expected exactly one immutable Renovate digest in the target workflow.',
+  );
+
+  await writeFile(
+    workflowPath,
+    `${bootstrap}    uses: ankhorage/renovate/.github/workflows/changeset.yml@${PRESERVED_RENOVATE_DIGEST}\n`,
+  );
+  expect(definition.render?.(target)).rejects.toThrow(
+    'Expected exactly one immutable Renovate digest in the target workflow.',
+  );
+});
+
+function getRenovateWorkflowDefinition() {
+  const definition = workflowManagedFiles.find(
+    ({ relativePath }) => relativePath === '.github/workflows/renovate.yml',
+  );
+  if (definition === undefined) throw new Error('Missing managed Renovate workflow definition.');
+  return definition;
+}
+
+async function createWorkflowTarget(): Promise<string> {
+  const target = await mkdtemp('/tmp/devtools-workflow-');
+  temporaryDirectories.push(target);
+  await mkdir(join(target, '.github/workflows'), { recursive: true });
+  return target;
+}
+
+const PRESERVED_RENOVATE_DIGEST = 'f'.repeat(40);
