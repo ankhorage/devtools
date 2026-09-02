@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.3
+
+### Patch Changes
+
+- 3f5db63: Persist ZORA Designer concept, runtime-capture, and runtime-image artifacts through released Templates asset bundles.
+
 ## 1.10.2
 
 ### Patch Changes
