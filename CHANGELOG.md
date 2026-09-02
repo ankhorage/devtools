@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.6
+
+### Patch Changes
+
+- d53c7ee: Finalize native Changesets v3 tags as GitHub Releases after publishing.
+
 ## 1.10.5
 
 ### Patch Changes
