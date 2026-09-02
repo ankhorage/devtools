@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.4
+
+### Patch Changes
+
+- abed1e6: Restore the existing zora-designer template workflow by removing the imagery-persistence extension.
+
 ## 1.10.3
 
 ### Patch Changes
