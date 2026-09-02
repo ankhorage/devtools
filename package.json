@@ -124,7 +124,7 @@
     "typescript-eslint": "^8.69.0"
   },
   "devDependencies": {
-    "@ankhorage/ankh": "^0.8.7",
+    "@ankhorage/ankh": "^0.8.8",
     "@ankhorage/doctor": "0.10.6",
     "@types/bun": "^1.4.0",
     "@types/node": "^26.4.1",
