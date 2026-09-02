@@ -24,7 +24,7 @@ describe('zora-designer owner API orchestration', () => {
     expect(missing.stderr).toContain('requires @ankhorage/templates >=');
     expect(missing.stderr).toContain('normal Renovate/release workflow');
 
-    const outdatedTarget = await createOwnerFixture('7.9.0');
+    const outdatedTarget = await createOwnerFixture('8.9.0');
     const outdated = await runScript(OWNER_SCRIPT, ['inspect'], outdatedTarget);
     expect(outdated.exitCode).toBe(1);
     expect(outdated.stderr).toContain('is outdated');
@@ -91,7 +91,7 @@ describe('zora-designer owner repository discovery', () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
       name: '@ankhorage/templates',
-      version: '8.0.0',
+      version: '9.0.0',
       type: 'module',
       exports: { '.': './index.js', './package.json': './package.json' },
     });
@@ -99,7 +99,7 @@ describe('zora-designer owner repository discovery', () => {
 
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain('"templates": "8.0.0"');
+    expect(result.stdout).toContain('"templates": "9.0.0"');
   });
 });
 
@@ -185,7 +185,7 @@ describe('zora-designer Templates scaffolding', () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
       name: '@ankhorage/templates',
-      version: '8.0.0',
+      version: '9.0.0',
       type: 'module',
       exports: { '.': './index.js', './package.json': './package.json' },
     });
@@ -258,7 +258,7 @@ async function createTarget(name: string): Promise<string> {
 }
 
 /*** Create released-owner package fixtures with the exact public subpaths used by the skill. */
-async function createOwnerFixture(templatesVersion = '8.0.0'): Promise<string> {
+async function createOwnerFixture(templatesVersion = '9.0.0'): Promise<string> {
   const target = await createTarget('fixture');
   await writeFixturePackage(
     target,
@@ -440,6 +440,7 @@ export const validateTemplateManifest = (manifest) => ({
   authoringState: 'release',
 });
 export const assertTemplateManifestReady = (composition) => composition.manifest;
+export const createStarterTemplateArtifact = (manifest, assets) => ({ manifest, assets });
 `;
 
 const ZORA_THEME_FIXTURE_SOURCE = `

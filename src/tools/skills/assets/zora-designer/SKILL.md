@@ -77,6 +77,19 @@ When a required capability or source is unavailable, report that deliverable or 
 blocked. Do not simulate an image, browser observation, or runtime proof. Clearly distinguish
 generated concept images from authoritative runtime captures.
 
+## Persist imagery before template release
+
+For a finalized template, retain three distinct image inventories: ordered generated concept
+screens, ordered authoritative runtime captures, and the original runtime images used by final
+ZORA `Image` nodes. A screenshot never substitutes for its underlying hero, card, avatar, or other
+runtime asset.
+
+When scaffolding in Templates, provide these inventories through the normal scaffold input. The
+scaffold copies durable source files into the template asset tree, registers each runtime image once
+in the canonical manifest media pool, validates the resulting bundle through released Templates,
+and writes the inventory to `zora-designer.md`. Read [workflow.md](references/workflow.md) for the
+input contract and release checks.
+
 ## Validate before handoff
 
 - Compile the category design and both theme modes through installed owner APIs.

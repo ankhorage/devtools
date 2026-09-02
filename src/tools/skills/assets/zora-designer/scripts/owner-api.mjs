@@ -5,7 +5,7 @@ import { dirname, join, parse, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const OWNER_RELEASES = {
-  templates: { packageName: '@ankhorage/templates', minimumVersion: '8.0.0' },
+  templates: { packageName: '@ankhorage/templates', minimumVersion: '9.0.0' },
   zora: { packageName: '@ankhorage/zora', minimumVersion: '4.0.0' },
 };
 
@@ -22,6 +22,7 @@ const OWNER_REQUIREMENTS = {
       'composeCategoryAppManifest',
       'validateTemplateManifest',
       'assertTemplateManifestReady',
+      'createStarterTemplateArtifact',
     ],
   },
   zoraTheme: {

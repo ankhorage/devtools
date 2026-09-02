@@ -4,7 +4,9 @@ import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+import { serializeArtifact } from './audit.mjs';
 import { loadOwnerApis } from './owner-api.mjs';
+import { prepareTemplateImagery, writeTemplateImagery } from './template-imagery.mjs';
 
 /*** Validate and scaffold one ready authored manifest into the normal Templates variant layout. */
 export async function scaffoldTemplate(input) {
@@ -54,38 +56,57 @@ export async function scaffoldTemplate(input) {
     );
   }
 
+  const imagery = await prepareTemplateImagery(input, targetDirectory, manifest, owners);
   const registryPath = join(categoryDirectory, 'index.ts');
   const registrySource = await readFile(registryPath, 'utf8');
   const symbol = toPascalCase(input.templateId);
   const factoryBase = symbol.endsWith('Starter') ? symbol.slice(0, -'Starter'.length) : symbol;
   const factoryName = `create${factoryBase}StarterTemplate`;
   const manifestName = `AUTHORED_${toConstantCase(input.templateId)}_MANIFEST`;
+  const assetsName = `AUTHORED_${toConstantCase(input.templateId)}_ASSETS`;
   const registrySourceUpdated = updateCategoryRegistry(registrySource, {
     templateId: input.templateId,
     label: input.label,
     description: input.description,
     factoryName,
+    assetsName,
   });
-  const files = createTemplateFiles({ manifest, manifestName, factoryName });
+  const files = createTemplateFiles({
+    manifest: imagery.artifact.manifest,
+    manifestName,
+    factoryName,
+    assets: imagery.artifact.assets,
+    assetsName,
+  });
+  const artifactPath = resolve(targetDirectory, input.artifactPath ?? 'zora-designer.md');
+  assertInside(targetDirectory, artifactPath);
+  const artifact = serializeArtifact({ ...(input.artifact ?? {}), imagery: imagery.inventory });
 
   await mkdir(variantDirectory, { recursive: true });
   for (const [fileName, contents] of Object.entries(files)) {
     await writeFile(join(variantDirectory, fileName), contents);
   }
+  await writeTemplateImagery(imagery.files, targetDirectory, writeFile, mkdir);
   await writeFile(registryPath, registrySourceUpdated);
+  await writeFile(artifactPath, artifact);
 
   return {
     targetDirectory,
     registryPath: relative(targetDirectory, registryPath),
-    createdFiles: Object.keys(files).map((fileName) =>
-      relative(targetDirectory, join(variantDirectory, fileName)),
-    ),
+    createdFiles: [
+      ...Object.keys(files).map((fileName) =>
+        relative(targetDirectory, join(variantDirectory, fileName)),
+      ),
+      ...imagery.files.map((file) => file.destinationPath),
+      relative(targetDirectory, artifactPath),
+    ].sort(),
     factoryName,
+    imagery: imagery.inventory,
   };
 }
 
 /*** Create normal manifest, factory, and entrypoint source for one authored starter variant. */
-function createTemplateFiles({ manifest, manifestName, factoryName }) {
+function createTemplateFiles({ manifest, manifestName, factoryName, assets, assetsName }) {
   const manifestSource = `import type { AppManifest } from '@ankhorage/contracts';
 
 export const ${manifestName} = ${JSON.stringify(manifest, null, 2)} satisfies AppManifest;
@@ -115,7 +136,12 @@ export function ${factoryName}(seed: TemplateSeed): AppManifest {
   };
 }
 `;
+  const assetSource = `import type { StarterTemplateAsset } from '../../../starter.assets';
+
+export const ${assetsName} = ${JSON.stringify(assets, null, 2)} satisfies readonly StarterTemplateAsset[];
+`;
   return {
+    'assets.ts': assetSource,
     'index.ts': `export { ${factoryName} } from './template';\n`,
     'manifest.ts': manifestSource,
     'template.ts': templateSource,
@@ -125,7 +151,12 @@ export function ${factoryName}(seed: TemplateSeed): AppManifest {
 /*** Add one stable import and definition to an existing category registry. */
 function updateCategoryRegistry(source, definition) {
   const importLine = `import { ${definition.factoryName} } from './${definition.templateId}';`;
-  if (source.includes(`id: '${definition.templateId}'`) || source.includes(importLine)) {
+  const assetsImportLine = `import { ${definition.assetsName} } from './${definition.templateId}/assets';`;
+  if (
+    source.includes(`id: '${definition.templateId}'`) ||
+    source.includes(importLine) ||
+    source.includes(assetsImportLine)
+  ) {
     throw new Error(`Template is already registered: ${definition.templateId}`);
   }
   const exportMarker = '\nexport const ';
@@ -137,6 +168,7 @@ function updateCategoryRegistry(source, definition) {
   const relativeImports = [
     ...prefixLines.filter((line) => /^import .* from '\.\//u.test(line)),
     importLine,
+    assetsImportLine,
   ].sort((left, right) => left.localeCompare(right));
   const preservedPrefix = prefixLines.filter((line) => !/^import .* from '\.\//u.test(line));
   const withImport = `${[...preservedPrefix, ...relativeImports].join('\n')}\n${source.slice(exportIndex + 1)}`;
@@ -150,6 +182,7 @@ function updateCategoryRegistry(source, definition) {
     label: '${escapeSingleQuoted(definition.label)}',
     description: '${escapeSingleQuoted(definition.description)}',
     create: ${definition.factoryName},
+    assets: ${definition.assetsName},
   },
 `;
   return `${withImport.slice(0, closeIndex)}${entry}${withImport.slice(closeIndex)}`;

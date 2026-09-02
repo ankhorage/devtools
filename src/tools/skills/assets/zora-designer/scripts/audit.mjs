@@ -12,6 +12,7 @@ const HUMAN_SECTIONS = [
   'Layout, shape, elevation, and motion',
   'Component and interaction states',
   'Screen specifications',
+  'Visual assets',
   'Accessibility and validation',
   'Audit summary',
   'Findings and remediation',
@@ -111,6 +112,11 @@ export function serializeArtifact(input, audit) {
     tokens: input.tokens ?? {},
     components: input.components ?? { stateRequirements: [], recipeDecisions: {} },
     screens: input.screens ?? [],
+    imagery: input.imagery ?? {
+      conceptSeries: [],
+      runtimeCaptures: [],
+      runtimeAssets: [],
+    },
     validation: input.validation ?? {
       scope: documentKind === 'audit' ? 'audit' : 'configuration',
       status: 'not-run',
