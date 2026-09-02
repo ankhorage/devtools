@@ -4,6 +4,7 @@ import { posix, relative, resolve } from 'node:path';
 
 export const MANIFEST_PATH = '.agents/.devtools-manifest.json';
 export const SKILLS_ROOT = '.agents/skills';
+export const MANAGED_SKILL_EXECUTABLE_GLOB = `${SKILLS_ROOT}/**/scripts/**`;
 
 const MANIFEST_SCHEMA_VERSION = 1;
 
