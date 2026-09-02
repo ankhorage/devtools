@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.2
+
+### Patch Changes
+
+- 02933ea: Ignore executable files in Devtools-managed repository skills from consumer Knip unused-file checks.
+
 ## 1.10.1
 
 ### Patch Changes
