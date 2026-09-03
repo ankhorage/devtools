@@ -27,6 +27,7 @@ const capabilities = [
   'devtools.vscode.sync',
   'devtools.vscode.status',
 ];
+const obsoleteSkillName = ['ankhorage', 'package-structure'].join('-');
 
 describe('package metadata', () => {
   it('publishes the canonical provider, binaries, exports, and managed assets', () => {
@@ -137,6 +138,18 @@ describe('package release contract', () => {
     ).toBe(true);
   });
 
+  it('keeps the canonical project-structure skill self-contained', () => {
+    expectProjectStructureSkillOmitsObsoleteDependency(
+      new URL('./tools/skills/assets/ankhorage-project-structure/', import.meta.url),
+    );
+  });
+
+  it('keeps the synchronized project-structure skill free of obsolete dependencies', () => {
+    expectProjectStructureSkillOmitsObsoleteDependency(
+      new URL('../.agents/skills/ankhorage-project-structure/', import.meta.url),
+    );
+  });
+
   it('documents only the canonical devtools command surface', () => {
     const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
     for (const capability of capabilities) {
@@ -154,3 +167,22 @@ describe('package release contract', () => {
     expect(readme).not.toContain('`@ankhorage/dev`');
   });
 });
+
+function expectProjectStructureSkillOmitsObsoleteDependency(skillRoot: URL): void {
+  const files = [
+    'SKILL.md',
+    'references/cli.md',
+    'references/expo-apps.md',
+    'references/hexagonal-architecture.md',
+    'references/migration.md',
+    'references/repository-profiles.md',
+    'references/skill-distribution.md',
+    'references/studio.md',
+    'references/ui-libraries.md',
+    'references/utilities.md',
+  ];
+
+  for (const file of files) {
+    expect(readFileSync(new URL(file, skillRoot), 'utf8')).not.toContain(obsoleteSkillName);
+  }
+}
