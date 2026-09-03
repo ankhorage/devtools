@@ -125,7 +125,7 @@
   },
   "devDependencies": {
     "@ankhorage/ankh": "^0.8.10",
-    "@ankhorage/doctor": "0.10.6",
+    "@ankhorage/doctor": "0.10.7",
     "@types/bun": "^1.4.0",
     "@types/node": "^26.4.1",
     "typescript": "~6.0.3"
