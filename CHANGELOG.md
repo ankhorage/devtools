@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.8
+
+### Patch Changes
+
+- d48e1dd: Make `ankhorage-project-structure` the sole canonical Ankhorage repository and package structure skill.
+
 ## 1.10.7
 
 ### Patch Changes
