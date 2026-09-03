@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.10
+
+### Patch Changes
+
+- f9081a8: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
 ## 1.10.9
 
 ### Patch Changes
