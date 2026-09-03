@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.9
+
+### Patch Changes
+
+- f412a3c: Stop adding the managed skill executable glob to shared Knip configurations by default.
+
 ## 1.10.8
 
 ### Patch Changes
