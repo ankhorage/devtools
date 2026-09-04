@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.16
+
+### Patch Changes
+
+- 2daa17c: Update Devtools-owned dependencies: `@changesets/cli`, `@types/bun`, `bun`, `eslint`.
+
 ## 1.10.15
 
 ### Patch Changes
