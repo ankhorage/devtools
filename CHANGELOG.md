@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.14
+
+### Patch Changes
+
+- 5073d19: Ship every managed skill script as a strictly checked TypeScript asset.
+
 ## 1.10.13
 
 ### Patch Changes
