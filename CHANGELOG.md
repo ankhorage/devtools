@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.13
+
+### Patch Changes
+
+- aab9634: Allow the managed template catalog generator to run before the Templates package has been built.
+
 ## 1.10.12
 
 ### Patch Changes
