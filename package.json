@@ -105,9 +105,9 @@
     "version-packages": "bun src/cli/bin/changeset.ts version"
   },
   "dependencies": {
-    "@ankhorage/utility": "^0.2.0",
+    "@ankhorage/utility": "^0.3.0",
     "@changesets/cli": "^3.0.1",
-    "@eslint/compat": "^2.1.0",
+    "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
