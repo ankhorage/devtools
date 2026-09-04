@@ -3,9 +3,12 @@ import { join, resolve } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'bun:test';
 
+import { inspectOwnerRequirements } from './assets/zora-designer/scripts/owner-api.ts';
+
 const CATALOG_SCRIPT = resolve(
-  'src/tools/skills/assets/zora-designer/scripts/generate-template-catalog.mjs',
+  'src/tools/skills/assets/zora-designer/scripts/generate-template-catalog.ts',
 );
+const OWNER_RELEASES = inspectOwnerRequirements();
 const temporaryDirectories: string[] = [];
 
 afterEach(async () => {
@@ -20,7 +23,7 @@ describe('zora-designer template catalog', () => {
     temporaryDirectories.push(target);
     await writeJson(join(target, 'package.json'), {
       name: '@ankhorage/templates',
-      version: '8.0.0',
+      version: OWNER_RELEASES.templates.minimumVersion,
       type: 'module',
       exports: { '.': './dist/index.js', './package.json': './package.json' },
     });
@@ -59,7 +62,7 @@ async function writeFixturePackage(
   await mkdir(root, { recursive: true });
   await writeJson(join(root, 'package.json'), {
     name: packageName,
-    version: '8.2.0',
+    version: OWNER_RELEASES.contracts.minimumVersion,
     type: 'module',
     exports: { '.': './index.js', './package.json': './package.json' },
   });

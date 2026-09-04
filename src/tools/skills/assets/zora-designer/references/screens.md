@@ -56,7 +56,7 @@ model to improvise:
 Inspect the skill-owned design rules before rendering:
 
 ```text
-bun .agents/skills/zora-designer/scripts/audit.mjs catalog
+bun .agents/skills/zora-designer/scripts/audit.ts catalog
 ```
 
 Apply every relevant `generation` rule from that catalog. The rubric belongs to this skill; owner

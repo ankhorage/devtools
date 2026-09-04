@@ -2,7 +2,7 @@
 
 `zora-designer.md` is the deterministic design/audit decision record. It is never runtime theme or
 manifest authority. The serializer and its ordered frontmatter/section skeleton live in
-[audit.mjs](../scripts/audit.mjs); do not maintain another template.
+[audit.ts](../scripts/audit.ts); do not maintain another template.
 
 ## Document lifecycle
 

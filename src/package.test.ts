@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
 import { describe, expect, it } from 'bun:test';
 
@@ -125,6 +125,24 @@ describe('package release contract', () => {
     ).toBe(true);
     expectZoraDesignerAssetsToExist();
   });
+});
+
+describe('managed skill package contract', () => {
+  it('packages every discovered managed-skill script as TypeScript source', () => {
+    const sourceRoot = new URL('./tools/skills/assets/', import.meta.url);
+    const packagedRoot = new URL('../dist/tools/skills/assets/', import.meta.url);
+    const sourceScripts = collectManagedSkillScripts(sourceRoot);
+    const packagedScripts = collectManagedSkillScripts(packagedRoot);
+
+    expect(sourceScripts.length).toBeGreaterThan(0);
+    expect(sourceScripts.every((path) => path.endsWith('.ts'))).toBe(true);
+    expect(packagedScripts).toEqual(sourceScripts);
+    for (const scriptPath of sourceScripts) {
+      expect(readFileSync(new URL(scriptPath, packagedRoot), 'utf8')).toBe(
+        readFileSync(new URL(scriptPath, sourceRoot), 'utf8'),
+      );
+    }
+  });
 
   it('keeps the canonical project-structure skill self-contained', () => {
     expectProjectStructureSkillOmitsObsoleteDependency(
@@ -162,8 +180,6 @@ function expectZoraDesignerAssetsToExist(): void {
     './tools/skills/assets/zora-designer/SKILL.md',
     './tools/skills/assets/zora-designer/assets/audit-rubric.json',
     './tools/skills/assets/zora-designer/references/screens.md',
-    './tools/skills/assets/zora-designer/scripts/generate-template-catalog.mjs',
-    './tools/skills/assets/zora-designer/scripts/owner-api.mjs',
   ];
   for (const assetPath of assetPaths) {
     expect(existsSync(new URL(assetPath, import.meta.url))).toBe(true);
@@ -183,4 +199,18 @@ function expectProjectStructureSkillOmitsObsoleteDependency(skillRoot: URL): voi
   for (const file of files) {
     expect(readFileSync(new URL(file, skillRoot), 'utf8')).not.toContain(obsoleteSkillName);
   }
+}
+
+/*** Discover script assets from the managed tree without freezing their names or count. */
+function collectManagedSkillScripts(root: URL, directory = root): string[] {
+  const scripts: string[] = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const entryUrl = new URL(`${entry.name}${entry.isDirectory() ? '/' : ''}`, directory);
+    if (entry.isDirectory()) {
+      scripts.push(...collectManagedSkillScripts(root, entryUrl));
+    } else if (entry.isFile() && directory.pathname.split('/').includes('scripts')) {
+      scripts.push(decodeURIComponent(entryUrl.pathname.slice(root.pathname.length)));
+    }
+  }
+  return scripts.sort();
 }

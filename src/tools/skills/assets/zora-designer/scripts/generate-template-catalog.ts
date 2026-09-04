@@ -3,16 +3,25 @@
 import { access, readdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
-import { loadContractsApi } from './owner-api.mjs';
+import { loadContractsApi } from './owner-api.ts';
 
 const CATEGORY_ROOT = 'src/templates/categories';
 
+interface TemplateDefinitionSource {
+  category: string;
+  categoryDirectory: string;
+  slug: string;
+}
+
 /*** Regenerate the portable template catalog from canonical template directories. */
-export async function generateTemplateCatalog(targetDirectory = process.cwd(), appCategories) {
+export async function generateTemplateCatalog(
+  targetDirectory = process.cwd(),
+  appCategories?: readonly string[],
+): Promise<{ outputPath: string; templateCount: number }> {
   const root = resolve(targetDirectory);
   const canonicalAppCategories = appCategories ?? (await loadContractsApi(root)).APP_CATEGORIES;
   const categoriesRoot = join(root, CATEGORY_ROOT);
-  const definitions = [];
+  const definitions: TemplateDefinitionSource[] = [];
 
   for (const categoryEntry of await readDirectories(categoriesRoot)) {
     const category = categoryEntry.name.replaceAll('-', '_');
@@ -65,14 +74,14 @@ export const TEMPLATE_DEFINITIONS: readonly TemplateDefinition[] = ${definitions
 }
 
 /*** Read child directories in stable lexical order. */
-async function readDirectories(directory) {
+async function readDirectories(directory: string) {
   return (await readdir(directory, { withFileTypes: true }))
     .filter((entry) => entry.isDirectory())
     .sort((left, right) => left.name.localeCompare(right.name));
 }
 
 /*** Return whether a filesystem path exists. */
-async function pathExists(filePath) {
+async function pathExists(filePath: string): Promise<boolean> {
   try {
     await access(filePath);
     return true;

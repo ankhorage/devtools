@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'bun:test';
@@ -87,7 +87,9 @@ describe('managed repository skill ownership', () => {
       ),
     ).toBe(true);
   });
+});
 
+describe('managed profile-specific skill ownership', () => {
   it('selects zora-designer for authoring profiles and removes it after profile drift', async () => {
     const target = await createTarget();
     await writeFile(
@@ -104,11 +106,18 @@ describe('managed repository skill ownership', () => {
       await readFile(join(target, '.agents/.devtools-manifest.json'), 'utf8'),
     ) as { skills: Record<string, { files: Record<string, string> }> };
     const managedPaths = Object.keys(manifest.skills['zora-designer'].files);
-    expect(managedPaths).toContain('.agents/skills/zora-designer/scripts/scaffold-template.mjs');
-    expect(managedPaths).toContain('.agents/skills/zora-designer/references/screens.md');
-    expect(managedPaths).toContain(
-      '.agents/skills/zora-designer/scripts/generate-template-catalog.mjs',
+    const sourceScriptPaths = await collectRelativeFiles(
+      join(import.meta.dir, 'assets/zora-designer/scripts'),
     );
+    expect(sourceScriptPaths.length).toBeGreaterThan(0);
+    expect(sourceScriptPaths.every((path) => path.endsWith('.ts'))).toBe(true);
+    expect(
+      managedPaths
+        .filter((path) => path.startsWith('.agents/skills/zora-designer/scripts/'))
+        .map((path) => path.slice('.agents/skills/zora-designer/scripts/'.length))
+        .sort(),
+    ).toEqual(sourceScriptPaths);
+    expect(managedPaths).toContain('.agents/skills/zora-designer/references/screens.md');
     expect(managedPaths.every((path) => path.startsWith('.agents/skills/zora-designer/'))).toBe(
       true,
     );
@@ -166,4 +175,18 @@ async function createTarget(): Promise<string> {
   const target = await mkdtemp('/tmp/devtools-skills-');
   temporaryDirectories.push(target);
   return target;
+}
+
+/*** Recursively discover canonical files without freezing their names or count. */
+async function collectRelativeFiles(directory: string, prefix = ''): Promise<string[]> {
+  const paths: string[] = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const relativePath = prefix === '' ? entry.name : `${prefix}/${entry.name}`;
+    if (entry.isDirectory()) {
+      paths.push(...(await collectRelativeFiles(join(directory, entry.name), relativePath)));
+    } else if (entry.isFile()) {
+      paths.push(relativePath);
+    }
+  }
+  return paths.sort();
 }
