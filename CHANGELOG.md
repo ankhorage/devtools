@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.15
+
+### Patch Changes
+
+- 0c34082: Trigger the trusted Renovate consumer rollout after publishing Devtools.
+
 ## 1.10.14
 
 ### Patch Changes
