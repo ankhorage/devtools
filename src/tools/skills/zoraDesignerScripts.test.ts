@@ -3,11 +3,14 @@ import { join, resolve } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'bun:test';
 
-const OWNER_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/owner-api.mjs');
-const AUDIT_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/audit.mjs');
+import { inspectOwnerRequirements } from './assets/zora-designer/scripts/owner-api.ts';
+
+const OWNER_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/owner-api.ts');
+const AUDIT_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/audit.ts');
 const SCAFFOLD_SCRIPT = resolve(
-  'src/tools/skills/assets/zora-designer/scripts/scaffold-template.mjs',
+  'src/tools/skills/assets/zora-designer/scripts/scaffold-template.ts',
 );
+const OWNER_RELEASES = inspectOwnerRequirements();
 const temporaryDirectories: string[] = [];
 
 afterEach(async () => {
@@ -24,7 +27,9 @@ describe('zora-designer owner API orchestration', () => {
     expect(missing.stderr).toContain('zora-designer requires @ankhorage/');
     expect(missing.stderr).toContain('normal Renovate/release workflow');
 
-    const outdatedTarget = await createOwnerFixture('7.9.0');
+    const outdatedTarget = await createOwnerFixture(
+      previousMajorVersion(OWNER_RELEASES.templates.minimumVersion),
+    );
     const outdated = await runScript(OWNER_SCRIPT, ['inspect'], outdatedTarget);
     expect(outdated.exitCode).toBe(1);
     expect(outdated.stderr).toContain('is outdated');
@@ -122,7 +127,7 @@ describe('zora-designer owner repository discovery', () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
       name: '@ankhorage/templates',
-      version: '8.0.0',
+      version: OWNER_RELEASES.templates.minimumVersion,
       type: 'module',
       exports: { '.': './index.js', './package.json': './package.json' },
     });
@@ -130,7 +135,7 @@ describe('zora-designer owner repository discovery', () => {
 
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain('"templates": "8.0.0"');
+    expect(result.stdout).toContain(`"templates": "${OWNER_RELEASES.templates.minimumVersion}"`);
   });
 });
 
@@ -216,7 +221,7 @@ describe('zora-designer Templates scaffolding', () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
       name: '@ankhorage/templates',
-      version: '8.0.0',
+      version: OWNER_RELEASES.templates.minimumVersion,
       type: 'module',
       exports: { '.': './index.js', './package.json': './package.json' },
     });
@@ -268,19 +273,21 @@ async function createTarget(name: string): Promise<string> {
 }
 
 /*** Create released-owner package fixtures with the exact public subpaths used by the skill. */
-async function createOwnerFixture(templatesVersion = '8.0.0'): Promise<string> {
+async function createOwnerFixture(
+  templatesVersion = OWNER_RELEASES.templates.minimumVersion,
+): Promise<string> {
   const target = await createTarget('fixture');
   await writeFixturePackage(
     target,
     '@ankhorage/color-theory',
-    '0.3.0',
+    OWNER_RELEASES.colorTheory.minimumVersion,
     { '.': './index.js', './package.json': './package.json' },
     COLOR_THEORY_FIXTURE_SOURCE,
   );
   await writeFixturePackage(
     target,
     '@ankhorage/contracts',
-    '8.2.0',
+    OWNER_RELEASES.contracts.minimumVersion,
     { '.': './index.js', './package.json': './package.json' },
     CONTRACTS_FIXTURE_SOURCE,
   );
@@ -294,7 +301,7 @@ async function createOwnerFixture(templatesVersion = '8.0.0'): Promise<string> {
     },
     TEMPLATES_FIXTURE_SOURCE,
   );
-  await writeFixturePackage(target, '@ankhorage/zora', '4.0.0', {
+  await writeFixturePackage(target, '@ankhorage/zora', OWNER_RELEASES.zora.minimumVersion, {
     './theme': './theme.js',
     './metadata': './metadata.js',
     './package.json': './package.json',
@@ -303,6 +310,12 @@ async function createOwnerFixture(templatesVersion = '8.0.0'): Promise<string> {
   await writeFile(join(zoraDirectory, 'theme.js'), ZORA_THEME_FIXTURE_SOURCE);
   await writeFile(join(zoraDirectory, 'metadata.js'), ZORA_METADATA_FIXTURE_SOURCE);
   return target;
+}
+
+/*** Derive an older incompatible release without duplicating an owner version literal. */
+function previousMajorVersion(version: string): string {
+  const major = Number(version.split('.')[0]);
+  return `${Math.max(0, major - 1)}.0.0`;
 }
 
 /*** Write one ESM package fixture under the target's node_modules tree. */

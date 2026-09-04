@@ -4,46 +4,52 @@ import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { generateTemplateCatalog } from './generate-template-catalog.mjs';
-import { loadOwnerApis } from './owner-api.mjs';
+import { generateTemplateCatalog } from './generate-template-catalog.ts';
+import { loadOwnerApis } from './owner-api.ts';
 
 /*** Scaffold one complete portable template and refresh filesystem discovery. */
-export async function scaffoldTemplate(input) {
+export async function scaffoldTemplate(input: unknown) {
   assertRecord(input, 'Scaffold input');
-  for (const field of ['targetDirectory', 'category', 'slug']) {
-    assertNonEmptyString(input[field], field);
-  }
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(input.slug)) {
+  assertNonEmptyString(input.targetDirectory, 'targetDirectory');
+  assertNonEmptyString(input.category, 'category');
+  assertNonEmptyString(input.slug, 'slug');
+  const { category, slug, targetDirectory: inputTargetDirectory } = input;
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(slug)) {
     throw new Error('slug must be a kebab-case identifier.');
   }
   assertRecord(input.manifest, 'manifest');
+  const { manifest: inputManifest } = input;
 
-  const targetDirectory = resolve(input.targetDirectory);
-  const packageManifest = JSON.parse(await readFile(join(targetDirectory, 'package.json'), 'utf8'));
+  const targetDirectory = resolve(inputTargetDirectory);
+  const packageManifest: unknown = JSON.parse(
+    await readFile(join(targetDirectory, 'package.json'), 'utf8'),
+  );
+  assertRecord(packageManifest, 'Target package manifest');
   if (packageManifest.name !== '@ankhorage/templates') {
     throw new Error(
       'Template scaffolding is available only in the @ankhorage/templates repository.',
     );
   }
-  if (input.manifest.metadata?.category !== input.category) {
+  assertRecord(inputManifest.metadata, 'manifest.metadata');
+  if (inputManifest.metadata.category !== category) {
     throw new Error('Scaffold category must match manifest.metadata.category.');
   }
-  if (input.manifest.metadata?.slug !== input.slug) {
+  if (inputManifest.metadata.slug !== slug) {
     throw new Error('Scaffold slug must match manifest.metadata.slug.');
   }
 
   const owners = await loadOwnerApis(targetDirectory);
-  const composition = owners.templates.validateTemplateManifest(input.manifest, 'release');
+  const composition = owners.templates.validateTemplateManifest(inputManifest, 'release');
   const manifest = owners.templates.assertTemplateManifestReady(composition);
 
   const categoryDirectory = resolve(
     targetDirectory,
     'src/templates/categories',
-    input.category.replaceAll('_', '-'),
+    category.replaceAll('_', '-'),
   );
   assertInside(targetDirectory, categoryDirectory);
 
-  const templateDirectory = resolve(categoryDirectory, input.slug);
+  const templateDirectory = resolve(categoryDirectory, slug);
   assertInside(categoryDirectory, templateDirectory);
   if (await pathExists(templateDirectory)) {
     throw new Error(
@@ -75,7 +81,7 @@ export async function scaffoldTemplate(input) {
 }
 
 /*** Serialize one complete manifest as the template's canonical default export. */
-function createManifestSource(manifest) {
+function createManifestSource(manifest: Record<string, unknown>): string {
   return `import type { AppManifest } from '@ankhorage/contracts';
 
 const manifest = ${JSON.stringify(manifest, null, 2)} satisfies AppManifest;
@@ -88,7 +94,7 @@ export default function createAppManifest(): AppManifest {
 }
 
 /*** Assert that a resolved output remains inside its declared owner directory. */
-function assertInside(parentPath, childPath) {
+function assertInside(parentPath: string, childPath: string): void {
   const relativePath = relative(parentPath, childPath);
   if (
     relativePath === '' ||
@@ -101,7 +107,7 @@ function assertInside(parentPath, childPath) {
 }
 
 /*** Return whether a filesystem path exists. */
-async function pathExists(filePath) {
+async function pathExists(filePath: string): Promise<boolean> {
   try {
     await access(filePath);
     return true;
@@ -111,14 +117,14 @@ async function pathExists(filePath) {
 }
 
 /*** Require a non-array object input. */
-function assertRecord(value, label) {
+function assertRecord(value: unknown, label: string): asserts value is Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     throw new Error(`${label} must be an object.`);
   }
 }
 
 /*** Require a non-empty string input field. */
-function assertNonEmptyString(value, label) {
+function assertNonEmptyString(value: unknown, label: string): asserts value is string {
   if (typeof value !== 'string' || value.trim() === '') {
     throw new Error(`${label} must be a non-empty string.`);
   }
@@ -128,9 +134,9 @@ function assertNonEmptyString(value, label) {
 async function main() {
   const [inputPath] = process.argv.slice(2);
   if (!inputPath) {
-    throw new Error('Usage: scaffold-template.mjs <scaffold-input.json>');
+    throw new Error('Usage: scaffold-template.ts <scaffold-input.json>');
   }
-  const input = JSON.parse(await readFile(resolve(inputPath), 'utf8'));
+  const input: unknown = JSON.parse(await readFile(resolve(inputPath), 'utf8'));
   console.log(JSON.stringify(await scaffoldTemplate(input), null, 2));
 }
 

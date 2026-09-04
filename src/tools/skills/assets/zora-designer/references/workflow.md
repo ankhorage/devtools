@@ -10,7 +10,7 @@ Read repository instructions, an existing manifest or `zora-designer.md`, instal
 configuration, and relevant screens. Run:
 
 ```text
-bun .agents/skills/zora-designer/scripts/owner-api.mjs inspect
+bun .agents/skills/zora-designer/scripts/owner-api.ts inspect
 ```
 
 The output is the choice source. Do not use remembered categories, color options, tone pairs,
@@ -58,7 +58,7 @@ screen brief. Changing the screen list invalidates navigator confirmation.
 Provide the resolved `category`, theme overrides, navigator, screens, and region decisions to:
 
 ```text
-bun .agents/skills/zora-designer/scripts/owner-api.mjs compose design-input.json
+bun .agents/skills/zora-designer/scripts/owner-api.ts compose design-input.json
 ```
 
 Use owner-returned theme configuration, generated roles, computed Surface themes, diagnostics,

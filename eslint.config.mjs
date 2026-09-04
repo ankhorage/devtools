@@ -27,5 +27,13 @@ export default createConfig({
         'max-lines': ['error', { max: 500, skipBlankLines: true, skipComments: true }],
       },
     },
+    {
+      files: ['src/tools/skills/assets/**/scripts/**/*.ts'],
+      rules: {
+        complexity: 'off',
+        'max-lines': 'off',
+        'max-lines-per-function': 'off',
+      },
+    },
   ],
 });

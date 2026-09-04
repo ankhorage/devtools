@@ -34,7 +34,7 @@ once.
 From the target repository, run:
 
 ```text
-bun .agents/skills/zora-designer/scripts/owner-api.mjs inspect
+bun .agents/skills/zora-designer/scripts/owner-api.ts inspect
 ```
 
 Use its installed owner output for categories, recommendations, harmonies, tone pairs, navigation
@@ -76,7 +76,7 @@ under `assets/images/`; rebuild text, controls, icons, surfaces, and layout with
 Scaffold only a reviewed, release-valid manifest:
 
 ```text
-bun .agents/skills/zora-designer/scripts/scaffold-template.mjs scaffold-input.json
+bun .agents/skills/zora-designer/scripts/scaffold-template.ts scaffold-input.json
 ```
 
 The helper creates the template directory and regenerates discovery from the filesystem. Do not add
