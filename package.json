@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/devtools",
-  "version": "1.10.10",
+  "version": "1.10.11",
   "description": "Shared development tools and repository standards for Ankhorage",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/devtools#readme",

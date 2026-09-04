@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.11
+
+### Patch Changes
+
+- 311297c: Update Devtools-owned dependencies: `@ankhorage/utility`, `@eslint/compat`.
+- 1af7330: Make `ankhorage-project-structure` the sole canonical Ankhorage repository and package structure
+  skill and document the canonical Studio source taxonomy.
+
 ## 1.10.10
 
 ### Patch Changes
