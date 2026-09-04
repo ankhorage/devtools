@@ -123,19 +123,7 @@ describe('package release contract', () => {
         new URL('./tools/skills/assets/ankhorage-coding-rules/agents/openai.yaml', import.meta.url),
       ),
     ).toBe(true);
-    expect(
-      existsSync(new URL('./tools/skills/assets/zora-designer/SKILL.md', import.meta.url)),
-    ).toBe(true);
-    expect(
-      existsSync(
-        new URL('./tools/skills/assets/zora-designer/assets/audit-rubric.json', import.meta.url),
-      ),
-    ).toBe(true);
-    expect(
-      existsSync(
-        new URL('./tools/skills/assets/zora-designer/scripts/owner-api.mjs', import.meta.url),
-      ),
-    ).toBe(true);
+    expectZoraDesignerAssetsToExist();
   });
 
   it('keeps the canonical project-structure skill self-contained', () => {
@@ -167,6 +155,20 @@ describe('package release contract', () => {
     expect(readme).not.toContain('`@ankhorage/dev`');
   });
 });
+
+/*** Assert that every behavior-critical ZORA designer resource is publishable. */
+function expectZoraDesignerAssetsToExist(): void {
+  const assetPaths = [
+    './tools/skills/assets/zora-designer/SKILL.md',
+    './tools/skills/assets/zora-designer/assets/audit-rubric.json',
+    './tools/skills/assets/zora-designer/references/screens.md',
+    './tools/skills/assets/zora-designer/scripts/generate-template-catalog.mjs',
+    './tools/skills/assets/zora-designer/scripts/owner-api.mjs',
+  ];
+  for (const assetPath of assetPaths) {
+    expect(existsSync(new URL(assetPath, import.meta.url))).toBe(true);
+  }
+}
 
 function expectProjectStructureSkillOmitsObsoleteDependency(skillRoot: URL): void {
   const files = [
