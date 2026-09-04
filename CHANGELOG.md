@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.12
+
+### Patch Changes
+
+- d167494: Restore the owner-driven ZORA Designer questionnaire and screen composition gates while preserving
+  the current portable Templates manifest workflow.
+
 ## 1.10.11
 
 ### Patch Changes
