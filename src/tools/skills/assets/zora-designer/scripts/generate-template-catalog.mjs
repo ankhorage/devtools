@@ -3,15 +3,14 @@
 import { access, readdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
-import { loadOwnerApis } from './owner-api.mjs';
+import { loadContractsApi } from './owner-api.mjs';
 
 const CATEGORY_ROOT = 'src/templates/categories';
 
 /*** Regenerate the portable template catalog from canonical template directories. */
 export async function generateTemplateCatalog(targetDirectory = process.cwd(), appCategories) {
   const root = resolve(targetDirectory);
-  const canonicalAppCategories =
-    appCategories ?? (await loadOwnerApis(root)).contracts.APP_CATEGORIES;
+  const canonicalAppCategories = appCategories ?? (await loadContractsApi(root)).APP_CATEGORIES;
   const categoriesRoot = join(root, CATEGORY_ROOT);
   const definitions = [];
 
