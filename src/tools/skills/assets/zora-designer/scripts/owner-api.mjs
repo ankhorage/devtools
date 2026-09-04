@@ -71,6 +71,11 @@ export async function loadOwnerApis(targetDirectory = process.cwd()) {
   };
 }
 
+/*** Load only Contracts for tooling that runs before another owner package has been built. */
+export async function loadContractsApi(targetDirectory = process.cwd()) {
+  return (await loadOwnerModule(targetDirectory, OWNER_REQUIREMENTS.contracts)).module;
+}
+
 /*** Return installed catalogs and metadata names without copying owner definitions. */
 export async function inspectOwnerApis(targetDirectory = process.cwd()) {
   const owners = await loadOwnerApis(targetDirectory);
