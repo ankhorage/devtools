@@ -40,6 +40,7 @@ describe('managed workflows', () => {
     expect(ci).toContain(changesetsPolicy.workflowCommands.versionPackagesStatus);
     expect(release).toContain(`version: ${changesetsPolicy.workflowCommands.version}`);
     expect(release).toContain(`publish: ${changesetsPolicy.workflowCommands.publish}`);
+    expect(release).toContain('id: changesets');
     expect(release).toContain('createGithubReleases: false');
     expect(release).toContain('Finalize Changesets v3 tags and GitHub releases');
     expect(release).toContain('git tag --points-at HEAD');
@@ -48,6 +49,22 @@ describe('managed workflows', () => {
       'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes',
     );
     expect(release).not.toContain('bunx changeset');
+  });
+
+  test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
+    const release = await workflowManagedFiles[1].render?.('.');
+
+    expect(release).toContain("steps.changesets.outputs.published == 'true'");
+    expect(release).toContain(
+      'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
+    );
+    expect(release).toContain('repositories: renovate');
+    expect(release).toContain('permission-contents: write');
+    expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
+    expect(release).toContain("candidate.name === '@ankhorage/devtools'");
+    expect(release).toContain("event_type: 'devtools-release'");
+    expect(release).toContain("repo: 'renovate'");
+    expect(release).toContain('Changesets must report one exact published Devtools version.');
   });
 });
 
@@ -155,6 +172,11 @@ describe('managed Renovate workflow', () => {
       /ankhorage\/renovate\/\.github\/workflows\/changeset\.yml@[0-9a-f]{40}/u,
     );
     expect(rendered).toContain("github.actor == 'renovate[bot]'");
+    expect(rendered).toContain("github.actor == 'ankhorage-renovate-sync[bot]'");
+    const template = await readFile(new URL('./files/renovate.yml', import.meta.url), 'utf8');
+    expect(template).toContain(
+      'ankhorage/renovate/.github/workflows/changeset.yml@d3f138f4e8d3eb84244730f86591c6556738c1f4',
+    );
     expect(rendered).toContain('contents: read');
     expect(rendered).not.toContain('actions: write');
     expect(rendered).toContain(
