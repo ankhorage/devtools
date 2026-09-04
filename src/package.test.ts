@@ -172,13 +172,9 @@ function expectProjectStructureSkillOmitsObsoleteDependency(skillRoot: URL): voi
   const files = [
     'SKILL.md',
     'references/cli.md',
-    'references/expo-apps.md',
-    'references/hexagonal-architecture.md',
     'references/migration.md',
-    'references/repository-profiles.md',
     'references/skill-distribution.md',
     'references/studio.md',
-    'references/ui-libraries.md',
     'references/utilities.md',
   ];
 
