@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.10.10
+
+### Patch Changes
+
+- f9081a8: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
+## 1.10.9
+
+### Patch Changes
+
+- f412a3c: Stop adding the managed skill executable glob to shared Knip configurations by default.
+
+## 1.10.8
+
+### Patch Changes
+
+- d48e1dd: Make `ankhorage-project-structure` the sole canonical Ankhorage repository and package structure skill.
+
 ## 1.10.7
 
 ### Patch Changes

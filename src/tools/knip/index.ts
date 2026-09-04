@@ -1,8 +1,7 @@
 /***
  * Build shared Knip configuration while preserving repository-specific discovery.
  *
- * `createKnipConfig` keeps Knip zero-config discovery while excluding executable files in
- * Devtools-managed skills. Repositories can add narrow entries, project globs, ignored files,
+ * `createKnipConfig` keeps Knip zero-config discovery. Repositories can add narrow entries, project globs, ignored files,
  * binaries, dependencies, and workspace overrides without duplicating the shared Knip version.
  *
  * `createKnipMonorepoConfig` adds a root workspace plus conventional `packages/*` and `apps/*`
@@ -12,8 +11,6 @@
  * @readme
  */
 import type { KnipConfig } from 'knip';
-
-import { MANAGED_SKILL_EXECUTABLE_GLOB } from '../skills/manifest.js';
 
 export interface DevtoolsKnipWorkspaceConfigOptions {
   readonly entry?: string[];
@@ -37,10 +34,8 @@ export interface DevtoolsKnipMonorepoConfigOptions {
 
 const DEFAULT_MONOREPO_WORKSPACE_GLOBS = ['packages/*', 'apps/*'] as const;
 
-/*** Build shared Knip configuration with the Devtools-managed skill boundary excluded. */
+/*** Build shared Knip configuration while preserving repository-specific discovery. */
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
-  const ignoreFiles = [...new Set([MANAGED_SKILL_EXECUTABLE_GLOB, ...(options.ignoreFiles ?? [])])];
-
   return {
     ...(options.entry === undefined ? {} : { entry: options.entry }),
     ...(options.project === undefined ? {} : { project: options.project }),
@@ -49,12 +44,12 @@ export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipC
     ...(options.ignoreDependencies === undefined
       ? {}
       : { ignoreDependencies: options.ignoreDependencies }),
-    ignoreFiles,
+    ...(options.ignoreFiles === undefined ? {} : { ignoreFiles: options.ignoreFiles }),
     ...(options.workspaces === undefined ? {} : { workspaces: options.workspaces }),
   } satisfies KnipConfig;
 }
 
-/*** Build shared monorepo Knip configuration with the same managed-skill boundary. */
+/*** Build shared monorepo Knip configuration. */
 export function createKnipMonorepoConfig(
   options: DevtoolsKnipMonorepoConfigOptions = {},
 ): KnipConfig {

@@ -35,6 +35,9 @@ applications.
 When a package declares an Ankh provider or changes `src/cli/`, always read
 [cli.md](references/cli.md).
 
+When classifying a local or cross-repository utility, also read
+[utilities.md](references/utilities.md).
+
 When the task is a structural cleanup or migration, also read
 [migration.md](references/migration.md). For `ankhorage/studio`, always also read
 [studio.md](references/studio.md).

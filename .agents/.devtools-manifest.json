@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceDevtoolsVersion": "1.10.7",
+  "sourceDevtoolsVersion": "1.10.10",
   "skills": {
     "ankhorage-coding-rules": {
       "files": {
@@ -15,7 +15,8 @@
         ".agents/skills/ankhorage-project-structure/references/migration.md": "sha256:abea79e3d2f5a0ee16f695ecc8432d47587e13e0f70cc7bd77788a5c50d9dba2",
         ".agents/skills/ankhorage-project-structure/references/skill-distribution.md": "sha256:44c03ecc9157234f540f0ae8a9cc6ad84d1efad25ab83b1776129d8f11d713b9",
         ".agents/skills/ankhorage-project-structure/references/studio.md": "sha256:ebc2c089ddbcee6cdbea3016cacae7be9d60fefe1b864560ad831face2ed50c4",
-        ".agents/skills/ankhorage-project-structure/SKILL.md": "sha256:af2fed69c0f51f63fa532a590814ee995d5ed3dc0d3743185f3fc01e00a6e817"
+        ".agents/skills/ankhorage-project-structure/references/utilities.md": "sha256:51cf59338315841336e45706709ee60cfef364179bede6535385c20b9b3b73c7",
+        ".agents/skills/ankhorage-project-structure/SKILL.md": "sha256:f70390ec086871c2dd3a51442057a1ecb9062ee29583e0fe2cc4eb67080a125b"
       }
     }
   }

@@ -175,6 +175,7 @@ function expectProjectStructureSkillOmitsObsoleteDependency(skillRoot: URL): voi
     'references/migration.md',
     'references/skill-distribution.md',
     'references/studio.md',
+    'references/utilities.md',
   ];
 
   for (const file of files) {
