@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'bun:test';
@@ -21,7 +21,7 @@ describe('zora-designer owner API orchestration', () => {
     const missingTarget = await createTarget('fixture');
     const missing = await runScript(OWNER_SCRIPT, ['inspect'], missingTarget);
     expect(missing.exitCode).toBe(1);
-    expect(missing.stderr).toContain('requires @ankhorage/templates >=');
+    expect(missing.stderr).toContain('zora-designer requires @ankhorage/');
     expect(missing.stderr).toContain('normal Renovate/release workflow');
 
     const outdatedTarget = await createOwnerFixture('7.9.0');
@@ -30,7 +30,7 @@ describe('zora-designer owner API orchestration', () => {
     expect(outdated.stderr).toContain('is outdated');
   });
 
-  it('composes owner themes and emits MissingElement only for an unresolved semantic region', async () => {
+  it('composes owner themes and preserves unresolved semantic regions as capability gaps', async () => {
     const target = await createOwnerFixture();
     const inputPath = join(target, 'design-input.json');
     await writeJson(inputPath, {
@@ -72,21 +72,52 @@ describe('zora-designer owner API orchestration', () => {
       applicationGate: string;
       requestedAuthoringState: string;
       composition: { authoringState: string; manifest: { screens: Record<string, Screen> } };
-      blockers: { ownerIssueUrl: string }[];
+      capabilityGaps: { requestedCapability: string }[];
       computedTheme: { light: { surfaceTheme: object }; dark: { surfaceTheme: object } };
     };
     const children = output.composition.manifest.screens.home.root.children ?? [];
-    expect(children.map((node) => node.type)).toEqual(['Text', 'MissingElement']);
-    expect(output.applicationGate).toBe('blocked');
+    expect(children.map((node) => node.type)).toEqual(['Text', 'Box']);
+    expect(output.applicationGate).toBe('pass');
     expect(output.requestedAuthoringState).toBe('release');
-    expect(output.composition.authoringState).toBe('draft');
-    expect(output.blockers[0]?.ownerIssueUrl).toContain('/zora/issues/');
+    expect(output.composition.authoringState).toBe('release');
+    expect(output.capabilityGaps[0]?.requestedCapability).toBe('Interactive evidence map');
     expect(output.computedTheme.light.surfaceTheme).toBeDefined();
     expect(output.computedTheme.dark.surfaceTheme).toBeDefined();
   });
 });
 
 describe('zora-designer owner repository discovery', () => {
+  it('reports interaction choices from their released owners', async () => {
+    const target = await createOwnerFixture();
+    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+    expect(result.exitCode).toBe(0);
+    const output = JSON.parse(result.stdout) as {
+      appCategories: string[];
+      categoryPresets: Record<string, { category: string; density: string }>;
+      events: { component: string; description: string; eventType: string; label: string }[];
+      harmonyIds: string[];
+      harmonies: { description: string; id: string; label: string }[];
+      navigatorTypes: string[];
+    };
+    expect(output.appCategories).toEqual(['business_productivity']);
+    expect(output.categoryPresets.business_productivity).toMatchObject({
+      category: 'business_productivity',
+      density: 'compact',
+    });
+    expect(output.harmonyIds).toEqual(['monochromatic', 'complementary']);
+    expect(output.harmonies).toEqual([
+      { id: 'monochromatic', label: 'Monochromatic', description: 'One hue.' },
+      { id: 'complementary', label: 'Complementary', description: 'Opposing hues.' },
+    ]);
+    expect(output.navigatorTypes).toEqual(['stack', 'tabs', 'drawer']);
+    expect(output.events).toContainEqual({
+      component: 'Text',
+      eventType: 'text.press',
+      label: 'Press',
+      description: 'Text was pressed.',
+    });
+  });
+
   it('uses the current package public export when the target is the owner repository', async () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
@@ -181,7 +212,7 @@ describe('zora-designer evidence and artifact calculation', () => {
 });
 
 describe('zora-designer Templates scaffolding', () => {
-  it('validates a ready manifest and writes the normal variant and category registry source', async () => {
+  it('validates a ready manifest and writes one portable template plus generated discovery', async () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
       name: '@ankhorage/templates',
@@ -190,51 +221,30 @@ describe('zora-designer Templates scaffolding', () => {
       exports: { '.': './index.js', './package.json': './package.json' },
     });
     await writeFile(join(target, 'index.js'), TEMPLATES_FIXTURE_SOURCE);
-    const categoryDirectory = join(
-      target,
-      'src/templates/starter/categories/business-productivity',
-    );
+    const categoryDirectory = join(target, 'src/templates/categories/business-productivity');
     await mkdir(categoryDirectory, { recursive: true });
     await writeFile(
-      join(categoryDirectory, 'index.ts'),
-      `import type { CategoryStarterTemplateDefinition } from '../../starter.types';
-import { createDefaultStarterTemplate } from './default.template';
-
-export const businessProductivityStarterTemplates = [
-  {
-    id: 'default',
-    label: 'Default',
-    description: 'Default starter.',
-    create: createDefaultStarterTemplate,
-  },
-] satisfies readonly CategoryStarterTemplateDefinition[];
-`,
+      join(target, 'src/templates/catalog.ts'),
+      'export interface TemplateDefinition {}\n',
     );
     const scaffoldInput = join(target, 'scaffold-input.json');
     await writeJson(scaffoldInput, {
       targetDirectory: target,
       category: 'business_productivity',
-      templateId: 'evidence-board',
-      label: 'Evidence Board',
-      description: 'A metadata-backed evidence review starter.',
+      slug: 'evidence-board',
       manifest: createManifest(),
     });
 
     const result = await runScript(SCAFFOLD_SCRIPT, [scaffoldInput], target);
-    expect(result.exitCode).toBe(0);
-    const variantDirectory = join(categoryDirectory, 'evidence-board');
-    expect(await readFile(join(variantDirectory, 'index.ts'), 'utf8')).toContain(
-      'createEvidenceBoardStarterTemplate',
-    );
-    expect(await readFile(join(variantDirectory, 'manifest.ts'), 'utf8')).toContain(
-      'AUTHORED_EVIDENCE_BOARD_MANIFEST',
-    );
-    expect(await readFile(join(variantDirectory, 'template.ts'), 'utf8')).toContain(
-      'seed.theme ??',
-    );
-    const registry = await readFile(join(categoryDirectory, 'index.ts'), 'utf8');
-    expect(registry).toContain("from './evidence-board'");
-    expect(registry).toContain("id: 'evidence-board'");
+    expect(result).toMatchObject({ exitCode: 0, stderr: '' });
+    const templateDirectory = join(categoryDirectory, 'evidence-board');
+    const manifestSource = await readFile(join(templateDirectory, 'createAppManifest.ts'), 'utf8');
+    expect(manifestSource).toContain('export default function createAppManifest()');
+    expect((await stat(join(templateDirectory, 'assets/screens'))).isDirectory()).toBe(true);
+    expect((await stat(join(templateDirectory, 'assets/images'))).isDirectory()).toBe(true);
+    const catalog = await readFile(join(target, 'src/templates/catalog.generated.ts'), 'utf8');
+    expect(catalog).toContain("category: 'business_productivity'");
+    expect(catalog).toContain("slug: 'evidence-board'");
     expect((await runScript(SCAFFOLD_SCRIPT, [scaffoldInput], target)).exitCode).toBe(1);
   });
 });
@@ -260,6 +270,20 @@ async function createTarget(name: string): Promise<string> {
 /*** Create released-owner package fixtures with the exact public subpaths used by the skill. */
 async function createOwnerFixture(templatesVersion = '8.0.0'): Promise<string> {
   const target = await createTarget('fixture');
+  await writeFixturePackage(
+    target,
+    '@ankhorage/color-theory',
+    '0.3.0',
+    { '.': './index.js', './package.json': './package.json' },
+    COLOR_THEORY_FIXTURE_SOURCE,
+  );
+  await writeFixturePackage(
+    target,
+    '@ankhorage/contracts',
+    '8.2.0',
+    { '.': './index.js', './package.json': './package.json' },
+    CONTRACTS_FIXTURE_SOURCE,
+  );
   await writeFixturePackage(
     target,
     '@ankhorage/templates',
@@ -396,6 +420,7 @@ export const CATEGORY_PRESETS = {
     recommendedPrimaryColors: ['#2563EB'],
     recommendedHarmonies: ['complementary'],
     tonePairs: { light: 'jewel-on-neutral-light', dark: 'pastel-on-neutral-dark' },
+    density: 'compact',
   },
 };
 export const TONE_PAIR_CATALOG = [];
@@ -442,6 +467,19 @@ export const validateTemplateManifest = (manifest) => ({
 export const assertTemplateManifestReady = (composition) => composition.manifest;
 `;
 
+const COLOR_THEORY_FIXTURE_SOURCE = `
+export const COLOR_HARMONIES = ['monochromatic', 'complementary'];
+export const COLOR_HARMONY_CATALOG = [
+  { id: 'monochromatic', label: 'Monochromatic', description: 'One hue.' },
+  { id: 'complementary', label: 'Complementary', description: 'Opposing hues.' },
+];
+`;
+
+const CONTRACTS_FIXTURE_SOURCE = `
+export const APP_CATEGORIES = ['business_productivity'];
+export const NAVIGATOR_TYPES = ['stack', 'tabs', 'drawer'];
+`;
+
 const ZORA_THEME_FIXTURE_SOURCE = `
 export const compileZoraTheme = (themeConfig) => ({
   themeConfig,
@@ -453,8 +491,21 @@ export const compileZoraTheme = (themeConfig) => ({
 
 const ZORA_METADATA_FIXTURE_SOURCE = `
 export const ZORA_COMPONENT_META = {
-  View: { name: 'View', directManifestNode: true, allowedChildren: ['Text', 'MissingElement'], props: {} },
-  Text: { name: 'Text', directManifestNode: true, allowedChildren: [], props: { text: { type: 'string' } } },
+  View: { name: 'View', directManifestNode: true, allowedChildren: ['Text', 'Box'], props: {} },
+  Box: { name: 'Box', directManifestNode: true, allowedChildren: [], props: {} },
+  Text: {
+    name: 'Text',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: { text: { type: 'string' } },
+    events: {
+      press: {
+        eventType: 'text.press',
+        label: 'Press',
+        description: 'Text was pressed.',
+      },
+    },
+  },
   MissingElement: {
     name: 'MissingElement',
     directManifestNode: true,

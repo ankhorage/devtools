@@ -105,6 +105,10 @@ describe('managed repository skill ownership', () => {
     ) as { skills: Record<string, { files: Record<string, string> }> };
     const managedPaths = Object.keys(manifest.skills['zora-designer'].files);
     expect(managedPaths).toContain('.agents/skills/zora-designer/scripts/scaffold-template.mjs');
+    expect(managedPaths).toContain('.agents/skills/zora-designer/references/screens.md');
+    expect(managedPaths).toContain(
+      '.agents/skills/zora-designer/scripts/generate-template-catalog.mjs',
+    );
     expect(managedPaths.every((path) => path.startsWith('.agents/skills/zora-designer/'))).toBe(
       true,
     );

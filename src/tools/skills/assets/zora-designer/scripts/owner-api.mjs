@@ -5,11 +5,23 @@ import { dirname, join, parse, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const OWNER_RELEASES = {
+  colorTheory: { packageName: '@ankhorage/color-theory', minimumVersion: '0.3.0' },
+  contracts: { packageName: '@ankhorage/contracts', minimumVersion: '8.2.0' },
   templates: { packageName: '@ankhorage/templates', minimumVersion: '8.0.0' },
   zora: { packageName: '@ankhorage/zora', minimumVersion: '4.0.0' },
 };
 
 const OWNER_REQUIREMENTS = {
+  colorTheory: {
+    ...OWNER_RELEASES.colorTheory,
+    specifier: '@ankhorage/color-theory',
+    exports: ['COLOR_HARMONIES', 'COLOR_HARMONY_CATALOG'],
+  },
+  contracts: {
+    ...OWNER_RELEASES.contracts,
+    specifier: '@ankhorage/contracts',
+    exports: ['APP_CATEGORIES', 'NAVIGATOR_TYPES'],
+  },
   templates: {
     ...OWNER_RELEASES.templates,
     specifier: '@ankhorage/templates',
@@ -45,10 +57,14 @@ export async function loadOwnerApis(targetDirectory = process.cwd()) {
   }
 
   return {
+    colorTheory: loaded.colorTheory.module,
+    contracts: loaded.contracts.module,
     templates: loaded.templates.module,
     zoraTheme: loaded.zoraTheme.module,
     zoraMetadata: loaded.zoraMetadata.module,
     versions: {
+      colorTheory: loaded.colorTheory.version,
+      contracts: loaded.contracts.version,
       templates: loaded.templates.version,
       zora: loaded.zoraTheme.version,
     },
@@ -58,22 +74,36 @@ export async function loadOwnerApis(targetDirectory = process.cwd()) {
 /*** Return installed catalogs and metadata names without copying owner definitions. */
 export async function inspectOwnerApis(targetDirectory = process.cwd()) {
   const owners = await loadOwnerApis(targetDirectory);
+  const componentMetadata = Object.values(owners.zoraMetadata.ZORA_COMPONENT_META);
   return {
     versions: owners.versions,
-    categories: Object.values(owners.templates.CATEGORY_PRESETS).map((preset) => ({
-      category: preset.category,
-      label: preset.label,
-      recommendedPrimaryColors: preset.recommendedPrimaryColors,
-      recommendedHarmonies: preset.recommendedHarmonies,
-      tonePairs: preset.tonePairs,
-    })),
+    appCategories: owners.contracts.APP_CATEGORIES,
+    categoryPresets: owners.templates.CATEGORY_PRESETS,
+    harmonyIds: owners.colorTheory.COLOR_HARMONIES,
+    harmonies: owners.colorTheory.COLOR_HARMONY_CATALOG,
     tonePairs: owners.templates.TONE_PAIR_CATALOG,
-    components: Object.keys(owners.zoraMetadata.ZORA_COMPONENT_META).sort(),
+    navigatorTypes: owners.contracts.NAVIGATOR_TYPES,
+    components: componentMetadata.map((meta) => meta.name).sort(),
+    events: componentMetadata
+      .flatMap((meta) =>
+        Object.values(meta.events ?? {}).map((event) => ({
+          component: meta.name,
+          eventType: event.eventType,
+          label: event.label,
+          description: event.description,
+          payloadFields: event.payloadFields,
+        })),
+      )
+      .sort((left, right) =>
+        `${left.component}:${left.eventType}`.localeCompare(
+          `${right.component}:${right.eventType}`,
+        ),
+      ),
     themeRecipes: Object.keys(owners.zoraMetadata.ZORA_THEME_RECIPE_META).sort(),
   };
 }
 
-/*** Compile category design, validate region nodes, and compose one canonical draft or release manifest. */
+/*** Compose one design without turning missing runtime/UI capabilities into a design blocker. */
 export async function composeDesign(input, targetDirectory = process.cwd()) {
   const owners = await loadOwnerApis(targetDirectory);
   assertRecord(input, 'Design input');
@@ -90,7 +120,6 @@ export async function composeDesign(input, targetDirectory = process.cwd()) {
   const design = owners.templates.compileCategoryDesign(input.category, input.theme ?? {});
   const { computedTheme, ...resolvedDesign } = design;
   const requestedAuthoringState = input.authoringState === 'release' ? 'release' : 'draft';
-  const authoringState = regionResult.gaps.length === 0 ? requestedAuthoringState : 'draft';
   const composition = owners.templates.composeCategoryAppManifest({
     category: input.category,
     name: input.name,
@@ -103,14 +132,14 @@ export async function composeDesign(input, targetDirectory = process.cwd()) {
     modules: input.modules,
     modulesConfig: input.modulesConfig,
     theme: input.theme,
-    authoringState,
+    authoringState: requestedAuthoringState,
   });
   const ownerDiagnostics = [
     ...design.diagnostics,
     ...computedTheme.diagnostics,
     ...composition.diagnostics,
   ];
-  const blocked = regionResult.gaps.length > 0 || composition.status === 'blocked';
+  const blockers = ownerDiagnostics.filter((diagnostic) => diagnostic.severity === 'error');
 
   return {
     owners: owners.versions,
@@ -118,14 +147,15 @@ export async function composeDesign(input, targetDirectory = process.cwd()) {
     computedTheme,
     composition,
     regionDiagnostics: regionResult.diagnostics,
+    capabilityGaps: regionResult.gaps,
     ownerDiagnostics,
     requestedAuthoringState,
-    applicationGate: blocked ? 'blocked' : 'pass',
-    blockers: regionResult.gaps,
+    applicationGate: composition.status === 'blocked' ? 'blocked' : 'pass',
+    blockers,
   };
 }
 
-/*** Resolve explicit region-to-component decisions and insert validated nodes into cloned screens. */
+/*** Resolve explicit region decisions using exact metadata or a visible non-blocking Box placeholder. */
 export function resolveRegionNodes(screens, regions, componentMeta) {
   const resolvedScreens = structuredClone(screens);
   const diagnostics = [];
@@ -152,7 +182,6 @@ export function resolveRegionNodes(screens, regions, componentMeta) {
   return { screens: resolvedScreens, diagnostics, gaps };
 }
 
-/*** Resolve one exact metadata-backed component or the owner-defined MissingElement placeholder. */
 function resolveRegionNode(region, componentMeta) {
   const component = typeof region.component === 'string' ? region.component : null;
   const meta = component === null ? null : componentMeta[component];
@@ -170,36 +199,30 @@ function resolveRegionNode(region, componentMeta) {
     };
   }
 
-  const missingMeta = componentMeta.MissingElement;
-  if (!missingMeta || missingMeta.manifestPolicy?.kind !== 'unresolved-element') {
-    throw new Error(
-      'Installed @ankhorage/zora metadata does not expose the canonical MissingElement contract.',
-    );
+  const placeholderMeta = componentMeta.Box;
+  if (!placeholderMeta?.directManifestNode) {
+    throw new Error('Installed @ankhorage/zora metadata does not expose Box as a manifest node.');
   }
-  const props = {
-    ...(missingMeta.blueprint?.defaultProps ?? {}),
-    requestedCapability: region.requestedCapability,
-    reason:
-      typeof region.reason === 'string' && region.reason.trim() !== ''
-        ? region.reason
-        : `No exact metadata-supported ZORA element was selected for region "${region.id}".`,
-    ...(typeof region.evidenceId === 'string' ? { evidenceId: region.evidenceId } : {}),
-  };
-  assertSupportedProps(props, missingMeta, region.id);
+  const reason =
+    typeof region.reason === 'string' && region.reason.trim() !== ''
+      ? region.reason
+      : `No exact metadata-supported ZORA element was selected for region "${region.id}".`;
   const gap = {
-    id: `missing-element:${region.id}`,
-    scope: 'composition',
-    owner: '@ankhorage/zora',
+    id: `capability-gap:${region.id}`,
+    scope: 'capability',
     regionId: region.id,
     requestedCapability: region.requestedCapability,
     evidenceId: region.evidenceId ?? null,
-    ownerIssueUrl: region.ownerIssueUrl ?? null,
-    reason: props.reason,
-    unblockCondition: 'Replace MissingElement with a released exact ZORA element and revalidate.',
+    reason,
   };
   return {
-    node: { id: region.id, type: missingMeta.name, props },
-    diagnostic: { regionId: region.id, status: 'missing', component: missingMeta.name, ...gap },
+    node: { id: region.id, type: placeholderMeta.name, props: {} },
+    diagnostic: {
+      regionId: region.id,
+      status: 'placeholder',
+      component: placeholderMeta.name,
+      ...gap,
+    },
     gap,
   };
 }
