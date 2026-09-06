@@ -125,3 +125,7 @@ After scaffolding, inspect the exported template artifact and verify generated r
 the consuming app's media resolver. A passing bundle/manifest check alone does not prove that Studio
 or another consumer renders the files. Report missing consumer support explicitly; never call an
 untested runtime path verified.
+
+For generated applications, verify that the installed runtime preserves image media references
+until media resolution (`@ankhorage/runtime` 2.2.6 or newer). The Icon manifest node and normal
+container support for Icon/Image require ZORA 4.2.0 or newer; the owner helper enforces this minimum.

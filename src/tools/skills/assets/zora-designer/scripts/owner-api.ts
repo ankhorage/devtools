@@ -119,7 +119,7 @@ const OWNER_RELEASES = {
   colorTheory: { packageName: '@ankhorage/color-theory', minimumVersion: '0.3.0' },
   contracts: { packageName: '@ankhorage/contracts', minimumVersion: '10.1.0' },
   templates: { packageName: '@ankhorage/templates', minimumVersion: '9.3.0' },
-  zora: { packageName: '@ankhorage/zora', minimumVersion: '4.1.0' },
+  zora: { packageName: '@ankhorage/zora', minimumVersion: '4.2.0' },
 };
 
 const OWNER_REQUIREMENTS = {
