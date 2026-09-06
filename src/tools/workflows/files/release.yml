@@ -113,7 +113,7 @@ jobs:
 
       - name: Create the scoped rollout token
         id: rollout-token
-        if: steps.release.outputs.versioned == 'true'
+        if: steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}
@@ -123,7 +123,7 @@ jobs:
           permission-contents: write
 
       - name: Trigger the Devtools consumer rollout
-        if: steps.release.outputs.versioned == 'true'
+        if: steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           PUBLISHED_PACKAGE_NAME: ${{ steps.release.outputs.package_name }}

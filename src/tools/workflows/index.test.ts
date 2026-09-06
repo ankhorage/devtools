@@ -55,7 +55,9 @@ describe('managed workflows', () => {
   test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(release).toContain("steps.release.outputs.versioned == 'true'");
+    expect(release).toContain(
+      "steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'",
+    );
     expect(release).toContain(
       'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
     );
