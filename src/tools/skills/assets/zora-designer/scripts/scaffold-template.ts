@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { access, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { join, relative, resolve, sep } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { generateTemplateCatalog } from './generate-template-catalog.ts';
@@ -13,6 +13,7 @@ export async function scaffoldTemplate(input: unknown) {
   assertNonEmptyString(input.targetDirectory, 'targetDirectory');
   assertNonEmptyString(input.category, 'category');
   assertNonEmptyString(input.slug, 'slug');
+  assertNonEmptyString(input.assetBundlePath, 'assetBundlePath');
   const { category, slug, targetDirectory: inputTargetDirectory } = input;
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(slug)) {
     throw new Error('slug must be a kebab-case identifier.');
@@ -41,6 +42,10 @@ export async function scaffoldTemplate(input: unknown) {
   const owners = await loadOwnerApis(targetDirectory);
   const composition = owners.templates.validateTemplateManifest(inputManifest, 'release');
   const manifest = owners.templates.assertTemplateManifestReady(composition);
+  const assetFiles = await prepareAssetBundle(
+    resolve(targetDirectory, input.assetBundlePath),
+    manifest,
+  );
 
   const categoryDirectory = resolve(
     targetDirectory,
@@ -59,8 +64,14 @@ export async function scaffoldTemplate(input: unknown) {
 
   const screensDirectory = join(templateDirectory, 'assets', 'screens');
   const imagesDirectory = join(templateDirectory, 'assets', 'images');
+  const svgDirectory = join(imagesDirectory, 'svg');
   await mkdir(screensDirectory, { recursive: true });
-  await mkdir(imagesDirectory, { recursive: true });
+  await mkdir(svgDirectory, { recursive: true });
+  for (const file of assetFiles) {
+    const destination = join(templateDirectory, file.targetPath);
+    await mkdir(dirname(destination), { recursive: true });
+    await writeFile(destination, file.bytes, { flag: 'wx' });
+  }
   await writeFile(
     join(templateDirectory, 'createAppManifest.ts'),
     createManifestSource(manifest),
@@ -72,10 +83,16 @@ export async function scaffoldTemplate(input: unknown) {
   return {
     targetDirectory,
     templateDirectory: relative(targetDirectory, templateDirectory),
-    createdFiles: [relative(targetDirectory, join(templateDirectory, 'createAppManifest.ts'))],
+    createdFiles: [
+      relative(targetDirectory, join(templateDirectory, 'createAppManifest.ts')),
+      ...assetFiles.map((file) =>
+        relative(targetDirectory, join(templateDirectory, file.targetPath)),
+      ),
+    ],
     assetDirectories: [
       relative(targetDirectory, screensDirectory),
       relative(targetDirectory, imagesDirectory),
+      relative(targetDirectory, svgDirectory),
     ],
   };
 }
@@ -146,3 +163,4 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
     process.exitCode = 1;
   });
 }
+import { prepareAssetBundle } from './asset-bundle.ts';

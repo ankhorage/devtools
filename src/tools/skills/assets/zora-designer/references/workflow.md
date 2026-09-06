@@ -42,7 +42,8 @@ Advance through this sequence. Skip only a value already supplied or reliably di
    recommendation first and allow the user to accept the recommended system settings together.
 7. **Screens.** Ask for the ordered screen list and purpose of each screen. Then establish the
    primary action, essential content, required data states, and continuity across the series. Do not
-   generate images yet.
+   generate images yet. Inventory each icon and image region using
+   [runtime-assets.md](runtime-assets.md), including reused assets and their intended consumers.
 8. **Navigator.** After the screen topology exists, offer only Contracts navigator types and map
    every route, initial route, hidden/detail route, back/cancel path, and primary-navigation label.
 9. **Compile and confirm.** Compile both theme modes through the owner helper. Summarize high-impact
@@ -75,9 +76,10 @@ removing the intended flow or inventing a contract.
 - `interactive`: write or return the confirmed `zora-designer.md`; do not produce screen images or
   implementation unless requested.
 - `screen` or `screens`: read [screens.md](screens.md), create the screen specification, then produce
-  only the requested image, code, or manifest deliverable.
+  the requested deliverable together with its separate SVG and image asset bundle.
 - `template`: author a complete `AppManifest`, validate it in release mode, generate or extract every
-  required runtime image, and run the Templates scaffolder.
+  required SVG and runtime image, validate the asset bundle against the manifest, and run the
+  Templates scaffolder with `assetBundlePath`.
 
 For design-first templates, store reference images under `assets/screens/` and crop only real image
 content into `assets/images/`. For direct authoring, generate application images directly under

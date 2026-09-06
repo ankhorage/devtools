@@ -213,6 +213,7 @@ export function serializeArtifact(input: unknown, audit: unknown) {
     tokens: input.tokens ?? {},
     components: input.components ?? { stateRequirements: [], recipeDecisions: {} },
     screens: input.screens ?? [],
+    assets: input.assets ?? { bundlePath: null, status: 'not-run', entries: [] },
     validation: input.validation ?? {
       scope: documentKind === 'audit' ? 'audit' : 'configuration',
       status: 'not-run',

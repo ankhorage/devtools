@@ -28,7 +28,10 @@ For every screen record:
 4. route relationship and continuity of selected item, filters, progress, drafts, or other state;
 5. exact metadata-backed ZORA elements, supported events/actions, data needs, and capability gaps;
 6. safe areas, keyboard/overlay behavior, scroll ownership, and narrow/wide behavior;
-7. real image content that must become an application asset rather than screenshot UI.
+7. every SVG icon and real image region, its reusable asset ID, and its intended manifest usage.
+
+Read [runtime-assets.md](runtime-assets.md). Produce and inspect the separate icons and images before
+concept rendering, use them as screen references, and deliver their checked bundle with the screens.
 
 Create one shared shell specification for a series: viewport, safe areas, gutters, header geometry,
 navigation geometry, surface treatment, type roles, icon family, content density, and state styling.
@@ -72,6 +75,7 @@ Generate one image per distinct screen or state. Every prompt must include:
 - exact screen title, copy that must be legible, hierarchy, components, and primary action;
 - content quantity that fits the viewport at the declared type scale;
 - invariants shared with the other screens;
+- the prepared icon and image assets for every media region, retaining their visual identity;
 - prohibitions against device frames, presentation boards, watermarks, illegible labels, invented
   tabs, and oversized marketing typography on ordinary application screens.
 

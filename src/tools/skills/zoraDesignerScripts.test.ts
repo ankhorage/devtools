@@ -4,6 +4,12 @@ import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'bun:test';
 
 import { inspectOwnerRequirements } from './assets/zora-designer/scripts/owner-api.ts';
+import {
+  createAssetFixture,
+  createFixtureManifest,
+  ICON_SVG,
+  IMAGE_PNG,
+} from './assetTestFixture.js';
 
 const OWNER_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/owner-api.ts');
 const AUDIT_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/audit.ts');
@@ -76,7 +82,10 @@ describe('zora-designer owner API orchestration', () => {
     const output = JSON.parse(result.stdout) as {
       applicationGate: string;
       requestedAuthoringState: string;
-      composition: { authoringState: string; manifest: { screens: Record<string, Screen> } };
+      composition: {
+        authoringState: string;
+        manifest: { screens: Record<string, { root: ScreenNode }> };
+      };
       capabilityGaps: { requestedCapability: string }[];
       computedTheme: { light: { surfaceTheme: object }; dark: { surfaceTheme: object } };
     };
@@ -233,11 +242,13 @@ describe('zora-designer Templates scaffolding', () => {
       'export interface TemplateDefinition {}\n',
     );
     const scaffoldInput = join(target, 'scaffold-input.json');
+    const assets = await createAssetFixture(target);
     await writeJson(scaffoldInput, {
       targetDirectory: target,
+      assetBundlePath: 'design-assets.json',
       category: 'business_productivity',
       slug: 'evidence-board',
-      manifest: createManifest(),
+      manifest: { ...createFixtureManifest(createThemeConfig()), ...assets.manifest },
     });
 
     const result = await runScript(SCAFFOLD_SCRIPT, [scaffoldInput], target);
@@ -247,6 +258,10 @@ describe('zora-designer Templates scaffolding', () => {
     expect(manifestSource).toContain('export default function createAppManifest()');
     expect((await stat(join(templateDirectory, 'assets/screens'))).isDirectory()).toBe(true);
     expect((await stat(join(templateDirectory, 'assets/images'))).isDirectory()).toBe(true);
+    expect(await readFile(join(templateDirectory, 'assets/images/svg/book.svg'), 'utf8')).toBe(
+      ICON_SVG,
+    );
+    expect(await readFile(join(templateDirectory, 'assets/images/cover.png'))).toEqual(IMAGE_PNG);
     const catalog = await readFile(join(target, 'src/templates/catalog.generated.ts'), 'utf8');
     expect(catalog).toContain("category: 'business_productivity'");
     expect(catalog).toContain("slug: 'evidence-board'");
@@ -258,10 +273,6 @@ interface ScreenNode {
   children?: ScreenNode[];
   id: string;
   type: string;
-}
-
-interface Screen {
-  root: ScreenNode;
 }
 
 /*** Create one temporary package root for portable script tests. */
@@ -391,27 +402,6 @@ function assessedCriterion(status: string, evidenceIds: string[]): Record<string
     evidenceIds,
     essentialEvidenceIds: evidenceIds,
     reason: 'Supported by the referenced evidence.',
-  };
-}
-
-/*** Create a minimal canonical manifest accepted by the released-owner fixture. */
-function createManifest(): Record<string, unknown> {
-  return {
-    metadata: {
-      name: 'Evidence Board',
-      slug: 'evidence-board',
-      version: '1.0.0',
-      category: 'business_productivity',
-      themeId: 'evidence-theme',
-    },
-    themes: [createThemeConfig()],
-    activeThemeId: 'evidence-theme',
-    infra: { modules: [] },
-    navigator: { type: 'stack', routes: [{ name: 'index', screenId: 'home' }] },
-    screens: {
-      home: { id: 'home', name: 'Home', root: { id: 'home-root', type: 'View' } },
-    },
-    settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
   };
 }
 
