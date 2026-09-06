@@ -37,6 +37,8 @@ describe('managed workflows', () => {
     expect(release).toContain(changesetsPolicy.workflowCommands.version);
     expect(release).toContain(`run: ${changesetsPolicy.workflowCommands.publish}`);
     expect(release).toContain('id: release');
+    expect(release).toContain('git checkout -B main origin/main');
+    expect(release).toContain('git rebase origin/main');
     expect(release).toContain('git push origin HEAD:main');
     expect(release).toContain('chore(release): version packages [skip ci]');
     expect(release).not.toContain('changesets/action');
