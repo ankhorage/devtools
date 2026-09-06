@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.5
+
+### Patch Changes
+
+- 9888369: Keep direct main releases synchronized when another green pull request merges concurrently.
+
 ## 1.11.4
 
 ### Patch Changes
