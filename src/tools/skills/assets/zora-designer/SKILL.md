@@ -59,6 +59,11 @@ work. Release validation still decides whether the complete manifest is shippabl
 
 ## Template output
 
+For every creation mode, read [runtime-assets.md](references/runtime-assets.md). Inventory icons
+and images during configuration, produce separate reusable files with the screens, and carry the
+same checked asset bundle into template generation. Direct template requests prepare that bundle
+before scaffolding as well.
+
 A Templates repository template is exactly one portable unit:
 
 ```text
@@ -67,11 +72,13 @@ src/templates/categories/{appCategory}/{slug}/
   assets/
     screens/
     images/
+      svg/
 ```
 
 `createAppManifest.ts` default-exports a function returning the complete `AppManifest`.
 `assets/screens/` contains design evidence only. Runtime media uses real application image regions
-under `assets/images/`; rebuild text, controls, icons, surfaces, and layout with ZORA.
+under `assets/images/`, with vector icons under `assets/images/svg/`. Rebuild text, controls,
+surfaces and layout with ZORA; use `Icon source` and `Image` for the corresponding asset references.
 
 Scaffold only a reviewed, release-valid manifest:
 
@@ -79,7 +86,8 @@ Scaffold only a reviewed, release-valid manifest:
 bun .agents/skills/zora-designer/scripts/scaffold-template.ts scaffold-input.json
 ```
 
-The helper creates the template directory and regenerates discovery from the filesystem. Do not add
+The helper requires `assetBundlePath`, checks files and manifest references before output, copies
+runtime assets and screen evidence, and regenerates discovery from the filesystem. Do not add
 category registries, seed definitions, fallback templates, compatibility paths, or per-template
 barrels.
 
@@ -93,4 +101,6 @@ barrels.
   output;
 - keep unsupported interactions and capability gaps explicit;
 - keep concept screens separate from runtime assets;
+- validate the separate asset bundle before screen delivery and its manifest usages before template
+  scaffolding; report visual review and runtime verification separately;
 - for deterministic artifact shape, read [artifact.md](references/artifact.md).

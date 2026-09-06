@@ -31,6 +31,9 @@ is never invented:
 - `tokens`: current owner-computed token output, never copied token definitions;
 - `components`: metadata-backed recipe decisions and required states;
 - `screens`: ordered screen specifications and evidence relationships;
+- `assets`: portable `bundlePath`, completion `status`, and `entries` describing each icon/image,
+  region usages, provenance, dimensions and visual review; planned assets remain explicit during
+  configuration and must be present for screen/template completion;
 - `validation`: scope, gates, application gate, owner/runtime drift, and blockers;
 - `auditInput`: criterion and release-gate assessments consumed by the canonical calculator;
 - `findings`, `risks`, `openDecisions`, and preserved `userNotes`.
