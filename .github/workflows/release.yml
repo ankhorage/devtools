@@ -63,6 +63,8 @@ jobs:
         id: release
         if: hashFiles('.changeset/config.json') != ''
         run: |
+          git fetch origin main
+          git checkout -B main origin/main
           before_version="$(node -p "require('./package.json').version")"
           bun run version-packages
           after_version="$(node -p "require('./package.json').version")"
@@ -76,7 +78,11 @@ jobs:
           git config user.email "ankhorage-renovate-sync[bot]@users.noreply.github.com"
           git add --all
           git commit -m "chore(release): version packages [skip ci]"
-          git push origin HEAD:main
+          if ! git push origin HEAD:main; then
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
 
           if [ "$before_version" = "$after_version" ]; then
             echo "versioned=false" >> "$GITHUB_OUTPUT"
