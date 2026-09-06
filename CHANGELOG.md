@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.1
+
+### Patch Changes
+
+- d7a987b: Run the managed Renovate workflow through final-head CI and trusted automerge follow-up events.
+
 ## 1.11.0
 
 ### Minor Changes
