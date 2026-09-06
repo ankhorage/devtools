@@ -296,8 +296,8 @@ The canonical Bun policy is defined once in devtools and consumed by both packag
 <!-- devtools-bun-policy:start -->
 
 ```text
-Bun runtime       1.4.1
-packageManager    bun@1.4.1
+Bun runtime       1.4.2
+packageManager    bun@1.4.2
 @types/bun        ^1.4.1
 ```
 
