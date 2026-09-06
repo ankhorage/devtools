@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.3
+
+### Patch Changes
+
+- b57a587: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
 ## 1.11.2
 
 ### Patch Changes
