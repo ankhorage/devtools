@@ -6,10 +6,18 @@ on:
       - opened
       - reopened
       - synchronize
+      - labeled
+
+concurrency:
+  group: renovate-${{ github.repository }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 permissions:
+  checks: read
   contents: read
+  issues: read
   pull-requests: read
+  statuses: read
 
 jobs:
   changeset:
@@ -17,7 +25,7 @@ jobs:
       (github.actor == 'renovate[bot]' || github.actor == 'ankhorage-renovate-sync[bot]') &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       startsWith(github.event.pull_request.head.ref, 'renovate/')
-    uses: ankhorage/renovate/.github/workflows/changeset.yml@d3f138f4e8d3eb84244730f86591c6556738c1f4
+    uses: ankhorage/renovate/.github/workflows/changeset.yml@03f29fb8f81d15c51bf16b5374ad92fe8f95e3b5
     with:
       renovate_sync_client_id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}
     secrets:

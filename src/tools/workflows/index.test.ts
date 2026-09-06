@@ -173,11 +173,19 @@ describe('managed Renovate workflow', () => {
     );
     expect(rendered).toContain("github.actor == 'renovate[bot]'");
     expect(rendered).toContain("github.actor == 'ankhorage-renovate-sync[bot]'");
+    expect(rendered).toContain('      - labeled');
+    expect(rendered).toContain(
+      'group: renovate-${{ github.repository }}-${{ github.event.pull_request.number }}',
+    );
+    expect(rendered).toContain('cancel-in-progress: true');
     const template = await readFile(new URL('./files/renovate.yml', import.meta.url), 'utf8');
     expect(template).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@d3f138f4e8d3eb84244730f86591c6556738c1f4',
+      'ankhorage/renovate/.github/workflows/changeset.yml@03f29fb8f81d15c51bf16b5374ad92fe8f95e3b5',
     );
     expect(rendered).toContain('contents: read');
+    expect(rendered).toContain('checks: read');
+    expect(rendered).toContain('issues: read');
+    expect(rendered).toContain('statuses: read');
     expect(rendered).not.toContain('actions: write');
     expect(rendered).toContain(
       'renovate_sync_client_id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}',
