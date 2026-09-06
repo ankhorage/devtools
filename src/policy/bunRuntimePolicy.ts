@@ -4,7 +4,7 @@
  * Import these from `@ankhorage/devtools/policy` when another package needs to inspect
  * the managed Bun or Node baseline without defining an independent version authority.
  */
-const BUN_VERSION = '1.4.1';
+const BUN_VERSION = '1.4.2';
 
 export const bunRuntimePolicy = {
   packageManager: `bun@${BUN_VERSION}`,
