@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.4
+
+### Patch Changes
+
+- bf2e1ff: Release Changesets updates directly from green main branches without a second Version Packages pull request.
+
 ## 1.11.3
 
 ### Patch Changes
