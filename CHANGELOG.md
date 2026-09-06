@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.2
+
+### Patch Changes
+
+- 05db4b0: Keep the managed Bun runtime update independent from the separately published `@types/bun` version.
+
 ## 1.11.1
 
 ### Patch Changes
