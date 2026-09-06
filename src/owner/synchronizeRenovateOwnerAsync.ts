@@ -148,10 +148,17 @@ async function readTargetBunPolicyAsync(targetDirectory: string): Promise<BunPol
   if (version === undefined) {
     throw new Error('Expected exactly one canonical BUN_VERSION literal in the target policy.');
   }
+  const typesMatches = [...contents.matchAll(BUN_TYPES_VERSION_PATTERN)];
+  const typesVersion = typesMatches.length === 1 ? typesMatches[0]?.[1] : undefined;
+  if (typesVersion === undefined) {
+    throw new Error(
+      'Expected exactly one canonical BUN_TYPES_VERSION literal in the target policy.',
+    );
+  }
 
   return {
     packageManager: `bun@${version}`,
-    typesRange: `^${version}`,
+    typesRange: `^${typesVersion}`,
     version,
   };
 }
@@ -228,5 +235,7 @@ async function syncDefinitionsAsync(
 }
 
 const BUN_VERSION_PATTERN = /const BUN_VERSION = '(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)';/gu;
+const BUN_TYPES_VERSION_PATTERN =
+  /const BUN_TYPES_VERSION = '(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)';/gu;
 const README_POLICY_END = '<!-- devtools-bun-policy:end -->';
 const README_POLICY_START = '<!-- devtools-bun-policy:start -->';

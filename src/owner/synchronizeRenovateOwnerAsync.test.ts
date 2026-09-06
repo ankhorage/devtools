@@ -24,7 +24,7 @@ afterEach(async () => {
 
 describe('Devtools Renovate owner synchronization', () => {
   test('regenerates every Bun artifact and is byte-stable', async () => {
-    const target = await createTarget('1.4.0');
+    const target = await createTarget('1.4.2', '1.4.1');
     const unrelatedPath = join(target, 'notes.txt');
     await writeFile(unrelatedPath, 'leave me alone\n');
 
@@ -32,12 +32,13 @@ describe('Devtools Renovate owner synchronization', () => {
     const first = await readManagedContents(target);
 
     expect(JSON.parse(first.packageJson)).toMatchObject({
-      packageManager: 'bun@1.4.0',
-      devDependencies: { '@types/bun': '^1.4.0', typescript: '^5.9.3' },
+      packageManager: 'bun@1.4.2',
+      devDependencies: { '@types/bun': '^1.4.1', typescript: '^5.9.3' },
     });
-    expect(first.readme).toContain('Bun runtime       1.4.0');
-    expect(first.ci).toContain("bun-version: '1.4.0'");
-    expect(first.release).toContain("bun-version: '1.4.0'");
+    expect(first.readme).toContain('Bun runtime       1.4.2');
+    expect(first.readme).toContain('@types/bun        ^1.4.1');
+    expect(first.ci).toContain("bun-version: '1.4.2'");
+    expect(first.release).toContain("bun-version: '1.4.2'");
     expect(first.renovate).toMatch(/changeset\.yml@[0-9a-f]{40}/u);
     expect(await readFile(unrelatedPath, 'utf8')).toBe('leave me alone\n');
 
@@ -85,7 +86,7 @@ test('preserves the Renovate-managed digest during owner synchronization', async
   expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
 });
 
-async function createTarget(version: string): Promise<string> {
+async function createTarget(version: string, typesVersion = version): Promise<string> {
   const target = await mkdtemp(join(tmpdir(), 'devtools-owner-'));
   temporaryDirectories.push(target);
   await mkdir(join(target, 'src/policy'), { recursive: true });
@@ -107,7 +108,7 @@ async function createTarget(version: string): Promise<string> {
   );
   await writeFile(
     join(target, 'src/policy/bunRuntimePolicy.ts'),
-    `const BUN_VERSION = '${version}';\n`,
+    `const BUN_VERSION = '${version}';\nconst BUN_TYPES_VERSION = '${typesVersion}';\n`,
   );
   return target;
 }
