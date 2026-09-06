@@ -1,11 +1,8 @@
-import { spawnSync } from 'node:child_process';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, describe, expect, test } from 'bun:test';
 
-import { getDevtoolsToolCommand } from '../../cli/commands.js';
-import { runExternalTool } from '../../cli/runExternalTool.js';
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
@@ -37,11 +34,13 @@ describe('managed workflows', () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
     expect(ci).toContain(changesetsPolicy.workflowCommands.status);
-    expect(ci).toContain(changesetsPolicy.workflowCommands.versionPackagesStatus);
-    expect(release).toContain(`version: ${changesetsPolicy.workflowCommands.version}`);
-    expect(release).toContain(`publish: ${changesetsPolicy.workflowCommands.publish}`);
-    expect(release).toContain('id: changesets');
-    expect(release).toContain('createGithubReleases: false');
+    expect(release).toContain(changesetsPolicy.workflowCommands.version);
+    expect(release).toContain(`run: ${changesetsPolicy.workflowCommands.publish}`);
+    expect(release).toContain('id: release');
+    expect(release).toContain('git push origin HEAD:main');
+    expect(release).toContain('chore(release): version packages [skip ci]');
+    expect(release).not.toContain('changesets/action');
+    expect(release).not.toContain('changeset-release/main');
     expect(release).toContain('Finalize Changesets v3 tags and GitHub releases');
     expect(release).toContain('git tag --points-at HEAD');
     expect(release).toContain('git push origin "refs/tags/$tag"');
@@ -54,14 +53,14 @@ describe('managed workflows', () => {
   test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(release).toContain("steps.changesets.outputs.published == 'true'");
+    expect(release).toContain("steps.release.outputs.versioned == 'true'");
     expect(release).toContain(
       'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
     );
     expect(release).toContain('repositories: renovate');
     expect(release).toContain('permission-contents: write');
     expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
-    expect(release).toContain("candidate.name === '@ankhorage/devtools'");
+    expect(release).toContain("release.name !== '@ankhorage/devtools'");
     expect(release).toContain("event_type: 'devtools-release'");
     expect(release).toContain("repo: 'renovate'");
     expect(release).toContain('Changesets must report one exact published Devtools version.');
@@ -69,39 +68,12 @@ describe('managed workflows', () => {
 });
 
 describe('managed CI Changesets contract', () => {
-  test('validates trusted Version Packages pull requests without requiring a new changeset', async () => {
-    const ci = await workflowManagedFiles[0].render?.('.');
-
-    expect(ci).toContain(
-      `      - name: Validate Version Packages metadata
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'changeset-release/main'
-        run: |
-          if node -e "const p=require('./package.json'); process.exit(p.scripts?.changeset ? 0 : 1)"; then
-            ${changesetsPolicy.workflowCommands.versionPackagesStatus}
-          else
-            echo "No changeset script found; skipping."
-          fi`,
-    );
-    expect(changesetsPolicy.workflowCommands.versionPackagesStatus).toContain('--since=HEAD');
-  });
-
-  test('executes Version Packages status from a detached checkout without local main', async () => {
-    const target = await createDetachedVersionPackagesCheckout();
-    const result = await runExternalTool(
-      getDevtoolsToolCommand('changeset'),
-      changesetsPolicy.workflowArguments.versionPackagesStatus,
-      { cwd: target },
-    );
-
-    expect(result.exitCode).toBe(0);
-  });
-
   test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
     const ci = await workflowManagedFiles[0].render?.('.');
 
     expect(ci).toContain(
       `      - name: Check changesets
-        if: github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || github.head_ref != 'changeset-release/main')
+        if: github.event_name == 'pull_request'
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.['changeset:status'] ? 0 : 1)"; then
             ${changesetsPolicy.workflowCommands.status}
@@ -112,56 +84,6 @@ describe('managed CI Changesets contract', () => {
     expect(changesetsPolicy.packageScripts['changeset:status']).toContain('--since=origin/main');
   });
 });
-
-async function createDetachedVersionPackagesCheckout(): Promise<string> {
-  const target = await mkdtemp('/tmp/devtools-version-packages-');
-  temporaryDirectories.push(target);
-  await mkdir(join(target, '.changeset'));
-  await writeFile(
-    join(target, '.changeset/config.json'),
-    `${JSON.stringify(
-      {
-        changelog: false,
-        commit: false,
-        fixed: [],
-        linked: [],
-        access: 'public',
-        baseBranch: 'main',
-        updateInternalDependencies: 'patch',
-        ignore: [],
-      },
-      null,
-      2,
-    )}\n`,
-  );
-  await writeFile(join(target, 'package.json'), '{"name":"fixture","version":"1.0.0"}\n');
-  await writeFile(
-    join(target, '.changeset/release.md'),
-    "---\n'fixture': patch\n---\n\nRelease the fixture.\n",
-  );
-  runGit(target, ['init', '--initial-branch=main']);
-  runGit(target, ['config', 'user.email', 'test@example.com']);
-  runGit(target, ['config', 'user.name', 'Devtools Test']);
-  runGit(target, ['add', '.']);
-  runGit(target, ['commit', '-m', 'Add release changeset']);
-  const baseCommit = runGit(target, ['rev-parse', 'HEAD']);
-  await rm(join(target, '.changeset/release.md'));
-  await writeFile(join(target, 'package.json'), '{"name":"fixture","version":"1.0.1"}\n');
-  runGit(target, ['add', '.']);
-  runGit(target, ['commit', '-m', 'Version Packages']);
-  runGit(target, ['update-ref', 'refs/remotes/origin/main', baseCommit]);
-  runGit(target, ['checkout', '--detach', 'HEAD']);
-  runGit(target, ['branch', '--delete', '--force', 'main']);
-  return target;
-}
-
-function runGit(target: string, args: readonly string[]): string {
-  const result = spawnSync('git', args, { cwd: target, encoding: 'utf8' });
-  if (result.status !== 0) {
-    throw new Error(`git ${args.join(' ')} failed: ${result.stderr.trim()}`);
-  }
-  return result.stdout.trim();
-}
 
 describe('managed Renovate workflow', () => {
   test('pins the Renovate workflow and passes scoped App credentials', async () => {
