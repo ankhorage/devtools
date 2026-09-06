@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.6
+
+### Patch Changes
+
+- 5fefa41: Run the Renovate consumer rollout only after publishing Devtools itself, so ordinary package releases finish successfully after publishing.
+
 ## 1.11.5
 
 ### Patch Changes
