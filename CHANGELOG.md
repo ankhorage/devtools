@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.0
+
+### Minor Changes
+
+- 3cb2687: Require separate runtime SVG and image assets across ZORA Designer screen and template workflows. Validate asset files and manifest usages before scaffolding, then copy the verified files into the portable template.
+
 ## 1.10.16
 
 ### Patch Changes
