@@ -19,6 +19,7 @@ const REQUIRED_README_SNIPPETS = [
   'devtools.agents.sync',
   'devtools.skills.sync',
   'ankhorage-coding-rules',
+  'hexagonal-architecture',
   'devtools.prettier.sync',
   'devtools.knip.sync',
   'devtools.package.sync',
