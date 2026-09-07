@@ -267,7 +267,11 @@ export default [
 
 Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.
 
-The examples wrapper discovers TypeScript projects below `examples/`, applies the same shared policy, and appends the same repository-owned local entries. Repositories can lint their independently runnable examples explicitly:
+Each public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.
+
+An existing consumer-owned `eslint.examples.config.mjs` requires explicit adoption before synchronization can replace it. Status, dry-run, and sync report an actionable error instead of overwriting or deleting it. Move its repository-specific overrides into `eslint.local.config.mjs`, preserving existing entries and the examples-only file scope; retain custom parser options there when needed. Remove the old examples config only after that transfer, then rerun sync and the examples lint. The generated wrapper carries a Devtools ownership marker and subsequent synchronization updates it normally. Do not mark an old consumer config as managed to bypass this transfer.
+
+Repositories can lint their independently runnable examples explicitly:
 
 ```bash
 ankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0

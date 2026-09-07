@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
 import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
@@ -319,14 +320,10 @@ function readNestedValue(value: unknown, property: string, nestedProperty: strin
   if (!isRecord(value)) {
     return undefined;
   }
-  const nested = value[property];
-  return isRecord(nested) ? nested[nestedProperty] : undefined;
+  const nested = readOwnProperty(value, property);
+  return isRecord(nested) ? readOwnProperty(nested, nestedProperty) : undefined;
 }
 
 function readProperty(value: unknown, property: string): unknown {
-  return isRecord(value) ? value[property] : undefined;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return isRecord(value) ? readOwnProperty(value, property) : undefined;
 }

@@ -3,7 +3,6 @@ import { dirname, resolve } from 'node:path';
 
 type ManagedFileMode = 'create-only' | 'replace';
 type ManagedFileRenderer = (targetDirectory: string) => Promise<string> | string;
-type ManagedFileApplicability = (targetDirectory: string) => Promise<boolean> | boolean;
 
 export interface ManagedFileDefinition {
   readonly relativePath: string;
@@ -11,7 +10,7 @@ export interface ManagedFileDefinition {
   readonly contents?: string;
   readonly render?: ManagedFileRenderer;
   readonly mode?: ManagedFileMode;
-  readonly isApplicable?: ManagedFileApplicability;
+  readonly isApplicable?: (targetDirectory: string) => Promise<boolean> | boolean;
 }
 
 type ManagedFileState = 'current' | 'missing' | 'obsolete' | 'outdated';

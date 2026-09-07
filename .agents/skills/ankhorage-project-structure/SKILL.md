@@ -37,6 +37,9 @@ Cannot continue: the required repository skill `hexagonal-architecture` is missi
 Use it for complete, intentional, user-facing examples that people can inspect, copy, install, and
 run independently of a monorepo or internal fixture layout.
 
+Each example lives in a named subdirectory, such as `examples/basic-usage/*.ts`. Do not put example
+source files directly under `examples/`.
+
 Test-only fixtures remain owned by the applicable test structure. Do not relabel fixtures as public
 examples merely to bypass repository structure rules.
 
