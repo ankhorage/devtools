@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.9
+
+### Patch Changes
+
+- 052a1c0: Authorize Renovate synchronization by the pull request author so trusted bot branches keep working when a maintainer refreshes them.
+
 ## 1.11.8
 
 ### Patch Changes
