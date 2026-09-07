@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.7
+
+### Patch Changes
+
+- a08676e: Skip direct release versioning when a repository has no unreleased changeset files.
+
 ## 1.11.6
 
 ### Patch Changes
