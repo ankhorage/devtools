@@ -3,8 +3,10 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it } from 'bun:test';
 
+import { readCurrentDevtoolsVersion } from '../package/index.js';
 import { inspectManagedSkills, syncManagedSkills } from './managed.js';
 
+const devtoolsVersion = readCurrentDevtoolsVersion();
 const temporaryDirectories: string[] = [];
 
 afterEach(async () => {
@@ -32,7 +34,7 @@ describe('managed repository skill synchronization', () => {
     await writeFile(join(projectStructureSkill, 'stale.txt'), 'remove me too\n');
     await writeFile(join(customSkill, 'SKILL.md'), 'keep me\n');
 
-    const results = await syncManagedSkills(target, '1.9.0', { dryRun: false });
+    const results = await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
     expect(results).toContainEqual({
       relativePath: '.agents/skills/ankhorage-coding-rules/stale.txt',
       action: 'removed',
@@ -71,7 +73,7 @@ describe('managed repository skill ownership', () => {
     const targetRoot = join(target, '.agents/skills/ankhorage-project-structure');
     const files = await collectRelativeFiles(canonicalRoot);
 
-    await syncManagedSkills(target, '1.9.0', { dryRun: false });
+    await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
 
     expect(await collectRelativeFiles(targetRoot)).toEqual(files);
     for (const file of files) {
@@ -83,11 +85,11 @@ describe('managed repository skill ownership', () => {
 
   it('records hashes, supports dry-run, and becomes idempotent', async () => {
     const target = await createTarget();
-    const dryRunResults = await syncManagedSkills(target, '1.9.0', { dryRun: true });
+    const dryRunResults = await syncManagedSkills(target, devtoolsVersion, { dryRun: true });
     expect(dryRunResults.every((result) => result.action === 'would-create')).toBe(true);
     expect(await Bun.file(join(target, '.agents')).exists()).toBe(false);
 
-    await syncManagedSkills(target, '1.9.0', { dryRun: false });
+    await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
     const manifest = JSON.parse(
       await readFile(join(target, '.agents/.devtools-manifest.json'), 'utf8'),
     ) as {
@@ -96,7 +98,7 @@ describe('managed repository skill ownership', () => {
       skills: Record<string, { files: Record<string, string> }>;
     };
     expect(manifest.schemaVersion).toBe(1);
-    expect(manifest.sourceDevtoolsVersion).toBe('1.9.0');
+    expect(manifest.sourceDevtoolsVersion).toBe(devtoolsVersion);
     expect(Object.keys(manifest.skills)).toEqual([
       'ankhorage-coding-rules',
       'hexagonal-architecture',
@@ -108,10 +110,12 @@ describe('managed repository skill ownership', () => {
       );
     }
     expect(
-      (await inspectManagedSkills(target, '1.9.0')).every((status) => status.state === 'current'),
+      (await inspectManagedSkills(target, devtoolsVersion)).every(
+        (status) => status.state === 'current',
+      ),
     ).toBe(true);
     expect(
-      (await syncManagedSkills(target, '1.9.0', { dryRun: false })).every(
+      (await syncManagedSkills(target, devtoolsVersion, { dryRun: false })).every(
         (result) => result.action === 'unchanged',
       ),
     ).toBe(true);
@@ -126,7 +130,7 @@ describe('managed profile-specific skill ownership', () => {
       `${JSON.stringify({ name: '@ankhorage/zora' }, null, 2)}\n`,
     );
 
-    await syncManagedSkills(target, '1.10.0', { dryRun: false });
+    await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
     const skillRoot = join(target, '.agents/skills/zora-designer');
     const artifactReference = join(skillRoot, 'references/artifact.md');
     expect(await Bun.file(join(skillRoot, 'SKILL.md')).exists()).toBe(true);
@@ -155,7 +159,7 @@ describe('managed profile-specific skill ownership', () => {
       join(target, 'package.json'),
       `${JSON.stringify({ name: '@ankhorage/contracts' }, null, 2)}\n`,
     );
-    const results = await syncManagedSkills(target, '1.10.0', { dryRun: false });
+    const results = await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
     expect(results).toContainEqual({
       relativePath: '.agents/skills/zora-designer/SKILL.md',
       action: 'removed',
@@ -172,7 +176,7 @@ describe('managed repository skill safety', () => {
       join(unsafeTarget, '.agents/.devtools-manifest.json'),
       JSON.stringify({
         schemaVersion: 1,
-        sourceDevtoolsVersion: '1.8.2',
+        sourceDevtoolsVersion: devtoolsVersion,
         skills: { removed: { files: { '../outside': `sha256:${'0'.repeat(64)}` } } },
       }),
     );
@@ -191,7 +195,7 @@ describe('managed repository skill safety', () => {
 
 async function expectFailure(target: string, message: string): Promise<void> {
   try {
-    await inspectManagedSkills(target, '1.9.0');
+    await inspectManagedSkills(target, devtoolsVersion);
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
     expect((error as Error).message).toContain(message);
