@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.11
+
+### Patch Changes
+
+- 4f8c69e: Clarify project-structure rules for private function-local types, cohesive repository type groups, cross-repository Contracts, and general Utility ownership. Limit the one-export-per-file rule to runtime implementations so type declarations are not mechanically split into sibling files.
+
 ## 1.11.10
 
 ### Patch Changes
