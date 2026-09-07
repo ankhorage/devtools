@@ -1,4 +1,4 @@
-import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
 type ManagedFileMode = 'create-only' | 'replace';
@@ -10,6 +10,7 @@ export interface ManagedFileDefinition {
   readonly contents?: string;
   readonly render?: ManagedFileRenderer;
   readonly mode?: ManagedFileMode;
+  readonly isApplicable?: (targetDirectory: string) => Promise<boolean> | boolean;
 }
 
 type ManagedFileState = 'current' | 'missing' | 'obsolete' | 'outdated';
@@ -56,12 +57,16 @@ export async function inspectManagedFiles(
   targetDirectory: string,
   definitions: readonly ManagedFileDefinition[],
 ): Promise<readonly ManagedFileStatus[]> {
-  return await Promise.all(
-    definitions.map(async (definition): Promise<ManagedFileStatus> => {
+  const statuses = await Promise.all(
+    definitions.map(async (definition): Promise<ManagedFileStatus | undefined> => {
       const targetPath = resolve(targetDirectory, definition.relativePath);
+      const isApplicable = await (definition.isApplicable?.(targetDirectory) ?? true);
 
       try {
         const targetContents = await readFile(targetPath, 'utf8');
+        if (!isApplicable) {
+          return { relativePath: definition.relativePath, state: 'obsolete' };
+        }
         if ((definition.mode ?? 'replace') === 'create-only') {
           return { relativePath: definition.relativePath, state: 'current' };
         }
@@ -73,12 +78,15 @@ export async function inspectManagedFiles(
         };
       } catch (error) {
         if (isMissingFileError(error)) {
-          return { relativePath: definition.relativePath, state: 'missing' };
+          return isApplicable
+            ? { relativePath: definition.relativePath, state: 'missing' }
+            : undefined;
         }
         throw new Error(`Failed to inspect managed file: ${targetPath}`, { cause: error });
       }
     }),
   );
+  return statuses.filter((status): status is ManagedFileStatus => status !== undefined);
 }
 
 export async function syncManagedFiles(
@@ -113,6 +121,16 @@ async function syncManagedFile(
   const definition = definitionsByPath.get(status.relativePath);
   if (definition === undefined) {
     throw new Error(`Missing managed file definition for ${status.relativePath}.`);
+  }
+
+  if (status.state === 'obsolete') {
+    if (!options.dryRun) {
+      await rm(resolve(targetDirectory, definition.relativePath));
+    }
+    return {
+      relativePath: status.relativePath,
+      action: options.dryRun ? 'would-remove' : 'removed',
+    };
   }
 
   if (options.dryRun) {

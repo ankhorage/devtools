@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
 import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
@@ -85,6 +86,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(context.dependencySyncs).toBe(1);
   expect(context.dependencySyncObservedManagedFiles).toBe(true);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
+  expect(await Bun.file(join(target, 'eslint.examples.config.mjs')).exists()).toBe(false);
   expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('localConfig.overrides');
   expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
     'export default {};\n',
@@ -318,14 +320,10 @@ function readNestedValue(value: unknown, property: string, nestedProperty: strin
   if (!isRecord(value)) {
     return undefined;
   }
-  const nested = value[property];
-  return isRecord(nested) ? nested[nestedProperty] : undefined;
+  const nested = readOwnProperty(value, property);
+  return isRecord(nested) ? readOwnProperty(nested, nestedProperty) : undefined;
 }
 
 function readProperty(value: unknown, property: string): unknown {
-  return isRecord(value) ? value[property] : undefined;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return isRecord(value) ? readOwnProperty(value, property) : undefined;
 }
