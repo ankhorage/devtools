@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.1
+
+### Patch Changes
+
+- 9803bf3: Require pre-PR validation and define canonical constants ownership.
+
 ## 1.12.0
 
 ### Minor Changes
