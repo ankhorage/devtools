@@ -188,7 +188,7 @@ The canonical workflow, VS Code, and skill files are packaged with `@ankhorage/d
 
 ## Managed agent instructions
 
-`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy and directs structural work to the managed project-structure skill.
+`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.
 
 Only the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.
 
