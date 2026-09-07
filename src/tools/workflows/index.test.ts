@@ -117,7 +117,7 @@ describe('managed Renovate workflow', () => {
     expect(rendered).toContain('cancel-in-progress: true');
     const template = await readFile(new URL('./files/renovate.yml', import.meta.url), 'utf8');
     expect(template).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@858eb04e4c97798bf3be40fe7b4909d837294a01',
+      'ankhorage/renovate/.github/workflows/changeset.yml@db48610ed5bc6a1191798b123ce86419571d7bc6',
     );
     expect(rendered).toContain('contents: read');
     expect(rendered).toContain('checks: read');
