@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.8
+
+### Patch Changes
+
+- 40907c9: Publish the Hexagonal Architecture skill and standardize the project-structure and generated agent instructions.
+
 ## 1.11.7
 
 ### Patch Changes
