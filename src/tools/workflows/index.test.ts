@@ -71,6 +71,15 @@ describe('managed workflows', () => {
   });
 });
 
+test('managed release skips direct versioning without unreleased changesets', async () => {
+  const release = await workflowManagedFiles[1].render?.('.');
+
+  expect(release).toContain(
+    `find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit`,
+  );
+  expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
+});
+
 describe('managed CI Changesets contract', () => {
   test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
     const ci = await workflowManagedFiles[0].render?.('.');
