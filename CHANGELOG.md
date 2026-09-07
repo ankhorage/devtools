@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.10
+
+### Patch Changes
+
+- 86ab5e8: Distribute the Renovate workflow merge-permission fix to managed repositories.
+
 ## 1.11.9
 
 ### Patch Changes
