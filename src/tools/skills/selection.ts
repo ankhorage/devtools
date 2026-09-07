@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 
 export const BASELINE_SKILL_NAMES = [
   'ankhorage-coding-rules',
+  'hexagonal-architecture',
   'ankhorage-project-structure',
 ] as const;
 

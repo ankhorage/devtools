@@ -30,6 +30,7 @@ test('does not select zora-designer for unrelated packages or a lone component d
   ).toBe(false);
   expect([...BASELINE_SKILL_NAMES, ...PROFILE_SKILL_NAMES]).toEqual([
     'ankhorage-coding-rules',
+    'hexagonal-architecture',
     'ankhorage-project-structure',
     'zora-designer',
   ]);

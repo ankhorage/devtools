@@ -119,6 +119,14 @@ describe('package release contract', () => {
       existsSync(new URL('./tools/skills/assets/ankhorage-coding-rules/SKILL.md', import.meta.url)),
     ).toBe(true);
     expect(
+      existsSync(new URL('./tools/skills/assets/hexagonal-architecture/SKILL.md', import.meta.url)),
+    ).toBe(true);
+    expect(
+      existsSync(
+        new URL('./tools/skills/assets/hexagonal-architecture/agents/openai.yaml', import.meta.url),
+      ),
+    ).toBe(true);
+    expect(
       existsSync(
         new URL('./tools/skills/assets/ankhorage-coding-rules/agents/openai.yaml', import.meta.url),
       ),
@@ -144,16 +152,30 @@ describe('managed skill package contract', () => {
     }
   });
 
-  it('keeps the canonical project-structure skill self-contained', () => {
-    expectProjectStructureSkillOmitsObsoleteDependency(
+  it('keeps the canonical project-structure skill self-contained and enforceable', () => {
+    expectProjectStructureSkillContents(
       new URL('./tools/skills/assets/ankhorage-project-structure/', import.meta.url),
     );
   });
 
-  it('keeps the synchronized project-structure skill free of obsolete dependencies', () => {
-    expectProjectStructureSkillOmitsObsoleteDependency(
+  it('keeps the synchronized project-structure skill self-contained and enforceable', () => {
+    expectProjectStructureSkillContents(
       new URL('../.agents/skills/ankhorage-project-structure/', import.meta.url),
     );
+  });
+
+  it('keeps bundled baseline skills byte-identical to their synchronized copies', () => {
+    for (const skillName of [
+      'ankhorage-coding-rules',
+      'hexagonal-architecture',
+      'ankhorage-project-structure',
+    ]) {
+      for (const path of ['SKILL.md', 'agents/openai.yaml']) {
+        const source = new URL(`./tools/skills/assets/${skillName}/${path}`, import.meta.url);
+        const synchronized = new URL(`../.agents/skills/${skillName}/${path}`, import.meta.url);
+        expect(readFileSync(synchronized, 'utf8')).toBe(readFileSync(source, 'utf8'));
+      }
+    }
   });
 
   it('documents only the canonical devtools command surface', () => {
@@ -169,6 +191,7 @@ describe('managed skill package contract', () => {
     expect(readme).toContain('ankh devtools agents sync');
     expect(readme).toContain('ankh devtools skills sync');
     expect(readme).toContain('ankhorage-coding-rules');
+    expect(readme).toContain('hexagonal-architecture');
     expect(readme).not.toContain('ankh dev ');
     expect(readme).not.toContain('`@ankhorage/dev`');
   });
@@ -186,19 +209,21 @@ function expectZoraDesignerAssetsToExist(): void {
   }
 }
 
-function expectProjectStructureSkillOmitsObsoleteDependency(skillRoot: URL): void {
-  const files = [
-    'SKILL.md',
-    'references/cli.md',
-    'references/migration.md',
-    'references/skill-distribution.md',
-    'references/studio.md',
-    'references/utilities.md',
-  ];
-
-  for (const file of files) {
-    expect(readFileSync(new URL(file, skillRoot), 'utf8')).not.toContain(obsoleteSkillName);
-  }
+function expectProjectStructureSkillContents(skillRoot: URL): void {
+  const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
+  expect(contents).toContain('../hexagonal-architecture/SKILL.md');
+  expect(contents).toContain('src/features/');
+  expect(contents).toContain('src/cli/');
+  expect(contents).toContain('otherFolder');
+  expect(contents).toContain('exactly one export');
+  expect(contents).toContain('`utils/` is the only utility directory name');
+  expect(contents).toContain(
+    'Cannot continue: the required repository skill `ankhorage-coding-rules`',
+  );
+  expect(contents).toContain(
+    'Cannot continue: the required repository skill `hexagonal-architecture`',
+  );
+  expect(contents).not.toContain(obsoleteSkillName);
 }
 
 /*** Discover script assets from the managed tree without freezing their names or count. */

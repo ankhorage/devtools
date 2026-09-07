@@ -194,9 +194,11 @@ Only the current Ankhorage architecture is supported. Managed instructions rejec
 
 ## Managed repository skills
 
-`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/` and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory.
+`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.
 
 `.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.
+
+Agent Skill scripts are always TypeScript files with a `.ts` extension and run with Bun. JavaScript skill scripts using `.js`, `.mjs`, or `.cjs` are not supported.
 
 ## ESLint profiles
 
