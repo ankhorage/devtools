@@ -65,6 +65,22 @@ describe('managed repository skill synchronization', () => {
 });
 
 describe('managed repository skill ownership', () => {
+  it('distributes every canonical structure-skill file byte-for-byte', async () => {
+    const target = await createTarget();
+    const canonicalRoot = join(import.meta.dir, 'assets/ankhorage-project-structure');
+    const targetRoot = join(target, '.agents/skills/ankhorage-project-structure');
+    const files = await collectRelativeFiles(canonicalRoot);
+
+    await syncManagedSkills(target, '1.9.0', { dryRun: false });
+
+    expect(await collectRelativeFiles(targetRoot)).toEqual(files);
+    for (const file of files) {
+      expect(await readFile(join(targetRoot, file), 'utf8')).toBe(
+        await readFile(join(canonicalRoot, file), 'utf8'),
+      );
+    }
+  });
+
   it('records hashes, supports dry-run, and becomes idempotent', async () => {
     const target = await createTarget();
     const dryRunResults = await syncManagedSkills(target, '1.9.0', { dryRun: true });
