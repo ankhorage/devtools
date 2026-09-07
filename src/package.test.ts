@@ -212,6 +212,8 @@ function expectZoraDesignerAssetsToExist(): void {
 function expectProjectStructureSkillContents(skillRoot: URL): void {
   const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
   expect(contents).toContain('../hexagonal-architecture/SKILL.md');
+  expect(contents).toContain('`examples/` is a generally valid repository-root folder');
+  expect(contents).toContain('Test-only fixtures remain owned by the applicable test structure');
   expect(contents).toContain('src/features/');
   expect(contents).toContain('src/cli/');
   expect(contents).toContain('otherFolder');

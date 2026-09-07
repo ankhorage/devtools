@@ -106,6 +106,30 @@ test('rendered managed files can derive canonical content from the target reposi
   );
 });
 
+test('conditionally managed files exist only while their repository trait applies', async () => {
+  const fixture = await createFixture();
+  let isApplicable = true;
+  const definitions: readonly ManagedFileDefinition[] = fixture.definitions.map((definition) => ({
+    ...definition,
+    isApplicable: () => isApplicable,
+  }));
+
+  await syncManagedFiles(fixture.target, definitions, { dryRun: false });
+  isApplicable = false;
+
+  expect(await inspectManagedFiles(fixture.target, definitions)).toEqual([
+    { relativePath: '.managed/example.txt', state: 'obsolete' },
+  ]);
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: true })).toEqual([
+    { relativePath: '.managed/example.txt', action: 'would-remove' },
+  ]);
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: false })).toEqual([
+    { relativePath: '.managed/example.txt', action: 'removed' },
+  ]);
+  expect(await Bun.file(join(fixture.target, '.managed/example.txt')).exists()).toBe(false);
+  expect(await inspectManagedFiles(fixture.target, definitions)).toEqual([]);
+});
+
 async function createFixture(): Promise<{
   readonly target: string;
   readonly definitions: readonly ManagedFileDefinition[];

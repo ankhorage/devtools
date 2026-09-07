@@ -245,7 +245,7 @@ The React profile adds React and React Hooks correctness rules. The React Native
 
 ### Managed ESLint setup and local overrides
 
-`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once.
+`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.
 
 The canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:
 
@@ -266,6 +266,12 @@ export default [
 ```
 
 Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.
+
+The examples wrapper discovers TypeScript projects below `examples/`, applies the same shared policy, and appends the same repository-owned local entries. Repositories can lint their independently runnable examples explicitly:
+
+```bash
+ankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0
+```
 
 ## Prettier
 

@@ -31,6 +31,15 @@ If `hexagonal-architecture` is missing or unreadable, stop immediately and repor
 Cannot continue: the required repository skill `hexagonal-architecture` is missing or unreadable at `.agents/skills/hexagonal-architecture/SKILL.md`. Synchronize the repository skills from `@ankhorage/devtools` and retry.
 ```
 
+## Repository-root examples
+
+`examples/` is a generally valid repository-root folder in every repository covered by this skill.
+Use it for complete, intentional, user-facing examples that people can inspect, copy, install, and
+run independently of a monorepo or internal fixture layout.
+
+Test-only fixtures remain owned by the applicable test structure. Do not relabel fixtures as public
+examples merely to bypass repository structure rules.
+
 ## Required source layout
 
 Every repository provides `src/features/`. It lists the repository's actual product capabilities;

@@ -85,6 +85,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(context.dependencySyncs).toBe(1);
   expect(context.dependencySyncObservedManagedFiles).toBe(true);
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
+  expect(await Bun.file(join(target, 'eslint.examples.config.mjs')).exists()).toBe(false);
   expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('localConfig.overrides');
   expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
     'export default {};\n',
