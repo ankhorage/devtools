@@ -44,6 +44,11 @@ output.
 ```text
 src/
   cli/
+    createCliProvider.ts
+    commands/
+      <command>.ts
+      <group>/
+        <command>.ts
   features/
     <feature>/
       domain/
@@ -62,6 +67,18 @@ src/
 
 Keep only deliberate package facades directly under `src/`. Public package subpaths must name their
 explicit module in `package.json`; generic `index.ts` barrels are not public API exceptions.
+
+The filesystem below `src/cli/commands/` mirrors the public command path after the package prefix:
+
+```text
+ankh <package> <segment> ... <command>
+  -> src/cli/commands/<segment>/.../<command>.ts
+```
+
+The package prefix is represented by the provider and is not repeated under `commands/`. Flags and
+positional arguments do not affect this directory tree. Each command file follows the one-export
+rule: `commands/projects/list.ts` exports `list` and owns only the command-specific input/output
+mapping.
 
 ## Feature taxonomy
 
@@ -99,49 +116,6 @@ location.
 `utils/` is the only utility directory name. Do not create `shared/`, `helper/`, `helpers/`,
 `common/`, or equivalent catch-all folders. Feature-local utilities live in that feature's `utils/`;
 utilities shared by repository features live in `src/utils/`.
-
-## Navigator example
-
-When `ankhorage/navigator` is complete, its actual navigation capabilities are features. The feature
-siblings are `slot`, `stack`, `tabs`, `drawer`, `split-view`, and `custom`; they are not grouped under
-a generic `navigators/` folder or mixed with technical folders.
-
-```text
-src/
-  cli/
-  features/
-    slot/
-      domain/
-      application/
-      adapters/
-      composition/
-    stack/
-      domain/
-      application/
-      adapters/
-      composition/
-    tabs/
-      domain/
-      application/
-      adapters/
-      composition/
-    drawer/
-      domain/
-      application/
-      adapters/
-      composition/
-    split-view/
-      domain/
-      application/
-      adapters/
-      composition/
-    custom/
-      domain/
-      application/
-      adapters/
-      composition/
-  utils/
-```
 
 This skill defines the target architecture. Schedule repository migrations separately and in this
 order: Studio, Deploy, Infra, Repository, Navigator.

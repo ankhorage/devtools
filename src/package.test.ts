@@ -164,6 +164,20 @@ describe('managed skill package contract', () => {
     );
   });
 
+  it('keeps bundled baseline skills byte-identical to their synchronized copies', () => {
+    for (const skillName of [
+      'ankhorage-coding-rules',
+      'hexagonal-architecture',
+      'ankhorage-project-structure',
+    ]) {
+      for (const path of ['SKILL.md', 'agents/openai.yaml']) {
+        const source = new URL(`./tools/skills/assets/${skillName}/${path}`, import.meta.url);
+        const synchronized = new URL(`../.agents/skills/${skillName}/${path}`, import.meta.url);
+        expect(readFileSync(synchronized, 'utf8')).toBe(readFileSync(source, 'utf8'));
+      }
+    }
+  });
+
   it('documents only the canonical devtools command surface', () => {
     const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
     for (const capability of capabilities) {
