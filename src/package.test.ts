@@ -216,6 +216,9 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).toContain('src/cli/');
   expect(contents).toContain('otherFolder');
   expect(contents).toContain('exactly one export');
+  expect(contents).toContain('## Constant ownership');
+  expect(contents).toContain('group related package metadata');
+  expect(contents).toContain('ankhorage/navigator/src/constants.ts');
   expect(contents).toContain('`utils/` is the only utility directory name');
   expect(contents).toContain(
     'Cannot continue: the required repository skill `ankhorage-coding-rules`',

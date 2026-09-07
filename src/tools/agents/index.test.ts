@@ -30,6 +30,18 @@ describe('managed AGENTS.md', () => {
     expect(contents).toContain('Only the current Ankhorage architecture is valid.');
     expect(contents).toContain('Do not add or retain deprecated APIs');
     expect(contents).toContain('.agents/skills/ankhorage-project-structure/SKILL.md');
+    expect(contents).toContain(
+      `Before creating a pull request, run all of these commands in this order and resolve every failure:
+
+\`\`\`sh
+bun run build
+bun run check-types
+bun run lint
+bun run knip:test
+bun run changeset
+bun run format
+\`\`\``,
+    );
     expect(contents).toContain('Scripts inside an Agent Skill must always be TypeScript files');
     expect(contents).toContain('`.js`, `.mjs`, or `.cjs` are not allowed');
     expect(contents).not.toContain('AGENTS.override.md');
