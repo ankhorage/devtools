@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.14.2
+
+### Patch Changes
+
+- a161a63: Stop adding the managed skill executable glob to shared Knip configurations by default.
+- a161a63: Require `@ankhorage/utility` 0.5.1 so the managed ZORA screen analyzer resolves the improved
+  owner-neutral image-recognition matching behavior through Devtools' installed dependency boundary.
+
 ## 1.14.1
 
 ### Patch Changes
