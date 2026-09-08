@@ -10,6 +10,14 @@ import {
   ICON_SVG,
   IMAGE_PNG,
 } from './assetTestFixture.js';
+import {
+  COLOR_THEORY_FIXTURE_SOURCE,
+  CONTRACTS_FIXTURE_SOURCE,
+  createThemeConfig,
+  TEMPLATES_FIXTURE_SOURCE,
+  ZORA_METADATA_FIXTURE_SOURCE,
+  ZORA_THEME_FIXTURE_SOURCE,
+} from './zoraDesignerOwnerFixtures.js';
 
 const OWNER_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/owner-api.ts');
 const AUDIT_SCRIPT = resolve('src/tools/skills/assets/zora-designer/scripts/audit.ts');
@@ -101,6 +109,35 @@ describe('zora-designer owner API orchestration', () => {
 });
 
 describe('zora-designer owner repository discovery', () => {
+  it('composes installed ZORA plugin metadata into component discovery', async () => {
+    const target = await createOwnerFixture();
+    await writeJson(join(target, 'package.json'), {
+      name: 'fixture',
+      type: 'module',
+      dependencies: { '@ankhorage/zora-tabletop': '^0.1.0' },
+    });
+    await writeFixturePackage(target, '@ankhorage/zora-tabletop', '0.1.0', {
+      './metadata': './metadata.js',
+      './package.json': './package.json',
+    });
+    await writeFile(
+      join(target, 'node_modules/@ankhorage/zora-tabletop/metadata.js'),
+      `export const ZORA_PLUGIN_METADATA = {
+  packageName: '@ankhorage/zora-tabletop',
+  componentMeta: {
+    TabletopTable: { name: 'TabletopTable', directManifestNode: true, allowedChildren: [], props: {} },
+  },
+  placements: [{ child: 'TabletopTable', parents: ['View'] }],
+};\n`,
+    );
+
+    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+    expect(result.exitCode).toBe(0);
+    expect((JSON.parse(result.stdout) as { components: string[] }).components).toContain(
+      'TabletopTable',
+    );
+  });
+
   it('reports interaction choices from their released owners', async () => {
     const target = await createOwnerFixture();
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
@@ -406,127 +443,3 @@ function assessedCriterion(status: string, evidenceIds: string[]): Record<string
 }
 
 /*** Create the compact theme configuration returned by the owner fixture. */
-function createThemeConfig(): Record<string, unknown> {
-  return {
-    id: 'evidence-theme',
-    name: 'Evidence Theme',
-    light: { primaryColor: '#2563EB', harmony: 'complementary' },
-    dark: { primaryColor: '#2563EB', harmony: 'complementary' },
-  };
-}
-
-const TEMPLATES_FIXTURE_SOURCE = `
-export const CATEGORY_PRESETS = {
-  business_productivity: {
-    category: 'business_productivity',
-    label: 'Business',
-    recommendedPrimaryColors: ['#2563EB'],
-    recommendedHarmonies: ['complementary'],
-    tonePairs: { light: 'jewel-on-neutral-light', dark: 'pastel-on-neutral-dark' },
-    density: 'compact',
-  },
-};
-export const TONE_PAIR_CATALOG = [];
-export const resolveTonePair = () => null;
-export const resolveCategoryDesignPreset = (category, theme = {}) => ({ category, theme });
-const themeConfig = ${JSON.stringify(createThemeConfig())};
-export const compileCategoryDesign = (category) => ({
-  category,
-  themeConfig,
-  diagnostics: [],
-  computedTheme: {
-    themeConfig,
-    light: { surfaceTheme: { mode: 'light' }, diagnostics: [] },
-    dark: { surfaceTheme: { mode: 'dark' }, diagnostics: [] },
-    diagnostics: [],
-  },
-});
-export const composeCategoryAppManifest = (input) => ({
-  manifest: {
-    metadata: {
-      name: input.name ?? 'Generated App',
-      slug: input.slug ?? 'generated-app',
-      version: input.version ?? '1.0.0',
-      category: input.category,
-      themeId: 'evidence-theme',
-    },
-    themes: [themeConfig],
-    activeThemeId: 'evidence-theme',
-    infra: { modules: input.modules ?? [] },
-    navigator: input.navigator,
-    screens: input.screens,
-    settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
-  },
-  diagnostics: [],
-  status: input.authoringState === 'release' ? 'ready' : 'blocked',
-  authoringState: input.authoringState,
-});
-export const validateTemplateManifest = (manifest) => ({
-  manifest,
-  diagnostics: [],
-  status: 'ready',
-  authoringState: 'release',
-});
-export const assertTemplateManifestReady = (composition) => composition.manifest;
-`;
-
-const COLOR_THEORY_FIXTURE_SOURCE = `
-export const COLOR_HARMONIES = ['monochromatic', 'complementary'];
-export const COLOR_HARMONY_CATALOG = [
-  { id: 'monochromatic', label: 'Monochromatic', description: 'One hue.' },
-  { id: 'complementary', label: 'Complementary', description: 'Opposing hues.' },
-];
-`;
-
-const CONTRACTS_FIXTURE_SOURCE = `
-export const APP_CATEGORIES = ['business_productivity'];
-export const NAVIGATOR_TYPES = ['stack', 'tabs', 'drawer'];
-`;
-
-const ZORA_THEME_FIXTURE_SOURCE = `
-export const compileZoraTheme = (themeConfig) => ({
-  themeConfig,
-  light: { surfaceTheme: { mode: 'light' }, diagnostics: [] },
-  dark: { surfaceTheme: { mode: 'dark' }, diagnostics: [] },
-  diagnostics: [],
-});
-`;
-
-const ZORA_METADATA_FIXTURE_SOURCE = `
-export const ZORA_COMPONENT_META = {
-  View: { name: 'View', directManifestNode: true, allowedChildren: ['Text', 'Box'], props: {} },
-  Box: { name: 'Box', directManifestNode: true, allowedChildren: [], props: {} },
-  Text: {
-    name: 'Text',
-    directManifestNode: true,
-    allowedChildren: [],
-    props: { text: { type: 'string' } },
-    events: {
-      press: {
-        eventType: 'text.press',
-        label: 'Press',
-        description: 'Text was pressed.',
-      },
-    },
-  },
-  MissingElement: {
-    name: 'MissingElement',
-    directManifestNode: true,
-    allowedChildren: [],
-    manifestPolicy: { kind: 'unresolved-element', availability: 'draft-only', releaseGate: 'blocked' },
-    blueprint: { defaultProps: { requestedCapability: 'Unresolved', reason: 'No exact element.' } },
-    props: {
-      requestedCapability: { type: 'string' },
-      reason: { type: 'string' },
-      evidenceId: { type: 'string' },
-    },
-  },
-};
-export const ZORA_THEME_RECIPE_META = {
-  Card: {
-    name: 'Card',
-    kind: 'component',
-    fields: { variant: { type: 'choice', options: ['filled', 'outlined'] } },
-  },
-};
-`;
