@@ -1,12 +1,12 @@
 import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
-import { afterEach, describe, expect, it } from 'bun:test';
+import { afterEach, expect, it } from 'bun:test';
 import sharp from 'sharp';
 
 import { readCurrentDevtoolsVersion } from '../package/index.js';
-import { syncManagedSkills } from './managed.js';
 import { inspectOwnerRequirements } from './assets/zora-designer/scripts/owner-api.ts';
+import { syncManagedSkills } from './managed.js';
 import {
   COLOR_THEORY_FIXTURE_SOURCE,
   CONTRACTS_FIXTURE_SOURCE,
@@ -28,146 +28,107 @@ afterEach(async () => {
   );
 });
 
-describe('zora-designer supplied screen recognition', () => {
-  it('derives a canonical ScreenSpec through the released local Utility image pipeline', async () => {
-    const target = await createOwnerFixture();
-    await linkDevtoolsSource(target);
-    const imagePath = await createScreenImage(target);
-    const inputPath = join(target, 'screen-analysis-input.json');
-    await writeJson(inputPath, {
-      image: imagePath,
-      screen: { id: 'home', name: 'Home', title: 'Home' },
-    });
-
-    const result = await runScript([inputPath], target);
-    expect(result).toMatchObject({ exitCode: 0, stderr: '' });
-    const output = JSON.parse(result.stdout) as {
-      componentNames: string[];
-      confidence: number;
-      diagnostics: { kind: string }[];
-      screen: { id: string; name: string; root: { type: string } };
-      unresolvedComponentName: string;
-    };
-    expect(output.screen).toMatchObject({ id: 'home', name: 'Home' });
-    expect(output.screen.root.type).toBe('Screen');
-    expect(output.componentNames).toContain('Screen');
-    expect(output.unresolvedComponentName).toBe('MissingElement');
-    expect(output.confidence).toBeGreaterThan(0);
-    expect(Array.isArray(output.diagnostics)).toBe(true);
+it('derives a canonical ScreenSpec through the released local Utility image pipeline', async () => {
+  const target = await createOwnerFixture();
+  await linkDevtoolsSource(target);
+  const inputPath = await writeScreenAnalysisInput(target, {
+    id: 'home',
+    name: 'Home',
+    title: 'Home',
   });
 
-  it('uses installed plugin metadata and keeps unavailable OCR supplementary', async () => {
-    const target = await createOwnerFixture();
-    await linkDevtoolsSource(target);
-    await writeJson(join(target, 'package.json'), {
-      name: 'fixture',
-      type: 'module',
-      dependencies: { '@ankhorage/zora-tabletop': '^0.1.0' },
-    });
-    await writeFixturePackage(target, '@ankhorage/zora-tabletop', '0.1.0', {
-      './metadata': './metadata.js',
-      './package.json': './package.json',
-    });
-    await writeFile(
-      join(target, 'node_modules/@ankhorage/zora-tabletop/metadata.js'),
-      `export const ZORA_PLUGIN_METADATA = {
-  packageName: '@ankhorage/zora-tabletop',
-  componentMeta: {
-    TabletopTable: {
-      name: 'TabletopTable',
-      category: 'component',
-      directManifestNode: true,
-      allowedChildren: [],
-      props: {},
-    },
-  },
-  placements: [{ child: 'TabletopTable', parents: ['Screen'] }],
-};\n`,
-    );
-    const imagePath = await createScreenImage(target);
-    const inputPath = join(target, 'screen-analysis-input.json');
-    await writeJson(inputPath, {
-      image: imagePath,
-      screen: { id: 'table', name: 'Table' },
-      ocr: { langPath: './missing-tessdata', language: 'eng' },
-    });
-
-    const result = await runScript([inputPath], target);
-    expect(result.exitCode).toBe(0);
-    const output = JSON.parse(result.stdout) as {
-      componentNames: string[];
-      diagnostics: { kind: string }[];
-      owners: { plugins: Record<string, string> };
-    };
-    expect(output.componentNames).toContain('TabletopTable');
-    expect(Object.keys(output.owners.plugins)).toContain('@ankhorage/zora-tabletop');
-    expect(output.diagnostics.some((diagnostic) => diagnostic.kind === 'ocr')).toBe(true);
-  });
-
-  it('fails clearly when the target does not have Devtools installed', async () => {
-    const target = await createOwnerFixture();
-    const imagePath = await createScreenImage(target);
-    const inputPath = join(target, 'screen-analysis-input.json');
-    await writeJson(inputPath, { image: imagePath, screen: { id: 'home', name: 'Home' } });
-
-    const result = await runScript([inputPath], target);
-    expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain('requires the target repository to have @ankhorage/devtools');
-  });
-
-  it('fails clearly when the installed Devtools dependency lacks Utility image engines', async () => {
-    const target = await createOwnerFixture();
-    await writeFixturePackage(target, '@ankhorage/devtools', '1.0.0', {
-      './package.json': './package.json',
-    });
-    await writeFixturePackage(target, '@ankhorage/utility', '0.5.0', {
-      './image': './image.js',
-      './package.json': './package.json',
-    });
-    await writeFile(
-      join(target, 'node_modules/@ankhorage/utility/image.js'),
-      'export const analyzeScreenImageAsync = async () => ({});\nexport const createTesseractScreenOcrAsync = async () => ({});\n',
-    );
-    const imagePath = await createScreenImage(target);
-    const inputPath = join(target, 'screen-analysis-input.json');
-    await writeJson(inputPath, { image: imagePath, screen: { id: 'home', name: 'Home' } });
-
-    const result = await runScript([inputPath], target);
-    expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain('bun add -D sharp @techstark/opencv-js');
-  });
-
-  it('fails clearly when installed Devtools does not provide Utility 0.5 image analysis', async () => {
-    const target = await createOwnerFixture();
-    await writeFixturePackage(target, '@ankhorage/devtools', '1.0.0', {
-      './package.json': './package.json',
-    });
-    const imagePath = await createScreenImage(target);
-    const inputPath = join(target, 'screen-analysis-input.json');
-    await writeJson(inputPath, { image: imagePath, screen: { id: 'home', name: 'Home' } });
-
-    const result = await runScript([inputPath], target);
-    expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain('requires @ankhorage/utility 0.5.x');
-  });
+  const result = await runScript([inputPath], target);
+  expect(result).toMatchObject({ exitCode: 0, stderr: '' });
+  const output = JSON.parse(result.stdout) as {
+    componentNames: string[];
+    confidence: number;
+    diagnostics: { kind: string }[];
+    screen: { id: string; name: string; root: { type: string } };
+    unresolvedComponentName: string;
+  };
+  expect(output.screen).toMatchObject({ id: 'home', name: 'Home' });
+  expect(output.screen.root.type).toBe('Screen');
+  expect(output.componentNames).toContain('Screen');
+  expect(output.unresolvedComponentName).toBe('MissingElement');
+  expect(output.confidence).toBeGreaterThan(0);
+  expect(Array.isArray(output.diagnostics)).toBe(true);
 });
 
-describe('zora-designer recognition asset distribution', () => {
-  it('synchronizes the analyzer and recognition reference through managed skill ownership', async () => {
-    const target = await createTarget('@ankhorage/templates');
-    await syncManagedSkills(target, readCurrentDevtoolsVersion(), { dryRun: false });
+it('uses installed plugin metadata and keeps unavailable OCR supplementary', async () => {
+  const target = await createOwnerFixture();
+  await linkDevtoolsSource(target);
+  await installTabletopPlugin(target);
+  const inputPath = await writeScreenAnalysisInput(
+    target,
+    { id: 'table', name: 'Table' },
+    { langPath: './missing-tessdata', language: 'eng' },
+  );
 
-    expect(
-      await Bun.file(
-        join(target, '.agents/skills/zora-designer/scripts/analyze-screen.ts'),
-      ).exists(),
-    ).toBe(true);
-    expect(
-      await Bun.file(
-        join(target, '.agents/skills/zora-designer/references/screen-analysis.md'),
-      ).exists(),
-    ).toBe(true);
+  const result = await runScript([inputPath], target);
+  expect(result.exitCode).toBe(0);
+  const output = JSON.parse(result.stdout) as {
+    componentNames: string[];
+    diagnostics: { kind: string }[];
+    owners: { plugins: Record<string, string> };
+  };
+  expect(output.componentNames).toContain('TabletopTable');
+  expect(Object.keys(output.owners.plugins)).toContain('@ankhorage/zora-tabletop');
+  expect(output.diagnostics.some((diagnostic) => diagnostic.kind === 'ocr')).toBe(true);
+});
+
+it('fails clearly when the target does not have Devtools installed', async () => {
+  const target = await createOwnerFixture();
+  const inputPath = await writeScreenAnalysisInput(target, { id: 'home', name: 'Home' });
+
+  const result = await runScript([inputPath], target);
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toContain('requires the target repository to have @ankhorage/devtools');
+});
+
+it('fails clearly when installed Devtools lacks Utility image engines', async () => {
+  const target = await createOwnerFixture();
+  await writeFixturePackage(target, '@ankhorage/devtools', '1.0.0', {
+    './package.json': './package.json',
   });
+  await writeFixturePackage(target, '@ankhorage/utility', '0.5.0', {
+    './image': './image.js',
+    './package.json': './package.json',
+  });
+  await writeFile(
+    join(target, 'node_modules/@ankhorage/utility/image.js'),
+    'export const analyzeScreenImageAsync = async () => ({});\nexport const createTesseractScreenOcrAsync = async () => ({});\n',
+  );
+  const inputPath = await writeScreenAnalysisInput(target, { id: 'home', name: 'Home' });
+
+  const result = await runScript([inputPath], target);
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toContain('bun add -D sharp @techstark/opencv-js');
+});
+
+it('fails clearly when installed Devtools does not provide Utility image analysis', async () => {
+  const target = await createOwnerFixture();
+  await writeFixturePackage(target, '@ankhorage/devtools', '1.0.0', {
+    './package.json': './package.json',
+  });
+  const inputPath = await writeScreenAnalysisInput(target, { id: 'home', name: 'Home' });
+
+  const result = await runScript([inputPath], target);
+  expect(result.exitCode).toBe(1);
+  expect(result.stderr).toContain('requires @ankhorage/utility 0.5.x');
+});
+
+it('synchronizes recognition assets through managed skill ownership', async () => {
+  const target = await createTarget('@ankhorage/templates');
+  await syncManagedSkills(target, readCurrentDevtoolsVersion(), { dryRun: false });
+
+  expect(
+    await Bun.file(join(target, '.agents/skills/zora-designer/scripts/analyze-screen.ts')).exists(),
+  ).toBe(true);
+  expect(
+    await Bun.file(
+      join(target, '.agents/skills/zora-designer/references/screen-analysis.md'),
+    ).exists(),
+  ).toBe(true);
 });
 
 /*** Create a temporary target with the released owner package surfaces used by zora-designer. */
@@ -205,6 +166,32 @@ async function createOwnerFixture(): Promise<string> {
   return target;
 }
 
+/*** Install one metadata-only ZORA plugin fixture and declare it on the target package. */
+async function installTabletopPlugin(target: string): Promise<void> {
+  await writeJson(join(target, 'package.json'), {
+    name: 'fixture',
+    type: 'module',
+    dependencies: { '@ankhorage/zora-tabletop': '^0.1.0' },
+  });
+  await writeFixturePackage(target, '@ankhorage/zora-tabletop', '0.1.0', {
+    './metadata': './metadata.js',
+    './package.json': './package.json',
+  });
+  await writeFile(
+    join(target, 'node_modules/@ankhorage/zora-tabletop/metadata.js'),
+    `export const ZORA_PLUGIN_METADATA = {
+  packageName: '@ankhorage/zora-tabletop',
+  componentMeta: {
+    TabletopTable: {
+      name: 'TabletopTable', category: 'component', directManifestNode: true,
+      allowedChildren: [], props: {},
+    },
+  },
+  placements: [{ child: 'TabletopTable', parents: ['Screen'] }],
+};\n`,
+  );
+}
+
 /*** Link the current Devtools package so the copied skill resolves its declared Utility dependency. */
 async function linkDevtoolsSource(target: string): Promise<void> {
   const scopeDirectory = join(target, 'node_modules/@ankhorage');
@@ -212,7 +199,23 @@ async function linkDevtoolsSource(target: string): Promise<void> {
   await symlink(DEVTOOLS_SOURCE_ROOT, join(scopeDirectory, 'devtools'), 'dir');
 }
 
-/*** Generate one nontrivial local PNG without relying on remote screenshot fixtures. */
+/*** Write one screen-analysis input with a locally generated nontrivial PNG. */
+async function writeScreenAnalysisInput(
+  target: string,
+  screen: { id: string; name: string; title?: string },
+  ocr?: { langPath: string; language?: string },
+): Promise<string> {
+  const imagePath = await createScreenImage(target);
+  const inputPath = join(target, 'screen-analysis-input.json');
+  await writeJson(inputPath, {
+    image: imagePath,
+    screen,
+    ...(ocr ? { ocr } : {}),
+  });
+  return inputPath;
+}
+
+/*** Generate one local PNG without relying on remote screenshot fixtures. */
 async function createScreenImage(target: string): Promise<string> {
   const imagePath = join(target, 'screen.png');
   await sharp({
@@ -252,9 +255,7 @@ async function writeFixturePackage(
     type: 'module',
     exports,
   });
-  if (indexSource !== '') {
-    await writeFile(join(packageDirectory, 'index.js'), indexSource);
-  }
+  if (indexSource !== '') await writeFile(join(packageDirectory, 'index.js'), indexSource);
 }
 
 /*** Run the distributed analyzer exactly as a consumer repository invokes it. */
