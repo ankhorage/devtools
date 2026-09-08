@@ -189,7 +189,10 @@ function readComponentCatalog(value: unknown): Record<string, unknown>[] {
       if (typeof component.directManifestNode !== 'boolean') {
         throw new Error(`ZORA component metadata[${index}].directManifestNode must be a boolean.`);
       }
-      assertStringArray(component.allowedChildren, `ZORA component metadata[${index}].allowedChildren`);
+      assertStringArray(
+        component.allowedChildren,
+        `ZORA component metadata[${index}].allowedChildren`,
+      );
       assertRecord(component.props, `ZORA component metadata[${index}].props`);
       return component;
     });
@@ -224,9 +227,7 @@ function readAnalyzeScreenInput(value: unknown): AnalyzeScreenInput {
       id: value.screen.id,
       name: value.screen.name,
       ...(value.screen.title === undefined ? {} : { title: value.screen.title }),
-      ...(value.screen.description === undefined
-        ? {}
-        : { description: value.screen.description }),
+      ...(value.screen.description === undefined ? {} : { description: value.screen.description }),
     },
     ...(minConfidence === undefined ? {} : { minConfidence }),
     ...(ocr === undefined ? {} : { ocr }),
@@ -280,10 +281,7 @@ function assertStringArray(value: unknown, label: string): asserts value is stri
 }
 
 /*** Require an optional non-empty string when present. */
-function assertOptionalString(
-  value: unknown,
-  label: string,
-): asserts value is string | undefined {
+function assertOptionalString(value: unknown, label: string): asserts value is string | undefined {
   if (value !== undefined) assertNonEmptyString(value, label);
 }
 
