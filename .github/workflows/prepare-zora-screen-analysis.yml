@@ -28,8 +28,13 @@ jobs:
       - name: Bootstrap build
         run: bun run build
 
-      - name: Apply canonical lint fixes
-        run: bun run lint:fix
+      - name: Apply focused lint fixes
+        run: >-
+          bunx eslint
+          src/tools/skills/assets/zora-designer/scripts/analyze-screen.ts
+          src/tools/skills/zoraDesignerScreenAnalysis.test.ts
+          src/tools/skills/zoraDesignerOwnerFixtures.ts
+          --fix
 
       - name: Format sources
         run: bun run format
