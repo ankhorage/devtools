@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.13.0
+
+### Minor Changes
+
+- 7e12f7b: Teach the managed ZORA Designer skill to compose metadata descriptors from installed ZORA plugins.
+
 ## 1.12.1
 
 ### Patch Changes
