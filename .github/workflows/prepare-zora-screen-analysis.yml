@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies and refresh lockfile
         run: bun install
 
+      - name: Bootstrap build
+        run: bun run build
+
       - name: Apply canonical lint fixes
         run: bun run lint:fix
 
