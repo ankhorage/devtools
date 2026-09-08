@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
-import { createRequire } from 'node:module';
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -99,7 +99,7 @@ async function loadScreenAnalysisRuntime(targetDirectory: string): Promise<Scree
     );
   }
 
-  await assertRequiredImageEngines(devtoolsRequire);
+  assertRequiredImageEngines(devtoolsRequire);
   const utilityManifest: unknown = JSON.parse(await readFile(utilityManifestPath, 'utf8'));
   assertRecord(utilityManifest, '@ankhorage/utility package manifest');
   assertNonEmptyString(utilityManifest.version, '@ankhorage/utility version');
@@ -147,7 +147,7 @@ async function resolveDevtoolsManifestPath(targetDirectory: string): Promise<str
 }
 
 /*** Require the local deterministic engines used by Utility without making them global Devtools runtime dependencies. */
-async function assertRequiredImageEngines(devtoolsRequire: NodeJS.Require): Promise<void> {
+function assertRequiredImageEngines(devtoolsRequire: ReturnType<typeof createRequire>): void {
   const missing = REQUIRED_IMAGE_ENGINES.filter((packageName) => {
     try {
       devtoolsRequire.resolve(packageName);
@@ -172,9 +172,7 @@ async function createOptionalOcr(
   try {
     return await api.createTesseractScreenOcrAsync(options);
   } catch (error) {
-    return {
-      recognizeAsync: () => Promise.reject(error),
-    };
+    return { recognizeAsync: () => Promise.reject(error) };
   }
 }
 
@@ -216,21 +214,43 @@ function readAnalyzeScreenInput(value: unknown): AnalyzeScreenInput {
   assertNonEmptyString(value.screen.name, 'screen.name');
   assertOptionalString(value.screen.title, 'screen.title');
   assertOptionalString(value.screen.description, 'screen.description');
-  if (
-    value.minConfidence !== undefined &&
-    (typeof value.minConfidence !== 'number' ||
-      !Number.isFinite(value.minConfidence) ||
-      value.minConfidence < 0 ||
-      value.minConfidence > 1)
-  ) {
+  const minConfidence = readMinConfidence(value.minConfidence);
+  const ocr = readOcrOptions(value.ocr);
+
+  return {
+    image: value.image,
+    screen: {
+      id: value.screen.id,
+      name: value.screen.name,
+      ...(value.screen.title === undefined ? {} : { title: value.screen.title }),
+      ...(value.screen.description === undefined
+        ? {}
+        : { description: value.screen.description }),
+    },
+    ...(minConfidence === undefined ? {} : { minConfidence }),
+    ...(ocr === undefined ? {} : { ocr }),
+  };
+}
+
+/*** Read one optional confidence threshold constrained to the Utility matcher interval. */
+function readMinConfidence(value: unknown): number | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 1) {
     throw new Error('minConfidence must be a finite number from 0 through 1.');
   }
-  if (value.ocr !== undefined) {
-    assertRecord(value.ocr, 'ocr');
-    assertNonEmptyString(value.ocr.langPath, 'ocr.langPath');
-    assertOptionalString(value.ocr.language, 'ocr.language');
-  }
-  return value as unknown as AnalyzeScreenInput;
+  return value;
+}
+
+/*** Read optional local OCR configuration without making OCR a geometry prerequisite. */
+function readOcrOptions(value: unknown): AnalyzeScreenInput['ocr'] {
+  if (value === undefined) return undefined;
+  assertRecord(value, 'ocr');
+  assertNonEmptyString(value.langPath, 'ocr.langPath');
+  assertOptionalString(value.language, 'ocr.language');
+  return {
+    langPath: value.langPath,
+    ...(value.language === undefined ? {} : { language: value.language }),
+  };
 }
 
 /*** Narrow the released Utility image subpath to the two capabilities used by the skill. */
@@ -259,7 +279,10 @@ function assertStringArray(value: unknown, label: string): asserts value is stri
 }
 
 /*** Require an optional non-empty string when present. */
-function assertOptionalString(value: unknown, label: string): void {
+function assertOptionalString(
+  value: unknown,
+  label: string,
+): asserts value is string | undefined {
   if (value !== undefined) assertNonEmptyString(value, label);
 }
 
