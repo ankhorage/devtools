@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.1
+
+### Patch Changes
+
+- eedc56e: Publish the minimum trusted Renovate synchronization protocol required by this Devtools release.
+
 ## 1.14.0
 
 ### Minor Changes
