@@ -172,7 +172,8 @@ async function createOptionalOcr(
   try {
     return await api.createTesseractScreenOcrAsync(options);
   } catch (error) {
-    return { recognizeAsync: () => Promise.reject(error) };
+    const rejection = error instanceof Error ? error : new Error(String(error));
+    return { recognizeAsync: () => Promise.reject(rejection) };
   }
 }
 
