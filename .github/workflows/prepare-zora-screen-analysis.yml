@@ -1,0 +1,69 @@
+name: Prepare ZORA Screen Analysis Branch
+
+on:
+  push:
+    branches:
+      - feat/188-zora-designer-screen-analysis
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+
+      - name: Install dependencies and refresh lockfile
+        run: bun install
+
+      - name: Apply canonical lint fixes
+        run: bun run lint:fix
+
+      - name: Format sources
+        run: bun run format
+
+      - name: Commit generated preparation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bun.lock package.json src/tools/skills .changeset
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: prepare zora screen analysis"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi
+
+      - name: Build
+        run: bun run build
+
+      - name: Doctor
+        run: bunx @ankhorage/ankh doctor validate .
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Format check
+        run: bun run format:check
+
+      - name: Knip
+        run: bun run knip:check
+
+      - name: Test
+        run: bun run test
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Docs
+        run: bun run docs
+
+      - name: Changeset status
+        run: bun run changeset:status
