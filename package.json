@@ -43,6 +43,9 @@
       "devtools.vscode.status"
     ]
   },
+  "ankhorage": {
+    "renovateSyncProtocol": 1
+  },
   "keywords": [
     "typescript",
     "eslint",
