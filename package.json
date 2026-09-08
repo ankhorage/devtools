@@ -18,6 +18,7 @@
   "ankh": {
     "category": "devtools",
     "provider": "./dist/cli/index.js",
+    "renovateSyncProtocol": 1,
     "capabilities": [
       "devtools.changeset",
       "devtools.lint",
