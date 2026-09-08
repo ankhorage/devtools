@@ -86,10 +86,31 @@ export const compileZoraTheme = (themeConfig) => ({
 
 export const ZORA_METADATA_FIXTURE_SOURCE = `
 export const ZORA_COMPONENT_META = {
-  View: { name: 'View', directManifestNode: true, allowedChildren: ['Text', 'Box'], props: {} },
-  Box: { name: 'Box', directManifestNode: true, allowedChildren: [], props: {} },
+  Screen: {
+    name: 'Screen',
+    category: 'layout',
+    description: 'Screen layout root',
+    directManifestNode: true,
+    allowedChildren: ['View', 'Box', 'Text', 'MissingElement'],
+    props: {},
+  },
+  View: {
+    name: 'View',
+    category: 'layout',
+    directManifestNode: true,
+    allowedChildren: ['Text', 'Box'],
+    props: {},
+  },
+  Box: {
+    name: 'Box',
+    category: 'foundation',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
+  },
   Text: {
     name: 'Text',
+    category: 'component',
     directManifestNode: true,
     allowedChildren: [],
     props: { text: { type: 'string' } },
@@ -103,6 +124,7 @@ export const ZORA_COMPONENT_META = {
   },
   MissingElement: {
     name: 'MissingElement',
+    category: 'pattern',
     directManifestNode: true,
     allowedChildren: [],
     manifestPolicy: { kind: 'unresolved-element', availability: 'draft-only', releaseGate: 'blocked' },
@@ -117,7 +139,7 @@ export const ZORA_COMPONENT_META = {
 export const ZORA_CORE_PLUGIN_METADATA = {
   packageName: '@ankhorage/zora',
   componentMeta: ZORA_COMPONENT_META,
-  extensionHosts: ['View', 'Box'],
+  extensionHosts: ['Screen', 'View', 'Box'],
 };
 export const composeZoraPluginMetadata = (plugins) => {
   const componentMeta = {};
