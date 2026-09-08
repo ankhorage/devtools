@@ -18,7 +18,6 @@
   "ankh": {
     "category": "devtools",
     "provider": "./dist/cli/index.js",
-    "renovateSyncProtocol": 1,
     "capabilities": [
       "devtools.changeset",
       "devtools.lint",
@@ -43,6 +42,9 @@
       "devtools.vscode.sync",
       "devtools.vscode.status"
     ]
+  },
+  "ankhorage": {
+    "renovateSyncProtocol": 1
   },
   "keywords": [
     "typescript",
