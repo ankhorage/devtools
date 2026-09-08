@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.0
+
+### Minor Changes
+
+- 0884988: Add local screenshot-to-ScreenSpec recognition to the managed ZORA Designer skill using released Utility image analysis and current composed ZORA metadata.
+
 ## 1.13.0
 
 ### Minor Changes
