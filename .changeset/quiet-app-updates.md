@@ -1,5 +1,5 @@
 ---
-"@ankhorage/devtools": patch
+'@ankhorage/devtools': patch
 ---
 
 Bootstrap canonical Renovate configuration with managed repository workflows and
