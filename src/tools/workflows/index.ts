@@ -6,11 +6,11 @@ import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
-export const workflowManagedFiles = [
+export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
   createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
   {
     ...createWorkflowDefinition('.github/workflows/release.yml', './files/release.yml'),
-    isApplicable: async (targetDirectory: string) => {
+    isApplicable: async (targetDirectory) => {
       try {
         await access(join(targetDirectory, '.changeset/config.json'));
         return true;
@@ -26,7 +26,7 @@ export const workflowManagedFiles = [
     sourceUrl: new URL('./files/renovate.json5', import.meta.url),
     mode: 'create-only',
   },
-] as const satisfies readonly ManagedFileDefinition[];
+];
 
 function createWorkflowDefinition(relativePath: string, sourcePath: string): ManagedFileDefinition {
   const sourceUrl = new URL(sourcePath, import.meta.url);
