@@ -9,7 +9,8 @@ description: >
 # Ankhorage Project Structure
 
 Every Ankhorage repository follows this structure. It applies now to `ankhorage/studio`,
-`ankhorage/deploy`, `ankhorage/infra`, `ankhorage/repository`, and `ankhorage/navigator`.
+`ankhorage/deploy`, `ankhorage/infra`, `ankhorage/repository`, `ankhorage/navigator`,
+`ankhorage/surface`, and `ankhorage/zora`.
 
 ## Required skills
 
@@ -196,4 +197,4 @@ repo-local type groups belong to `src/types/`; repo-crossing types belong to Con
 release boundaries and obtain approval for additional package changes when they exceed the task.
 
 This skill defines the target architecture. Schedule repository migrations separately and in this
-order: Studio, Deploy, Infra, Repository, Navigator.
+order: Studio, Deploy, Infra, Repository, Navigator, Surface, ZORA.
