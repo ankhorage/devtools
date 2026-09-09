@@ -18,10 +18,11 @@ repository migration rules.
 ## Required skills
 
 Before structural work, read the repository `AGENTS.md`, inspect its source tree and public
-exports, then load both required repository skills:
+exports, then load both required repository skills from the repository root. Do not resolve required
+skills relative to this skill's own installation location:
 
-1. `.agents/skills/ankhorage-coding-rules/SKILL.md`
-2. [Hexagonal Architecture](../hexagonal-architecture/SKILL.md)
+1. `<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md`
+2. `<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md`
 
 ## Required source layout
 
