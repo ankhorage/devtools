@@ -17,7 +17,7 @@ exports, then load both required repository skills:
 ## Required source layout
 
 - `examples/`: Repository-root folder in this standalone repository;
-Use it for complete, intentional, user-facing examples that people can inspect, copy, install, and run independently of a monorepo or internal fixture layout.
+  Use it for complete, intentional, user-facing examples that people can inspect, copy, install, and run independently of a monorepo or internal fixture layout.
 
 Each example lives in a named subdirectory, such as `examples/basic-usage/*.ts`. Do not put example
 source files directly under `examples/`.
@@ -26,8 +26,8 @@ Test-only fixtures remain owned by the applicable test structure. Do not relabel
 examples merely to bypass repository structure rules.
 
 - `src/cli/` must exist or have a concrete issue tracking the missing CLI commands;
-CLI modules are thin inbound adapters: they parse input, invoke a feature use case, and render
-output.
+  CLI modules are thin inbound adapters: they parse input, invoke a feature use case, and render
+  output.
 
 The filesystem below `src/cli/commands/` mirrors the public command path after the package prefix:
 
@@ -42,8 +42,8 @@ rule: `commands/projects/list.ts` exports `list` and owns only the command-speci
 mapping.
 
 - `src/features/`: Lists the repository's actual product capabilities;
-Technical categories are not features. Each feature owns its own hexagonal structure as needed,
-following the required Hexagonal Architecture skill. Do not create empty layers.
+  Technical categories are not features. Each feature owns its own hexagonal structure as needed,
+  following the required Hexagonal Architecture skill. Do not create empty layers.
 
 ```text
 examples/
@@ -79,7 +79,6 @@ src/
 
 Keep only deliberate package facades directly under `src/`. Public package subpaths must name their
 explicit module in `package.json`; generic `index.ts` barrels are not public API exceptions.
-
 
 ## General Taxonomy
 
