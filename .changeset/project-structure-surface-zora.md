@@ -2,4 +2,4 @@
 "@ankhorage/devtools": patch
 ---
 
-Apply the canonical project-structure skill to Surface and ZORA so new capabilities use `src/features/` ownership.
+Refresh the canonical `ankhorage-project-structure` skill with the repository-wide source taxonomy, `src/features/` ownership, topic-scoped constants, and the Surface/ZORA migration order.
