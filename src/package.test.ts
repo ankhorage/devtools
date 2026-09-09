@@ -211,21 +211,19 @@ function expectZoraDesignerAssetsToExist(): void {
 
 function expectProjectStructureSkillContents(skillRoot: URL): void {
   const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
-  expect(contents).toContain('../hexagonal-architecture/SKILL.md');
+  expect(contents).toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
+  expect(contents).toContain('<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md');
+  expect(contents).not.toContain('../hexagonal-architecture/SKILL.md');
+  expect(contents).toContain('except `ankhorage/contracts`');
+  expect(contents).toContain('stop applying this skill');
   expect(contents).toContain('src/features/');
   expect(contents).toContain('src/cli/');
-  expect(contents).toContain('otherFolder');
-  expect(contents).toContain('exactly one export');
+  expect(contents).toContain('other/');
+  expect(contents).toContain('exactly one exported runtime declaration');
   expect(contents).toContain('## Constant ownership');
   expect(contents).toContain('group related package metadata');
-  expect(contents).toContain('ankhorage/navigator/src/constants.ts');
+  expect(contents).toContain('ankhorage/navigator/src/constants/navigator.ts');
   expect(contents).toContain('`utils/` is the only utility directory name');
-  expect(contents).toContain(
-    'Cannot continue: the required repository skill `ankhorage-coding-rules`',
-  );
-  expect(contents).toContain(
-    'Cannot continue: the required repository skill `hexagonal-architecture`',
-  );
   expect(contents).not.toContain(obsoleteSkillName);
 }
 
