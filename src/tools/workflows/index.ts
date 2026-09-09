@@ -1,3 +1,6 @@
+import { access } from 'node:fs/promises';
+import { join } from 'node:path';
+
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
@@ -5,8 +8,24 @@ import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
 export const workflowManagedFiles = [
   createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
-  createWorkflowDefinition('.github/workflows/release.yml', './files/release.yml'),
+  {
+    ...createWorkflowDefinition('.github/workflows/release.yml', './files/release.yml'),
+    isApplicable: async (targetDirectory: string) => {
+      try {
+        await access(join(targetDirectory, '.changeset/config.json'));
+        return true;
+      } catch (error) {
+        if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
+        throw error;
+      }
+    },
+  },
   createRenovateWorkflowDefinition(),
+  {
+    relativePath: 'renovate.json5',
+    sourceUrl: new URL('./files/renovate.json5', import.meta.url),
+    mode: 'create-only',
+  },
 ] as const satisfies readonly ManagedFileDefinition[];
 
 function createWorkflowDefinition(relativePath: string, sourcePath: string): ManagedFileDefinition {
