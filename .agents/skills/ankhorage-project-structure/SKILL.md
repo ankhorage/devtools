@@ -1,16 +1,10 @@
 ---
 name: ankhorage-project-structure
 description: >
-  Define, review, or implement the standard source structure of Ankhorage repositories. Use for
-  feature ownership, CLI layout, hexagonal boundaries, source-module naming, type ownership,
-  utilities, or package entrypoints.
+  Define, review, or implement the standard source structure of Ankhorage repositories. Use for feature ownership, CLI layout, hexagonal boundaries, source-module naming, type ownership, utilities, or package entrypoints.
 ---
 
 # Ankhorage Project Structure
-
-Every Ankhorage repository follows this structure. It applies now to `ankhorage/studio`,
-`ankhorage/deploy`, `ankhorage/infra`, `ankhorage/repository`, `ankhorage/navigator`,
-`ankhorage/surface`, and `ankhorage/zora`.
 
 ## Required skills
 
@@ -20,23 +14,10 @@ exports, then load both required repository skills:
 1. `.agents/skills/ankhorage-coding-rules/SKILL.md`
 2. [Hexagonal Architecture](../hexagonal-architecture/SKILL.md)
 
-If `ankhorage-coding-rules` is missing or unreadable, stop immediately and report exactly:
+## Required source layout
 
-```
-Cannot continue: the required repository skill `ankhorage-coding-rules` is missing or unreadable at `.agents/skills/ankhorage-coding-rules/SKILL.md`. Synchronize the repository skills from `@ankhorage/devtools` and retry.
-```
-
-If `hexagonal-architecture` is missing or unreadable, stop immediately and report exactly:
-
-```
-Cannot continue: the required repository skill `hexagonal-architecture` is missing or unreadable at `.agents/skills/hexagonal-architecture/SKILL.md`. Synchronize the repository skills from `@ankhorage/devtools` and retry.
-```
-
-## Repository-root examples
-
-`examples/` is a generally valid repository-root folder in every repository covered by this skill.
-Use it for complete, intentional, user-facing examples that people can inspect, copy, install, and
-run independently of a monorepo or internal fixture layout.
+- `examples/`: Repository-root folder in this standalone repository;
+Use it for complete, intentional, user-facing examples that people can inspect, copy, install, and run independently of a monorepo or internal fixture layout.
 
 Each example lives in a named subdirectory, such as `examples/basic-usage/*.ts`. Do not put example
 source files directly under `examples/`.
@@ -44,17 +25,29 @@ source files directly under `examples/`.
 Test-only fixtures remain owned by the applicable test structure. Do not relabel fixtures as public
 examples merely to bypass repository structure rules.
 
-## Required source layout
-
-Every repository provides `src/features/`. It lists the repository's actual product capabilities;
-technical categories are not features. Each feature owns its own hexagonal structure as needed,
-following the required Hexagonal Architecture skill. Do not create empty layers.
-
-Every repository provides `src/cli/`, or has a concrete issue tracking the missing CLI commands.
+- `src/cli/` must exist or have a concrete issue tracking the missing CLI commands;
 CLI modules are thin inbound adapters: they parse input, invoke a feature use case, and render
 output.
 
+The filesystem below `src/cli/commands/` mirrors the public command path after the package prefix:
+
 ```text
+ankh <package> <segment> ... <command>
+  -> src/cli/commands/<segment>/.../<command>.ts
+```
+
+The package prefix is represented by the provider and is not repeated under `commands/`. Flags and
+positional arguments do not affect this directory tree. Each command file follows the one-export
+rule: `commands/projects/list.ts` exports `list` and owns only the command-specific input/output
+mapping.
+
+- `src/features/`: Lists the repository's actual product capabilities;
+Technical categories are not features. Each feature owns its own hexagonal structure as needed,
+following the required Hexagonal Architecture skill. Do not create empty layers.
+
+```text
+examples/
+  <example>/
 src/
   cli/
     createCliProvider.ts
@@ -74,42 +67,34 @@ src/
         inbound/
         outbound/
       composition/
+      constants/
+        <topic>.ts
       utils/
   types/
     <topic>.ts
-  constants.ts
+  constants/
+    <topic>.ts
   utils/
 ```
 
 Keep only deliberate package facades directly under `src/`. Public package subpaths must name their
 explicit module in `package.json`; generic `index.ts` barrels are not public API exceptions.
 
-The filesystem below `src/cli/commands/` mirrors the public command path after the package prefix:
 
-```text
-ankh <package> <segment> ... <command>
-  -> src/cli/commands/<segment>/.../<command>.ts
-```
-
-The package prefix is represented by the provider and is not repeated under `commands/`. Flags and
-positional arguments do not affect this directory tree. Each command file follows the one-export
-rule: `commands/projects/list.ts` exports `list` and owns only the command-specific input/output
-mapping.
-
-## Feature taxonomy
+## General Taxonomy
 
 Siblings always represent the same kind of entity. A folder cannot be an unrelated catch-all beside
-peer entities. For example, this is invalid because `otherFolder` is not a color:
+peer entities. For example, this is invalid because `other/` is not a color:
 
 ```text
 colors/
   red/
   green/
   blue/
-  otherFolder/
+  other/
 ```
 
-Resolve the ownership of `otherFolder` and move it to the appropriate taxonomy. Use domain names for
+Resolve the ownership of `other` and move it to the appropriate taxonomy. Use domain names for
 features, not framework, transport, database, or generic technical names.
 
 ## Implementation modules
@@ -122,8 +107,7 @@ convenience barrels and must not expose private implementation details.
 
 - `myFunction.ts` exports `myFunction`.
 - `myFunctionAsync.ts` exports `myFunctionAsync`.
-- A public operation that is asynchronous or returns a `Promise` uses the `Async` suffix in both its
-  filename and exported name.
+- A public operation that is asynchronous or returns a `Promise` uses the `Async` suffix in both its filename and exported name.
 
 Keep private helpers below that exported declaration when they are used only by that module.
 Decide the owner of a reused function using the utility rules below, before creating another file.
@@ -133,17 +117,9 @@ Decide the owner of a reused function using the utility rules below, before crea
 Choose type ownership by its production consumers, not by the number of textual references or
 whether a barrel happens to re-export it:
 
-1. **Used by one implementation module:** keep the type directly below the function that owns it,
-   without `export`. Its private helpers can use the same local type. A test does not justify
-   exporting an implementation-private type; test through the function boundary.
-2. **Reused within the repository:** put related types together in `src/types/<topic>.ts` and use
-   type-only imports. Name the file for a cohesive topic, not for each individual type. Such a file
-   may export multiple related types/interfaces and contains no runtime implementation. Do not mix
-   type-only files among feature functions or `utils/`, and do not create one global catch-all file.
-3. **Shared across repositories:** the canonical declaration belongs in `@ankhorage/contracts` at
-   the owning topic's public subpath. Consumers import that contract through a declared dependency,
-   not another repository's source or a duplicated local declaration. Keep framework-specific
-   adapters separate from the portable shared contract.
+1. **Used by one implementation module:** keep the type directly below the function that owns it, without `export`. Its private helpers can use the same local type. A test does not justify exporting an implementation-private type; test through the function boundary.
+2. **Reused within the repository:** put related types together in `src/types/<topic>.ts` and use type-only imports. Name the file for a cohesive topic, not for each individual type. Such a file may export multiple related types/interfaces and contains no runtime implementation. Do not mix type-only files among feature functions or `utils/`, and do not create one global catch-all file.
+3. **Shared across repositories:** the canonical declaration belongs in `@ankhorage/contracts` at the owning topic's public subpath. Consumers import that contract through a declared dependency, not another repository's source or a duplicated local declaration. Keep framework-specific adapters separate from the portable shared contract.
 
 Inspect published API declarations and real consumer imports before privatizing or relocating a
 type. A public boundary type is not private just because only one implementation uses it locally.
@@ -162,11 +138,10 @@ Constants are static declarations, not utility implementations. Do not create on
 constant per constant-named file under `utils/`.
 
 1. **Used by one implementation module:** keep the constant private in the module that owns it.
-2. **Reused only inside a feature:** group related constants in that feature's `constants.ts`.
-3. **Shared across features in one package:** group related package metadata, static policy values,
-   and other constants in `src/constants.ts`.
+2. **Reused only inside a feature:** group related constants in that feature's `constants/<topic>.ts`.
+3. **Shared across features in one package:** group related package metadata, static policy values, and other constants in `src/constants/<topic>.ts`.
 
-A `constants.ts` module may export multiple related constants. Keep it cohesive by ownership and
+A `constants/<topic>.ts` module may export multiple related constants. Keep it cohesive by ownership and
 purpose; it is not a package-wide catch-all. Split constants when they have different owners, not
 merely to create one file per export.
 
@@ -174,7 +149,7 @@ For example, Navigator's
 [`src/utils/NAVIGATOR_PACKAGE_METADATA.ts`](https://github.com/ankhorage/navigator/blob/main/src/utils/NAVIGATOR_PACKAGE_METADATA.ts)
 and
 [`src/utils/NAVIGATOR_ROUTER_POLICY.ts`](https://github.com/ankhorage/navigator/blob/main/src/utils/NAVIGATOR_ROUTER_POLICY.ts)
-belong together in `ankhorage/navigator/src/constants.ts`.
+belong together in `ankhorage/navigator/src/constants/navigator.ts`.
 
 ## Utilities
 
@@ -188,9 +163,7 @@ belong together in `ankhorage/navigator/src/constants.ts`.
   merely because several navigator features use it.
 - Generally reusable without the owning product, manifest, or framework policy: inspect the
   published `@ankhorage/utility` API first, reuse it where semantics match, and put missing general
-  helpers in that package's owning topic. Examples include generic string escaping or source-literal
-  serialization. Do not copy a utility locally, create a forwarding wrapper, or change semantics
-  just to reuse a similarly named function.
+  helpers in that package's owning topic. Examples include generic string escaping or source-literal serialization. Do not copy a utility locally, create a forwarding wrapper, or change semantics just to reuse a similarly named function.
 
 Separate the decisions for functions and types: reusable functions belong to Utility when general;
 repo-local type groups belong to `src/types/`; repo-crossing types belong to Contracts. Respect
