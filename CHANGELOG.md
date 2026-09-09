@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.14.3
+
+### Patch Changes
+
+- 9de61e2: Bootstrap canonical Renovate configuration with managed repository workflows and
+  only install the Changesets package-release workflow when the target repository
+  owns a Changesets configuration.
+
 ## 1.14.2
 
 ### Patch Changes
