@@ -6,6 +6,15 @@ description: >
 
 # Ankhorage Project Structure
 
+## Applicability
+
+This skill applies to every Ankhorage repository except `ankhorage/contracts`.
+
+If the current repository is `ankhorage/contracts`, stop applying this skill. Contracts owns the
+portable cross-repository contract taxonomy and does not inherit this skill's required `src/cli/`,
+`src/features/`, hexagonal feature layout, type/constant/utility ownership, package facade, or
+repository migration rules.
+
 ## Required skills
 
 Before structural work, read the repository `AGENTS.md`, inspect its source tree and public
