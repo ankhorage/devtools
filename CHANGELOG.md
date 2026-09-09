@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.4
+
+### Patch Changes
+
+- f8af1ee: Refresh the canonical portable `ankhorage-project-structure` skill with repository-root skill resolution, the Contracts exclusion, `src/features/` ownership, topic-scoped constants, and the Surface/ZORA migration order; restore the managed Hexagonal Architecture skill to the unmodified ECC v2.2.0 source.
+
 ## 1.14.3
 
 ### Patch Changes
