@@ -68,7 +68,7 @@ Before creating a pull request, run all of these commands in this order and reso
 bun run build
 bun run check-types
 bun run lint
-bun run knip:test
+bun run knip:check
 bun run changeset
 bun run format
 \`\`\`
