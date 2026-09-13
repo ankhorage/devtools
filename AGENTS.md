@@ -6,7 +6,7 @@
 
 Package: `@ankhorage/devtools`
 
-Shared development tools and repository standards for Ankhorage
+Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects
 
 ## Current architecture only
 
