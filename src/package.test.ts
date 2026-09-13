@@ -223,11 +223,17 @@ function expectZoraDesignerAssetsToExist(): void {
 
 function expectProjectStructureSkillContents(skillRoot: URL): void {
   const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
-  expect(contents).toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
+  expect(contents).not.toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
   expect(contents).toContain('<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md');
   expect(contents).not.toContain('../hexagonal-architecture/SKILL.md');
-  expect(contents).toContain('except `ankhorage/contracts`');
-  expect(contents).toContain('stop applying this skill');
+  expect(contents).toContain('This skill applies to every Ankhorage repository');
+  expect(contents).toContain('### Contracts repository profile');
+  expect(contents).toContain('only portable, serializable contracts');
+  expect(contents).toContain('Do not add call signatures, function-valued properties');
+  expect(contents).toContain('MUST identify at least two consuming repositories');
+  expect(contents).toContain('anticipated reuse alone is not sufficient');
+  expect(contents).toContain('Keep non-serializable API types with their implementation-owning');
+  expect(contents).toContain('stop before the remaining source-layout');
   expect(contents).toContain('src/features/');
   expect(contents).toContain('src/cli/');
   expect(contents).toContain('other/');

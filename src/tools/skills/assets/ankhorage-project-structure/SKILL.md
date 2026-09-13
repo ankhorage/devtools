@@ -1,28 +1,40 @@
 ---
 name: ankhorage-project-structure
 description: >
-  Define, review, or implement the standard source structure of Ankhorage repositories. Use for feature ownership, CLI layout, hexagonal boundaries, source-module naming, type ownership, utilities, or package entrypoints.
+  Define, review, or implement the standard source structure of Ankhorage repositories. Use for feature ownership, CLI layout, hexagonal boundaries, source-module naming, Contracts ownership, type ownership, utilities, or package entrypoints.
 ---
 
 # Ankhorage Project Structure
 
 ## Applicability
 
-This skill applies to every Ankhorage repository except `ankhorage/contracts`.
+This skill applies to every Ankhorage repository.
 
-If the current repository is `ankhorage/contracts`, stop applying this skill. Contracts owns the
-portable cross-repository contract taxonomy and does not inherit this skill's required `src/cli/`,
-`src/features/`, hexagonal feature layout, type/constant/utility ownership, package facade, or
-repository migration rules.
+### Contracts repository profile
+
+If the current repository is `ankhorage/contracts`, apply only this profile:
+
+- The repository may contain only portable, serializable contracts expressed as interfaces and
+  types. Every field must be serializable and reconstructable without executable behavior or
+  repository-local runtime objects. Do not add call signatures, function-valued properties,
+  functions, classes, constants, enums, mutable state, adapters, framework objects, or
+  implementation helpers.
+- A contract belongs in this repository only when it is required across multiple repositories. A
+  current or coordinated change MUST identify at least two consuming repositories. Keep
+  single-repository types with their owning repository; anticipated reuse alone is not sufficient.
+- Consumers import contracts through published public subpaths and declared dependencies, never
+  sibling source files or duplicated local declarations.
+
+After enforcing this profile, stop before the remaining source-layout, implementation, utility,
+and migration rules; they do not apply to `ankhorage/contracts`.
 
 ## Required skills
 
-Before structural work, read the repository `AGENTS.md`, inspect its source tree and public
-exports, then load both required repository skills from the repository root. Do not resolve required
-skills relative to this skill's own installation location:
+Before structural work outside `ankhorage/contracts`, read the repository `AGENTS.md`, inspect its
+source tree and public exports, then load the required Hexagonal Architecture skill from the
+repository root. Do not resolve it relative to this skill's own installation location:
 
-1. `<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md`
-2. `<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md`
+1. `<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md`
 
 ## Required source layout
 
@@ -128,7 +140,7 @@ whether a barrel happens to re-export it:
 
 1. **Used by one implementation module:** keep the type directly below the function that owns it, without `export`. Its private helpers can use the same local type. A test does not justify exporting an implementation-private type; test through the function boundary.
 2. **Reused within the repository:** put related types together in `src/types/<topic>.ts` and use type-only imports. Name the file for a cohesive topic, not for each individual type. Such a file may export multiple related types/interfaces and contains no runtime implementation. Do not mix type-only files among feature functions or `utils/`, and do not create one global catch-all file.
-3. **Shared across repositories:** the canonical declaration belongs in `@ankhorage/contracts` at the owning topic's public subpath. Consumers import that contract through a declared dependency, not another repository's source or a duplicated local declaration. Keep framework-specific adapters separate from the portable shared contract.
+3. **Shared across repositories and serializable:** when at least two repositories require the same portable data declaration, it belongs in `@ankhorage/contracts` at the owning topic's public subpath. Consumers import that contract through a declared dependency, not another repository's source or a duplicated local declaration. Keep non-serializable API types with their implementation-owning package and consume them through that package's public API. Keep framework-specific adapters separate from the portable shared contract.
 
 Inspect published API declarations and real consumer imports before privatizing or relocating a
 type. A public boundary type is not private just because only one implementation uses it locally.

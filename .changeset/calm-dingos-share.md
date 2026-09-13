@@ -2,4 +2,4 @@
 '@ankhorage/devtools': patch
 ---
 
-Require repository-local instruction loading, shared utility reuse, and functional programming defaults.
+Require baseline repository skill loading, Paradox-owned documentation, portable cross-repository Contracts ownership, shared utility reuse, and functional programming defaults.

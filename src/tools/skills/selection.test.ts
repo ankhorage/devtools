@@ -20,8 +20,13 @@ test('selects zora-designer for generated-app authoring dependencies', () => {
   ).toBe(true);
 });
 
-test('does not select zora-designer for unrelated packages or a lone component dependency', () => {
+test('keeps both baseline rule skills available to Contracts repositories', () => {
   expect(isZoraDesignerContext({ name: '@ankhorage/contracts' })).toBe(false);
+  expect(BASELINE_SKILL_NAMES).toContain('ankhorage-coding-rules');
+  expect(BASELINE_SKILL_NAMES).toContain('ankhorage-project-structure');
+});
+
+test('does not select zora-designer for unrelated packages or a lone component dependency', () => {
   expect(
     isZoraDesignerContext({
       name: 'component-preview',

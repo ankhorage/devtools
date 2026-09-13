@@ -188,13 +188,13 @@ The canonical workflow, VS Code, and skill files are packaged with `@ankhorage/d
 
 ## Managed agent instructions
 
-`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, requires repository-local instructions and relevant skills to be read and followed before changes, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.
+`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.
 
 Only the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.
 
 ## Managed repository skills
 
-`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue, mandates Utility reuse before implementation for potentially cross-repository functions, and the coding-rules skill makes functional programming the default.
+`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.
 
 `.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.
 
