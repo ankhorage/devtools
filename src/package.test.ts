@@ -158,9 +158,21 @@ describe('managed skill package contract', () => {
     );
   });
 
+  it('keeps the canonical coding-rules skill enforceable', () => {
+    expectCodingRulesSkillContents(
+      new URL('./tools/skills/assets/ankhorage-coding-rules/', import.meta.url),
+    );
+  });
+
   it('keeps the synchronized project-structure skill self-contained and enforceable', () => {
     expectProjectStructureSkillContents(
       new URL('../.agents/skills/ankhorage-project-structure/', import.meta.url),
+    );
+  });
+
+  it('keeps the synchronized coding-rules skill enforceable', () => {
+    expectCodingRulesSkillContents(
+      new URL('../.agents/skills/ankhorage-coding-rules/', import.meta.url),
     );
   });
 
@@ -211,11 +223,17 @@ function expectZoraDesignerAssetsToExist(): void {
 
 function expectProjectStructureSkillContents(skillRoot: URL): void {
   const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
-  expect(contents).toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
+  expect(contents).not.toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
   expect(contents).toContain('<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md');
   expect(contents).not.toContain('../hexagonal-architecture/SKILL.md');
-  expect(contents).toContain('except `ankhorage/contracts`');
-  expect(contents).toContain('stop applying this skill');
+  expect(contents).toContain('This skill applies to every Ankhorage repository');
+  expect(contents).toContain('### Contracts repository profile');
+  expect(contents).toContain('only portable, serializable contracts');
+  expect(contents).toContain('Do not add call signatures, function-valued properties');
+  expect(contents).toContain('MUST identify at least two consuming repositories');
+  expect(contents).toContain('anticipated reuse alone is not sufficient');
+  expect(contents).toContain('Keep non-serializable API types with their implementation-owning');
+  expect(contents).toContain('stop before the remaining source-layout');
   expect(contents).toContain('src/features/');
   expect(contents).toContain('src/cli/');
   expect(contents).toContain('other/');
@@ -224,7 +242,22 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).toContain('group related package metadata');
   expect(contents).toContain('ankhorage/navigator/src/constants/navigator.ts');
   expect(contents).toContain('`utils/` is the only utility directory name');
+  expect(contents).toContain('**reuse before implementation** and **shared by default**');
+  expect(contents).toContain('you MUST first inspect the');
+  expect(contents).toContain('`isRecord` from `@ankhorage/utility/object`');
   expect(contents).not.toContain(obsoleteSkillName);
+}
+
+function expectCodingRulesSkillContents(skillRoot: URL): void {
+  const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
+  expect(contents).toContain('Use functional programming by default');
+  expect(contents).toContain('declare bindings with `const`, not `let`');
+  expect(contents).toContain('use immutable data and updates');
+  expect(contents).toContain('Keep side effects');
+  expect(contents).toContain('explicit and at system boundaries');
+  expect(contents).toContain(
+    'Mutation or reassignment is allowed only for a clearly\n  justified boundary or demonstrated performance-critical path',
+  );
 }
 
 /*** Discover script assets from the managed tree without freezing their names or count. */

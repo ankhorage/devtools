@@ -38,8 +38,10 @@ exceptions or replaced by generic preferences from this skill.
   validation pass.
 - Resolve size, complexity, and related findings around cohesive responsibilities and clear data
   flow. Do not split a function or file mechanically just to cross a threshold.
-- Prefer reusable pure transformations, immutable values, and explicit inputs and outputs. Keep
-  unavoidable mutation and external side effects at clear boundaries.
+- Use functional programming by default: declare bindings with `const`, not `let`; write pure
+  functions with explicit inputs and outputs; and use immutable data and updates. Keep side effects
+  explicit and at system boundaries. Mutation or reassignment is allowed only for a clearly
+  justified boundary or demonstrated performance-critical path, and must remain locally contained.
 - Keep one canonical implementation. Do not add compatibility aliases, dual paths, historical-state
   fallbacks, or sibling-source imports.
 
