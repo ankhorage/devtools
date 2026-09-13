@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.5
+
+### Patch Changes
+
+- a11f1c5: Require baseline repository skill loading, Paradox-owned documentation, portable cross-repository Contracts ownership, shared utility reuse, and functional programming defaults.
+
 ## 1.14.4
 
 ### Patch Changes
