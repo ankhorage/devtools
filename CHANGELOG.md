@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.6
+
+### Patch Changes
+
+- fed2410: Correct the managed pre-pull-request Knip command to use the canonical `knip:check` script.
+
 ## 1.14.5
 
 ### Patch Changes
