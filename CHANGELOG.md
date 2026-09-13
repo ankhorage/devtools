@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.7
+
+### Patch Changes
+
+- 1d31b46: Align the published package description with the current tooling, repository automation, runtime policy, and agent-standard scope.
+
 ## 1.14.6
 
 ### Patch Changes
