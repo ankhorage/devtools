@@ -165,14 +165,23 @@ belong together in `ankhorage/navigator/src/constants/navigator.ts`.
 `utils/` is the only utility directory name. Do not create `shared/`, `helper/`, `helpers/`,
 `common/`, or equivalent catch-all folders. It is not a destination for every pure function or type.
 
+Apply **reuse before implementation** and **shared by default** before choosing a local owner. For
+every function that could reasonably be reused across repositories, you MUST first inspect the
+published `@ankhorage/utility` public API and its owning topic. Reuse the existing export when its
+semantics match. If the function is missing and is generic without product, manifest, or framework
+policy, implement, test, and export it from the appropriate Utility topic, then consume that public
+export through a declared dependency. Do not duplicate it locally or add a forwarding wrapper.
+`isRecord` from `@ankhorage/utility/object` is one motivating example of this general rule, not a
+special case.
+
 - Used by one module: keep the helper private below its owning function.
 - Reused only inside a feature: keep it in that feature's `utils/`.
 - Shared across features but tied to this package's capability or policy: use `src/utils/`.
   Navigator topology traversal or Expo Router-specific validation does not become a general utility
   merely because several navigator features use it.
-- Generally reusable without the owning product, manifest, or framework policy: inspect the
-  published `@ankhorage/utility` API first, reuse it where semantics match, and put missing general
-  helpers in that package's owning topic. Examples include generic string escaping or source-literal serialization. Do not copy a utility locally, create a forwarding wrapper, or change semantics just to reuse a similarly named function.
+- Generally reusable across repositories: it belongs in the canonical `@ankhorage/utility` topic
+  under the reuse-first rule above. Examples include generic string escaping or source-literal
+  serialization. Do not change semantics merely to reuse a similarly named function.
 
 Separate the decisions for functions and types: reusable functions belong to Utility when general;
 repo-local type groups belong to `src/types/`; repo-crossing types belong to Contracts. Respect

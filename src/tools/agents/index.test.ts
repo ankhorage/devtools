@@ -29,6 +29,9 @@ describe('managed AGENTS.md', () => {
     expect(contents).toContain('Example package.');
     expect(contents).toContain('Only the current Ankhorage architecture is valid.');
     expect(contents).toContain('Do not add or retain deprecated APIs');
+    expect(contents).toContain('Before changing any file, read this `AGENTS.md` completely');
+    expect(contents).toContain('Load and follow every repository-local skill relevant to the task');
+    expect(contents).toContain('.agents/skills/ankhorage-coding-rules/SKILL.md');
     expect(contents).toContain('.agents/skills/ankhorage-project-structure/SKILL.md');
     expect(contents).toContain(
       `Before creating a pull request, run all of these commands in this order and resolve every failure:

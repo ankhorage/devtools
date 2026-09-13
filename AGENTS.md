@@ -21,11 +21,18 @@ published public APIs and declared dependencies, never sibling source files.
 Current-runtime error handling and canonical database or infrastructure migrations remain valid
 when they support states that the current architecture can intentionally produce.
 
-## Project structure
+## Required repository instructions
 
-For directory ownership, package boundaries, architectural profiles, ports and adapters, public
-entrypoints, or cross-repository structural work, load and follow
-`.agents/skills/ankhorage-project-structure/SKILL.md`.
+Before changing any file, read this `AGENTS.md` completely and inspect `.agents/skills/`.
+Load and follow every repository-local skill relevant to the task before making changes. Continue
+to follow these instructions and skills through validation and delivery; do not substitute
+remembered, globally installed, or generic guidance for the repository-local versions.
+
+For every implementation, refactor, test, review, or delivery task, load and follow
+`.agents/skills/ankhorage-coding-rules/SKILL.md`. For directory ownership, package boundaries,
+architectural profiles, ports and adapters, public entrypoints, or cross-repository structural work,
+also load and follow `.agents/skills/ankhorage-project-structure/SKILL.md` and every additional
+skill it requires.
 
 ## Pull requests
 

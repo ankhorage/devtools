@@ -158,9 +158,21 @@ describe('managed skill package contract', () => {
     );
   });
 
+  it('keeps the canonical coding-rules skill enforceable', () => {
+    expectCodingRulesSkillContents(
+      new URL('./tools/skills/assets/ankhorage-coding-rules/', import.meta.url),
+    );
+  });
+
   it('keeps the synchronized project-structure skill self-contained and enforceable', () => {
     expectProjectStructureSkillContents(
       new URL('../.agents/skills/ankhorage-project-structure/', import.meta.url),
+    );
+  });
+
+  it('keeps the synchronized coding-rules skill enforceable', () => {
+    expectCodingRulesSkillContents(
+      new URL('../.agents/skills/ankhorage-coding-rules/', import.meta.url),
     );
   });
 
@@ -224,7 +236,22 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).toContain('group related package metadata');
   expect(contents).toContain('ankhorage/navigator/src/constants/navigator.ts');
   expect(contents).toContain('`utils/` is the only utility directory name');
+  expect(contents).toContain('**reuse before implementation** and **shared by default**');
+  expect(contents).toContain('you MUST first inspect the');
+  expect(contents).toContain('`isRecord` from `@ankhorage/utility/object`');
   expect(contents).not.toContain(obsoleteSkillName);
+}
+
+function expectCodingRulesSkillContents(skillRoot: URL): void {
+  const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
+  expect(contents).toContain('Use functional programming by default');
+  expect(contents).toContain('declare bindings with `const`, not `let`');
+  expect(contents).toContain('use immutable data and updates');
+  expect(contents).toContain('Keep side effects');
+  expect(contents).toContain('explicit and at system boundaries');
+  expect(contents).toContain(
+    'Mutation or reassignment is allowed only for a clearly\n  justified boundary or demonstrated performance-critical path',
+  );
 }
 
 /*** Discover script assets from the managed tree without freezing their names or count. */
