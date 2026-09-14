@@ -1,0 +1,36 @@
+name: APM validation workspace
+
+on:
+  push:
+    branches: [feat/208-apm-release-validation]
+    paths: [.github/workflows/apm-validation-workspace.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Prepare isolated validation dependencies
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          bun add '@ankhorage/apm@^0.6.0' --ignore-scripts
+          mkdir -p /tmp/apm-validation
+          git bundle create /tmp/apm-validation/repository.bundle HEAD refs/remotes/origin/main
+          cp package.json bun.lock /tmp/apm-validation/
+          tar -czf /tmp/apm-validation/dependencies.tgz node_modules
+          tar -czf /tmp/apm-validation/bun.tgz -C "$HOME/.bun/bin" bun
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apm-validation-workspace
+          path: /tmp/apm-validation/
+          retention-days: 1
+          compression-level: 0
