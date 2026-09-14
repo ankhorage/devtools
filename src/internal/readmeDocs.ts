@@ -27,7 +27,7 @@ const REQUIRED_README_SNIPPETS = [
   'devtools.vscode.sync',
   '--dry-run',
   "profile: 'auto'",
-  '@ankhorage/utility/project',
+  '@ankhorage/project-detector',
   'ankhorage-changeset',
   'without creating a second Version Packages pull request',
   'chore(release)',

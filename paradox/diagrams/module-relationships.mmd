@@ -1,0 +1,92 @@
+graph LR
+  module_src_cli_bin_changeset_ts["src/cli/bin/changeset.ts"]
+  module_src_cli_bin_eslint_ts["src/cli/bin/eslint.ts"]
+  module_src_cli_bin_knip_ts["src/cli/bin/knip.ts"]
+  module_src_cli_bin_prettier_ts["src/cli/bin/prettier.ts"]
+  module_src_cli_commands_ts["src/cli/commands.ts"]
+  module_src_cli_index_ts["src/cli/index.ts"]
+  module_src_cli_runExternalTool_ts["src/cli/runExternalTool.ts"]
+  module_src_cli_runProviderCommand_ts["src/cli/runProviderCommand.ts"]
+  module_src_cli_runRepositoryCommand_ts["src/cli/runRepositoryCommand.ts"]
+  module_src_cli_runStandaloneTool_ts["src/cli/runStandaloneTool.ts"]
+  module_src_internal_readmeDocs_ts["src/internal/readmeDocs.ts"]
+  module_src_owner_synchronizeRenovateOwnerAsync_ts["src/owner/synchronizeRenovateOwnerAsync.ts"]
+  module_src_policy_applyBunRuntimePolicy_ts["src/policy/applyBunRuntimePolicy.ts"]
+  module_src_policy_bunRuntimePolicy_ts["src/policy/bunRuntimePolicy.ts"]
+  module_src_policy_changesetsPolicy_ts["src/policy/changesetsPolicy.ts"]
+  module_src_tools_agents_index_ts["src/tools/agents/index.ts"]
+  module_src_tools_eslint_index_ts["src/tools/eslint/index.ts"]
+  module_src_tools_eslint_managed_ts["src/tools/eslint/managed.ts"]
+  module_src_tools_eslint_packageJsonPath_ts["src/tools/eslint/packageJsonPath.ts"]
+  module_src_tools_eslint_resolveEslintProfile_ts["src/tools/eslint/resolveEslintProfile.ts"]
+  module_src_tools_eslint_resolveEslintProfileFromDetectionInput_ts["src/tools/eslint/resolveEslintProfileFromDetectionInput.ts"]
+  module_src_tools_eslint_types_ts["src/tools/eslint/types.ts"]
+  module_src_tools_knip_index_ts["src/tools/knip/index.ts"]
+  module_src_tools_knip_managed_ts["src/tools/knip/managed.ts"]
+  module_src_tools_package_index_ts["src/tools/package/index.ts"]
+  module_src_tools_package_syncBunDependencies_ts["src/tools/package/syncBunDependencies.ts"]
+  module_src_tools_prettier_managed_ts["src/tools/prettier/managed.ts"]
+  module_src_tools_shared_managedFiles_ts["src/tools/shared/managedFiles.ts"]
+  module_src_tools_skills_assetTestFixture_ts["src/tools/skills/assetTestFixture.ts"]
+  module_src_tools_skills_managed_ts["src/tools/skills/managed.ts"]
+  module_src_tools_skills_manifest_ts["src/tools/skills/manifest.ts"]
+  module_src_tools_skills_selection_ts["src/tools/skills/selection.ts"]
+  module_src_tools_skills_zoraDesignerOwnerFixtures_ts["src/tools/skills/zoraDesignerOwnerFixtures.ts"]
+  module_src_tools_vscode_index_ts["src/tools/vscode/index.ts"]
+  module_src_tools_workflows_index_ts["src/tools/workflows/index.ts"]
+  module_src_tools_workflows_renderRenovateWorkflowAsync_ts["src/tools/workflows/renderRenovateWorkflowAsync.ts"]
+  module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
+  module_src_cli_bin_changeset_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_eslint_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_knip_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_prettier_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_index_ts --> module_src_cli_commands_ts
+  module_src_cli_index_ts --> module_src_cli_runProviderCommand_ts
+  module_src_cli_runExternalTool_ts --> module_src_cli_commands_ts
+  module_src_cli_runProviderCommand_ts --> module_src_cli_commands_ts
+  module_src_cli_runProviderCommand_ts --> module_src_cli_runExternalTool_ts
+  module_src_cli_runProviderCommand_ts --> module_src_cli_runRepositoryCommand_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_cli_commands_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_agents_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_eslint_managed_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_knip_managed_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_syncBunDependencies_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_prettier_managed_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_skills_managed_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_vscode_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_workflows_index_ts
+  module_src_cli_runStandaloneTool_ts --> module_src_cli_commands_ts
+  module_src_cli_runStandaloneTool_ts --> module_src_cli_runExternalTool_ts
+  module_src_internal_readmeDocs_ts --> module_src_policy_bunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_bunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_agents_index_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_eslint_index_ts --> module_src_tools_eslint_resolveEslintProfile_ts
+  module_src_tools_eslint_index_ts --> module_src_tools_eslint_types_ts
+  module_src_tools_eslint_managed_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_eslint_packageJsonPath_ts --> module_src_tools_eslint_types_ts
+  module_src_tools_eslint_resolveEslintProfile_ts --> module_src_tools_eslint_packageJsonPath_ts
+  module_src_tools_eslint_resolveEslintProfile_ts --> module_src_tools_eslint_resolveEslintProfileFromDetectionInput_ts
+  module_src_tools_eslint_resolveEslintProfile_ts --> module_src_tools_eslint_types_ts
+  module_src_tools_eslint_resolveEslintProfileFromDetectionInput_ts --> module_src_tools_eslint_types_ts
+  module_src_tools_knip_managed_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --> module_src_policy_bunRuntimePolicy_ts
+  module_src_tools_package_index_ts --> module_src_policy_changesetsPolicy_ts
+  module_src_tools_package_index_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_package_syncBunDependencies_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_prettier_managed_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_skills_managed_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_skills_managed_ts --> module_src_tools_skills_manifest_ts
+  module_src_tools_skills_managed_ts --> module_src_tools_skills_selection_ts
+  module_src_tools_vscode_index_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_workflows_index_ts --> module_src_policy_bunRuntimePolicy_ts
+  module_src_tools_workflows_index_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
+  module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderRenovateWorkflowAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --> module_src_policy_changesetsPolicy_ts

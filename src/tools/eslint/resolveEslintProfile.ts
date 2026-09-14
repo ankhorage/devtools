@@ -1,18 +1,16 @@
 import { readFileSync } from 'node:fs';
 
-import {
-  detectProject,
-  type ProjectDependencyMap,
-  type ProjectDetectionInput,
-} from '@ankhorage/utility/project';
+import type {
+  ProjectDependencyMap,
+  ProjectDetectionInput,
+} from '@ankhorage/project-detector/types';
+import { isRecord } from '@ankhorage/utility/object';
 
 import { resolveProjectPackageJsonPath } from './packageJsonPath.js';
-import type {
-  DevtoolsConfigOptions,
-  DevtoolsEslintProfile,
-  ResolvedDevtoolsEslintProfile,
-} from './types.js';
+import { resolveEslintProfileFromDetectionInput } from './resolveEslintProfileFromDetectionInput.js';
+import type { DevtoolsConfigOptions, ResolvedDevtoolsEslintProfile } from './types.js';
 
+/*** Read the consuming package metadata and resolve its requested ESLint profile. */
 export function resolveEslintProfile(
   options: DevtoolsConfigOptions,
 ): ResolvedDevtoolsEslintProfile {
@@ -24,17 +22,7 @@ export function resolveEslintProfile(
   return resolveEslintProfileFromDetectionInput('auto', input);
 }
 
-export function resolveEslintProfileFromDetectionInput(
-  requestedProfile: DevtoolsEslintProfile,
-  input: ProjectDetectionInput,
-): ResolvedDevtoolsEslintProfile {
-  if (requestedProfile !== 'auto') return requestedProfile;
-
-  const { traits } = detectProject(input);
-  if (traits.has('react-native') || traits.has('expo')) return 'react-native';
-  return traits.has('react') ? 'react' : 'base';
-}
-
+/*** Normalize relevant manifest fields without evaluating project configuration. */
 function readDetectionInput(packageJsonPath: string): ProjectDetectionInput {
   const parsed = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as unknown;
   if (!isRecord(parsed)) {
@@ -50,6 +38,7 @@ function readDetectionInput(packageJsonPath: string): ProjectDetectionInput {
   };
 }
 
+/*** Include one dependency section only when it contains a record. */
 function optionalDependencyMap(
   key: 'dependencies' | 'devDependencies' | 'peerDependencies',
   value: unknown,
@@ -58,16 +47,18 @@ function optionalDependencyMap(
   return dependencyMap === undefined ? {} : { [key]: dependencyMap };
 }
 
+/*** Retain string package ranges from one manifest dependency section. */
 function toDependencyMap(value: unknown): ProjectDependencyMap | undefined {
   if (!isRecord(value)) return undefined;
 
-  const dependencies: Record<string, string> = {};
-  for (const [name, version] of Object.entries(value)) {
-    if (typeof version === 'string') dependencies[name] = version;
-  }
-  return dependencies;
+  return Object.fromEntries(
+    Object.entries(value).flatMap(([name, version]) =>
+      typeof version === 'string' ? [[name, version]] : [],
+    ),
+  );
 }
 
+/*** Retain runtime engine signals used by the canonical detector. */
 function optionalEngines(value: unknown): Partial<ProjectDetectionInput> {
   if (!isRecord(value)) return {};
 
@@ -76,8 +67,4 @@ function optionalEngines(value: unknown): Partial<ProjectDetectionInput> {
     ...(typeof value.node === 'string' ? { node: value.node } : {}),
   };
   return Object.keys(engines).length === 0 ? {} : { engines };
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

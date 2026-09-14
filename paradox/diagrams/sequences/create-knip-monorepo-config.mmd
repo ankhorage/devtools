@@ -1,0 +1,5 @@
+sequenceDiagram
+  participant participant_createKnipConfig as createKnipConfig
+  participant participant_createKnipMonorepoConfig as createKnipMonorepoConfig
+  participant_createKnipMonorepoConfig->>participant_createKnipConfig: createKnipConfig()
+  participant_createKnipConfig-->>participant_createKnipMonorepoConfig: return

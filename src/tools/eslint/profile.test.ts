@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 
-import { resolveEslintProfileFromDetectionInput } from './profile.js';
+import { resolveEslintProfileFromDetectionInput } from './resolveEslintProfileFromDetectionInput.js';
 
 test('selects the base profile for plain TypeScript projects', () => {
   expect(

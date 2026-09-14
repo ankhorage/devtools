@@ -1,0 +1,4463 @@
+{
+  "packageName": "@ankhorage/devtools",
+  "packageId": "@ankhorage/devtools",
+  "description": "Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects",
+  "collaborators": null,
+  "donation": null,
+  "badges": [
+    {
+      "id": "license",
+      "label": "license",
+      "value": "MIT",
+      "color": "2563eb"
+    },
+    {
+      "id": "npm",
+      "label": "npm",
+      "value": "v1.14.7",
+      "color": "cb3837"
+    },
+    {
+      "id": "runtime",
+      "label": "runtime",
+      "value": "bun",
+      "color": "f59e0b"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "value": "strict",
+      "color": "2563eb"
+    },
+    {
+      "id": "eslint",
+      "label": "eslint",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "prettier",
+      "label": "prettier",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "build",
+      "label": "build",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "docs",
+      "label": "docs",
+      "value": "paradox",
+      "color": "0f766e"
+    }
+  ],
+  "usage": {
+    "packageName": "@ankhorage/devtools",
+    "commands": [
+      {
+        "name": "ankhorage-changeset",
+        "command": "bunx @ankhorage/devtools ankhorage-changeset"
+      },
+      {
+        "name": "ankhorage-eslint",
+        "command": "bunx @ankhorage/devtools ankhorage-eslint"
+      },
+      {
+        "name": "ankhorage-knip",
+        "command": "bunx @ankhorage/devtools ankhorage-knip"
+      },
+      {
+        "name": "ankhorage-prettier",
+        "command": "bunx @ankhorage/devtools ankhorage-prettier"
+      }
+    ]
+  },
+  "readmeUsageDescription": "Shared development tools and repository standards for Ankhorage TypeScript projects.\n\n## What it owns\n\n`@ankhorage/devtools` is the single source of truth for these separate concerns:\n\n```text\nsrc/\n├── cli/\n├── policy/\n└── tools/\n    ├── agents/\n    ├── skills/\n    ├── eslint/\n    ├── prettier/\n    ├── knip/\n    ├── package/\n    ├── workflows/\n    └── vscode/\n```\n\n- `policy`: shared repository runtime policy, including the canonical Bun version\n- `changesets`: package-resolved Changesets execution and release command policy\n- `agents`: canonical repository `AGENTS.md` rendered from stable package identity\n- `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`\n- `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner\n- `prettier`: shared Prettier configuration and the bundled Prettier runner\n- `knip`: shared Knip configuration helpers and the bundled Knip runner\n- `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract\n- `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`\n- `vscode`: canonical `.vscode/settings.json` and `extensions.json`\n\nThe package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.\n\n## Bootstrap\n\nFor a repository that does not yet depend on the shared toolchain:\n\n```bash\nbun add -D @ankhorage/devtools\nbunx @ankhorage/ankh devtools sync .\n```\n\nAfter the first install, the normal workflow is:\n\n```bash\nankh devtools sync\n```\n\nThe target path is optional and defaults to the current working directory.\n\nSynchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, applies the managed Bun runtime policy, and removes direct devDependencies for tools/plugins owned by devtools. When package metadata changes, sync runs `bun install` so installed dependencies and `bun.lock` match the synchronized manifest. Unrelated package metadata, dependencies, and scripts are preserved.\n\n`devtools sync` does not upgrade the globally installed Bun executable. The managed version applies to repository metadata, Bun types, and GitHub workflows.\n\n## Ankh provider\n\nThe package is discovered under the `devtools` category and exposes these capabilities:\n\n- `devtools.lint`\n- `devtools.changeset`\n- `devtools.format`\n- `devtools.knip`\n- `devtools.sync`\n- `devtools.status`\n- `devtools.agents.sync`\n- `devtools.agents.status`\n- `devtools.skills.sync`\n- `devtools.skills.status`\n- `devtools.eslint.sync`\n- `devtools.eslint.status`\n- `devtools.prettier.sync`\n- `devtools.prettier.status`\n- `devtools.knip.sync`\n- `devtools.knip.status`\n- `devtools.package.sync`\n- `devtools.package.status`\n- `devtools.workflows.sync`\n- `devtools.workflows.status`\n- `devtools.vscode.sync`\n- `devtools.vscode.status`\n\nThe canonical command prefix is always:\n\n```bash\nankh devtools ...\n```\n\n## Tool commands\n\n```bash\nankh devtools changeset -- status --since=origin/main\nankh devtools lint -- --max-warnings=0 .\nankh devtools format -- --check .\nankh devtools knip -- --production\n```\n\nThese delegate to the same bundled tools as the package binaries:\n\n- `ankh devtools changeset` → `ankhorage-changeset`\n- `ankh devtools lint` → `ankhorage-eslint`\n- `ankh devtools format` → `ankhorage-prettier`\n- `ankh devtools knip` → `ankhorage-knip`\n\nThe synchronized package scripts are:\n\n```json\n{\n  \"scripts\": {\n    \"changeset\": \"ankhorage-changeset\",\n    \"changeset:status\": \"ankhorage-changeset status --since=origin/main\",\n    \"lint\": \"ankhorage-eslint . --max-warnings=0\",\n    \"lint:fix\": \"ankhorage-eslint . --fix --max-warnings=0\",\n    \"format\": \"ankhorage-prettier --write .\",\n    \"format:check\": \"ankhorage-prettier --check .\",\n    \"knip:check\": \"ankhorage-knip\",\n    \"version-packages\": \"ankhorage-changeset version\"\n  }\n}\n```\n\n## Repository synchronization\n\nSynchronize or inspect every managed concern:\n\n```bash\nankh devtools sync .\nankh devtools status .\n```\n\nSynchronize one concern:\n\n```bash\nankh devtools agents sync .\nankh devtools skills sync .\nankh devtools eslint sync .\nankh devtools prettier sync .\nankh devtools knip sync .\nankh devtools package sync .\nankh devtools workflows sync .\nankh devtools vscode sync .\n```\n\nReport one concern:\n\n```bash\nankh devtools agents status .\nankh devtools skills status .\nankh devtools eslint status .\nankh devtools prettier status .\nankh devtools knip status .\nankh devtools package status .\nankh devtools workflows status .\nankh devtools vscode status .\n```\n\nPreview synchronization without writing:\n\n```bash\nankh devtools sync . --dry-run\nankh devtools agents sync . --dry-run\nankh devtools skills sync . --dry-run\nankh devtools eslint sync . --dry-run\nankh devtools package sync . --dry-run\n```\n\nA dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.\n\n## Synchronization guarantees\n\nSynchronization is deterministic and idempotent:\n\n- missing managed artifacts are created\n- outdated centrally owned artifacts are updated\n- stale files in Devtools-owned skill trees are removed\n- the managed Bun runtime version is applied consistently to package metadata and workflows\n- Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration\n- package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync\n- current artifacts are left untouched\n- unrelated files and package fields are preserved\n- repeated sync produces only `unchanged` results\n- invalid target paths and write failures return a non-zero exit code\n- create-only repository extension files are never overwritten after creation\n\nThe canonical workflow, VS Code, and skill files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.\n\n## Managed agent instructions\n\n`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.\n\nOnly the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.\n\n## Managed repository skills\n\n`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.\n\n`.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.\n\nAgent Skill scripts are always TypeScript files with a `.ts` extension and run with Bun. JavaScript skill scripts using `.js`, `.mjs`, or `.cjs` are not supported.\n\n## ESLint profiles\n\n`createConfig()` defaults to `profile: 'auto'`.\n\nAutomatic detection reads the consuming repository's `package.json` and delegates project trait detection to `@ankhorage/project-detector`. Dependency signals are considered across `dependencies`, `devDependencies`, and `peerDependencies`.\n\nProfile precedence is:\n\n```text\nReact Native / Expo\n        ↓\nreact-native\n        ↓ includes\nreact\n        ↓ includes\nbase\n```\n\nA React or Next.js project selects `react`. A React Native or Expo project selects `react-native`. Everything else selects `base`.\n\nAn unusual repository can opt out of automatic selection:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\n\nexport default createConfig({\n  files: ['src/**/*.ts'],\n  profile: 'base',\n  project: ['./tsconfig.json'],\n  tsconfigRootDir: import.meta.dirname,\n});\n```\n\nThe base profile enforces the shared TypeScript policy plus:\n\n- maximum 50 effective lines per function\n- maximum 300 effective lines per file\n- modified cyclomatic complexity maximum 15\n- security review for dynamic object access\n- rejection of non-literal `require()` calls\n\nThe React profile adds React and React Hooks correctness rules. The React Native profile composes the React profile and adds the selected React Native style rules.\n\n### Managed ESLint setup and local overrides\n\n`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.\n\nThe canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\nimport localConfig from './eslint.local.config.mjs';\n\nconst localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];\n\nexport default [\n  ...createConfig({\n    files: ['src/**/*.{ts,tsx}'],\n    project: ['./tsconfig.json'],\n    tsconfigRootDir: import.meta.dirname,\n  }),\n  ...localEntries,\n];\n```\n\nUse `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.\n\nEach public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.\n\nAn existing consumer-owned `eslint.examples.config.mjs` requires explicit adoption before synchronization can replace it. Status, dry-run, and sync report an actionable error instead of overwriting or deleting it. Move its repository-specific overrides into `eslint.local.config.mjs`, preserving existing entries and the examples-only file scope; retain custom parser options there when needed. Remove the old examples config only after that transfer, then rerun sync and the examples lint. The generated wrapper carries a Devtools ownership marker and subsequent synchronization updates it normally. Do not mark an old consumer config as managed to bypass this transfer.\n\nRepositories can lint their independently runnable examples explicitly:\n\n```bash\nankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0\n```\n\n## Prettier\n\n`ankh devtools prettier sync` owns `.prettierrc.js`, emits the correct ESM or CommonJS wrapper based on the repository's `package.json` module type, and creates `prettier.local.config.js` once for narrow repository-specific options.\n\nThe consumer delegates formatting policy to:\n\n```text\n@ankhorage/devtools/prettier\n```\n\nThe wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.\n\n## Knip\n\n`ankh devtools knip sync` bootstraps `knip.config.ts` with:\n\n```ts\nimport { createKnipConfig } from '@ankhorage/devtools/knip';\n\nexport default createKnipConfig();\n```\n\n`knip.config.ts` is create-only after bootstrap so repositories can retain narrow local entries, projects, ignores, binaries, dependencies, or switch to `createKnipMonorepoConfig()` without synchronization overwriting those extensions.\n\n## Managed Bun runtime policy\n\nThe canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:\n\n<!-- devtools-bun-policy:start -->\n\n```text\nBun runtime       1.4.2\npackageManager    bun@1.4.2\n@types/bun        ^1.4.1\n```\n\n<!-- devtools-bun-policy:end -->\n\nRenovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.ts`. Its trusted base-branch workflow invokes `bun scripts/sync-renovate-owner.ts sync repository` to regenerate `packageManager`, `@types/bun`, the Bun workflow setup versions, this documentation block, and `bun.lock`, then runs `bun scripts/sync-renovate-owner.ts status repository` to reject stale generated artifacts. Do not synchronize those values manually in a Renovate branch.\n\n## Managed package contract\n\n`ankh devtools package sync` merge-updates `package.json` rather than replacing it.\n\nIt owns:\n\n- the `@ankhorage/devtools` dependency version range\n- removal of direct consumer `@changesets/cli` dependencies\n- `packageManager` according to the managed Bun runtime policy\n- the `@types/bun` development dependency according to the managed Bun runtime policy\n- `lint`\n- `lint:fix`\n- `format`\n- `format:check`\n- `knip:check`\n- `changeset`, `changeset:status`, and `version-packages` for Changesets-enabled repositories\n\nFor normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.\n\nWhen this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct dependencies for Changesets and direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.\n\nA repository participates in Changesets synchronization when `.changeset/config.json` exists or any of the canonical `changeset`, `changeset:status`, or `version-packages` script keys is present. This explicit rule migrates partially configured repositories while ensuring repositories without Changesets do not acquire release tooling. The repository continues to own `.changeset/config.json`, pending `.changeset/*.md` files, and its package release semantics. Direct `@changesets/cli` declarations, ambient `changeset` scripts, and `bunx changeset` workflow commands are not supported consumer forms.\n\n## Managed GitHub Actions workflows\n\n`workflows` owns exactly:\n\n```text\n.github/workflows/ci.yml\n.github/workflows/renovate.yml\n.github/workflows/release.yml\n```\n\nCI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. They also render Changesets status, version, and publish commands from the same policy that owns the synchronized package scripts. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.\n\nThe Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates. The trusted workflow scopes the Ankhorage Renovate Sync GitHub App token to the current repository and uses it only for the validated commit, allowing every normal pull-request CI workflow to start without manual approval. It never checks out or executes pull-request code in the privileged `pull_request_target` context.\n\n## Managed VS Code configuration\n\n`vscode` owns exactly:\n\n```text\n.vscode/settings.json\n.vscode/extensions.json\n```\n\nUnknown workflow and VS Code files are never deleted.\n\n## Adding another managed concern\n\nA new concern should:\n\n1. live in its own sibling directory under `src/tools`\n2. define only the files and behavior it owns\n3. expose deterministic status and synchronization\n4. add provider commands under `ankh devtools`\n5. include dry-run, status, and idempotence coverage\n6. document its central ownership and repository-owned extension points\n",
+  "readmeUsage": [],
+  "readmeCli": {
+    "description": "Run and synchronize the shared development toolchain through the Ankh CLI.\n\n`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and\n`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.\nRepository synchronization is available through\n`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,\n`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.\n\nSync commands accept an optional target directory and `--dry-run`. Aggregate sync is\ndeterministic and idempotent: canonical managed files and skill trees are created or updated,\nunrelated repository-local skills and create-only local extension files remain repository-owned,\nand package metadata is merge-updated without replacing unrelated fields.\n\nFresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding\n`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a\nlocal extension before the canonical auto-detecting wrapper is installed.",
+    "sourcePath": "src/cli/index.ts"
+  },
+  "readmeConfig": null,
+  "config": null,
+  "entrypoints": ["src/cli/index.ts", "src/tools/eslint/index.ts", "src/tools/knip/index.ts"],
+  "modules": [
+    {
+      "path": "src/cli/bin/changeset.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/cli/bin/eslint.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/cli/bin/knip.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/cli/bin/prettier.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "exports": []
+    },
+    {
+      "path": "src/cli/commands.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "DevtoolsCommandDefinition",
+        "DevtoolsExternalCommandDefinition",
+        "DevtoolsRepositoryCommandDefinition",
+        "DevtoolsToolName",
+        "findDevtoolsCommandByPath",
+        "getDevtoolsCommands",
+        "getDevtoolsToolCommand"
+      ]
+    },
+    {
+      "path": "src/cli/index.ts",
+      "isEntrypoint": true,
+      "dependencies": ["src/cli/commands.ts", "src/cli/runProviderCommand.ts"],
+      "exports": ["default"]
+    },
+    {
+      "path": "src/cli/runExternalTool.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/commands.ts"],
+      "exports": ["DevtoolsRunResult", "runExternalTool", "runExternalToolWithDependencies"]
+    },
+    {
+      "path": "src/cli/runProviderCommand.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/commands.ts",
+        "src/cli/runExternalTool.ts",
+        "src/cli/runRepositoryCommand.ts"
+      ],
+      "exports": ["DevtoolsProviderCommandContext", "runProviderCommand"]
+    },
+    {
+      "path": "src/cli/runRepositoryCommand.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/commands.ts",
+        "src/tools/agents/index.ts",
+        "src/tools/eslint/managed.ts",
+        "src/tools/knip/managed.ts",
+        "src/tools/package/index.ts",
+        "src/tools/package/syncBunDependencies.ts",
+        "src/tools/prettier/managed.ts",
+        "src/tools/shared/managedFiles.ts",
+        "src/tools/skills/managed.ts",
+        "src/tools/vscode/index.ts",
+        "src/tools/workflows/index.ts"
+      ],
+      "exports": [
+        "DevtoolsRepositoryCommandContext",
+        "DevtoolsRepositoryCommandResult",
+        "parseRepositoryArguments",
+        "runRepositoryCommand"
+      ]
+    },
+    {
+      "path": "src/cli/runStandaloneTool.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/cli/commands.ts", "src/cli/runExternalTool.ts"],
+      "exports": ["runStandaloneTool"]
+    },
+    {
+      "path": "src/internal/readmeDocs.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/policy/bunRuntimePolicy.ts"],
+      "exports": ["getReadmeDocumentationErrors"]
+    },
+    {
+      "path": "src/owner/synchronizeRenovateOwnerAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/policy/applyBunRuntimePolicy.ts",
+        "src/policy/bunRuntimePolicy.ts",
+        "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "src/tools/workflows/renderWorkflowAsync.ts"
+      ],
+      "exports": ["synchronizeRenovateOwnerAsync"]
+    },
+    {
+      "path": "src/policy/applyBunRuntimePolicy.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["applyBunRuntimePolicy"]
+    },
+    {
+      "path": "src/policy/bunRuntimePolicy.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["bunRuntimePolicy", "nodeRuntimePolicy"]
+    },
+    {
+      "path": "src/policy/changesetsPolicy.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["changesetsPolicy"]
+    },
+    {
+      "path": "src/tools/agents/index.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/shared/managedFiles.ts"],
+      "exports": ["agentsManagedFiles"]
+    },
+    {
+      "path": "src/tools/eslint/index.ts",
+      "isEntrypoint": true,
+      "dependencies": ["src/tools/eslint/resolveEslintProfile.ts", "src/tools/eslint/types.ts"],
+      "exports": [
+        "createConfig",
+        "defaultIgnores",
+        "defaultRestrictedImports",
+        "DevtoolsConfigOptions",
+        "DevtoolsEslintProfile",
+        "FlatConfigItem",
+        "ResolvedDevtoolsEslintProfile",
+        "RestrictedImport"
+      ]
+    },
+    {
+      "path": "src/tools/eslint/managed.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/shared/managedFiles.ts"],
+      "exports": ["eslintManagedFiles"]
+    },
+    {
+      "path": "src/tools/eslint/packageJsonPath.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/eslint/types.ts"],
+      "exports": ["resolveProjectPackageJsonPath"]
+    },
+    {
+      "path": "src/tools/eslint/resolveEslintProfile.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/tools/eslint/packageJsonPath.ts",
+        "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
+        "src/tools/eslint/types.ts"
+      ],
+      "exports": ["resolveEslintProfile"]
+    },
+    {
+      "path": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/eslint/types.ts"],
+      "exports": ["resolveEslintProfileFromDetectionInput"]
+    },
+    {
+      "path": "src/tools/eslint/types.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "DevtoolsConfigOptions",
+        "DevtoolsEslintProfile",
+        "FlatConfigItem",
+        "ResolvedDevtoolsEslintProfile",
+        "RestrictedImport"
+      ]
+    },
+    {
+      "path": "src/tools/knip/index.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": [
+        "createKnipConfig",
+        "createKnipMonorepoConfig",
+        "DevtoolsKnipConfigOptions",
+        "DevtoolsKnipMonorepoConfigOptions",
+        "DevtoolsKnipWorkspaceConfigOptions"
+      ]
+    },
+    {
+      "path": "src/tools/knip/managed.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/shared/managedFiles.ts"],
+      "exports": ["knipManagedFiles"]
+    },
+    {
+      "path": "src/tools/package/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/policy/applyBunRuntimePolicy.ts",
+        "src/policy/bunRuntimePolicy.ts",
+        "src/policy/changesetsPolicy.ts",
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "applyManagedPackageContract",
+        "inspectPackageManifest",
+        "isManagedPackageContractCurrent",
+        "readCurrentDevtoolsVersion",
+        "syncPackageManifest"
+      ]
+    },
+    {
+      "path": "src/tools/package/syncBunDependencies.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/shared/managedFiles.ts"],
+      "exports": ["planBunDependencySync", "syncBunDependencies"]
+    },
+    {
+      "path": "src/tools/prettier/managed.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/shared/managedFiles.ts"],
+      "exports": ["prettierManagedFiles"]
+    },
+    {
+      "path": "src/tools/shared/managedFiles.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "inspectManagedFiles",
+        "ManagedFileDefinition",
+        "ManagedFileStatus",
+        "ManagedFileSyncAction",
+        "ManagedFileSyncResult",
+        "resolveManagedTargetDirectory",
+        "syncManagedFiles"
+      ]
+    },
+    {
+      "path": "src/tools/skills/assetTestFixture.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["createAssetFixture", "createFixtureManifest", "ICON_SVG", "IMAGE_PNG"]
+    },
+    {
+      "path": "src/tools/skills/managed.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts",
+        "src/tools/skills/manifest.ts",
+        "src/tools/skills/selection.ts"
+      ],
+      "exports": ["inspectManagedSkills", "syncManagedSkills"]
+    },
+    {
+      "path": "src/tools/skills/manifest.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "assertManagedSkillPath",
+        "createManifestContents",
+        "isNodeError",
+        "ManagedSkillsManifest",
+        "MANIFEST_PATH",
+        "readManagedSkillsManifest",
+        "resolveManagedPath",
+        "SKILLS_ROOT"
+      ]
+    },
+    {
+      "path": "src/tools/skills/selection.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "BASELINE_SKILL_NAMES",
+        "isZoraDesignerContext",
+        "ManagedSkillName",
+        "PROFILE_SKILL_NAMES",
+        "selectManagedSkillNames"
+      ]
+    },
+    {
+      "path": "src/tools/skills/zoraDesignerOwnerFixtures.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "COLOR_THEORY_FIXTURE_SOURCE",
+        "CONTRACTS_FIXTURE_SOURCE",
+        "createThemeConfig",
+        "TEMPLATES_FIXTURE_SOURCE",
+        "ZORA_METADATA_FIXTURE_SOURCE",
+        "ZORA_THEME_FIXTURE_SOURCE"
+      ]
+    },
+    {
+      "path": "src/tools/vscode/index.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/shared/managedFiles.ts"],
+      "exports": ["vscodeManagedFiles"]
+    },
+    {
+      "path": "src/tools/workflows/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/policy/bunRuntimePolicy.ts",
+        "src/tools/shared/managedFiles.ts",
+        "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "src/tools/workflows/renderWorkflowAsync.ts"
+      ],
+      "exports": ["workflowManagedFiles"]
+    },
+    {
+      "path": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/tools/workflows/renderWorkflowAsync.ts"],
+      "exports": ["renderRenovateWorkflowAsync"]
+    },
+    {
+      "path": "src/tools/workflows/renderWorkflowAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/policy/changesetsPolicy.ts"],
+      "exports": ["renderWorkflowAsync", "WorkflowPolicy"]
+    }
+  ],
+  "exports": [
+    {
+      "name": "createConfig",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/tools/eslint/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 75,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": ["DevtoolsConfigOptions"],
+      "signatures": [
+        {
+          "label": "(options: DevtoolsConfigOptions) => Linter.Config<import(\"@eslint/core\").RulesConfig>[]",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "DevtoolsConfigOptions",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Linter.Config<import(\"@eslint/core\").RulesConfig>[]",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createKnipConfig",
+      "description": "Build shared Knip configuration while preserving repository-specific discovery.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/tools/knip/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 38,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/knip/index.ts"],
+      "relatedSymbols": ["DevtoolsKnipConfigOptions"],
+      "signatures": [
+        {
+          "label": "(options?: DevtoolsKnipConfigOptions) => KnipConfig",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "DevtoolsKnipConfigOptions",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "KnipConfig",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "createKnipMonorepoConfig",
+      "description": "Build shared monorepo Knip configuration.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/tools/knip/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 53,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/knip/index.ts"],
+      "relatedSymbols": ["DevtoolsKnipMonorepoConfigOptions"],
+      "signatures": [
+        {
+          "label": "(options?: DevtoolsKnipMonorepoConfigOptions) => KnipConfig",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "DevtoolsKnipMonorepoConfigOptions",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "KnipConfig",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "defaultIgnores",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/tools/eslint/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 43,
+        "column": 14
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "defaultRestrictedImports",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/tools/eslint/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 56,
+        "column": 14
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "DevtoolsConfigOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/tools/eslint/types.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/types.ts",
+        "line": 13,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": ["DevtoolsEslintProfile", "FlatConfigItem", "RestrictedImport"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "additionalIgnores",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "allowDefaultProject",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "files",
+          "kind": "property",
+          "type": "string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "includePrettier",
+          "kind": "property",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "overrides",
+          "kind": "property",
+          "type": "FlatConfigItem[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "packageJsonPath",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "profile",
+          "kind": "property",
+          "type": "DevtoolsEslintProfile | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "project",
+          "kind": "property",
+          "type": "string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "restrictedImports",
+          "kind": "property",
+          "type": "RestrictedImport[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "tsconfigRootDir",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "DevtoolsEslintProfile",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/tools/eslint/types.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/types.ts",
+        "line": 10,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "DevtoolsKnipConfigOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/tools/knip/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 24,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/knip/index.ts"],
+      "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "entry",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignore",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignoreBinaries",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignoreDependencies",
+          "kind": "property",
+          "type": "(string | RegExp)[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignoreFiles",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "project",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "workspaces",
+          "kind": "property",
+          "type": "Record<string, DevtoolsKnipWorkspaceConfigOptions> | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "DevtoolsKnipMonorepoConfigOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/tools/knip/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 28,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/knip/index.ts"],
+      "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+      "signatures": [],
+      "members": [
+        {
+          "name": "root",
+          "kind": "property",
+          "type": "DevtoolsKnipWorkspaceConfigOptions | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "workspaceDefaults",
+          "kind": "property",
+          "type": "DevtoolsKnipWorkspaceConfigOptions | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "workspaceGlobs",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "workspaces",
+          "kind": "property",
+          "type": "Record<string, DevtoolsKnipWorkspaceConfigOptions> | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "DevtoolsKnipWorkspaceConfigOptions",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/tools/knip/index.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 15,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/knip/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "entry",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignore",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignoreBinaries",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignoreDependencies",
+          "kind": "property",
+          "type": "(string | RegExp)[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "ignoreFiles",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "project",
+          "kind": "property",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "FlatConfigItem",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/tools/eslint/types.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/types.ts",
+        "line": 3,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "provider",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "value",
+      "modulePath": "src/cli/index.ts",
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 31,
+        "column": 7
+      },
+      "exportPaths": ["src/cli/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "ResolvedDevtoolsEslintProfile",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "unknown",
+      "modulePath": "src/tools/eslint/types.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/types.ts",
+        "line": 11,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "RestrictedImport",
+      "description": null,
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/tools/eslint/types.ts",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/types.ts",
+        "line": 5,
+        "column": 1
+      },
+      "exportPaths": ["src/tools/eslint/index.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "message",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "name",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    }
+  ],
+  "components": [],
+  "sourceFunctions": [
+    {
+      "name": "getDevtoolsCommands",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/commands.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "findDevtoolsCommandByPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/commands.ts",
+        "line": 201,
+        "column": 1
+      }
+    },
+    {
+      "name": "getDevtoolsToolCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/commands.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
+      "name": "externalCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/commands.ts",
+        "line": 225,
+        "column": 1
+      }
+    },
+    {
+      "name": "repositoryCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/commands.ts",
+        "line": 246,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageVersion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 51,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNonEmptyString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 63,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/index.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "runExternalTool",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 61,
+        "column": 1
+      }
+    },
+    {
+      "name": "runExternalToolWithDependencies",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "settle",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 90,
+        "column": 11
+      }
+    },
+    {
+      "name": "resolveExecutionTarget",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "findPackageJsonPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 146,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageBinPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 162,
+        "column": 1
+      }
+    },
+    {
+      "name": "shouldExecuteWithNode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 189,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 199,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runExternalTool.ts",
+        "line": 203,
+        "column": 1
+      }
+    },
+    {
+      "name": "runProviderCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runProviderCommand.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "runRepositoryCommand",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseRepositoryArguments",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "runStatus",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "runSync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "getManagedFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 140,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeStatusOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 162,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeSyncOutput",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 179,
+        "column": 1
+      }
+    },
+    {
+      "name": "getActionPrefix",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 189,
+        "column": 1
+      }
+    },
+    {
+      "name": "formatAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 202,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 221,
+        "column": 1
+      }
+    },
+    {
+      "name": "runStandaloneTool",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/cli/runStandaloneTool.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "getReadmeDocumentationErrors",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/internal/readmeDocs.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "synchronizeRenovateOwnerAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 10,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertDevtoolsTargetAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManagedDefinitionsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "getOutdatedPathsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 115,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 133,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 137,
+        "column": 1
+      }
+    },
+    {
+      "name": "readTargetBunPolicyAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "replaceReadmePolicy",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 166,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderReadmePolicy",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 185,
+        "column": 1
+      }
+    },
+    {
+      "name": "runBunLockfileAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 193,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializePackageManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 217,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncDefinitionsAsync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 221,
+        "column": 1
+      }
+    },
+    {
+      "name": "applyBunRuntimePolicy",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/policy/applyBunRuntimePolicy.ts",
+        "line": 1,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/policy/applyBunRuntimePolicy.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "toRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/policy/applyBunRuntimePolicy.ts",
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderAgentsFile",
+      "description": "Render mandatory repository instructions from the target package identity.",
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "escapeInlineCode",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 104,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "readNonEmptyString",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 112,
+        "column": 1
+      }
+    },
+    {
+      "name": "createConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 75,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeOptions",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTypeCheckedConfigs",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "createBaseConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 111,
+        "column": 1
+      }
+    },
+    {
+      "name": "createTypeScriptRules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 139,
+        "column": 1
+      }
+    },
+    {
+      "name": "createImportRules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "createQualityRules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "createSecurityRules",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "createProfileConfigs",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 193,
+        "column": 1
+      }
+    },
+    {
+      "name": "createReactConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 205,
+        "column": 1
+      }
+    },
+    {
+      "name": "createReactNativeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 227,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderInitialLocalConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 64,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasExamplesDirectory",
+      "description": "Report whether the target repository owns public examples at its root.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertExamplesConfigOwnershipAsync",
+      "description": "Require explicit adoption of consumer overrides before managing an existing examples config.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveProjectPackageJsonPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/packageJsonPath.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveEslintProfile",
+      "description": "Read the consuming package metadata and resolve its requested ESLint profile.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/resolveEslintProfile.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "readDetectionInput",
+      "description": "Normalize relevant manifest fields without evaluating project configuration.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/resolveEslintProfile.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalDependencyMap",
+      "description": "Include one dependency section only when it contains a record.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/resolveEslintProfile.ts",
+        "line": 42,
+        "column": 1
+      }
+    },
+    {
+      "name": "toDependencyMap",
+      "description": "Retain string package ranges from one manifest dependency section.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/resolveEslintProfile.ts",
+        "line": 51,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalEngines",
+      "description": "Retain runtime engine signals used by the canonical detector.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/resolveEslintProfile.ts",
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveEslintProfileFromDetectionInput",
+      "description": "Apply Devtools profile precedence to traits from the canonical project detector.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "createKnipConfig",
+      "description": "Build shared Knip configuration while preserving repository-specific discovery.",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
+      "name": "createKnipMonorepoConfig",
+      "description": "Build shared monorepo Knip configuration.",
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectPackageManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 66,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncPackageManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 87,
+        "column": 1
+      }
+    },
+    {
+      "name": "applyManagedPackageContract",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "isManagedPackageContractCurrent",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 161,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCurrentDevtoolsVersion",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 188,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 198,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasCurrentBunRuntimePolicy",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 215,
+        "column": 1
+      }
+    },
+    {
+      "name": "applyDevtoolsDependencyPlacement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 223,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasCurrentDevtoolsDependencyPlacement",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 240,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeOwnedDependencies",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizedDependencies",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 269,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasStandardScripts",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 278,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasCurrentChangesetsScripts",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 285,
+        "column": 1
+      }
+    },
+    {
+      "name": "isChangesetsEnabled",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 297,
+        "column": 1
+      }
+    },
+    {
+      "name": "serializePackageManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 309,
+        "column": 1
+      }
+    },
+    {
+      "name": "toRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 313,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 317,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 321,
+        "column": 1
+      }
+    },
+    {
+      "name": "planBunDependencySync",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/syncBunDependencies.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncBunDependencies",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/syncBunDependencies.ts",
+        "line": 14,
+        "column": 1
+      }
+    },
+    {
+      "name": "runBunInstall",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/package/syncBunDependencies.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPrettierConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderInitialLocalConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageType",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSharedOnlyConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveManagedTargetDirectory",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectManagedFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 56,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncManagedFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncManagedFile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 111,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCanonicalContents",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 152,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertSingleContentSource",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 171,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMissingFileError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/shared/managedFiles.ts",
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "createFixtureManifest",
+      "description": "Create manifest configuration shared by the asset scaffolding fixture.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/assetTestFixture.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAssetFixture",
+      "description": "Create separate screen evidence, image content and SVG with runtime references.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/assetTestFixture.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAssetEntries",
+      "description": "Describe the reusable icon and image inputs independently of filesystem setup.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/assetTestFixture.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectManagedSkills",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 28,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncManagedSkills",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 35,
+        "column": 1
+      }
+    },
+    {
+      "name": "applySkillAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertNoSymlinkSegments",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectCanonicalSkillFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 105,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectObsoletePaths",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 122,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManagedSkillPlan",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 155,
+        "column": 1
+      }
+    },
+    {
+      "name": "getSyncAction",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 184,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectDesiredFile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRegularManagedFile",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 217,
+        "column": 1
+      }
+    },
+    {
+      "name": "readDirectoryFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 233,
+        "column": 1
+      }
+    },
+    {
+      "name": "readTargetDirectoryFiles",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 261,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeEmptyParentDirectories",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 291,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertSkillName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/managed.ts",
+        "line": 311,
+        "column": 1
+      }
+    },
+    {
+      "name": "createManifestContents",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "readManagedSkillsManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 46,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertManagedSkillPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveManagedPath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 77,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseManagedSkillsManifest",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 81,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertSafeRelativePath",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 125,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSafeName",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 129,
+        "column": 1
+      }
+    },
+    {
+      "name": "sha256",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/manifest.ts",
+        "line": 133,
+        "column": 1
+      }
+    },
+    {
+      "name": "selectManagedSkillNames",
+      "description": "Select baseline and profile-specific managed skills from current repository traits.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
+      "name": "isZoraDesignerContext",
+      "description": "Identify ZORA owners and generated-app authoring repositories without explicit skill lists.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifest",
+      "description": "Read package metadata used for profile selection, treating a missing manifest as an empty one.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 53,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectDependencyNames",
+      "description": "Combine all dependency sections that describe the repository's current package context.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": "Narrow filesystem errors that expose a Node error code.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": "Narrow unknown package metadata to a record.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 94,
+        "column": 1
+      }
+    },
+    {
+      "name": "readNonEmptyString",
+      "description": "Return a trimmed package name when one is declared.",
+      "sourceLocation": {
+        "filePath": "src/tools/skills/selection.ts",
+        "line": 99,
+        "column": 1
+      }
+    },
+    {
+      "name": "createThemeConfig",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/skills/zoraDesignerOwnerFixtures.ts",
+        "line": 1,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkflowDefinition",
+      "description": null,
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/index.ts",
+        "line": 31,
+        "column": 1
+      }
+    },
+    {
+      "name": "createRenovateWorkflowDefinition",
+      "description": "Creates the managed workflow whose immutable digest remains Renovate-owned.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/index.ts",
+        "line": 44,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderRenovateWorkflowAsync",
+      "description": "Renders the canonical workflow while retaining Renovate's exact trusted digest.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSingleRenovateWorkflowDigest",
+      "description": "Reads one exact immutable digest from the canonical Renovate workflow reference.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "line": 28,
+        "column": 1
+      }
+    },
+    {
+      "name": "readOptionalWorkflowAsync",
+      "description": "Reads an existing managed workflow without treating first-time creation as an error.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": "Narrows filesystem failures to Node errors with stable codes.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "line": 48,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderWorkflowAsync",
+      "description": "Renders one workflow template with the canonical runtime and Changesets policy.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "line": 11,
+        "column": 1
+      }
+    }
+  ],
+  "sequenceScenarios": [
+    {
+      "kind": "export",
+      "name": "createConfig",
+      "sourcePath": "src/tools/eslint/index.ts",
+      "symbolName": "createConfig",
+      "description": null,
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createKnipConfig",
+      "sourcePath": "src/tools/knip/index.ts",
+      "symbolName": "createKnipConfig",
+      "description": "Build shared Knip configuration while preserving repository-specific discovery.",
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "createKnipMonorepoConfig",
+      "sourcePath": "src/tools/knip/index.ts",
+      "symbolName": "createKnipMonorepoConfig",
+      "description": "Build shared monorepo Knip configuration.",
+      "isReadme": false
+    }
+  ],
+  "graphs": {
+    "imports": [
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/cli/runProviderCommand.ts",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/runExternalTool.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/runExternalTool.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/runRepositoryCommand.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/agents/index.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/eslint/managed.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/knip/managed.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/package/index.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/package/syncBunDependencies.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/prettier/managed.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/skills/managed.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/vscode/index.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/workflows/index.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runStandaloneTool.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runStandaloneTool.ts"
+      },
+      {
+        "fromPath": "src/cli/runStandaloneTool.ts",
+        "toPath": "src/cli/runExternalTool.ts",
+        "sourcePath": "src/cli/runStandaloneTool.ts"
+      },
+      {
+        "fromPath": "src/internal/readmeDocs.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/internal/readmeDocs.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/policy/applyBunRuntimePolicy.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/bin/changeset.ts",
+        "toPath": "src/cli/runStandaloneTool.ts",
+        "sourcePath": "src/cli/bin/changeset.ts"
+      },
+      {
+        "fromPath": "src/cli/bin/eslint.ts",
+        "toPath": "src/cli/runStandaloneTool.ts",
+        "sourcePath": "src/cli/bin/eslint.ts"
+      },
+      {
+        "fromPath": "src/cli/bin/knip.ts",
+        "toPath": "src/cli/runStandaloneTool.ts",
+        "sourcePath": "src/cli/bin/knip.ts"
+      },
+      {
+        "fromPath": "src/cli/bin/prettier.ts",
+        "toPath": "src/cli/runStandaloneTool.ts",
+        "sourcePath": "src/cli/bin/prettier.ts"
+      },
+      {
+        "fromPath": "src/tools/agents/index.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/index.ts",
+        "toPath": "src/tools/eslint/resolveEslintProfile.ts",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/index.ts",
+        "toPath": "src/tools/eslint/types.ts",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/managed.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/packageJsonPath.ts",
+        "toPath": "src/tools/eslint/types.ts",
+        "sourcePath": "src/tools/eslint/packageJsonPath.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/resolveEslintProfile.ts",
+        "toPath": "src/tools/eslint/packageJsonPath.ts",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/resolveEslintProfile.ts",
+        "toPath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/resolveEslintProfile.ts",
+        "toPath": "src/tools/eslint/types.ts",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
+        "toPath": "src/tools/eslint/types.ts",
+        "sourcePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts"
+      },
+      {
+        "fromPath": "src/tools/knip/managed.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/knip/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/policy/applyBunRuntimePolicy.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/policy/changesetsPolicy.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/syncBunDependencies.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromPath": "src/tools/prettier/managed.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/skills/managed.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/skills/managed.ts",
+        "toPath": "src/tools/skills/manifest.ts",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/skills/managed.ts",
+        "toPath": "src/tools/skills/selection.ts",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/vscode/index.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/vscode/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
+        "toPath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "toPath": "src/policy/changesetsPolicy.ts",
+        "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      }
+    ],
+    "calls": [
+      {
+        "fromSymbol": "src/cli/commands.ts",
+        "toSymbol": "externalCommand",
+        "callExpression": "externalCommand",
+        "sourcePath": "src/cli/commands.ts"
+      },
+      {
+        "fromSymbol": "src/cli/commands.ts",
+        "toSymbol": "repositoryCommand",
+        "callExpression": "repositoryCommand",
+        "sourcePath": "src/cli/commands.ts"
+      },
+      {
+        "fromSymbol": "src/cli/index.ts",
+        "toSymbol": "readPackageVersion",
+        "callExpression": "readPackageVersion",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "src/cli/index.ts",
+        "toSymbol": "getDevtoolsCommands",
+        "callExpression": "getDevtoolsCommands",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "handler",
+        "toSymbol": "runProviderCommand",
+        "callExpression": "runProviderCommand",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageVersion",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageVersion",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageVersion",
+        "toSymbol": "isNonEmptyString",
+        "callExpression": "isNonEmptyString",
+        "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runExternalTool.ts",
+        "toSymbol": "createRequire",
+        "callExpression": "createRequire",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "spawnProcess",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "runExternalTool",
+        "toSymbol": "runExternalToolWithDependencies",
+        "callExpression": "runExternalToolWithDependencies",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "runExternalToolWithDependencies",
+        "toSymbol": "resolveExecutionTarget",
+        "callExpression": "dependencies.resolveExecutionTarget",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "runExternalToolWithDependencies",
+        "toSymbol": "logError",
+        "callExpression": "dependencies.logError",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "runExternalToolWithDependencies",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "settle",
+        "toSymbol": "resolveResult",
+        "callExpression": "resolveResult",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runExternalTool.ts",
+        "toSymbol": "spawnProcess",
+        "callExpression": "dependencies.spawnProcess",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runExternalTool.ts",
+        "toSymbol": "on",
+        "callExpression": "child.on",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runExternalTool.ts",
+        "toSymbol": "logError",
+        "callExpression": "dependencies.logError",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runExternalTool.ts",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runExternalTool.ts",
+        "toSymbol": "settle",
+        "callExpression": "settle",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "resolveExecutionTarget",
+        "toSymbol": "readPackageBinPath",
+        "callExpression": "readPackageBinPath",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "resolveExecutionTarget",
+        "toSymbol": "shouldExecuteWithNode",
+        "callExpression": "shouldExecuteWithNode",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "findPackageJsonPath",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "findPackageJsonPath",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "findPackageJsonPath",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "readPackageBinPath",
+        "toSymbol": "findPackageJsonPath",
+        "callExpression": "findPackageJsonPath",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "readPackageBinPath",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "readPackageBinPath",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "readPackageBinPath",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "readPackageBinPath",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "shouldExecuteWithNode",
+        "toSymbol": "extname",
+        "callExpression": "extname",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "shouldExecuteWithNode",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "runProviderCommand",
+        "toSymbol": "runExternalTool",
+        "callExpression": "runExternalTool",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromSymbol": "runProviderCommand",
+        "toSymbol": "runRepositoryCommand",
+        "callExpression": "runRepositoryCommand",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "parseRepositoryArguments",
+        "callExpression": "parseRepositoryArguments",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "resolveManagedTargetDirectory",
+        "callExpression": "resolveManagedTargetDirectory",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "readCurrentDevtoolsVersion",
+        "callExpression": "readCurrentDevtoolsVersion",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "runStatus",
+        "callExpression": "runStatus",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "runSync",
+        "callExpression": "runSync",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
+        "toSymbol": "inspectPackageManifest",
+        "callExpression": "inspectPackageManifest",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
+        "toSymbol": "inspectManagedFiles",
+        "callExpression": "inspectManagedFiles",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
+        "toSymbol": "getManagedFiles",
+        "callExpression": "getManagedFiles",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
+        "toSymbol": "inspectManagedSkills",
+        "callExpression": "inspectManagedSkills",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
+        "toSymbol": "writeStatusOutput",
+        "callExpression": "writeStatusOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "syncPackageManifest",
+        "callExpression": "syncPackageManifest",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "syncManagedFiles",
+        "callExpression": "syncManagedFiles",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "getManagedFiles",
+        "callExpression": "getManagedFiles",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "syncManagedSkills",
+        "callExpression": "syncManagedSkills",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "planBunDependencySync",
+        "callExpression": "planBunDependencySync",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "syncDependencies",
+        "callExpression": "syncDependencies",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "writeSyncOutput",
+        "callExpression": "writeSyncOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "writeStatusOutput",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "writeSyncOutput",
+        "toSymbol": "getActionPrefix",
+        "callExpression": "getActionPrefix",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "writeSyncOutput",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "writeSyncOutput",
+        "toSymbol": "formatAction",
+        "callExpression": "formatAction",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStandaloneTool",
+        "toSymbol": "runExternalTool",
+        "callExpression": "runExternalTool",
+        "sourcePath": "src/cli/runStandaloneTool.ts"
+      },
+      {
+        "fromSymbol": "runStandaloneTool",
+        "toSymbol": "getDevtoolsToolCommand",
+        "callExpression": "getDevtoolsToolCommand",
+        "sourcePath": "src/cli/runStandaloneTool.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "readTargetBunPolicyAsync",
+        "callExpression": "readTargetBunPolicyAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "createManagedDefinitionsAsync",
+        "callExpression": "createManagedDefinitionsAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "assertDevtoolsTargetAsync",
+        "callExpression": "assertDevtoolsTargetAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "syncDefinitionsAsync",
+        "callExpression": "syncDefinitionsAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "__type",
+        "callExpression": "(options.runLockfileAsync ?? runBunLockfileAsync)",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeRenovateOwnerAsync",
+        "toSymbol": "getOutdatedPathsAsync",
+        "callExpression": "getOutdatedPathsAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDevtoolsTargetAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDevtoolsTargetAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDevtoolsTargetAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "serializePackageManifest",
+        "callExpression": "serializePackageManifest",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "applyBunRuntimePolicy",
+        "callExpression": "applyBunRuntimePolicy",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "renderWorkflowAsync",
+        "callExpression": "renderWorkflowAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "renderRenovateWorkflowAsync",
+        "callExpression": "renderRenovateWorkflowAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "replaceReadmePolicy",
+        "callExpression": "replaceReadmePolicy",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "readTargetBunPolicyAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "readTargetBunPolicyAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "replaceReadmePolicy",
+        "toSymbol": "renderReadmePolicy",
+        "callExpression": "renderReadmePolicy",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toSymbol": "resolvePromise",
+        "callExpression": "resolvePromise",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toSymbol": "rejectPromise",
+        "callExpression": "rejectPromise",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "syncDefinitionsAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "syncDefinitionsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "syncDefinitionsAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "syncDefinitionsAsync",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "syncDefinitionsAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "applyBunRuntimePolicy",
+        "toSymbol": "toRecord",
+        "callExpression": "toRecord",
+        "sourcePath": "src/policy/applyBunRuntimePolicy.ts"
+      },
+      {
+        "fromSymbol": "toRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/policy/applyBunRuntimePolicy.ts"
+      },
+      {
+        "fromSymbol": "src/cli/bin/changeset.ts",
+        "toSymbol": "runStandaloneTool",
+        "callExpression": "runStandaloneTool",
+        "sourcePath": "src/cli/bin/changeset.ts"
+      },
+      {
+        "fromSymbol": "src/cli/bin/eslint.ts",
+        "toSymbol": "runStandaloneTool",
+        "callExpression": "runStandaloneTool",
+        "sourcePath": "src/cli/bin/eslint.ts"
+      },
+      {
+        "fromSymbol": "src/cli/bin/knip.ts",
+        "toSymbol": "runStandaloneTool",
+        "callExpression": "runStandaloneTool",
+        "sourcePath": "src/cli/bin/knip.ts"
+      },
+      {
+        "fromSymbol": "src/cli/bin/prettier.ts",
+        "toSymbol": "runStandaloneTool",
+        "callExpression": "runStandaloneTool",
+        "sourcePath": "src/cli/bin/prettier.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "readPackageManifest",
+        "callExpression": "readPackageManifest",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "readNonEmptyString",
+        "callExpression": "readNonEmptyString",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "escapeInlineCode",
+        "callExpression": "escapeInlineCode",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "normalizeOptions",
+        "callExpression": "normalizeOptions",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "resolveEslintProfile",
+        "callExpression": "resolveEslintProfile",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "defineConfig",
+        "callExpression": "defineConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "createTypeCheckedConfigs",
+        "callExpression": "createTypeCheckedConfigs",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "createBaseConfig",
+        "callExpression": "createBaseConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "createProfileConfigs",
+        "callExpression": "createProfileConfigs",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createBaseConfig",
+        "toSymbol": "createTypeScriptRules",
+        "callExpression": "createTypeScriptRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createBaseConfig",
+        "toSymbol": "createImportRules",
+        "callExpression": "createImportRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createBaseConfig",
+        "toSymbol": "createQualityRules",
+        "callExpression": "createQualityRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createBaseConfig",
+        "toSymbol": "createSecurityRules",
+        "callExpression": "createSecurityRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createProfileConfigs",
+        "toSymbol": "createReactConfig",
+        "callExpression": "createReactConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createProfileConfigs",
+        "toSymbol": "createReactNativeConfig",
+        "callExpression": "createReactNativeConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createReactConfig",
+        "toSymbol": "fixupPluginRules",
+        "callExpression": "fixupPluginRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createReactNativeConfig",
+        "toSymbol": "fixupPluginRules",
+        "callExpression": "fixupPluginRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "hasExamplesDirectory",
+        "toSymbol": "assertExamplesConfigOwnershipAsync",
+        "callExpression": "assertExamplesConfigOwnershipAsync",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "hasExamplesDirectory",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "hasExamplesDirectory",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "hasExamplesDirectory",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "assertExamplesConfigOwnershipAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "assertExamplesConfigOwnershipAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "assertExamplesConfigOwnershipAsync",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectPackageJsonPath",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/eslint/packageJsonPath.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectPackageJsonPath",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/eslint/packageJsonPath.ts"
+      },
+      {
+        "fromSymbol": "resolveProjectPackageJsonPath",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/tools/eslint/packageJsonPath.ts"
+      },
+      {
+        "fromSymbol": "resolveEslintProfile",
+        "toSymbol": "resolveProjectPackageJsonPath",
+        "callExpression": "resolveProjectPackageJsonPath",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "resolveEslintProfile",
+        "toSymbol": "readDetectionInput",
+        "callExpression": "readDetectionInput",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "resolveEslintProfile",
+        "toSymbol": "resolveEslintProfileFromDetectionInput",
+        "callExpression": "resolveEslintProfileFromDetectionInput",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "readDetectionInput",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "readDetectionInput",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "readDetectionInput",
+        "toSymbol": "optionalDependencyMap",
+        "callExpression": "optionalDependencyMap",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "readDetectionInput",
+        "toSymbol": "optionalEngines",
+        "callExpression": "optionalEngines",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "optionalDependencyMap",
+        "toSymbol": "toDependencyMap",
+        "callExpression": "toDependencyMap",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "toDependencyMap",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "optionalEngines",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/eslint/resolveEslintProfile.ts"
+      },
+      {
+        "fromSymbol": "resolveEslintProfileFromDetectionInput",
+        "toSymbol": "detectProject",
+        "callExpression": "detectProject",
+        "sourcePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts"
+      },
+      {
+        "fromSymbol": "createKnipMonorepoConfig",
+        "toSymbol": "createKnipConfig",
+        "callExpression": "createKnipConfig",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "inspectPackageManifest",
+        "toSymbol": "readPackageManifest",
+        "callExpression": "readPackageManifest",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "inspectPackageManifest",
+        "toSymbol": "isManagedPackageContractCurrent",
+        "callExpression": "isManagedPackageContractCurrent",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "syncPackageManifest",
+        "toSymbol": "readPackageManifest",
+        "callExpression": "readPackageManifest",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "syncPackageManifest",
+        "toSymbol": "isManagedPackageContractCurrent",
+        "callExpression": "isManagedPackageContractCurrent",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "syncPackageManifest",
+        "toSymbol": "applyManagedPackageContract",
+        "callExpression": "applyManagedPackageContract",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "syncPackageManifest",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "syncPackageManifest",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "syncPackageManifest",
+        "toSymbol": "serializePackageManifest",
+        "callExpression": "serializePackageManifest",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "applyManagedPackageContract",
+        "toSymbol": "applyBunRuntimePolicy",
+        "callExpression": "applyBunRuntimePolicy",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "applyManagedPackageContract",
+        "toSymbol": "toRecord",
+        "callExpression": "toRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "applyManagedPackageContract",
+        "toSymbol": "isChangesetsEnabled",
+        "callExpression": "isChangesetsEnabled",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "applyManagedPackageContract",
+        "toSymbol": "removeOwnedDependencies",
+        "callExpression": "removeOwnedDependencies",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "applyManagedPackageContract",
+        "toSymbol": "applyDevtoolsDependencyPlacement",
+        "callExpression": "applyDevtoolsDependencyPlacement",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "applyManagedPackageContract",
+        "toSymbol": "normalizedDependencies",
+        "callExpression": "normalizedDependencies",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isManagedPackageContractCurrent",
+        "toSymbol": "hasCurrentBunRuntimePolicy",
+        "callExpression": "hasCurrentBunRuntimePolicy",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isManagedPackageContractCurrent",
+        "toSymbol": "toRecord",
+        "callExpression": "toRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isManagedPackageContractCurrent",
+        "toSymbol": "isChangesetsEnabled",
+        "callExpression": "isChangesetsEnabled",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isManagedPackageContractCurrent",
+        "toSymbol": "hasStandardScripts",
+        "callExpression": "hasStandardScripts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isManagedPackageContractCurrent",
+        "toSymbol": "hasCurrentChangesetsScripts",
+        "callExpression": "hasCurrentChangesetsScripts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isManagedPackageContractCurrent",
+        "toSymbol": "hasCurrentDevtoolsDependencyPlacement",
+        "callExpression": "hasCurrentDevtoolsDependencyPlacement",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readCurrentDevtoolsVersion",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readCurrentDevtoolsVersion",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "hasCurrentBunRuntimePolicy",
+        "toSymbol": "toRecord",
+        "callExpression": "toRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "toRecord",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "planBunDependencySync",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "planBunDependencySync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "syncBunDependencies",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "syncBunDependencies",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "syncBunDependencies",
+        "toSymbol": "runBunInstall",
+        "callExpression": "runBunInstall",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "src/tools/package/syncBunDependencies.ts",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "src/tools/package/syncBunDependencies.ts",
+        "toSymbol": "resolvePromise",
+        "callExpression": "resolvePromise",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "src/tools/package/syncBunDependencies.ts",
+        "toSymbol": "rejectPromise",
+        "callExpression": "rejectPromise",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "renderPrettierConfig",
+        "toSymbol": "readPackageType",
+        "callExpression": "readPackageType",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "readPackageType",
+        "callExpression": "readPackageType",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "isSharedOnlyConfig",
+        "callExpression": "isSharedOnlyConfig",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageType",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageType",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageType",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageType",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedTargetDirectory",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedTargetDirectory",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "src/tools/shared/managedFiles.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "src/tools/shared/managedFiles.ts",
+        "toSymbol": "isApplicable",
+        "callExpression": "definition.isApplicable",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "src/tools/shared/managedFiles.ts",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "src/tools/shared/managedFiles.ts",
+        "toSymbol": "readCanonicalContents",
+        "callExpression": "readCanonicalContents",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "src/tools/shared/managedFiles.ts",
+        "toSymbol": "isMissingFileError",
+        "callExpression": "isMissingFileError",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFiles",
+        "toSymbol": "inspectManagedFiles",
+        "callExpression": "inspectManagedFiles",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFiles",
+        "toSymbol": "syncManagedFile",
+        "callExpression": "syncManagedFile",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFile",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFile",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFile",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFile",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFile",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFile",
+        "toSymbol": "readCanonicalContents",
+        "callExpression": "readCanonicalContents",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "readCanonicalContents",
+        "toSymbol": "assertSingleContentSource",
+        "callExpression": "assertSingleContentSource",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "readCanonicalContents",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "readCanonicalContents",
+        "toSymbol": "render",
+        "callExpression": "definition.render",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "isMissingFileError",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/shared/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "createAssetFixture",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/tools/skills/assetTestFixture.ts"
+      },
+      {
+        "fromSymbol": "createAssetFixture",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/skills/assetTestFixture.ts"
+      },
+      {
+        "fromSymbol": "createAssetFixture",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/tools/skills/assetTestFixture.ts"
+      },
+      {
+        "fromSymbol": "createAssetFixture",
+        "toSymbol": "createAssetEntries",
+        "callExpression": "createAssetEntries",
+        "sourcePath": "src/tools/skills/assetTestFixture.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedSkills",
+        "toSymbol": "createManagedSkillPlan",
+        "callExpression": "createManagedSkillPlan",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "syncManagedSkills",
+        "toSymbol": "createManagedSkillPlan",
+        "callExpression": "createManagedSkillPlan",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "syncManagedSkills",
+        "toSymbol": "getSyncAction",
+        "callExpression": "getSyncAction",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "syncManagedSkills",
+        "toSymbol": "applySkillAction",
+        "callExpression": "applySkillAction",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "resolveManagedPath",
+        "callExpression": "resolveManagedPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "assertNoSymlinkSegments",
+        "callExpression": "assertNoSymlinkSegments",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "unlink",
+        "callExpression": "unlink",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "removeEmptyParentDirectories",
+        "callExpression": "removeEmptyParentDirectories",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "applySkillAction",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "assertNoSymlinkSegments",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "assertNoSymlinkSegments",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "assertNoSymlinkSegments",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "collectCanonicalSkillFiles",
+        "toSymbol": "fileURLToPath",
+        "callExpression": "fileURLToPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "collectCanonicalSkillFiles",
+        "toSymbol": "readDirectoryFiles",
+        "callExpression": "readDirectoryFiles",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "collectCanonicalSkillFiles",
+        "toSymbol": "assertSkillName",
+        "callExpression": "assertSkillName",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "collectObsoletePaths",
+        "toSymbol": "readTargetDirectoryFiles",
+        "callExpression": "readTargetDirectoryFiles",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "collectObsoletePaths",
+        "toSymbol": "isRegularManagedFile",
+        "callExpression": "isRegularManagedFile",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "createManagedSkillPlan",
+        "toSymbol": "readManagedSkillsManifest",
+        "callExpression": "readManagedSkillsManifest",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "createManagedSkillPlan",
+        "toSymbol": "selectManagedSkillNames",
+        "callExpression": "selectManagedSkillNames",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "createManagedSkillPlan",
+        "toSymbol": "collectCanonicalSkillFiles",
+        "callExpression": "collectCanonicalSkillFiles",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "createManagedSkillPlan",
+        "toSymbol": "createManifestContents",
+        "callExpression": "createManifestContents",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "createManagedSkillPlan",
+        "toSymbol": "inspectDesiredFile",
+        "callExpression": "inspectDesiredFile",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "createManagedSkillPlan",
+        "toSymbol": "collectObsoletePaths",
+        "callExpression": "collectObsoletePaths",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "inspectDesiredFile",
+        "toSymbol": "assertNoSymlinkSegments",
+        "callExpression": "assertNoSymlinkSegments",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "inspectDesiredFile",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "inspectDesiredFile",
+        "toSymbol": "resolveManagedPath",
+        "callExpression": "resolveManagedPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "inspectDesiredFile",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "isRegularManagedFile",
+        "toSymbol": "assertManagedSkillPath",
+        "callExpression": "assertManagedSkillPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "isRegularManagedFile",
+        "toSymbol": "assertNoSymlinkSegments",
+        "callExpression": "assertNoSymlinkSegments",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "isRegularManagedFile",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "isRegularManagedFile",
+        "toSymbol": "resolveManagedPath",
+        "callExpression": "resolveManagedPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "isRegularManagedFile",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readDirectoryFiles",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readDirectoryFiles",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readDirectoryFiles",
+        "toSymbol": "readDirectoryFiles",
+        "callExpression": "readDirectoryFiles",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readDirectoryFiles",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readTargetDirectoryFiles",
+        "toSymbol": "assertNoSymlinkSegments",
+        "callExpression": "assertNoSymlinkSegments",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readTargetDirectoryFiles",
+        "toSymbol": "resolveManagedPath",
+        "callExpression": "resolveManagedPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readTargetDirectoryFiles",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readTargetDirectoryFiles",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "readTargetDirectoryFiles",
+        "toSymbol": "readTargetDirectoryFiles",
+        "callExpression": "readTargetDirectoryFiles",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "removeEmptyParentDirectories",
+        "toSymbol": "resolveManagedPath",
+        "callExpression": "resolveManagedPath",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "removeEmptyParentDirectories",
+        "toSymbol": "rmdir",
+        "callExpression": "rmdir",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "removeEmptyParentDirectories",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "removeEmptyParentDirectories",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/tools/skills/managed.ts"
+      },
+      {
+        "fromSymbol": "src/tools/skills/manifest.ts",
+        "toSymbol": "sha256",
+        "callExpression": "sha256",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "readManagedSkillsManifest",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "readManagedSkillsManifest",
+        "toSymbol": "resolveManagedPath",
+        "callExpression": "resolveManagedPath",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "readManagedSkillsManifest",
+        "toSymbol": "parseManagedSkillsManifest",
+        "callExpression": "parseManagedSkillsManifest",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "readManagedSkillsManifest",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "assertManagedSkillPath",
+        "toSymbol": "assertSafeRelativePath",
+        "callExpression": "assertSafeRelativePath",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedPath",
+        "toSymbol": "assertSafeRelativePath",
+        "callExpression": "assertSafeRelativePath",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedPath",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedPath",
+        "toSymbol": "relative",
+        "callExpression": "relative",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "parseManagedSkillsManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "src/tools/skills/manifest.ts",
+        "toSymbol": "isSafeName",
+        "callExpression": "isSafeName",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "src/tools/skills/manifest.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "src/tools/skills/manifest.ts",
+        "toSymbol": "assertManagedSkillPath",
+        "callExpression": "assertManagedSkillPath",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "sha256",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/tools/skills/manifest.ts"
+      },
+      {
+        "fromSymbol": "selectManagedSkillNames",
+        "toSymbol": "readPackageManifest",
+        "callExpression": "readPackageManifest",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "selectManagedSkillNames",
+        "toSymbol": "isZoraDesignerContext",
+        "callExpression": "isZoraDesignerContext",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "isZoraDesignerContext",
+        "toSymbol": "readNonEmptyString",
+        "callExpression": "readNonEmptyString",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "isZoraDesignerContext",
+        "toSymbol": "collectDependencyNames",
+        "callExpression": "collectDependencyNames",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "collectDependencyNames",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/skills/selection.ts"
+      },
+      {
+        "fromSymbol": "src/tools/skills/zoraDesignerOwnerFixtures.ts",
+        "toSymbol": "createThemeConfig",
+        "callExpression": "createThemeConfig",
+        "sourcePath": "src/tools/skills/zoraDesignerOwnerFixtures.ts"
+      },
+      {
+        "fromSymbol": "src/tools/workflows/index.ts",
+        "toSymbol": "createWorkflowDefinition",
+        "callExpression": "createWorkflowDefinition",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "isApplicable",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "isApplicable",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "src/tools/workflows/index.ts",
+        "toSymbol": "createRenovateWorkflowDefinition",
+        "callExpression": "createRenovateWorkflowDefinition",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
+        "toSymbol": "renderWorkflowAsync",
+        "callExpression": "renderWorkflowAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
+        "toSymbol": "renderRenovateWorkflowAsync",
+        "callExpression": "renderRenovateWorkflowAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateWorkflowAsync",
+        "toSymbol": "renderWorkflowAsync",
+        "callExpression": "renderWorkflowAsync",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateWorkflowAsync",
+        "toSymbol": "readSingleRenovateWorkflowDigest",
+        "callExpression": "readSingleRenovateWorkflowDigest",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateWorkflowAsync",
+        "toSymbol": "readOptionalWorkflowAsync",
+        "callExpression": "readOptionalWorkflowAsync",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateWorkflowAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "readOptionalWorkflowAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "readOptionalWorkflowAsync",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "renderWorkflowAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      }
+    ],
+    "typeReferences": [
+      {
+        "fromSymbol": "createConfig",
+        "toType": "Config",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toType": "DevtoolsConfigOptions",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toType": "Linter",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toType": "RulesConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsConfigOptions",
+        "toType": "DevtoolsEslintProfile",
+        "sourcePath": "src/tools/eslint/types.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsConfigOptions",
+        "toType": "FlatConfigItem",
+        "sourcePath": "src/tools/eslint/types.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsConfigOptions",
+        "toType": "RestrictedImport",
+        "sourcePath": "src/tools/eslint/types.ts"
+      },
+      {
+        "fromSymbol": "createKnipConfig",
+        "toType": "DevtoolsKnipConfigOptions",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "createKnipConfig",
+        "toType": "KnipConfig",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "createKnipMonorepoConfig",
+        "toType": "DevtoolsKnipMonorepoConfigOptions",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "createKnipMonorepoConfig",
+        "toType": "KnipConfig",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsKnipWorkspaceConfigOptions",
+        "toType": "RegExp",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsKnipConfigOptions",
+        "toType": "DevtoolsKnipWorkspaceConfigOptions",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsKnipConfigOptions",
+        "toType": "RegExp",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "DevtoolsKnipMonorepoConfigOptions",
+        "toType": "DevtoolsKnipWorkspaceConfigOptions",
+        "sourcePath": "src/tools/knip/index.ts"
+      }
+    ],
+    "componentComposition": []
+  }
+}
