@@ -14,6 +14,7 @@ graph LR
   module_src_policy_applyBunRuntimePolicy_ts["src/policy/applyBunRuntimePolicy.ts"]
   module_src_policy_bunRuntimePolicy_ts["src/policy/bunRuntimePolicy.ts"]
   module_src_policy_changesetsPolicy_ts["src/policy/changesetsPolicy.ts"]
+  module_src_policy_renderBunPolicyDocumentation_ts["src/policy/renderBunPolicyDocumentation.ts"]
   module_src_tools_agents_index_ts["src/tools/agents/index.ts"]
   module_src_tools_eslint_index_ts["src/tools/eslint/index.ts"]
   module_src_tools_eslint_managed_ts["src/tools/eslint/managed.ts"]
@@ -36,6 +37,7 @@ graph LR
   module_src_tools_workflows_index_ts["src/tools/workflows/index.ts"]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts["src/tools/workflows/renderRenovateWorkflowAsync.ts"]
   module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
+  module_src_types_bunPolicy_ts["src/types/bunPolicy.ts"]
   module_src_cli_bin_changeset_ts --> module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_eslint_ts --> module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --> module_src_cli_runStandaloneTool_ts
@@ -62,8 +64,11 @@ graph LR
   module_src_internal_readmeDocs_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_applyBunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_bunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_renderBunPolicyDocumentation_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_types_bunPolicy_ts
+  module_src_policy_renderBunPolicyDocumentation_ts --> module_src_types_bunPolicy_ts
   module_src_tools_agents_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_types_ts

@@ -192,8 +192,10 @@
       "dependencies": [
         "src/policy/applyBunRuntimePolicy.ts",
         "src/policy/bunRuntimePolicy.ts",
+        "src/policy/renderBunPolicyDocumentation.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
-        "src/tools/workflows/renderWorkflowAsync.ts"
+        "src/tools/workflows/renderWorkflowAsync.ts",
+        "src/types/bunPolicy.ts"
       ],
       "exports": ["synchronizeRenovateOwnerAsync"]
     },
@@ -214,6 +216,12 @@
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["changesetsPolicy"]
+    },
+    {
+      "path": "src/policy/renderBunPolicyDocumentation.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/bunPolicy.ts"],
+      "exports": ["renderBunPolicyDocumentation"]
     },
     {
       "path": "src/tools/agents/index.ts",
@@ -421,6 +429,12 @@
       "isEntrypoint": false,
       "dependencies": ["src/policy/changesetsPolicy.ts"],
       "exports": ["renderWorkflowAsync", "WorkflowPolicy"]
+    },
+    {
+      "path": "src/types/bunPolicy.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["BunPolicy"]
     }
   ],
   "exports": [
@@ -1204,7 +1218,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 10,
+        "line": 12,
         "column": 1
       }
     },
@@ -1213,7 +1227,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 55,
+        "line": 51,
         "column": 1
       }
     },
@@ -1222,7 +1236,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 64,
+        "line": 60,
         "column": 1
       }
     },
@@ -1231,7 +1245,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 115,
+        "line": 111,
         "column": 1
       }
     },
@@ -1240,7 +1254,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 133,
+        "line": 129,
         "column": 1
       }
     },
@@ -1249,7 +1263,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 137,
+        "line": 133,
         "column": 1
       }
     },
@@ -1258,25 +1272,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 141,
-        "column": 1
-      }
-    },
-    {
-      "name": "replaceReadmePolicy",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 166,
-        "column": 1
-      }
-    },
-    {
-      "name": "renderReadmePolicy",
-      "description": null,
-      "sourceLocation": {
-        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 185,
+        "line": 137,
         "column": 1
       }
     },
@@ -1285,7 +1281,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 193,
+        "line": 163,
         "column": 1
       }
     },
@@ -1294,7 +1290,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 217,
+        "line": 187,
         "column": 1
       }
     },
@@ -1303,7 +1299,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 221,
+        "line": 191,
         "column": 1
       }
     },
@@ -1331,6 +1327,24 @@
       "sourceLocation": {
         "filePath": "src/policy/applyBunRuntimePolicy.ts",
         "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderBunPolicyDocumentation",
+      "description": "Render the managed Bun policy section while preserving the surrounding guide.",
+      "sourceLocation": {
+        "filePath": "src/policy/renderBunPolicyDocumentation.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderReadmePolicy",
+      "description": "Format canonical runtime and type-package versions for the guide.",
+      "sourceLocation": {
+        "filePath": "src/policy/renderBunPolicyDocumentation.ts",
+        "line": 24,
         "column": 1
       }
     },
@@ -1573,7 +1587,7 @@
       "description": "Retain runtime engine signals used by the canonical detector.",
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfile.ts",
-        "line": 60,
+        "line": 62,
         "column": 1
       }
     },
@@ -2438,6 +2452,16 @@
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/policy/renderBunPolicyDocumentation.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/types/bunPolicy.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
@@ -2445,6 +2469,11 @@
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/renderWorkflowAsync.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/policy/renderBunPolicyDocumentation.ts",
+        "toPath": "src/types/bunPolicy.ts",
+        "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
       },
       {
         "fromPath": "src/cli/bin/changeset.ts",
@@ -3056,8 +3085,8 @@
       },
       {
         "fromSymbol": "createManagedDefinitionsAsync",
-        "toSymbol": "replaceReadmePolicy",
-        "callExpression": "replaceReadmePolicy",
+        "toSymbol": "renderBunPolicyDocumentation",
+        "callExpression": "renderBunPolicyDocumentation",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
@@ -3088,12 +3117,6 @@
         "fromSymbol": "readTargetBunPolicyAsync",
         "toSymbol": "resolve",
         "callExpression": "resolve",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromSymbol": "replaceReadmePolicy",
-        "toSymbol": "renderReadmePolicy",
-        "callExpression": "renderReadmePolicy",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
@@ -3155,6 +3178,12 @@
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/policy/applyBunRuntimePolicy.ts"
+      },
+      {
+        "fromSymbol": "renderBunPolicyDocumentation",
+        "toSymbol": "renderReadmePolicy",
+        "callExpression": "renderReadmePolicy",
+        "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
       },
       {
         "fromSymbol": "src/cli/bin/changeset.ts",

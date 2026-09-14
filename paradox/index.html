@@ -251,7 +251,7 @@
                 data-target="src/owner/synchronizeRenovateOwnerAsync.ts"
               >
                 src/owner/synchronizeRenovateOwnerAsync.ts
-                <small>12 functions</small>
+                <small>10 functions</small>
               </button>
             </li>
             <li>
@@ -262,6 +262,16 @@
               >
                 src/policy/applyBunRuntimePolicy.ts
                 <small>3 functions</small>
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-button"
+                type="button"
+                data-target="src/policy/renderBunPolicyDocumentation.ts"
+              >
+                src/policy/renderBunPolicyDocumentation.ts
+                <small>2 functions</small>
               </button>
             </li>
             <li>
@@ -424,7 +434,7 @@
             <div class="summary">
               <div><strong>14</strong><span class="muted">public exports</span></div>
               <div><strong>0</strong><span class="muted">components</span></div>
-              <div><strong>37</strong><span class="muted">modules</span></div>
+              <div><strong>39</strong><span class="muted">modules</span></div>
               <div><strong>3</strong><span class="muted">entrypoints</span></div>
             </div>
             <h3>Entrypoints</h3>
@@ -593,15 +603,17 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
             </article>
             <article
               class="item"
-              data-search="src/owner/synchronizeRenovateOwnerAsync.ts src/policy/applyBunRuntimePolicy.ts src/policy/bunRuntimePolicy.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts synchronizeRenovateOwnerAsync"
+              data-search="src/owner/synchronizeRenovateOwnerAsync.ts src/policy/applyBunRuntimePolicy.ts src/policy/bunRuntimePolicy.ts src/policy/renderBunPolicyDocumentation.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts src/types/bunPolicy.ts synchronizeRenovateOwnerAsync"
             >
               <h3>src/owner/synchronizeRenovateOwnerAsync.ts</h3>
               <p class="muted">Referenced module</p>
               <p>
                 <strong>Dependencies:</strong> <code>src/policy/applyBunRuntimePolicy.ts</code>,
                 <code>src/policy/bunRuntimePolicy.ts</code>,
+                <code>src/policy/renderBunPolicyDocumentation.ts</code>,
                 <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>,
-                <code>src/tools/workflows/renderWorkflowAsync.ts</code>
+                <code>src/tools/workflows/renderWorkflowAsync.ts</code>,
+                <code>src/types/bunPolicy.ts</code>
               </p>
               <p><strong>Exports:</strong> <code>synchronizeRenovateOwnerAsync</code></p>
             </article>
@@ -631,6 +643,15 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
               <p class="muted">Referenced module</p>
               <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
               <p><strong>Exports:</strong> <code>changesetsPolicy</code></p>
+            </article>
+            <article
+              class="item"
+              data-search="src/policy/renderBunPolicyDocumentation.ts src/types/bunPolicy.ts renderBunPolicyDocumentation"
+            >
+              <h3>src/policy/renderBunPolicyDocumentation.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <code>src/types/bunPolicy.ts</code></p>
+              <p><strong>Exports:</strong> <code>renderBunPolicyDocumentation</code></p>
             </article>
             <article
               class="item"
@@ -904,6 +925,12 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
                 <strong>Exports:</strong> <code>renderWorkflowAsync</code>,
                 <code>WorkflowPolicy</code>
               </p>
+            </article>
+            <article class="item" data-search="src/types/bunPolicy.ts BunPolicy">
+              <h3>src/types/bunPolicy.ts</h3>
+              <p class="muted">Referenced module</p>
+              <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+              <p><strong>Exports:</strong> <code>BunPolicy</code></p>
             </article>
           </section>
           <section class="panel">
@@ -1541,15 +1568,24 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
                 module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
                 module_src_policy_bunRuntimePolicy_ts
                 module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
+                module_src_policy_renderBunPolicyDocumentation_ts
+                module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
                 module_src_tools_workflows_renderRenovateWorkflowAsync_ts
                 module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
                 module_src_tools_workflows_renderWorkflowAsync_ts
+                module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
+                module_src_types_bunPolicy_ts
                 module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
                 package__ankhorage_devtools -.-&gt; module_src_policy_applyBunRuntimePolicy_ts
                 module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
                 package__ankhorage_devtools -.-&gt; module_src_policy_bunRuntimePolicy_ts
                 module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
                 package__ankhorage_devtools -.-&gt; module_src_policy_changesetsPolicy_ts
+                module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
+                package__ankhorage_devtools -.-&gt;
+                module_src_policy_renderBunPolicyDocumentation_ts
+                module_src_policy_renderBunPolicyDocumentation_ts --&gt;
+                module_src_types_bunPolicy_ts
                 module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
                 package__ankhorage_devtools -.-&gt; module_src_tools_agents_index_ts
                 module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
@@ -1632,6 +1668,8 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
                 module_src_tools_workflows_renderWorkflowAsync_ts
                 module_src_tools_workflows_renderWorkflowAsync_ts --&gt;
                 module_src_policy_changesetsPolicy_ts
+                module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
+                package__ankhorage_devtools -.-&gt; module_src_types_bunPolicy_ts
               </div>
               <details>
                 <summary>View Mermaid source</summary>
@@ -1693,14 +1731,19 @@ graph TD
   package__ankhorage_devtools -.-&gt; module_src_owner_synchronizeRenovateOwnerAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_bunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_renderBunPolicyDocumentation_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_types_bunPolicy_ts
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_policy_changesetsPolicy_ts
+  module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_policy_renderBunPolicyDocumentation_ts
+  module_src_policy_renderBunPolicyDocumentation_ts --&gt; module_src_types_bunPolicy_ts
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_agents_index_ts
   module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
@@ -1769,6 +1812,8 @@ graph TD
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_policy_changesetsPolicy_ts
+  module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_types_bunPolicy_ts
 </pre>
               </details>
             </article>
@@ -1794,6 +1839,7 @@ graph TD
                 module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
                 module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
                 module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
+                module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
                 module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
                 module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
                 module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -1816,6 +1862,7 @@ graph TD
                 module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
                 module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
                 module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+                module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
                 module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
                 module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
                 module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1846,14 +1893,19 @@ graph TD
                 module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
                 module_src_policy_bunRuntimePolicy_ts
                 module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
+                module_src_policy_renderBunPolicyDocumentation_ts
+                module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
                 module_src_tools_workflows_renderRenovateWorkflowAsync_ts
                 module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
-                module_src_tools_workflows_renderWorkflowAsync_ts module_src_tools_agents_index_ts
-                --&gt; module_src_tools_shared_managedFiles_ts module_src_tools_eslint_index_ts
-                --&gt; module_src_tools_eslint_resolveEslintProfile_ts
-                module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
-                module_src_tools_eslint_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
-                module_src_tools_eslint_packageJsonPath_ts --&gt; module_src_tools_eslint_types_ts
+                module_src_tools_workflows_renderWorkflowAsync_ts
+                module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt;
+                module_src_types_bunPolicy_ts module_src_policy_renderBunPolicyDocumentation_ts
+                --&gt; module_src_types_bunPolicy_ts module_src_tools_agents_index_ts --&gt;
+                module_src_tools_shared_managedFiles_ts module_src_tools_eslint_index_ts --&gt;
+                module_src_tools_eslint_resolveEslintProfile_ts module_src_tools_eslint_index_ts
+                --&gt; module_src_tools_eslint_types_ts module_src_tools_eslint_managed_ts --&gt;
+                module_src_tools_shared_managedFiles_ts module_src_tools_eslint_packageJsonPath_ts
+                --&gt; module_src_tools_eslint_types_ts
                 module_src_tools_eslint_resolveEslintProfile_ts --&gt;
                 module_src_tools_eslint_packageJsonPath_ts
                 module_src_tools_eslint_resolveEslintProfile_ts --&gt;
@@ -1903,6 +1955,7 @@ graph LR
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
+  module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -1925,6 +1978,7 @@ graph LR
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+  module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1951,8 +2005,11 @@ graph LR
   module_src_internal_readmeDocs_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_bunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_renderBunPolicyDocumentation_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_types_bunPolicy_ts
+  module_src_policy_renderBunPolicyDocumentation_ts --&gt; module_src_types_bunPolicy_ts
   module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
@@ -2001,6 +2058,7 @@ graph LR
                 module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
                 module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
                 module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
+                module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
                 module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
                 module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
                 module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -2023,6 +2081,7 @@ graph LR
                 module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
                 module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
                 module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+                module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
                 export_createConfig[&quot;createConfig&quot;] module_src_tools_eslint_index_ts
                 --&gt; export_createConfig export_createConfig -.-&gt; export_DevtoolsConfigOptions
                 export_createKnipConfig[&quot;createKnipConfig&quot;] module_src_tools_knip_index_ts
@@ -2078,6 +2137,7 @@ graph LR
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
+  module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -2100,6 +2160,7 @@ graph LR
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+  module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   export_createConfig[&quot;createConfig&quot;]
   module_src_tools_eslint_index_ts --&gt; export_createConfig
   export_createConfig -.-&gt; export_DevtoolsConfigOptions
@@ -2400,7 +2461,7 @@ sequenceDiagram
               data-search="synchronizeRenovateOwnerAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>synchronizeRenovateOwnerAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:10:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:12:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2408,7 +2469,7 @@ sequenceDiagram
               data-search="assertDevtoolsTargetAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>assertDevtoolsTargetAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:55:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:51:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2416,7 +2477,7 @@ sequenceDiagram
               data-search="createManagedDefinitionsAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>createManagedDefinitionsAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:64:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:60:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2424,7 +2485,7 @@ sequenceDiagram
               data-search="getOutdatedPathsAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>getOutdatedPathsAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:115:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:111:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2432,7 +2493,7 @@ sequenceDiagram
               data-search="isNodeError src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>isNodeError</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:133:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:129:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2440,7 +2501,7 @@ sequenceDiagram
               data-search="isRecord src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>isRecord</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:137:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:133:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2448,23 +2509,7 @@ sequenceDiagram
               data-search="readTargetBunPolicyAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>readTargetBunPolicyAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:141:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="replaceReadmePolicy src/owner/synchronizeRenovateOwnerAsync.ts "
-            >
-              <h3>replaceReadmePolicy</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:166:1</code></p>
-              <p class="empty">No description available.</p>
-            </article>
-            <article
-              class="item"
-              data-search="renderReadmePolicy src/owner/synchronizeRenovateOwnerAsync.ts "
-            >
-              <h3>renderReadmePolicy</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:185:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:137:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2472,7 +2517,7 @@ sequenceDiagram
               data-search="runBunLockfileAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>runBunLockfileAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:193:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:163:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2480,7 +2525,7 @@ sequenceDiagram
               data-search="serializePackageManifest src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>serializePackageManifest</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:217:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:187:1</code></p>
               <p class="empty">No description available.</p>
             </article>
             <article
@@ -2488,7 +2533,7 @@ sequenceDiagram
               data-search="syncDefinitionsAsync src/owner/synchronizeRenovateOwnerAsync.ts "
             >
               <h3>syncDefinitionsAsync</h3>
-              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:221:1</code></p>
+              <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:191:1</code></p>
               <p class="empty">No description available.</p>
             </article>
           </section>
@@ -2518,6 +2563,32 @@ sequenceDiagram
               <h3>toRecord</h3>
               <p class="muted"><code>src/policy/applyBunRuntimePolicy.ts:19:1</code></p>
               <p class="empty">No description available.</p>
+            </article>
+          </section>
+        </section>
+        <section
+          id="view-src-policy-renderbunpolicydocumentation-ts"
+          class="view"
+          data-view="src/policy/renderBunPolicyDocumentation.ts"
+          hidden
+        >
+          <section class="panel">
+            <h2>src/policy/renderBunPolicyDocumentation.ts</h2>
+            <article
+              class="item"
+              data-search="renderBunPolicyDocumentation src/policy/renderBunPolicyDocumentation.ts Render the managed Bun policy section while preserving the surrounding guide."
+            >
+              <h3>renderBunPolicyDocumentation</h3>
+              <p class="muted"><code>src/policy/renderBunPolicyDocumentation.ts:4:1</code></p>
+              <p>Render the managed Bun policy section while preserving the surrounding guide.</p>
+            </article>
+            <article
+              class="item"
+              data-search="renderReadmePolicy src/policy/renderBunPolicyDocumentation.ts Format canonical runtime and type-package versions for the guide."
+            >
+              <h3>renderReadmePolicy</h3>
+              <p class="muted"><code>src/policy/renderBunPolicyDocumentation.ts:24:1</code></p>
+              <p>Format canonical runtime and type-package versions for the guide.</p>
             </article>
           </section>
         </section>
@@ -2734,7 +2805,7 @@ sequenceDiagram
               data-search="optionalEngines src/tools/eslint/resolveEslintProfile.ts Retain runtime engine signals used by the canonical detector."
             >
               <h3>optionalEngines</h3>
-              <p class="muted"><code>src/tools/eslint/resolveEslintProfile.ts:60:1</code></p>
+              <p class="muted"><code>src/tools/eslint/resolveEslintProfile.ts:62:1</code></p>
               <p>Retain runtime engine signals used by the canonical detector.</p>
             </article>
           </section>

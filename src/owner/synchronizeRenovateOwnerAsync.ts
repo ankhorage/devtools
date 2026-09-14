@@ -4,8 +4,10 @@ import { dirname, resolve } from 'node:path';
 
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
 import { nodeRuntimePolicy } from '../policy/bunRuntimePolicy.js';
+import { renderBunPolicyDocumentation } from '../policy/renderBunPolicyDocumentation.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from '../tools/workflows/renderWorkflowAsync.js';
+import type { BunPolicy } from '../types/bunPolicy.js';
 
 export async function synchronizeRenovateOwnerAsync(
   operation: OwnerSyncOperation,
@@ -33,12 +35,6 @@ export async function synchronizeRenovateOwnerAsync(
 }
 
 type OwnerSyncOperation = 'status' | 'sync';
-
-interface BunPolicy {
-  readonly packageManager: string;
-  readonly typesRange: string;
-  readonly version: string;
-}
 
 interface ManagedDefinition {
   readonly contents: string;
@@ -107,7 +103,7 @@ async function createManagedDefinitionsAsync(
     },
     {
       relativePath: 'README.md',
-      contents: replaceReadmePolicy(readme, policy),
+      contents: renderBunPolicyDocumentation(readme, policy),
     },
   ];
 }
@@ -163,33 +159,6 @@ async function readTargetBunPolicyAsync(targetDirectory: string): Promise<BunPol
   };
 }
 
-function replaceReadmePolicy(readme: string, policy: BunPolicy): string {
-  const startIndex = readme.indexOf(README_POLICY_START);
-  const endIndex = readme.indexOf(README_POLICY_END);
-  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
-    throw new Error('README.md must contain one ordered Devtools Bun policy marker pair.');
-  }
-  if (
-    readme.includes(README_POLICY_START, startIndex + README_POLICY_START.length) ||
-    readme.includes(README_POLICY_END, endIndex + README_POLICY_END.length)
-  ) {
-    throw new Error('README.md must contain exactly one Devtools Bun policy marker pair.');
-  }
-
-  const replacement = `${README_POLICY_START}\n\n${renderReadmePolicy(policy)}\n\n${README_POLICY_END}`;
-  return `${readme.slice(0, startIndex)}${replacement}${readme.slice(
-    endIndex + README_POLICY_END.length,
-  )}`;
-}
-
-function renderReadmePolicy(policy: BunPolicy): string {
-  return `\`\`\`text
-Bun runtime       ${policy.version}
-packageManager    ${policy.packageManager}
-@types/bun        ${policy.typesRange}
-\`\`\``;
-}
-
 async function runBunLockfileAsync(
   operation: OwnerSyncOperation,
   targetDirectory: string,
@@ -237,5 +206,3 @@ async function syncDefinitionsAsync(
 const BUN_VERSION_PATTERN = /const BUN_VERSION = '(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)';/gu;
 const BUN_TYPES_VERSION_PATTERN =
   /const BUN_TYPES_VERSION = '(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)';/gu;
-const README_POLICY_END = '<!-- devtools-bun-policy:end -->';
-const README_POLICY_START = '<!-- devtools-bun-policy:start -->';
