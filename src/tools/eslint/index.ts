@@ -2,7 +2,7 @@
  * Create the shared strict ESLint flat configuration used by consuming repositories.
  *
  * The default `profile: 'auto'` reads the nearest `package.json` from `tsconfigRootDir` and uses
- * `@ankhorage/utility/project` to select overlapping project traits. React Native and Expo select
+ * `@ankhorage/project-detector` to select overlapping project traits. React Native and Expo select
  * the `react-native` profile, React and Next.js select `react`, and other projects use `base`.
  *
  * Every profile includes the shared TypeScript, import, unused-import, Prettier, security, and
@@ -32,7 +32,7 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
-import { resolveEslintProfile } from './profile.js';
+import { resolveEslintProfile } from './resolveEslintProfile.js';
 import type {
   DevtoolsConfigOptions,
   FlatConfigItem,

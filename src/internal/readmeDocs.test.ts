@@ -32,7 +32,7 @@ describe('README documentation validation', () => {
       'hexagonal-architecture',
       '--dry-run',
       "profile: 'auto'",
-      '@ankhorage/utility/project',
+      '@ankhorage/project-detector',
       'ankhorage-changeset',
       'without creating a second Version Packages pull request',
       'chore(release)',

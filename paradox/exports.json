@@ -1,0 +1,504 @@
+[
+  {
+    "name": "createConfig",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/tools/eslint/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/index.ts",
+      "line": 75,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": ["DevtoolsConfigOptions"],
+    "signatures": [
+      {
+        "label": "(options: DevtoolsConfigOptions) => Linter.Config<import(\"@eslint/core\").RulesConfig>[]",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "DevtoolsConfigOptions",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Linter.Config<import(\"@eslint/core\").RulesConfig>[]",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "createKnipConfig",
+    "description": "Build shared Knip configuration while preserving repository-specific discovery.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/tools/knip/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/knip/index.ts",
+      "line": 38,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/knip/index.ts"],
+    "relatedSymbols": ["DevtoolsKnipConfigOptions"],
+    "signatures": [
+      {
+        "label": "(options?: DevtoolsKnipConfigOptions) => KnipConfig",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "DevtoolsKnipConfigOptions",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "KnipConfig",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "createKnipMonorepoConfig",
+    "description": "Build shared monorepo Knip configuration.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/tools/knip/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/knip/index.ts",
+      "line": 53,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/knip/index.ts"],
+    "relatedSymbols": ["DevtoolsKnipMonorepoConfigOptions"],
+    "signatures": [
+      {
+        "label": "(options?: DevtoolsKnipMonorepoConfigOptions) => KnipConfig",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "DevtoolsKnipMonorepoConfigOptions",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "KnipConfig",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "defaultIgnores",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/tools/eslint/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/index.ts",
+      "line": 43,
+      "column": 14
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "defaultRestrictedImports",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/tools/eslint/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/index.ts",
+      "line": 56,
+      "column": 14
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "DevtoolsConfigOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/tools/eslint/types.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/types.ts",
+      "line": 13,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": ["DevtoolsEslintProfile", "FlatConfigItem", "RestrictedImport"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "additionalIgnores",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "allowDefaultProject",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "files",
+        "kind": "property",
+        "type": "string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "includePrettier",
+        "kind": "property",
+        "type": "boolean | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "overrides",
+        "kind": "property",
+        "type": "FlatConfigItem[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "packageJsonPath",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "profile",
+        "kind": "property",
+        "type": "DevtoolsEslintProfile | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "project",
+        "kind": "property",
+        "type": "string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "restrictedImports",
+        "kind": "property",
+        "type": "RestrictedImport[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "tsconfigRootDir",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "DevtoolsEslintProfile",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/tools/eslint/types.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/types.ts",
+      "line": 10,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "DevtoolsKnipConfigOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/tools/knip/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/knip/index.ts",
+      "line": 24,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/knip/index.ts"],
+    "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "entry",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignore",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignoreBinaries",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignoreDependencies",
+        "kind": "property",
+        "type": "(string | RegExp)[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignoreFiles",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "project",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "workspaces",
+        "kind": "property",
+        "type": "Record<string, DevtoolsKnipWorkspaceConfigOptions> | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "DevtoolsKnipMonorepoConfigOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/tools/knip/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/knip/index.ts",
+      "line": 28,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/knip/index.ts"],
+    "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+    "signatures": [],
+    "members": [
+      {
+        "name": "root",
+        "kind": "property",
+        "type": "DevtoolsKnipWorkspaceConfigOptions | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "workspaceDefaults",
+        "kind": "property",
+        "type": "DevtoolsKnipWorkspaceConfigOptions | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "workspaceGlobs",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "workspaces",
+        "kind": "property",
+        "type": "Record<string, DevtoolsKnipWorkspaceConfigOptions> | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "DevtoolsKnipWorkspaceConfigOptions",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/tools/knip/index.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/knip/index.ts",
+      "line": 15,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/knip/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "entry",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignore",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignoreBinaries",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignoreDependencies",
+        "kind": "property",
+        "type": "(string | RegExp)[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "ignoreFiles",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "project",
+        "kind": "property",
+        "type": "string[] | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "FlatConfigItem",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/tools/eslint/types.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/types.ts",
+      "line": 3,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "provider",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "value",
+    "modulePath": "src/cli/index.ts",
+    "sourceLocation": {
+      "filePath": "src/cli/index.ts",
+      "line": 31,
+      "column": 7
+    },
+    "exportPaths": ["src/cli/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "ResolvedDevtoolsEslintProfile",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "unknown",
+    "modulePath": "src/tools/eslint/types.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/types.ts",
+      "line": 11,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "RestrictedImport",
+    "description": null,
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/tools/eslint/types.ts",
+    "sourceLocation": {
+      "filePath": "src/tools/eslint/types.ts",
+      "line": 5,
+      "column": 1
+    },
+    "exportPaths": ["src/tools/eslint/index.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "message",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "name",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  }
+]
