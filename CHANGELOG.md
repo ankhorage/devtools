@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.8
+
+### Patch Changes
+
+- 280f8d3: Use the published @ankhorage/project-detector package for ESLint project traits instead of Utility's superseded project module. Keep ESLint profile selection owned by Devtools.
+
 ## 1.14.7
 
 ### Patch Changes
