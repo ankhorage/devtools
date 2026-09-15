@@ -52,6 +52,21 @@ describe('managed workflows', () => {
     expect(release).not.toContain('bunx changeset');
   });
 
+  test('generates documentation after versioning and before the release commit', async () => {
+    const release = await workflowManagedFiles[1].render?.('.');
+    if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+    const versionIndex = release.indexOf(changesetsPolicy.workflowCommands.version);
+    const docsIndex = release.indexOf('bun run docs');
+    const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');
+
+    expect(release).toContain('if [ "$before_version" != "$after_version" ]; then');
+    expect(release).toContain("process.exit(p.scripts?.docs ? 0 : 1)");
+    expect(versionIndex).toBeGreaterThanOrEqual(0);
+    expect(docsIndex).toBeGreaterThan(versionIndex);
+    expect(commitIndex).toBeGreaterThan(docsIndex);
+  });
+
   test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
