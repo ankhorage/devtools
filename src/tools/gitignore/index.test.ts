@@ -3,6 +3,8 @@ import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
 
+import { findDevtoolsCommandByPath } from '../../cli/commands.js';
+import { runRepositoryCommand } from '../../cli/runRepositoryCommand.js';
 import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
 import { gitignoreManagedFiles } from './index.js';
 
@@ -37,6 +39,30 @@ test('removes documentation directory ignore rules while preserving repository-o
   expect(await syncManagedFiles(target, gitignoreManagedFiles, { dryRun: false })).toEqual([
     { relativePath: '.gitignore', action: 'unchanged' },
   ]);
+});
+
+test('aggregate repository sync applies the documentation gitignore policy', async () => {
+  const target = await createTarget();
+  await writeFile(join(target, 'package.json'), '{"name":"fixture","type":"module"}\n');
+  await writeFile(join(target, '.gitignore'), 'dist/\ndocs/\nparadox/\ncustom/\n');
+  const command = findDevtoolsCommandByPath(['sync']);
+  if (command?.kind !== 'repository') throw new Error('Expected aggregate repository sync command.');
+
+  const stdout: string[] = [];
+  const stderr: string[] = [];
+  expect(
+    (
+      await runRepositoryCommand(command, [], {
+        cwd: target,
+        syncDependencies: async () => ({ relativePath: 'bun.lock', action: 'unchanged' }),
+        writeStdout: (text) => stdout.push(text),
+        writeStderr: (text) => stderr.push(text),
+      })
+    ).exitCode,
+  ).toBe(0);
+  expect(await readFile(join(target, '.gitignore'), 'utf8')).toBe('dist/\ncustom/\n');
+  expect(stdout.join('')).toContain('.gitignore updated');
+  expect(stderr).toEqual([]);
 });
 
 test('does not create a gitignore when the repository does not own one', async () => {
