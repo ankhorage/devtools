@@ -1,5 +1,6 @@
 import { agentsManagedFiles } from '../tools/agents/index.js';
 import { eslintManagedFiles } from '../tools/eslint/managed.js';
+import { gitignoreManagedFiles } from '../tools/gitignore/index.js';
 import { knipManagedFiles } from '../tools/knip/managed.js';
 import {
   inspectPackageManifest,
@@ -151,7 +152,7 @@ function getManagedFiles(
   } as const;
 
   if (scope === 'all') {
-    return Object.values(definitionsByScope).flat();
+    return [...Object.values(definitionsByScope).flat(), ...gitignoreManagedFiles];
   }
   if (scope === 'package') {
     return [];
