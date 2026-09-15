@@ -77,9 +77,7 @@ test('generates documentation after versioning and before the release commit', a
 
   const versionIndex = release.indexOf(changesetsPolicy.workflowCommands.version);
   const docsIndex = release.indexOf('bun run docs');
-  const commitIndex = release.indexOf(
-    'git commit -m "chore(release): version packages [skip ci]"',
-  );
+  const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');
 
   expect(release).toContain('if [ "$before_version" != "$after_version" ]; then');
   expect(release).toContain('process.exit(p.scripts?.docs ? 0 : 1)');
