@@ -66,8 +66,13 @@ exceptions or replaced by generic preferences from this skill.
   including internal helpers. Inline callbacks are exempt.
 - Add `@param`, `@returns`, `@example`, or `@readme` to public APIs only when the tag adds useful
   information.
-- Update documentation sources and regenerate tracked Paradox output. Never hand-edit generated
-  README or Paradox artifacts.
+- Update documentation sources in the pull request, including repository-owned manual documentation
+  outside the configured generated output. Never hand-edit generated README or Paradox artifacts.
+- Generated documentation is release-owned. Ordinary feature pull requests must not regenerate or
+  commit `README.md` or the configured Paradox output. The managed release workflow runs
+  `bun run docs` after the package version bump and commits the result in the release commit.
+- Run `bun run docs` locally only when the task explicitly changes or validates Paradox generation;
+  do not commit that generated diff from an ordinary feature pull request.
 
 ## Public API and release quality
 
@@ -77,7 +82,8 @@ exceptions or replaced by generic preferences from this skill.
   public API changes.
 - Justify new dependencies and keep generated artifacts, lockfiles, and package metadata aligned
   with the repository's owning workflows.
-- Review the final diff, then run the applicable build, lint, test, typecheck, Knip, format, docs,
-  changeset-status, and packaging checks.
+- Review the final diff, then run the applicable build, lint, test, typecheck, Knip, format,
+  changeset-status, and packaging checks. Run documentation generation only when explicitly needed
+  to validate documentation tooling behavior.
 - Report the exact commands run and any omissions or failures. Do not imply a fully green handoff
   when a required check did not run or pass.
