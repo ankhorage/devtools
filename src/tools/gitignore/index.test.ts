@@ -46,7 +46,9 @@ test('aggregate repository sync applies the documentation gitignore policy', asy
   await writeFile(join(target, 'package.json'), '{"name":"fixture","type":"module"}\n');
   await writeFile(join(target, '.gitignore'), 'dist/\ndocs/\nparadox/\ncustom/\n');
   const command = findDevtoolsCommandByPath(['sync']);
-  if (command?.kind !== 'repository') throw new Error('Expected aggregate repository sync command.');
+  if (command?.kind !== 'repository') {
+    throw new Error('Expected aggregate repository sync command.');
+  }
 
   const stdout: string[] = [];
   const stderr: string[] = [];
@@ -54,7 +56,8 @@ test('aggregate repository sync applies the documentation gitignore policy', asy
     (
       await runRepositoryCommand(command, [], {
         cwd: target,
-        syncDependencies: async () => ({ relativePath: 'bun.lock', action: 'unchanged' }),
+        syncDependencies: () =>
+          Promise.resolve({ relativePath: 'bun.lock', action: 'unchanged' as const }),
         writeStdout: (text) => stdout.push(text),
         writeStderr: (text) => stderr.push(text),
       })
