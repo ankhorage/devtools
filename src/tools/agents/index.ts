@@ -85,10 +85,10 @@ function renderDocumentationInstructions(): string {
 
 \`README.md\` and the configured Paradox output are generated release artifacts. Never edit them
 manually, and do not regenerate or commit them in ordinary feature pull requests. Update the owning
-Paradox \`/*** ... */\` comments in \`src\`, including \`@readme\` tags where the content belongs in
-the README, plus any repository-owned manual documentation outside the generated output. The managed
-release workflow runs \`bun run docs\` after the package version bump and commits the regenerated
-artifacts in the release commit.
+Paradox \`/*** ... */\` comments in \`src\` and leading \`@usage\` comments in real
+\`examples/<example>/...\` source files, plus any repository-owned manual documentation outside the
+generated output. The managed release workflow runs \`bun run docs\` after the package version bump
+and commits the regenerated artifacts in the release commit.
 
 `;
 }
