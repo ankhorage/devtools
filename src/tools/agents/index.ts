@@ -121,6 +121,7 @@ skill scripts with Bun.
 `;
 }
 
+/*** Read the target package manifest used to personalize managed repository instructions. */
 async function readPackageManifest(targetDirectory: string): Promise<Record<string, unknown>> {
   try {
     const contents = await readFile(resolve(targetDirectory, 'package.json'), 'utf8');
@@ -137,18 +138,22 @@ async function readPackageManifest(targetDirectory: string): Promise<Record<stri
   }
 }
 
+/*** Escape inline-code delimiters before interpolating repository metadata into Markdown. */
 function escapeInlineCode(value: string): string {
   return value.replaceAll('`', '\\`');
 }
 
+/*** Check whether an unknown failure carries a Node.js error code. */
 function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }
 
+/*** Check whether an unknown value is a plain record-shaped object. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/*** Read and trim a non-empty string value from package metadata. */
 function readNonEmptyString(value: unknown): string | null {
   return typeof value === 'string' && value.trim() !== '' ? value.trim() : null;
 }
