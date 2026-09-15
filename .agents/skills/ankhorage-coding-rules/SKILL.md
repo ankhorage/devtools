@@ -57,6 +57,11 @@ exceptions or replaced by generic preferences from this skill.
   `@param` or `@returns` as Paradox metadata.
 - Add a supported Paradox tag only when it changes or usefully enriches generated documentation;
   plain function descriptions do not need tags.
+- README usage documentation must come from a real repository-root `examples/<example>/...` source
+  file. Put `@usage` in that example file's leading `/*** ... */` comment so Paradox promotes the
+  runnable example into the README Usage section. Do not create dedicated `readme-usage`,
+  `usage-readme`, `readmeUsage`, or equivalent source modules whose only purpose is feeding README
+  usage text.
 - Update documentation sources in the pull request, including repository-owned manual documentation
   outside the configured generated output. Never hand-edit generated README or Paradox artifacts.
 - Generated documentation is release-owned. Ordinary feature pull requests must not regenerate or
