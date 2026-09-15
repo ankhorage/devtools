@@ -16,6 +16,13 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
   const packageName = readNonEmptyString(manifest.name) ?? 'Package name not declared';
   const description =
     readNonEmptyString(manifest.description) ?? 'No package description is declared.';
+  const sections = [
+    renderCurrentArchitectureInstructions(),
+    renderRequiredRepositoryInstructions(),
+    renderDocumentationInstructions(),
+    renderPullRequestInstructions(),
+    renderSkillScriptInstructions(),
+  ].join('');
 
   return `# AGENTS.md
 
@@ -27,11 +34,7 @@ Package: \`${escapeInlineCode(packageName)}\`
 
 ${description}
 
-${renderCurrentArchitectureInstructions()}
-${renderRequiredRepositoryInstructions()}
-${renderDocumentationInstructions()}
-${renderPullRequestInstructions()}
-${renderSkillScriptInstructions()}`;
+${sections}`;
 }
 
 /*** Render the current-architecture policy shared by every managed repository. */
