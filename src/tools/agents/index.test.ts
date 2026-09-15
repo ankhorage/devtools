@@ -46,6 +46,8 @@ test('managed AGENTS.md renders contextual skill, documentation, and delivery in
     '`README.md` and the configured Paradox output are generated release artifacts',
   );
   expect(contents).toContain('do not regenerate or commit them in ordinary feature pull requests');
+  expect(contents).toContain('leading `@usage` comments in real');
+  expect(contents).toContain('`examples/<example>/...` source files');
   expect(contents).toContain(
     'The managed release workflow runs `bun run docs` after the package version bump',
   );
