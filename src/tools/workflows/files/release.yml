@@ -117,6 +117,7 @@ jobs:
           else
             # Authentication/network errors must never be treated as an unpublished version.
             node -e "const p=require(process.argv[1]); if(p.error?.code !== 'E404') process.exit(1)" "$registry_evidence"
+            bun install --frozen-lockfile --ignore-scripts
             bun run build
             bun run test:apm
             artifact="$(mktemp -d "${RUNNER_TEMP}/apm-publish.XXXXXX")/candidate.tgz"

@@ -6,7 +6,8 @@ test('opted-in releases validate and publish the same archive after versioning a
   const release = await readFile(new URL('./files/release.yml', import.meta.url), 'utf8');
   const version = release.indexOf('__ANKH_CHANGESETS_VERSION_COMMAND__');
   const sync = release.indexOf('__ANKH_APM_RELEASE_COMMAND__ sync .');
-  const build = release.indexOf('bun run build', sync);
+  const install = release.indexOf('bun install --frozen-lockfile --ignore-scripts', sync);
+  const build = release.indexOf('bun run build', install);
   const tests = release.indexOf('bun run test:apm', build);
   const validate = release.indexOf(
     '__ANKH_APM_RELEASE_COMMAND__ validate . --allow-owner-code --artifact "$artifact"',
@@ -15,7 +16,8 @@ test('opted-in releases validate and publish the same archive after versioning a
   const publish = release.indexOf('npm publish "$artifact" --ignore-scripts', validate);
   expect(version).toBeGreaterThan(0);
   expect(sync).toBeGreaterThan(version);
-  expect(build).toBeGreaterThan(sync);
+  expect(install).toBeGreaterThan(sync);
+  expect(build).toBeGreaterThan(install);
   expect(tests).toBeGreaterThan(build);
   expect(validate).toBeGreaterThan(tests);
   expect(publish).toBeGreaterThan(validate);
