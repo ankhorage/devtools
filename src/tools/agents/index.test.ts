@@ -42,7 +42,8 @@ test('managed AGENTS.md renders contextual skill, documentation, and delivery in
   expect(contents).toContain('.agents/skills/ankhorage-project-structure/SKILL.md');
   expect(contents).toContain('These rules define mandatory minimums');
   expect(contents).toContain('allow-list; do not skip a useful relevant skill');
-  expect(contents).toContain('If the task scope expands, inspect `.agents/skills/` again');
+  expect(contents).toContain('If the task scope expands, inspect');
+  expect(contents).toContain('`.agents/skills/` again and load the newly relevant skills');
   expect(contents).toContain(
     '`README.md` and the configured Paradox output are generated release artifacts',
   );
