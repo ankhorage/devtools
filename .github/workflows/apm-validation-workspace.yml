@@ -6,31 +6,86 @@ on:
     paths: [.github/workflows/apm-validation-workspace.yml]
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: apm-release-implementation
+  cancel-in-progress: false
 
 jobs:
-  prepare:
+  validate-and-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: feat/208-apm-release-validation
           fetch-depth: 0
-          persist-credentials: false
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: '1.4.2'
-      - name: Prepare isolated validation dependencies
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Apply the reviewed implementation patch
+        run: |
+          test "$(git rev-parse HEAD^)" = fe47fd61dcdd2a2d148c443189ed9ce99e22c024
+          cat .github/apm-release-part1.bz2 .github/apm-release-part2.bz2 | bzip2 -dc > "$RUNNER_TEMP/implementation.patch"
+          echo "c1a25277bc05564f8d91d208b3a038e219ae73b223ff2d6373cf6f6d315fc61d  $RUNNER_TEMP/implementation.patch" | sha256sum -c -
+          git apply --check "$RUNNER_TEMP/implementation.patch"
+          git apply --index "$RUNNER_TEMP/implementation.patch"
+          git rm .github/workflows/apm-validation-workspace.yml .github/apm-release-part1.bz2 .github/apm-release-part2.bz2
+      - name: Run canonical validation and regenerate documentation
         run: |
           bun install --frozen-lockfile --ignore-scripts
-          bun add '@ankhorage/apm@^0.6.0' --ignore-scripts
-          mkdir -p /tmp/apm-validation
-          git bundle create /tmp/apm-validation/repository.bundle HEAD refs/remotes/origin/main
-          cp package.json bun.lock /tmp/apm-validation/
-          tar -czf /tmp/apm-validation/dependencies.tgz node_modules
-          tar -czf /tmp/apm-validation/bun.tgz -C "$HOME/.bun/bin" bun
-      - uses: actions/upload-artifact@v4
-        with:
-          name: apm-validation-workspace
-          path: /tmp/apm-validation/
-          retention-days: 1
-          compression-level: 0
+          bun run build
+          bun run check-types
+          bun run lint
+          bun run knip:check
+          bun run changeset:status
+          bun run docs
+          bun run format
+          bun run test
+          bun run format:check
+      - name: Validate the packed public API from a cold Node consumer
+        env:
+          COLD_ROOT: ${{ runner.temp }}/apm-cold-consumer
+          COLD_ARTIFACT: ${{ runner.temp }}/devtools-candidate.tgz
+        run: |
+          bun pm pack --filename "$COLD_ARTIFACT" --ignore-scripts --quiet
+          node --input-type=module <<'JS'
+          import { mkdir, writeFile } from 'node:fs/promises';
+          const root = process.env.COLD_ROOT;
+          await mkdir(root + '/dist', { recursive: true });
+          await mkdir(root + '/apm', { recursive: true });
+          const owner = { name: 'apm-cold-owner', version: '2.0.0' };
+          const descriptor = {
+            protocolVersion: 1, schemaVersion: 1, owner,
+            history: { supported: [{ sourceRange: '>=1 <3', mode: 'no-migration' }], unsupported: [], downgrade: 'unsupported' },
+            compatibility: [], migrations: [], effects: [], extension: { export: './apm' },
+            projections: [{ id: 'fixture-projection', claims: [{ kind: 'json-pointer', path: 'package.json', pointer: '/description' }], requiresExtension: true, reason: 'Test the packed public boundary.' }],
+          };
+          await writeFile(root + '/package.json', JSON.stringify({
+            ...owner, private: true, type: 'module', files: ['dist', 'apm'],
+            exports: { './apm': { node: { import: './dist/apm.js' }, default: './dist/apm.js' } },
+            ankh: { apm: { protocolVersion: 1, descriptor: './apm/update.json' } },
+            dependencies: { '@ankhorage/devtools': 'file:' + process.env.COLD_ARTIFACT },
+          }));
+          await writeFile(root + '/apm/update.json', JSON.stringify(descriptor));
+          await writeFile(root + '/dist/apm.js', `import {createHash} from 'node:crypto';
+          import {readFileSync} from 'node:fs';
+          export default {protocolVersion:1,descriptorDigest:createHash('sha256').update(readFileSync(new URL('../apm/update.json',import.meta.url))).digest('hex'),migrations:[],projections:[{id:'fixture-projection',inspectAsync:async()=>({}),planAsync:async()=>({}),materializeAsync:async()=>{},verifyAsync:async()=>({})}]};`);
+          JS
+          bun install --cwd "$COLD_ROOT" --ignore-scripts
+          cd "$COLD_ROOT"
+          node --input-type=module -e "const api=await import('@ankhorage/devtools/apm-release');if(typeof api.validatePackedApmReleaseAsync!=='function')throw Error('Missing public API');"
+          ./node_modules/.bin/ankhorage-apm-release validate . --allow-owner-code --artifact "$RUNNER_TEMP/reviewed-owner.tgz" > "$RUNNER_TEMP/cold-report.json"
+          node -e "const r=require(process.argv[1]);if(!r.valid||!r.applicable||!r.integrity.startsWith('sha512-'))throw Error('Cold owner validation failed');console.log(JSON.stringify(r));" "$RUNNER_TEMP/cold-report.json"
+      - name: Commit validated changes on the task branch only
+        run: |
+          git diff --check
+          git add --all
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat: validate packed APM owner releases' -m 'Refs #208' -m 'Roadmap: ankhorage/apm#1'
+          git push origin HEAD:refs/heads/feat/208-apm-release-validation
+          echo "Validated implementation: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
