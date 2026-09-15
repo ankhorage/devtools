@@ -57,6 +57,8 @@ Synchronization ensures `@ankhorage/devtools` is declared using the version of t
 
 The package is discovered under the `devtools` category and exposes these capabilities:
 
+- `devtools.apm.sync`
+- `devtools.apm.validate`
 - `devtools.lint`
 - `devtools.changeset`
 - `devtools.format`
@@ -373,3 +375,56 @@ A new concern should:
 4. add provider commands under `ankh devtools`
 5. include dry-run, status, and idempotence coverage
 6. document its central ownership and repository-owned extension points
+
+## Package-owned APM release gates
+
+A package opts in through `ankh.apm` in its `package.json`:
+
+```json
+{
+  "ankh": {
+    "apm": { "protocolVersion": 1, "descriptor": "./apm/update.json" }
+  }
+}
+```
+
+Include the descriptor in `files` and expose any executable extension with an explicit public
+`exports` subpath. Use the released APM descriptor and extension types from `@ankhorage/apm/types`;
+Devtools does not own or duplicate the protocol. Add `test:apm` to run the owner's deterministic
+source-to-target fixtures, including skipped versions, unsupported old states, idempotency and
+interruption recovery. A no-migration release still declares supported history explicitly and
+can pass without an extension. Absence of metadata is reported as inapplicable, not migration-safe.
+
+```sh
+ankh devtools apm sync .
+ankh devtools apm validate . --allow-owner-code --artifact /tmp/reviewed-owner.tgz
+```
+
+The standalone `ankhorage-apm-release sync|validate` binary runs the same operations. The public
+`@ankhorage/devtools/apm-release` entrypoint exports `synchronizeApmReleaseDescriptorAsync`,
+`validatePackedApmReleaseAsync` and `validateApmReleaseCandidate`; types are available from
+`@ankhorage/devtools/types`. Programmatic callers can supply `previousDescriptors` to enforce
+unchanged migration checksums and `relatedDescriptors` for cross-owner prerequisites. Owners
+must include historical descriptors in their `test:apm` fixtures where their migrations require them.
+
+Validation packs with lifecycle scripts disabled, reads only the packed descriptor, checks owner
+identity, protocol/schema, migration/projection IDs, prerequisite graphs and public extension
+capabilities using APM's canonical validators. Invalid metadata is a failure, not an opt-out.
+`--allow-owner-code` is explicit permission to import the packed extension in a bounded child
+process. The child is **not a security sandbox**; run only trusted owner code. Registry metadata
+alone never grants this permission. Installed dependency resolution uses the repository's
+frozen dependency graph; the package's own code is loaded through native public export resolution
+from the extracted archive, never from the source checkout.
+
+`--artifact` creates a new file containing exactly the validated bytes and refuses an existing
+output. The JSON result includes SHA-512 integrity; `--expected-integrity` refuses a different
+archive. Keep the retained archive immutable. The managed release workflow versions with
+Changesets, synchronizes descriptor identity, rebuilds, runs `test:apm`, validates a fresh archive,
+and publishes that same archive using `npm publish --ignore-scripts`, without repacking.
+Authentication and network errors are not treated as an unpublished version. Packages without
+APM metadata retain their existing Changesets publication path.
+
+Producer order is: released APM protocol, validated owner package release, then consumer rollout.
+Never declare an unpublished owner version. Project migration recovery is owned by APM and the
+package's declared handlers; passing this release gate does not execute migrations against user
+projects, deploy production services, or prove compatibility with shipped native binaries.

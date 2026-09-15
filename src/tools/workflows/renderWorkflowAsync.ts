@@ -5,6 +5,7 @@ import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 export interface WorkflowPolicy {
   readonly bunVersion: string;
   readonly nodeVersion: string;
+  readonly apmReleaseCommand?: string;
 }
 
 /*** Renders one workflow template with the canonical runtime and Changesets policy. */
@@ -15,6 +16,10 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
     .replaceAll(CHANGESETS_PUBLISH_COMMAND_TOKEN, changesetsPolicy.workflowCommands.publish)
     .replaceAll(CHANGESETS_STATUS_COMMAND_TOKEN, changesetsPolicy.workflowCommands.status)
     .replaceAll(CHANGESETS_VERSION_COMMAND_TOKEN, changesetsPolicy.workflowCommands.version)
+    .replaceAll(
+      '__ANKH_APM_RELEASE_COMMAND__',
+      policy.apmReleaseCommand ?? './node_modules/.bin/ankhorage-apm-release',
+    )
     .replaceAll(NODE_VERSION_TOKEN, policy.nodeVersion);
 }
 

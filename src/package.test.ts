@@ -4,6 +4,8 @@ import { describe, expect, it } from 'bun:test';
 
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 const capabilities = [
+  'devtools.apm.sync',
+  'devtools.apm.validate',
   'devtools.changeset',
   'devtools.lint',
   'devtools.format',
@@ -43,12 +45,21 @@ describe('package metadata', () => {
       capabilities,
     });
     expect(packageJson.bin).toEqual({
+      'ankhorage-apm-release': './dist/cli/bin/apm-release.js',
       'ankhorage-changeset': './dist/cli/bin/changeset.js',
       'ankhorage-eslint': './dist/cli/bin/eslint.js',
       'ankhorage-knip': './dist/cli/bin/knip.js',
       'ankhorage-prettier': './dist/cli/bin/prettier.js',
     });
     expect(packageJson.exports).toEqual({
+      './apm-release': {
+        types: './dist/apmRelease.d.ts',
+        import: './dist/apmRelease.js',
+      },
+      './types': {
+        types: './dist/types/public.d.ts',
+        import: './dist/types/public.js',
+      },
       './cli': {
         types: './dist/cli/index.d.ts',
         import: './dist/cli/index.js',

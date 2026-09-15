@@ -1,6 +1,7 @@
 import { access } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
@@ -32,8 +33,9 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
   const sourceUrl = new URL(sourcePath, import.meta.url);
   return {
     relativePath,
-    render: async () =>
+    render: async (targetDirectory) =>
       await renderWorkflowAsync(sourceUrl, {
+        apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         bunVersion: bunRuntimePolicy.version,
         nodeVersion: nodeRuntimePolicy.setupVersion,
       }),
@@ -47,6 +49,7 @@ function createRenovateWorkflowDefinition(): ManagedFileDefinition {
     relativePath: '.github/workflows/renovate.yml',
     render: async (targetDirectory) =>
       await renderRenovateWorkflowAsync(sourceUrl, targetDirectory, {
+        apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         bunVersion: bunRuntimePolicy.version,
         nodeVersion: nodeRuntimePolicy.setupVersion,
       }),

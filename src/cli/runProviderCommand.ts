@@ -1,4 +1,6 @@
 import type { DevtoolsCommandDefinition } from './commands.js';
+import { sync } from './commands/apm/sync.js';
+import { validate } from './commands/apm/validate.js';
 import { runExternalTool } from './runExternalTool.js';
 import {
   type DevtoolsRepositoryCommandContext,
@@ -14,6 +16,9 @@ export async function runProviderCommand(
   argv: readonly string[],
   context: DevtoolsProviderCommandContext,
 ): Promise<{ readonly exitCode: number }> {
+  if (command.kind === 'apm-release') {
+    return command.operation === 'sync' ? sync(argv, context) : validate(argv, context);
+  }
   if (command.kind === 'external') {
     return await runExternalTool(command, argv, {
       cwd: context.cwd,

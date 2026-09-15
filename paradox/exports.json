@@ -1,5 +1,181 @@
 [
   {
+    "name": "ApmPackedReleaseCandidate",
+    "description": "Packed bytes and loaded owner evidence supplied to the canonical APM validators.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/apm-release-validation.ts",
+    "sourceLocation": {
+      "filePath": "src/types/apm-release-validation.ts",
+      "line": 4,
+      "column": 1
+    },
+    "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "descriptor",
+        "kind": "property",
+        "type": "unknown",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "descriptorSource",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "extension",
+        "kind": "property",
+        "type": "unknown",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "integrity",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "packageJson",
+        "kind": "property",
+        "type": "Readonly<Record<string, unknown>>",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "ApmReleaseValidationOptions",
+    "description": "Explicit release-validation inputs; owner code is never trusted by default.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/apm-release-validation.ts",
+    "sourceLocation": {
+      "filePath": "src/types/apm-release-validation.ts",
+      "line": 13,
+      "column": 1
+    },
+    "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "allowOwnerCode",
+        "kind": "property",
+        "type": "boolean | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "artifactPath",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "expectedIntegrity",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "previousDescriptors",
+        "kind": "property",
+        "type": "readonly ApmUpdateDescriptor[] | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "relatedDescriptors",
+        "kind": "property",
+        "type": "readonly ApmUpdateDescriptor[] | undefined",
+        "required": false,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "ApmReleaseValidationResult",
+    "description": "Evidence for one exact packed release; inapplicable never means migration-safe.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "type",
+    "modulePath": "src/types/apm-release-validation.ts",
+    "sourceLocation": {
+      "filePath": "src/types/apm-release-validation.ts",
+      "line": 22,
+      "column": 1
+    },
+    "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "applicable",
+        "kind": "property",
+        "type": "boolean",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "artifactPath",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "blockers",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "integrity",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "packageName",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "packageVersion",
+        "kind": "property",
+        "type": "string | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "valid",
+        "kind": "property",
+        "type": "boolean",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
     "name": "createConfig",
     "description": null,
     "isReadme": false,
@@ -441,7 +617,7 @@
     "modulePath": "src/cli/index.ts",
     "sourceLocation": {
       "filePath": "src/cli/index.ts",
-      "line": 31,
+      "line": 40,
       "column": 7
     },
     "exportPaths": ["src/cli/index.ts"],
@@ -499,6 +675,118 @@
         "description": null
       }
     ],
+    "structuredRows": []
+  },
+  {
+    "name": "synchronizeApmReleaseDescriptorAsync",
+    "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
+    "isReadme": false,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+    "sourceLocation": {
+      "filePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+      "line": 5,
+      "column": 1
+    },
+    "exportPaths": ["src/apmRelease.ts"],
+    "relatedSymbols": [],
+    "signatures": [
+      {
+        "label": "(targetDirectory: string) => Promise<boolean>",
+        "parameters": [
+          {
+            "name": "targetDirectory",
+            "type": "string",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Promise<boolean>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "validateApmReleaseCandidate",
+    "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
+    "isReadme": true,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+    "sourceLocation": {
+      "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+      "line": 31,
+      "column": 1
+    },
+    "exportPaths": ["src/apmRelease.ts"],
+    "relatedSymbols": [
+      "ApmPackedReleaseCandidate",
+      "ApmReleaseValidationOptions",
+      "ApmReleaseValidationResult"
+    ],
+    "signatures": [
+      {
+        "label": "(candidate: ApmPackedReleaseCandidate, options?: ApmReleaseValidationOptions) => ApmReleaseValidationResult",
+        "parameters": [
+          {
+            "name": "candidate",
+            "type": "ApmPackedReleaseCandidate",
+            "required": true,
+            "description": null
+          },
+          {
+            "name": "options",
+            "type": "ApmReleaseValidationOptions",
+            "required": false,
+            "description": null
+          }
+        ],
+        "returnType": "ApmReleaseValidationResult",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "validatePackedApmReleaseAsync",
+    "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
+    "isReadme": true,
+    "examples": [],
+    "kind": "function",
+    "modulePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+    "sourceLocation": {
+      "filePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+      "line": 17,
+      "column": 1
+    },
+    "exportPaths": ["src/apmRelease.ts"],
+    "relatedSymbols": ["ApmReleaseValidationOptions", "ApmReleaseValidationResult"],
+    "signatures": [
+      {
+        "label": "(targetDirectory: string, options?: ApmReleaseValidationOptions) => Promise<ApmReleaseValidationResult>",
+        "parameters": [
+          {
+            "name": "options",
+            "type": "ApmReleaseValidationOptions",
+            "required": false,
+            "description": null
+          },
+          {
+            "name": "targetDirectory",
+            "type": "string",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "Promise<ApmReleaseValidationResult>",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
     "structuredRows": []
   }
 ]

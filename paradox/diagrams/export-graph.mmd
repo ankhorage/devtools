@@ -1,14 +1,29 @@
 graph LR
+  module_src_apmRelease_ts["src/apmRelease.ts"]
+  module_src_cli_bin_apm_release_ts["src/cli/bin/apm-release.ts"]
   module_src_cli_bin_changeset_ts["src/cli/bin/changeset.ts"]
   module_src_cli_bin_eslint_ts["src/cli/bin/eslint.ts"]
   module_src_cli_bin_knip_ts["src/cli/bin/knip.ts"]
   module_src_cli_bin_prettier_ts["src/cli/bin/prettier.ts"]
   module_src_cli_commands_ts["src/cli/commands.ts"]
+  module_src_cli_commands_apm_sync_ts["src/cli/commands/apm/sync.ts"]
+  module_src_cli_commands_apm_validate_ts["src/cli/commands/apm/validate.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_cli_runExternalTool_ts["src/cli/runExternalTool.ts"]
   module_src_cli_runProviderCommand_ts["src/cli/runProviderCommand.ts"]
   module_src_cli_runRepositoryCommand_ts["src/cli/runRepositoryCommand.ts"]
   module_src_cli_runStandaloneTool_ts["src/cli/runStandaloneTool.ts"]
+  module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts["src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"]
+  module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts["src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"]
+  module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts["src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"]
+  module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts["src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"]
+  module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts["src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts"]
+  module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts["src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts"]
+  module_src_features_apm_release_validation_application_synchronizeApmReleaseMetadataAsync_ts["src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"]
+  module_src_features_apm_release_validation_application_validateApmReleaseCandidate_ts["src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"]
+  module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts["src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts"]
+  module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts["src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"]
+  module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts["src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"]
   module_src_internal_readmeDocs_ts["src/internal/readmeDocs.ts"]
   module_src_owner_synchronizeRenovateOwnerAsync_ts["src/owner/synchronizeRenovateOwnerAsync.ts"]
   module_src_policy_applyBunRuntimePolicy_ts["src/policy/applyBunRuntimePolicy.ts"]
@@ -37,7 +52,15 @@ graph LR
   module_src_tools_workflows_index_ts["src/tools/workflows/index.ts"]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts["src/tools/workflows/renderRenovateWorkflowAsync.ts"]
   module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
+  module_src_types_apm_release_validation_ts["src/types/apm-release-validation.ts"]
   module_src_types_bunPolicy_ts["src/types/bunPolicy.ts"]
+  module_src_types_public_ts["src/types/public.ts"]
+  export_ApmPackedReleaseCandidate["ApmPackedReleaseCandidate"]
+  module_src_types_apm_release_validation_ts --> export_ApmPackedReleaseCandidate
+  export_ApmReleaseValidationOptions["ApmReleaseValidationOptions"]
+  module_src_types_apm_release_validation_ts --> export_ApmReleaseValidationOptions
+  export_ApmReleaseValidationResult["ApmReleaseValidationResult"]
+  module_src_types_apm_release_validation_ts --> export_ApmReleaseValidationResult
   export_createConfig["createConfig"]
   module_src_tools_eslint_index_ts --> export_createConfig
   export_createConfig -.-> export_DevtoolsConfigOptions
@@ -74,3 +97,14 @@ graph LR
   module_src_tools_eslint_types_ts --> export_ResolvedDevtoolsEslintProfile
   export_RestrictedImport["RestrictedImport"]
   module_src_tools_eslint_types_ts --> export_RestrictedImport
+  export_synchronizeApmReleaseDescriptorAsync["synchronizeApmReleaseDescriptorAsync"]
+  module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts --> export_synchronizeApmReleaseDescriptorAsync
+  export_validateApmReleaseCandidate["validateApmReleaseCandidate"]
+  module_src_features_apm_release_validation_application_validateApmReleaseCandidate_ts --> export_validateApmReleaseCandidate
+  export_validateApmReleaseCandidate -.-> export_ApmPackedReleaseCandidate
+  export_validateApmReleaseCandidate -.-> export_ApmReleaseValidationOptions
+  export_validateApmReleaseCandidate -.-> export_ApmReleaseValidationResult
+  export_validatePackedApmReleaseAsync["validatePackedApmReleaseAsync"]
+  module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --> export_validatePackedApmReleaseAsync
+  export_validatePackedApmReleaseAsync -.-> export_ApmReleaseValidationOptions
+  export_validatePackedApmReleaseAsync -.-> export_ApmReleaseValidationResult

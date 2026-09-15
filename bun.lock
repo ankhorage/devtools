@@ -5,6 +5,7 @@
     "": {
       "name": "@ankhorage/devtools",
       "dependencies": {
+        "@ankhorage/apm": "^0.6.0",
         "@ankhorage/project-detector": "^0.1.0",
         "@ankhorage/utility": "^0.5.1",
         "@changesets/cli": "^3.0.2",
@@ -38,6 +39,8 @@
   },
   "packages": {
     "@ankhorage/ankh": ["@ankhorage/ankh@0.8.11", "", { "dependencies": { "@ankhorage/contracts": "^8.2.0", "@ankhorage/devtools": "^1.11.0", "@ankhorage/doctor": "^0.10.7", "yaml": "^2.8.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-W/5wc3PGtrhvl+wHv9Tlo8vAhres5Tjm6uLg/NZnN1jT/c6UKaz0atPc5hGxRpZc1lPjB0E34eM/fo7LJRkBpg=="],
+
+    "@ankhorage/apm": ["@ankhorage/apm@0.6.0", "", { "dependencies": { "@ankhorage/project-detector": "^0.1.0", "@ankhorage/utility": "^1.1.0", "jsonc-parser": "^3.3.1", "semver": "^7.8.5", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.8.13" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "apm": "dist/cli/runAsync.js" } }, "sha512-mqa04cbczVyqzks9qduqJxRuSn2hKMTRjq9/42CrWXZDb+nmTxxxY38OHKXSdwu9Tv0Y+zs6rGAferB/QY8Huw=="],
 
     "@ankhorage/color-theory": ["@ankhorage/color-theory@0.3.0", "", { "dependencies": { "culori": "^4.0.2" } }, "sha512-M6McHR2obnslpPESe84xr1E/1PuGKlb1S6ypDzNhkVdwJXS9gL53GDALfqszi5QyQNxQHFNyCOVnnzaQlGn52g=="],
 
@@ -864,6 +867,10 @@
     "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
 
     "zod-validation-error": ["zod-validation-error@4.0.2", "", { "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" } }, "sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ=="],
+
+    "@ankhorage/apm/@ankhorage/utility": ["@ankhorage/utility@1.1.0", "", {}, "sha512-/SHZSk/5/wMAwU5elLBkCqc+O+fxOlfQLrCZvaXrADlfzinXSHgCfOgMeErd4zabJE1knqO7I+79PAjGwmi+yQ=="],
+
+    "@ankhorage/apm/yaml": ["yaml@2.9.1", "", { "bin": { "yaml": "bin.mjs" } }, "sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw=="],
 
     "@ankhorage/devtools/@ankhorage/utility": ["@ankhorage/utility@0.3.0", "", {}, "sha512-cqmfcgXmA7NgM5FYxfVKeA3XpN4YskqGtNU45AT7G2Yr5MeN09r4a0GS8i0hthLCLMis65/tBXd7OjdfoYv7/w=="],
 
