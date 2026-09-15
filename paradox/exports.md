@@ -10,13 +10,13 @@ Packed bytes and loaded owner evidence supplied to the canonical APM validators.
 
 ### Members
 
-| Name             | Kind     | Type                                | Required | Description |
-| ---------------- | -------- | ----------------------------------- | -------- | ----------- |
-| descriptor       | property | `unknown`                           | yes      |             |
-| descriptorSource | property | `string`                            | yes      |             |
-| extension        | property | `unknown`                           | no       |             |
-| integrity        | property | `string`                            | yes      |             |
-| packageJson      | property | `Readonly<Record<string, unknown>>` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| descriptor | property | `unknown` | yes |  |
+| descriptorSource | property | `string` | yes |  |
+| extension | property | `unknown` | no |  |
+| integrity | property | `string` | yes |  |
+| packageJson | property | `Readonly<Record<string, unknown>>` | yes |  |
 
 ## ApmReleaseValidationOptions
 
@@ -28,13 +28,13 @@ Explicit release-validation inputs; owner code is never trusted by default.
 
 ### Members
 
-| Name                | Kind     | Type                                          | Required | Description |
-| ------------------- | -------- | --------------------------------------------- | -------- | ----------- |
-| allowOwnerCode      | property | `boolean \| undefined`                        | no       |             |
-| artifactPath        | property | `string \| undefined`                         | no       |             |
-| expectedIntegrity   | property | `string \| undefined`                         | no       |             |
-| previousDescriptors | property | `readonly ApmUpdateDescriptor[] \| undefined` | no       |             |
-| relatedDescriptors  | property | `readonly ApmUpdateDescriptor[] \| undefined` | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| allowOwnerCode | property | `boolean \| undefined` | no |  |
+| artifactPath | property | `string \| undefined` | no |  |
+| expectedIntegrity | property | `string \| undefined` | no |  |
+| previousDescriptors | property | `readonly ApmUpdateDescriptor[] \| undefined` | no |  |
+| relatedDescriptors | property | `readonly ApmUpdateDescriptor[] \| undefined` | no |  |
 
 ## ApmReleaseValidationResult
 
@@ -46,15 +46,15 @@ Evidence for one exact packed release; inapplicable never means migration-safe.
 
 ### Members
 
-| Name           | Kind     | Type                  | Required | Description |
-| -------------- | -------- | --------------------- | -------- | ----------- |
-| applicable     | property | `boolean`             | yes      |             |
-| artifactPath   | property | `string \| undefined` | no       |             |
-| blockers       | property | `readonly string[]`   | yes      |             |
-| integrity      | property | `string \| undefined` | no       |             |
-| packageName    | property | `string \| undefined` | no       |             |
-| packageVersion | property | `string \| undefined` | no       |             |
-| valid          | property | `boolean`             | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| applicable | property | `boolean` | yes |  |
+| artifactPath | property | `string \| undefined` | no |  |
+| blockers | property | `readonly string[]` | yes |  |
+| integrity | property | `string \| undefined` | no |  |
+| packageName | property | `string \| undefined` | no |  |
+| packageVersion | property | `string \| undefined` | no |  |
+| valid | property | `boolean` | yes |  |
 
 ## createConfig
 
@@ -116,18 +116,18 @@ Source: `src/tools/eslint/types.ts:13:1`
 
 ### Members
 
-| Name                | Kind     | Type                                 | Required | Description |
-| ------------------- | -------- | ------------------------------------ | -------- | ----------- |
-| additionalIgnores   | property | `string[] \| undefined`              | no       |             |
-| allowDefaultProject | property | `string[] \| undefined`              | no       |             |
-| files               | property | `string[]`                           | yes      |             |
-| includePrettier     | property | `boolean \| undefined`               | no       |             |
-| overrides           | property | `FlatConfigItem[] \| undefined`      | no       |             |
-| packageJsonPath     | property | `string \| undefined`                | no       |             |
-| profile             | property | `DevtoolsEslintProfile \| undefined` | no       |             |
-| project             | property | `string[]`                           | yes      |             |
-| restrictedImports   | property | `RestrictedImport[] \| undefined`    | no       |             |
-| tsconfigRootDir     | property | `string`                             | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| additionalIgnores | property | `string[] \| undefined` | no |  |
+| allowDefaultProject | property | `string[] \| undefined` | no |  |
+| files | property | `string[]` | yes |  |
+| includePrettier | property | `boolean \| undefined` | no |  |
+| overrides | property | `FlatConfigItem[] \| undefined` | no |  |
+| packageJsonPath | property | `string \| undefined` | no |  |
+| profile | property | `DevtoolsEslintProfile \| undefined` | no |  |
+| project | property | `string[]` | yes |  |
+| restrictedImports | property | `RestrictedImport[] \| undefined` | no |  |
+| tsconfigRootDir | property | `string` | yes |  |
 
 ## DevtoolsEslintProfile
 
@@ -143,15 +143,15 @@ Source: `src/tools/knip/index.ts:24:1`
 
 ### Members
 
-| Name               | Kind     | Type                                                              | Required | Description |
-| ------------------ | -------- | ----------------------------------------------------------------- | -------- | ----------- |
-| entry              | property | `string[] \| undefined`                                           | no       |             |
-| ignore             | property | `string[] \| undefined`                                           | no       |             |
-| ignoreBinaries     | property | `string[] \| undefined`                                           | no       |             |
-| ignoreDependencies | property | `(string \| RegExp)[] \| undefined`                               | no       |             |
-| ignoreFiles        | property | `string[] \| undefined`                                           | no       |             |
-| project            | property | `string[] \| undefined`                                           | no       |             |
-| workspaces         | property | `Record<string, DevtoolsKnipWorkspaceConfigOptions> \| undefined` | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| entry | property | `string[] \| undefined` | no |  |
+| ignore | property | `string[] \| undefined` | no |  |
+| ignoreBinaries | property | `string[] \| undefined` | no |  |
+| ignoreDependencies | property | `(string \| RegExp)[] \| undefined` | no |  |
+| ignoreFiles | property | `string[] \| undefined` | no |  |
+| project | property | `string[] \| undefined` | no |  |
+| workspaces | property | `Record<string, DevtoolsKnipWorkspaceConfigOptions> \| undefined` | no |  |
 
 ## DevtoolsKnipMonorepoConfigOptions
 
@@ -161,12 +161,12 @@ Source: `src/tools/knip/index.ts:28:1`
 
 ### Members
 
-| Name              | Kind     | Type                                                              | Required | Description |
-| ----------------- | -------- | ----------------------------------------------------------------- | -------- | ----------- |
-| root              | property | `DevtoolsKnipWorkspaceConfigOptions \| undefined`                 | no       |             |
-| workspaceDefaults | property | `DevtoolsKnipWorkspaceConfigOptions \| undefined`                 | no       |             |
-| workspaceGlobs    | property | `string[] \| undefined`                                           | no       |             |
-| workspaces        | property | `Record<string, DevtoolsKnipWorkspaceConfigOptions> \| undefined` | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| root | property | `DevtoolsKnipWorkspaceConfigOptions \| undefined` | no |  |
+| workspaceDefaults | property | `DevtoolsKnipWorkspaceConfigOptions \| undefined` | no |  |
+| workspaceGlobs | property | `string[] \| undefined` | no |  |
+| workspaces | property | `Record<string, DevtoolsKnipWorkspaceConfigOptions> \| undefined` | no |  |
 
 ## DevtoolsKnipWorkspaceConfigOptions
 
@@ -176,14 +176,14 @@ Source: `src/tools/knip/index.ts:15:1`
 
 ### Members
 
-| Name               | Kind     | Type                                | Required | Description |
-| ------------------ | -------- | ----------------------------------- | -------- | ----------- |
-| entry              | property | `string[] \| undefined`             | no       |             |
-| ignore             | property | `string[] \| undefined`             | no       |             |
-| ignoreBinaries     | property | `string[] \| undefined`             | no       |             |
-| ignoreDependencies | property | `(string \| RegExp)[] \| undefined` | no       |             |
-| ignoreFiles        | property | `string[] \| undefined`             | no       |             |
-| project            | property | `string[] \| undefined`             | no       |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| entry | property | `string[] \| undefined` | no |  |
+| ignore | property | `string[] \| undefined` | no |  |
+| ignoreBinaries | property | `string[] \| undefined` | no |  |
+| ignoreDependencies | property | `(string \| RegExp)[] \| undefined` | no |  |
+| ignoreFiles | property | `string[] \| undefined` | no |  |
+| project | property | `string[] \| undefined` | no |  |
 
 ## FlatConfigItem
 
@@ -211,10 +211,10 @@ Source: `src/tools/eslint/types.ts:5:1`
 
 ### Members
 
-| Name    | Kind     | Type     | Required | Description |
-| ------- | -------- | -------- | -------- | ----------- |
-| message | property | `string` | yes      |             |
-| name    | property | `string` | yes      |             |
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| message | property | `string` | yes |  |
+| name | property | `string` | yes |  |
 
 ## synchronizeApmReleaseDescriptorAsync
 

@@ -54,6 +54,7 @@ graph TD
   module_src_cli_runRepositoryCommand_ts --> module_src_cli_commands_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_agents_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_eslint_managed_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_gitignore_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_knip_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_syncBunDependencies_ts
@@ -150,6 +151,9 @@ graph TD
   module_src_tools_eslint_resolveEslintProfileFromDetectionInput_ts --> module_src_tools_eslint_types_ts
   module_src_tools_eslint_types_ts["src/tools/eslint/types.ts"]
   package__ankhorage_devtools -.-> module_src_tools_eslint_types_ts
+  module_src_tools_gitignore_index_ts["src/tools/gitignore/index.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_gitignore_index_ts
+  module_src_tools_gitignore_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_knip_index_ts["src/tools/knip/index.ts"]
   module_src_tools_knip_managed_ts["src/tools/knip/managed.ts"]
   package__ankhorage_devtools -.-> module_src_tools_knip_managed_ts

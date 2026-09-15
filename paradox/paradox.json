@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.14.8",
+      "value": "v1.15.1",
       "color": "cb3837"
     },
     {
@@ -125,25 +125,33 @@
     {
       "path": "src/cli/bin/changeset.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "dependencies": [
+        "src/cli/runStandaloneTool.ts"
+      ],
       "exports": []
     },
     {
       "path": "src/cli/bin/eslint.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "dependencies": [
+        "src/cli/runStandaloneTool.ts"
+      ],
       "exports": []
     },
     {
       "path": "src/cli/bin/knip.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "dependencies": [
+        "src/cli/runStandaloneTool.ts"
+      ],
       "exports": []
     },
     {
       "path": "src/cli/bin/prettier.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli/runStandaloneTool.ts"],
+      "dependencies": [
+        "src/cli/runStandaloneTool.ts"
+      ],
       "exports": []
     },
     {
@@ -167,7 +175,9 @@
         "src/cli/runProviderCommand.ts",
         "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
       ],
-      "exports": ["sync"]
+      "exports": [
+        "sync"
+      ]
     },
     {
       "path": "src/cli/commands/apm/validate.ts",
@@ -176,19 +186,32 @@
         "src/cli/runProviderCommand.ts",
         "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
       ],
-      "exports": ["validate"]
+      "exports": [
+        "validate"
+      ]
     },
     {
       "path": "src/cli/index.ts",
       "isEntrypoint": true,
-      "dependencies": ["src/cli/commands.ts", "src/cli/runProviderCommand.ts"],
-      "exports": ["default"]
+      "dependencies": [
+        "src/cli/commands.ts",
+        "src/cli/runProviderCommand.ts"
+      ],
+      "exports": [
+        "default"
+      ]
     },
     {
       "path": "src/cli/runExternalTool.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli/commands.ts"],
-      "exports": ["DevtoolsRunResult", "runExternalTool", "runExternalToolWithDependencies"]
+      "dependencies": [
+        "src/cli/commands.ts"
+      ],
+      "exports": [
+        "DevtoolsRunResult",
+        "runExternalTool",
+        "runExternalToolWithDependencies"
+      ]
     },
     {
       "path": "src/cli/runProviderCommand.ts",
@@ -200,7 +223,10 @@
         "src/cli/runExternalTool.ts",
         "src/cli/runRepositoryCommand.ts"
       ],
-      "exports": ["DevtoolsProviderCommandContext", "runProviderCommand"]
+      "exports": [
+        "DevtoolsProviderCommandContext",
+        "runProviderCommand"
+      ]
     },
     {
       "path": "src/cli/runRepositoryCommand.ts",
@@ -209,6 +235,7 @@
         "src/cli/commands.ts",
         "src/tools/agents/index.ts",
         "src/tools/eslint/managed.ts",
+        "src/tools/gitignore/index.ts",
         "src/tools/knip/managed.ts",
         "src/tools/package/index.ts",
         "src/tools/package/syncBunDependencies.ts",
@@ -228,8 +255,13 @@
     {
       "path": "src/cli/runStandaloneTool.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/cli/commands.ts", "src/cli/runExternalTool.ts"],
-      "exports": ["runStandaloneTool"]
+      "dependencies": [
+        "src/cli/commands.ts",
+        "src/cli/runExternalTool.ts"
+      ],
+      "exports": [
+        "runStandaloneTool"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
@@ -239,7 +271,9 @@
         "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
         "src/types/apm-release-validation.ts"
       ],
-      "exports": ["runApmReleaseCommandAsync"]
+      "exports": [
+        "runApmReleaseCommandAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
@@ -248,7 +282,9 @@
         "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
         "src/types/apm-release-validation.ts"
       ],
-      "exports": ["createApmReleaseDescriptorPort"]
+      "exports": [
+        "createApmReleaseDescriptorPort"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
@@ -260,19 +296,27 @@
         "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
         "src/types/apm-release-validation.ts"
       ],
-      "exports": ["inspectPackedApmReleaseCandidateAsync"]
+      "exports": [
+        "inspectPackedApmReleaseCandidateAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/types/apm-release-validation.ts"],
-      "exports": ["probePackedApmExtensionAsync"]
+      "dependencies": [
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": [
+        "probePackedApmExtensionAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["readApmReleaseManifestAsync"]
+      "exports": [
+        "readApmReleaseManifestAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
@@ -280,7 +324,9 @@
       "dependencies": [
         "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts"
       ],
-      "exports": ["resolveApmReleaseCommandAsync"]
+      "exports": [
+        "resolveApmReleaseCommandAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
@@ -289,7 +335,9 @@
         "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
         "src/types/apm-release-validation.ts"
       ],
-      "exports": ["synchronizeApmReleaseMetadataAsync"]
+      "exports": [
+        "synchronizeApmReleaseMetadataAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
@@ -298,7 +346,9 @@
         "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
         "src/types/apm-release-validation.ts"
       ],
-      "exports": ["validateApmReleaseCandidate"]
+      "exports": [
+        "validateApmReleaseCandidate"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
@@ -307,7 +357,9 @@
         "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
         "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
       ],
-      "exports": ["synchronizeApmReleaseDescriptorAsync"]
+      "exports": [
+        "synchronizeApmReleaseDescriptorAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
@@ -316,19 +368,27 @@
         "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "src/types/apm-release-validation.ts"
       ],
-      "exports": ["validatePackedApmReleaseAsync"]
+      "exports": [
+        "validatePackedApmReleaseAsync"
+      ]
     },
     {
       "path": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["readApmReleaseMetadata"]
+      "exports": [
+        "readApmReleaseMetadata"
+      ]
     },
     {
       "path": "src/internal/readmeDocs.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/policy/bunRuntimePolicy.ts"],
-      "exports": ["getReadmeDocumentationErrors"]
+      "dependencies": [
+        "src/policy/bunRuntimePolicy.ts"
+      ],
+      "exports": [
+        "getReadmeDocumentationErrors"
+      ]
     },
     {
       "path": "src/owner/synchronizeRenovateOwnerAsync.ts",
@@ -341,42 +401,62 @@
         "src/tools/workflows/renderWorkflowAsync.ts",
         "src/types/bunPolicy.ts"
       ],
-      "exports": ["synchronizeRenovateOwnerAsync"]
+      "exports": [
+        "synchronizeRenovateOwnerAsync"
+      ]
     },
     {
       "path": "src/policy/applyBunRuntimePolicy.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["applyBunRuntimePolicy"]
+      "exports": [
+        "applyBunRuntimePolicy"
+      ]
     },
     {
       "path": "src/policy/bunRuntimePolicy.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["bunRuntimePolicy", "nodeRuntimePolicy"]
+      "exports": [
+        "bunRuntimePolicy",
+        "nodeRuntimePolicy"
+      ]
     },
     {
       "path": "src/policy/changesetsPolicy.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["changesetsPolicy"]
+      "exports": [
+        "changesetsPolicy"
+      ]
     },
     {
       "path": "src/policy/renderBunPolicyDocumentation.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/types/bunPolicy.ts"],
-      "exports": ["renderBunPolicyDocumentation"]
+      "dependencies": [
+        "src/types/bunPolicy.ts"
+      ],
+      "exports": [
+        "renderBunPolicyDocumentation"
+      ]
     },
     {
       "path": "src/tools/agents/index.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/shared/managedFiles.ts"],
-      "exports": ["agentsManagedFiles"]
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "agentsManagedFiles"
+      ]
     },
     {
       "path": "src/tools/eslint/index.ts",
       "isEntrypoint": true,
-      "dependencies": ["src/tools/eslint/resolveEslintProfile.ts", "src/tools/eslint/types.ts"],
+      "dependencies": [
+        "src/tools/eslint/resolveEslintProfile.ts",
+        "src/tools/eslint/types.ts"
+      ],
       "exports": [
         "createConfig",
         "defaultIgnores",
@@ -391,14 +471,22 @@
     {
       "path": "src/tools/eslint/managed.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/shared/managedFiles.ts"],
-      "exports": ["eslintManagedFiles"]
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "eslintManagedFiles"
+      ]
     },
     {
       "path": "src/tools/eslint/packageJsonPath.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/eslint/types.ts"],
-      "exports": ["resolveProjectPackageJsonPath"]
+      "dependencies": [
+        "src/tools/eslint/types.ts"
+      ],
+      "exports": [
+        "resolveProjectPackageJsonPath"
+      ]
     },
     {
       "path": "src/tools/eslint/resolveEslintProfile.ts",
@@ -408,13 +496,19 @@
         "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
         "src/tools/eslint/types.ts"
       ],
-      "exports": ["resolveEslintProfile"]
+      "exports": [
+        "resolveEslintProfile"
+      ]
     },
     {
       "path": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/eslint/types.ts"],
-      "exports": ["resolveEslintProfileFromDetectionInput"]
+      "dependencies": [
+        "src/tools/eslint/types.ts"
+      ],
+      "exports": [
+        "resolveEslintProfileFromDetectionInput"
+      ]
     },
     {
       "path": "src/tools/eslint/types.ts",
@@ -426,6 +520,16 @@
         "FlatConfigItem",
         "ResolvedDevtoolsEslintProfile",
         "RestrictedImport"
+      ]
+    },
+    {
+      "path": "src/tools/gitignore/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "gitignoreManagedFiles"
       ]
     },
     {
@@ -443,8 +547,12 @@
     {
       "path": "src/tools/knip/managed.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/shared/managedFiles.ts"],
-      "exports": ["knipManagedFiles"]
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "knipManagedFiles"
+      ]
     },
     {
       "path": "src/tools/package/index.ts",
@@ -466,14 +574,23 @@
     {
       "path": "src/tools/package/syncBunDependencies.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/shared/managedFiles.ts"],
-      "exports": ["planBunDependencySync", "syncBunDependencies"]
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "planBunDependencySync",
+        "syncBunDependencies"
+      ]
     },
     {
       "path": "src/tools/prettier/managed.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/shared/managedFiles.ts"],
-      "exports": ["prettierManagedFiles"]
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "prettierManagedFiles"
+      ]
     },
     {
       "path": "src/tools/shared/managedFiles.ts",
@@ -493,7 +610,12 @@
       "path": "src/tools/skills/assetTestFixture.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["createAssetFixture", "createFixtureManifest", "ICON_SVG", "IMAGE_PNG"]
+      "exports": [
+        "createAssetFixture",
+        "createFixtureManifest",
+        "ICON_SVG",
+        "IMAGE_PNG"
+      ]
     },
     {
       "path": "src/tools/skills/managed.ts",
@@ -503,7 +625,10 @@
         "src/tools/skills/manifest.ts",
         "src/tools/skills/selection.ts"
       ],
-      "exports": ["inspectManagedSkills", "syncManagedSkills"]
+      "exports": [
+        "inspectManagedSkills",
+        "syncManagedSkills"
+      ]
     },
     {
       "path": "src/tools/skills/manifest.ts",
@@ -548,8 +673,12 @@
     {
       "path": "src/tools/vscode/index.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/shared/managedFiles.ts"],
-      "exports": ["vscodeManagedFiles"]
+      "dependencies": [
+        "src/tools/shared/managedFiles.ts"
+      ],
+      "exports": [
+        "vscodeManagedFiles"
+      ]
     },
     {
       "path": "src/tools/workflows/index.ts",
@@ -561,19 +690,30 @@
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
       ],
-      "exports": ["workflowManagedFiles"]
+      "exports": [
+        "workflowManagedFiles"
+      ]
     },
     {
       "path": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/tools/workflows/renderWorkflowAsync.ts"],
-      "exports": ["renderRenovateWorkflowAsync"]
+      "dependencies": [
+        "src/tools/workflows/renderWorkflowAsync.ts"
+      ],
+      "exports": [
+        "renderRenovateWorkflowAsync"
+      ]
     },
     {
       "path": "src/tools/workflows/renderWorkflowAsync.ts",
       "isEntrypoint": false,
-      "dependencies": ["src/policy/changesetsPolicy.ts"],
-      "exports": ["renderWorkflowAsync", "WorkflowPolicy"]
+      "dependencies": [
+        "src/policy/changesetsPolicy.ts"
+      ],
+      "exports": [
+        "renderWorkflowAsync",
+        "WorkflowPolicy"
+      ]
     },
     {
       "path": "src/types/apm-release-validation.ts",
@@ -590,7 +730,9 @@
       "path": "src/types/bunPolicy.ts",
       "isEntrypoint": false,
       "dependencies": [],
-      "exports": ["BunPolicy"]
+      "exports": [
+        "BunPolicy"
+      ]
     },
     {
       "path": "src/types/public.ts",
@@ -616,7 +758,10 @@
         "line": 4,
         "column": 1
       },
-      "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+      "exportPaths": [
+        "src/apmRelease.ts",
+        "src/types/public.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -670,7 +815,10 @@
         "line": 13,
         "column": 1
       },
-      "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+      "exportPaths": [
+        "src/apmRelease.ts",
+        "src/types/public.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -724,7 +872,10 @@
         "line": 22,
         "column": 1
       },
-      "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+      "exportPaths": [
+        "src/apmRelease.ts",
+        "src/types/public.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -792,8 +943,12 @@
         "line": 75,
         "column": 1
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
-      "relatedSymbols": ["DevtoolsConfigOptions"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
+      "relatedSymbols": [
+        "DevtoolsConfigOptions"
+      ],
       "signatures": [
         {
           "label": "(options: DevtoolsConfigOptions) => Linter.Config<import(\"@eslint/core\").RulesConfig>[]",
@@ -824,8 +979,12 @@
         "line": 38,
         "column": 1
       },
-      "exportPaths": ["src/tools/knip/index.ts"],
-      "relatedSymbols": ["DevtoolsKnipConfigOptions"],
+      "exportPaths": [
+        "src/tools/knip/index.ts"
+      ],
+      "relatedSymbols": [
+        "DevtoolsKnipConfigOptions"
+      ],
       "signatures": [
         {
           "label": "(options?: DevtoolsKnipConfigOptions) => KnipConfig",
@@ -856,8 +1015,12 @@
         "line": 53,
         "column": 1
       },
-      "exportPaths": ["src/tools/knip/index.ts"],
-      "relatedSymbols": ["DevtoolsKnipMonorepoConfigOptions"],
+      "exportPaths": [
+        "src/tools/knip/index.ts"
+      ],
+      "relatedSymbols": [
+        "DevtoolsKnipMonorepoConfigOptions"
+      ],
       "signatures": [
         {
           "label": "(options?: DevtoolsKnipMonorepoConfigOptions) => KnipConfig",
@@ -888,7 +1051,9 @@
         "line": 43,
         "column": 14
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -906,7 +1071,9 @@
         "line": 56,
         "column": 14
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -924,8 +1091,14 @@
         "line": 13,
         "column": 1
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
-      "relatedSymbols": ["DevtoolsEslintProfile", "FlatConfigItem", "RestrictedImport"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
+      "relatedSymbols": [
+        "DevtoolsEslintProfile",
+        "FlatConfigItem",
+        "RestrictedImport"
+      ],
       "signatures": [],
       "members": [
         {
@@ -1013,7 +1186,9 @@
         "line": 10,
         "column": 1
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -1031,8 +1206,12 @@
         "line": 24,
         "column": 1
       },
-      "exportPaths": ["src/tools/knip/index.ts"],
-      "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+      "exportPaths": [
+        "src/tools/knip/index.ts"
+      ],
+      "relatedSymbols": [
+        "DevtoolsKnipWorkspaceConfigOptions"
+      ],
       "signatures": [],
       "members": [
         {
@@ -1099,8 +1278,12 @@
         "line": 28,
         "column": 1
       },
-      "exportPaths": ["src/tools/knip/index.ts"],
-      "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+      "exportPaths": [
+        "src/tools/knip/index.ts"
+      ],
+      "relatedSymbols": [
+        "DevtoolsKnipWorkspaceConfigOptions"
+      ],
       "signatures": [],
       "members": [
         {
@@ -1146,7 +1329,9 @@
         "line": 15,
         "column": 1
       },
-      "exportPaths": ["src/tools/knip/index.ts"],
+      "exportPaths": [
+        "src/tools/knip/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -1207,7 +1392,9 @@
         "line": 3,
         "column": 1
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -1225,7 +1412,9 @@
         "line": 40,
         "column": 7
       },
-      "exportPaths": ["src/cli/index.ts"],
+      "exportPaths": [
+        "src/cli/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -1243,7 +1432,9 @@
         "line": 11,
         "column": 1
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
@@ -1261,7 +1452,9 @@
         "line": 5,
         "column": 1
       },
-      "exportPaths": ["src/tools/eslint/index.ts"],
+      "exportPaths": [
+        "src/tools/eslint/index.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [],
       "members": [
@@ -1294,7 +1487,9 @@
         "line": 5,
         "column": 1
       },
-      "exportPaths": ["src/apmRelease.ts"],
+      "exportPaths": [
+        "src/apmRelease.ts"
+      ],
       "relatedSymbols": [],
       "signatures": [
         {
@@ -1326,7 +1521,9 @@
         "line": 31,
         "column": 1
       },
-      "exportPaths": ["src/apmRelease.ts"],
+      "exportPaths": [
+        "src/apmRelease.ts"
+      ],
       "relatedSymbols": [
         "ApmPackedReleaseCandidate",
         "ApmReleaseValidationOptions",
@@ -1368,8 +1565,13 @@
         "line": 17,
         "column": 1
       },
-      "exportPaths": ["src/apmRelease.ts"],
-      "relatedSymbols": ["ApmReleaseValidationOptions", "ApmReleaseValidationResult"],
+      "exportPaths": [
+        "src/apmRelease.ts"
+      ],
+      "relatedSymbols": [
+        "ApmReleaseValidationOptions",
+        "ApmReleaseValidationResult"
+      ],
       "signatures": [
         {
           "label": "(targetDirectory: string, options?: ApmReleaseValidationOptions) => Promise<ApmReleaseValidationResult>",
@@ -1582,7 +1784,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 43,
+        "line": 44,
         "column": 1
       }
     },
@@ -1591,7 +1793,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 62,
+        "line": 63,
         "column": 1
       }
     },
@@ -1600,7 +1802,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 90,
+        "line": 91,
         "column": 1
       }
     },
@@ -1609,7 +1811,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 109,
+        "line": 110,
         "column": 1
       }
     },
@@ -1618,7 +1820,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 140,
+        "line": 141,
         "column": 1
       }
     },
@@ -1627,7 +1829,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 162,
+        "line": 163,
         "column": 1
       }
     },
@@ -1636,7 +1838,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 179,
+        "line": 180,
         "column": 1
       }
     },
@@ -1645,7 +1847,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 189,
+        "line": 190,
         "column": 1
       }
     },
@@ -1654,7 +1856,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 202,
+        "line": 203,
         "column": 1
       }
     },
@@ -1663,7 +1865,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 221,
+        "line": 222,
         "column": 1
       }
     },
@@ -2037,47 +2239,92 @@
       }
     },
     {
-      "name": "readPackageManifest",
-      "description": null,
+      "name": "renderCurrentArchitectureInstructions",
+      "description": "Render the current-architecture policy shared by every managed repository.",
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 84,
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderRequiredRepositoryInstructions",
+      "description": "Render contextual repository skill-selection requirements.",
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDocumentationInstructions",
+      "description": "Render the release-owned generated documentation policy.",
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 83,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPullRequestInstructions",
+      "description": "Render canonical pull-request validation commands.",
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 97,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderSkillScriptInstructions",
+      "description": "Render the repository rule for executable Agent Skill scripts.",
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 115,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifest",
+      "description": "Read the target package manifest used to personalize managed repository instructions.",
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 125,
         "column": 1
       }
     },
     {
       "name": "escapeInlineCode",
-      "description": null,
+      "description": "Escape inline-code delimiters before interpolating repository metadata into Markdown.",
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 100,
+        "line": 142,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
-      "description": null,
+      "description": "Check whether an unknown failure carries a Node.js error code.",
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 104,
+        "line": 147,
         "column": 1
       }
     },
     {
       "name": "isRecord",
-      "description": null,
+      "description": "Check whether an unknown value is a plain record-shaped object.",
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 108,
+        "line": 152,
         "column": 1
       }
     },
     {
       "name": "readNonEmptyString",
-      "description": null,
+      "description": "Read and trim a non-empty string value from package metadata.",
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 112,
+        "line": 157,
         "column": 1
       }
     },
@@ -2276,6 +2523,33 @@
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
         "line": 7,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderGitignore",
+      "description": "Preserve repository-owned ignore rules while keeping documentation directories trackable.",
+      "sourceLocation": {
+        "filePath": "src/tools/gitignore/index.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "isGitignorePresent",
+      "description": "Report whether a repository already owns a `.gitignore` file that can be normalized.",
+      "sourceLocation": {
+        "filePath": "src/tools/gitignore/index.ts",
+        "line": 35,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": "Check whether an unknown failure carries a Node.js error code.",
+      "sourceLocation": {
+        "filePath": "src/tools/gitignore/index.ts",
+        "line": 46,
         "column": 1
       }
     },
@@ -3115,6 +3389,11 @@
       },
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/gitignore/index.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/tools/knip/managed.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
@@ -3282,6 +3561,11 @@
         "fromPath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
         "toPath": "src/tools/eslint/types.ts",
         "sourcePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts"
+      },
+      {
+        "fromPath": "src/tools/gitignore/index.ts",
+        "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/gitignore/index.ts"
       },
       {
         "fromPath": "src/tools/knip/managed.ts",
@@ -4109,6 +4393,36 @@
       },
       {
         "fromSymbol": "renderAgentsFile",
+        "toSymbol": "renderCurrentArchitectureInstructions",
+        "callExpression": "renderCurrentArchitectureInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "renderRequiredRepositoryInstructions",
+        "callExpression": "renderRequiredRepositoryInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "renderDocumentationInstructions",
+        "callExpression": "renderDocumentationInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "renderPullRequestInstructions",
+        "callExpression": "renderPullRequestInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "renderSkillScriptInstructions",
+        "callExpression": "renderSkillScriptInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
         "toSymbol": "escapeInlineCode",
         "callExpression": "escapeInlineCode",
         "sourcePath": "src/tools/agents/index.ts"
@@ -4364,6 +4678,36 @@
         "toSymbol": "detectProject",
         "callExpression": "detectProject",
         "sourcePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts"
+      },
+      {
+        "fromSymbol": "renderGitignore",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/gitignore/index.ts"
+      },
+      {
+        "fromSymbol": "renderGitignore",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/gitignore/index.ts"
+      },
+      {
+        "fromSymbol": "isGitignorePresent",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/tools/gitignore/index.ts"
+      },
+      {
+        "fromSymbol": "isGitignorePresent",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/gitignore/index.ts"
+      },
+      {
+        "fromSymbol": "isGitignorePresent",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/gitignore/index.ts"
       },
       {
         "fromSymbol": "createKnipMonorepoConfig",

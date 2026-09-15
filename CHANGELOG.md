@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.1
+
+### Patch Changes
+
+- 881d799: Generate release-owned documentation after versioning, keep documentation directories trackable, and clarify contextual repository skill loading.
+
 ## 1.15.0
 
 ### Minor Changes

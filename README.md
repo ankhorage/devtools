@@ -3,7 +3,7 @@
 
 # @ankhorage/devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v1.14.8](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v1.15.1](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects
 
@@ -439,6 +439,7 @@ Producer order is: released APM protocol, validated owner package release, then 
 Never declare an unpublished owner version. Project migration recovery is owned by APM and the
 package's declared handlers; passing this release gate does not execute migrations against user
 projects, deploy production services, or prove compatibility with shipped native binaries.
+
 
 ## CLI
 

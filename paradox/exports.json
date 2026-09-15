@@ -11,7 +11,10 @@
       "line": 4,
       "column": 1
     },
-    "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+    "exportPaths": [
+      "src/apmRelease.ts",
+      "src/types/public.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -65,7 +68,10 @@
       "line": 13,
       "column": 1
     },
-    "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+    "exportPaths": [
+      "src/apmRelease.ts",
+      "src/types/public.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -119,7 +125,10 @@
       "line": 22,
       "column": 1
     },
-    "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+    "exportPaths": [
+      "src/apmRelease.ts",
+      "src/types/public.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -187,8 +196,12 @@
       "line": 75,
       "column": 1
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
-    "relatedSymbols": ["DevtoolsConfigOptions"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
+    "relatedSymbols": [
+      "DevtoolsConfigOptions"
+    ],
     "signatures": [
       {
         "label": "(options: DevtoolsConfigOptions) => Linter.Config<import(\"@eslint/core\").RulesConfig>[]",
@@ -219,8 +232,12 @@
       "line": 38,
       "column": 1
     },
-    "exportPaths": ["src/tools/knip/index.ts"],
-    "relatedSymbols": ["DevtoolsKnipConfigOptions"],
+    "exportPaths": [
+      "src/tools/knip/index.ts"
+    ],
+    "relatedSymbols": [
+      "DevtoolsKnipConfigOptions"
+    ],
     "signatures": [
       {
         "label": "(options?: DevtoolsKnipConfigOptions) => KnipConfig",
@@ -251,8 +268,12 @@
       "line": 53,
       "column": 1
     },
-    "exportPaths": ["src/tools/knip/index.ts"],
-    "relatedSymbols": ["DevtoolsKnipMonorepoConfigOptions"],
+    "exportPaths": [
+      "src/tools/knip/index.ts"
+    ],
+    "relatedSymbols": [
+      "DevtoolsKnipMonorepoConfigOptions"
+    ],
     "signatures": [
       {
         "label": "(options?: DevtoolsKnipMonorepoConfigOptions) => KnipConfig",
@@ -283,7 +304,9 @@
       "line": 43,
       "column": 14
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -301,7 +324,9 @@
       "line": 56,
       "column": 14
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -319,8 +344,14 @@
       "line": 13,
       "column": 1
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
-    "relatedSymbols": ["DevtoolsEslintProfile", "FlatConfigItem", "RestrictedImport"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
+    "relatedSymbols": [
+      "DevtoolsEslintProfile",
+      "FlatConfigItem",
+      "RestrictedImport"
+    ],
     "signatures": [],
     "members": [
       {
@@ -408,7 +439,9 @@
       "line": 10,
       "column": 1
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -426,8 +459,12 @@
       "line": 24,
       "column": 1
     },
-    "exportPaths": ["src/tools/knip/index.ts"],
-    "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+    "exportPaths": [
+      "src/tools/knip/index.ts"
+    ],
+    "relatedSymbols": [
+      "DevtoolsKnipWorkspaceConfigOptions"
+    ],
     "signatures": [],
     "members": [
       {
@@ -494,8 +531,12 @@
       "line": 28,
       "column": 1
     },
-    "exportPaths": ["src/tools/knip/index.ts"],
-    "relatedSymbols": ["DevtoolsKnipWorkspaceConfigOptions"],
+    "exportPaths": [
+      "src/tools/knip/index.ts"
+    ],
+    "relatedSymbols": [
+      "DevtoolsKnipWorkspaceConfigOptions"
+    ],
     "signatures": [],
     "members": [
       {
@@ -541,7 +582,9 @@
       "line": 15,
       "column": 1
     },
-    "exportPaths": ["src/tools/knip/index.ts"],
+    "exportPaths": [
+      "src/tools/knip/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -602,7 +645,9 @@
       "line": 3,
       "column": 1
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -620,7 +665,9 @@
       "line": 40,
       "column": 7
     },
-    "exportPaths": ["src/cli/index.ts"],
+    "exportPaths": [
+      "src/cli/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -638,7 +685,9 @@
       "line": 11,
       "column": 1
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
@@ -656,7 +705,9 @@
       "line": 5,
       "column": 1
     },
-    "exportPaths": ["src/tools/eslint/index.ts"],
+    "exportPaths": [
+      "src/tools/eslint/index.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [],
     "members": [
@@ -689,7 +740,9 @@
       "line": 5,
       "column": 1
     },
-    "exportPaths": ["src/apmRelease.ts"],
+    "exportPaths": [
+      "src/apmRelease.ts"
+    ],
     "relatedSymbols": [],
     "signatures": [
       {
@@ -721,7 +774,9 @@
       "line": 31,
       "column": 1
     },
-    "exportPaths": ["src/apmRelease.ts"],
+    "exportPaths": [
+      "src/apmRelease.ts"
+    ],
     "relatedSymbols": [
       "ApmPackedReleaseCandidate",
       "ApmReleaseValidationOptions",
@@ -763,8 +818,13 @@
       "line": 17,
       "column": 1
     },
-    "exportPaths": ["src/apmRelease.ts"],
-    "relatedSymbols": ["ApmReleaseValidationOptions", "ApmReleaseValidationResult"],
+    "exportPaths": [
+      "src/apmRelease.ts"
+    ],
+    "relatedSymbols": [
+      "ApmReleaseValidationOptions",
+      "ApmReleaseValidationResult"
+    ],
     "signatures": [
       {
         "label": "(targetDirectory: string, options?: ApmReleaseValidationOptions) => Promise<ApmReleaseValidationResult>",
