@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.14.7",
+      "value": "v1.14.8",
       "color": "cb3837"
     },
     {
@@ -64,6 +64,10 @@
     "packageName": "@ankhorage/devtools",
     "commands": [
       {
+        "name": "ankhorage-apm-release",
+        "command": "bunx @ankhorage/devtools ankhorage-apm-release"
+      },
+      {
         "name": "ankhorage-changeset",
         "command": "bunx @ankhorage/devtools ankhorage-changeset"
       },
@@ -81,16 +85,43 @@
       }
     ]
   },
-  "readmeUsageDescription": "Shared development tools and repository standards for Ankhorage TypeScript projects.\n\n## What it owns\n\n`@ankhorage/devtools` is the single source of truth for these separate concerns:\n\n```text\nsrc/\n├── cli/\n├── policy/\n└── tools/\n    ├── agents/\n    ├── skills/\n    ├── eslint/\n    ├── prettier/\n    ├── knip/\n    ├── package/\n    ├── workflows/\n    └── vscode/\n```\n\n- `policy`: shared repository runtime policy, including the canonical Bun version\n- `changesets`: package-resolved Changesets execution and release command policy\n- `agents`: canonical repository `AGENTS.md` rendered from stable package identity\n- `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`\n- `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner\n- `prettier`: shared Prettier configuration and the bundled Prettier runner\n- `knip`: shared Knip configuration helpers and the bundled Knip runner\n- `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract\n- `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`\n- `vscode`: canonical `.vscode/settings.json` and `extensions.json`\n\nThe package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.\n\n## Bootstrap\n\nFor a repository that does not yet depend on the shared toolchain:\n\n```bash\nbun add -D @ankhorage/devtools\nbunx @ankhorage/ankh devtools sync .\n```\n\nAfter the first install, the normal workflow is:\n\n```bash\nankh devtools sync\n```\n\nThe target path is optional and defaults to the current working directory.\n\nSynchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, applies the managed Bun runtime policy, and removes direct devDependencies for tools/plugins owned by devtools. When package metadata changes, sync runs `bun install` so installed dependencies and `bun.lock` match the synchronized manifest. Unrelated package metadata, dependencies, and scripts are preserved.\n\n`devtools sync` does not upgrade the globally installed Bun executable. The managed version applies to repository metadata, Bun types, and GitHub workflows.\n\n## Ankh provider\n\nThe package is discovered under the `devtools` category and exposes these capabilities:\n\n- `devtools.lint`\n- `devtools.changeset`\n- `devtools.format`\n- `devtools.knip`\n- `devtools.sync`\n- `devtools.status`\n- `devtools.agents.sync`\n- `devtools.agents.status`\n- `devtools.skills.sync`\n- `devtools.skills.status`\n- `devtools.eslint.sync`\n- `devtools.eslint.status`\n- `devtools.prettier.sync`\n- `devtools.prettier.status`\n- `devtools.knip.sync`\n- `devtools.knip.status`\n- `devtools.package.sync`\n- `devtools.package.status`\n- `devtools.workflows.sync`\n- `devtools.workflows.status`\n- `devtools.vscode.sync`\n- `devtools.vscode.status`\n\nThe canonical command prefix is always:\n\n```bash\nankh devtools ...\n```\n\n## Tool commands\n\n```bash\nankh devtools changeset -- status --since=origin/main\nankh devtools lint -- --max-warnings=0 .\nankh devtools format -- --check .\nankh devtools knip -- --production\n```\n\nThese delegate to the same bundled tools as the package binaries:\n\n- `ankh devtools changeset` → `ankhorage-changeset`\n- `ankh devtools lint` → `ankhorage-eslint`\n- `ankh devtools format` → `ankhorage-prettier`\n- `ankh devtools knip` → `ankhorage-knip`\n\nThe synchronized package scripts are:\n\n```json\n{\n  \"scripts\": {\n    \"changeset\": \"ankhorage-changeset\",\n    \"changeset:status\": \"ankhorage-changeset status --since=origin/main\",\n    \"lint\": \"ankhorage-eslint . --max-warnings=0\",\n    \"lint:fix\": \"ankhorage-eslint . --fix --max-warnings=0\",\n    \"format\": \"ankhorage-prettier --write .\",\n    \"format:check\": \"ankhorage-prettier --check .\",\n    \"knip:check\": \"ankhorage-knip\",\n    \"version-packages\": \"ankhorage-changeset version\"\n  }\n}\n```\n\n## Repository synchronization\n\nSynchronize or inspect every managed concern:\n\n```bash\nankh devtools sync .\nankh devtools status .\n```\n\nSynchronize one concern:\n\n```bash\nankh devtools agents sync .\nankh devtools skills sync .\nankh devtools eslint sync .\nankh devtools prettier sync .\nankh devtools knip sync .\nankh devtools package sync .\nankh devtools workflows sync .\nankh devtools vscode sync .\n```\n\nReport one concern:\n\n```bash\nankh devtools agents status .\nankh devtools skills status .\nankh devtools eslint status .\nankh devtools prettier status .\nankh devtools knip status .\nankh devtools package status .\nankh devtools workflows status .\nankh devtools vscode status .\n```\n\nPreview synchronization without writing:\n\n```bash\nankh devtools sync . --dry-run\nankh devtools agents sync . --dry-run\nankh devtools skills sync . --dry-run\nankh devtools eslint sync . --dry-run\nankh devtools package sync . --dry-run\n```\n\nA dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.\n\n## Synchronization guarantees\n\nSynchronization is deterministic and idempotent:\n\n- missing managed artifacts are created\n- outdated centrally owned artifacts are updated\n- stale files in Devtools-owned skill trees are removed\n- the managed Bun runtime version is applied consistently to package metadata and workflows\n- Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration\n- package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync\n- current artifacts are left untouched\n- unrelated files and package fields are preserved\n- repeated sync produces only `unchanged` results\n- invalid target paths and write failures return a non-zero exit code\n- create-only repository extension files are never overwritten after creation\n\nThe canonical workflow, VS Code, and skill files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.\n\n## Managed agent instructions\n\n`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.\n\nOnly the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.\n\n## Managed repository skills\n\n`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.\n\n`.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.\n\nAgent Skill scripts are always TypeScript files with a `.ts` extension and run with Bun. JavaScript skill scripts using `.js`, `.mjs`, or `.cjs` are not supported.\n\n## ESLint profiles\n\n`createConfig()` defaults to `profile: 'auto'`.\n\nAutomatic detection reads the consuming repository's `package.json` and delegates project trait detection to `@ankhorage/project-detector`. Dependency signals are considered across `dependencies`, `devDependencies`, and `peerDependencies`.\n\nProfile precedence is:\n\n```text\nReact Native / Expo\n        ↓\nreact-native\n        ↓ includes\nreact\n        ↓ includes\nbase\n```\n\nA React or Next.js project selects `react`. A React Native or Expo project selects `react-native`. Everything else selects `base`.\n\nAn unusual repository can opt out of automatic selection:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\n\nexport default createConfig({\n  files: ['src/**/*.ts'],\n  profile: 'base',\n  project: ['./tsconfig.json'],\n  tsconfigRootDir: import.meta.dirname,\n});\n```\n\nThe base profile enforces the shared TypeScript policy plus:\n\n- maximum 50 effective lines per function\n- maximum 300 effective lines per file\n- modified cyclomatic complexity maximum 15\n- security review for dynamic object access\n- rejection of non-literal `require()` calls\n\nThe React profile adds React and React Hooks correctness rules. The React Native profile composes the React profile and adds the selected React Native style rules.\n\n### Managed ESLint setup and local overrides\n\n`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.\n\nThe canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\nimport localConfig from './eslint.local.config.mjs';\n\nconst localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];\n\nexport default [\n  ...createConfig({\n    files: ['src/**/*.{ts,tsx}'],\n    project: ['./tsconfig.json'],\n    tsconfigRootDir: import.meta.dirname,\n  }),\n  ...localEntries,\n];\n```\n\nUse `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.\n\nEach public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.\n\nAn existing consumer-owned `eslint.examples.config.mjs` requires explicit adoption before synchronization can replace it. Status, dry-run, and sync report an actionable error instead of overwriting or deleting it. Move its repository-specific overrides into `eslint.local.config.mjs`, preserving existing entries and the examples-only file scope; retain custom parser options there when needed. Remove the old examples config only after that transfer, then rerun sync and the examples lint. The generated wrapper carries a Devtools ownership marker and subsequent synchronization updates it normally. Do not mark an old consumer config as managed to bypass this transfer.\n\nRepositories can lint their independently runnable examples explicitly:\n\n```bash\nankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0\n```\n\n## Prettier\n\n`ankh devtools prettier sync` owns `.prettierrc.js`, emits the correct ESM or CommonJS wrapper based on the repository's `package.json` module type, and creates `prettier.local.config.js` once for narrow repository-specific options.\n\nThe consumer delegates formatting policy to:\n\n```text\n@ankhorage/devtools/prettier\n```\n\nThe wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.\n\n## Knip\n\n`ankh devtools knip sync` bootstraps `knip.config.ts` with:\n\n```ts\nimport { createKnipConfig } from '@ankhorage/devtools/knip';\n\nexport default createKnipConfig();\n```\n\n`knip.config.ts` is create-only after bootstrap so repositories can retain narrow local entries, projects, ignores, binaries, dependencies, or switch to `createKnipMonorepoConfig()` without synchronization overwriting those extensions.\n\n## Managed Bun runtime policy\n\nThe canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:\n\n<!-- devtools-bun-policy:start -->\n\n```text\nBun runtime       1.4.2\npackageManager    bun@1.4.2\n@types/bun        ^1.4.1\n```\n\n<!-- devtools-bun-policy:end -->\n\nRenovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.ts`. Its trusted base-branch workflow invokes `bun scripts/sync-renovate-owner.ts sync repository` to regenerate `packageManager`, `@types/bun`, the Bun workflow setup versions, this documentation block, and `bun.lock`, then runs `bun scripts/sync-renovate-owner.ts status repository` to reject stale generated artifacts. Do not synchronize those values manually in a Renovate branch.\n\n## Managed package contract\n\n`ankh devtools package sync` merge-updates `package.json` rather than replacing it.\n\nIt owns:\n\n- the `@ankhorage/devtools` dependency version range\n- removal of direct consumer `@changesets/cli` dependencies\n- `packageManager` according to the managed Bun runtime policy\n- the `@types/bun` development dependency according to the managed Bun runtime policy\n- `lint`\n- `lint:fix`\n- `format`\n- `format:check`\n- `knip:check`\n- `changeset`, `changeset:status`, and `version-packages` for Changesets-enabled repositories\n\nFor normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.\n\nWhen this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct dependencies for Changesets and direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.\n\nA repository participates in Changesets synchronization when `.changeset/config.json` exists or any of the canonical `changeset`, `changeset:status`, or `version-packages` script keys is present. This explicit rule migrates partially configured repositories while ensuring repositories without Changesets do not acquire release tooling. The repository continues to own `.changeset/config.json`, pending `.changeset/*.md` files, and its package release semantics. Direct `@changesets/cli` declarations, ambient `changeset` scripts, and `bunx changeset` workflow commands are not supported consumer forms.\n\n## Managed GitHub Actions workflows\n\n`workflows` owns exactly:\n\n```text\n.github/workflows/ci.yml\n.github/workflows/renovate.yml\n.github/workflows/release.yml\n```\n\nCI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. They also render Changesets status, version, and publish commands from the same policy that owns the synchronized package scripts. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.\n\nThe Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates. The trusted workflow scopes the Ankhorage Renovate Sync GitHub App token to the current repository and uses it only for the validated commit, allowing every normal pull-request CI workflow to start without manual approval. It never checks out or executes pull-request code in the privileged `pull_request_target` context.\n\n## Managed VS Code configuration\n\n`vscode` owns exactly:\n\n```text\n.vscode/settings.json\n.vscode/extensions.json\n```\n\nUnknown workflow and VS Code files are never deleted.\n\n## Adding another managed concern\n\nA new concern should:\n\n1. live in its own sibling directory under `src/tools`\n2. define only the files and behavior it owns\n3. expose deterministic status and synchronization\n4. add provider commands under `ankh devtools`\n5. include dry-run, status, and idempotence coverage\n6. document its central ownership and repository-owned extension points\n",
+  "readmeUsageDescription": "Shared development tools and repository standards for Ankhorage TypeScript projects.\n\n## What it owns\n\n`@ankhorage/devtools` is the single source of truth for these separate concerns:\n\n```text\nsrc/\n├── cli/\n├── policy/\n└── tools/\n    ├── agents/\n    ├── skills/\n    ├── eslint/\n    ├── prettier/\n    ├── knip/\n    ├── package/\n    ├── workflows/\n    └── vscode/\n```\n\n- `policy`: shared repository runtime policy, including the canonical Bun version\n- `changesets`: package-resolved Changesets execution and release command policy\n- `agents`: canonical repository `AGENTS.md` rendered from stable package identity\n- `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`\n- `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner\n- `prettier`: shared Prettier configuration and the bundled Prettier runner\n- `knip`: shared Knip configuration helpers and the bundled Knip runner\n- `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract\n- `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`\n- `vscode`: canonical `.vscode/settings.json` and `extensions.json`\n\nThe package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.\n\n## Bootstrap\n\nFor a repository that does not yet depend on the shared toolchain:\n\n```bash\nbun add -D @ankhorage/devtools\nbunx @ankhorage/ankh devtools sync .\n```\n\nAfter the first install, the normal workflow is:\n\n```bash\nankh devtools sync\n```\n\nThe target path is optional and defaults to the current working directory.\n\nSynchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, applies the managed Bun runtime policy, and removes direct devDependencies for tools/plugins owned by devtools. When package metadata changes, sync runs `bun install` so installed dependencies and `bun.lock` match the synchronized manifest. Unrelated package metadata, dependencies, and scripts are preserved.\n\n`devtools sync` does not upgrade the globally installed Bun executable. The managed version applies to repository metadata, Bun types, and GitHub workflows.\n\n## Ankh provider\n\nThe package is discovered under the `devtools` category and exposes these capabilities:\n\n- `devtools.apm.sync`\n- `devtools.apm.validate`\n- `devtools.lint`\n- `devtools.changeset`\n- `devtools.format`\n- `devtools.knip`\n- `devtools.sync`\n- `devtools.status`\n- `devtools.agents.sync`\n- `devtools.agents.status`\n- `devtools.skills.sync`\n- `devtools.skills.status`\n- `devtools.eslint.sync`\n- `devtools.eslint.status`\n- `devtools.prettier.sync`\n- `devtools.prettier.status`\n- `devtools.knip.sync`\n- `devtools.knip.status`\n- `devtools.package.sync`\n- `devtools.package.status`\n- `devtools.workflows.sync`\n- `devtools.workflows.status`\n- `devtools.vscode.sync`\n- `devtools.vscode.status`\n\nThe canonical command prefix is always:\n\n```bash\nankh devtools ...\n```\n\n## Tool commands\n\n```bash\nankh devtools changeset -- status --since=origin/main\nankh devtools lint -- --max-warnings=0 .\nankh devtools format -- --check .\nankh devtools knip -- --production\n```\n\nThese delegate to the same bundled tools as the package binaries:\n\n- `ankh devtools changeset` → `ankhorage-changeset`\n- `ankh devtools lint` → `ankhorage-eslint`\n- `ankh devtools format` → `ankhorage-prettier`\n- `ankh devtools knip` → `ankhorage-knip`\n\nThe synchronized package scripts are:\n\n```json\n{\n  \"scripts\": {\n    \"changeset\": \"ankhorage-changeset\",\n    \"changeset:status\": \"ankhorage-changeset status --since=origin/main\",\n    \"lint\": \"ankhorage-eslint . --max-warnings=0\",\n    \"lint:fix\": \"ankhorage-eslint . --fix --max-warnings=0\",\n    \"format\": \"ankhorage-prettier --write .\",\n    \"format:check\": \"ankhorage-prettier --check .\",\n    \"knip:check\": \"ankhorage-knip\",\n    \"version-packages\": \"ankhorage-changeset version\"\n  }\n}\n```\n\n## Repository synchronization\n\nSynchronize or inspect every managed concern:\n\n```bash\nankh devtools sync .\nankh devtools status .\n```\n\nSynchronize one concern:\n\n```bash\nankh devtools agents sync .\nankh devtools skills sync .\nankh devtools eslint sync .\nankh devtools prettier sync .\nankh devtools knip sync .\nankh devtools package sync .\nankh devtools workflows sync .\nankh devtools vscode sync .\n```\n\nReport one concern:\n\n```bash\nankh devtools agents status .\nankh devtools skills status .\nankh devtools eslint status .\nankh devtools prettier status .\nankh devtools knip status .\nankh devtools package status .\nankh devtools workflows status .\nankh devtools vscode status .\n```\n\nPreview synchronization without writing:\n\n```bash\nankh devtools sync . --dry-run\nankh devtools agents sync . --dry-run\nankh devtools skills sync . --dry-run\nankh devtools eslint sync . --dry-run\nankh devtools package sync . --dry-run\n```\n\nA dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.\n\n## Synchronization guarantees\n\nSynchronization is deterministic and idempotent:\n\n- missing managed artifacts are created\n- outdated centrally owned artifacts are updated\n- stale files in Devtools-owned skill trees are removed\n- the managed Bun runtime version is applied consistently to package metadata and workflows\n- Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration\n- package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync\n- current artifacts are left untouched\n- unrelated files and package fields are preserved\n- repeated sync produces only `unchanged` results\n- invalid target paths and write failures return a non-zero exit code\n- create-only repository extension files are never overwritten after creation\n\nThe canonical workflow, VS Code, and skill files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.\n\n## Managed agent instructions\n\n`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.\n\nOnly the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.\n\n## Managed repository skills\n\n`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.\n\n`.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.\n\nAgent Skill scripts are always TypeScript files with a `.ts` extension and run with Bun. JavaScript skill scripts using `.js`, `.mjs`, or `.cjs` are not supported.\n\n## ESLint profiles\n\n`createConfig()` defaults to `profile: 'auto'`.\n\nAutomatic detection reads the consuming repository's `package.json` and delegates project trait detection to `@ankhorage/project-detector`. Dependency signals are considered across `dependencies`, `devDependencies`, and `peerDependencies`.\n\nProfile precedence is:\n\n```text\nReact Native / Expo\n        ↓\nreact-native\n        ↓ includes\nreact\n        ↓ includes\nbase\n```\n\nA React or Next.js project selects `react`. A React Native or Expo project selects `react-native`. Everything else selects `base`.\n\nAn unusual repository can opt out of automatic selection:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\n\nexport default createConfig({\n  files: ['src/**/*.ts'],\n  profile: 'base',\n  project: ['./tsconfig.json'],\n  tsconfigRootDir: import.meta.dirname,\n});\n```\n\nThe base profile enforces the shared TypeScript policy plus:\n\n- maximum 50 effective lines per function\n- maximum 300 effective lines per file\n- modified cyclomatic complexity maximum 15\n- security review for dynamic object access\n- rejection of non-literal `require()` calls\n\nThe React profile adds React and React Hooks correctness rules. The React Native profile composes the React profile and adds the selected React Native style rules.\n\n### Managed ESLint setup and local overrides\n\n`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.\n\nThe canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\nimport localConfig from './eslint.local.config.mjs';\n\nconst localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];\n\nexport default [\n  ...createConfig({\n    files: ['src/**/*.{ts,tsx}'],\n    project: ['./tsconfig.json'],\n    tsconfigRootDir: import.meta.dirname,\n  }),\n  ...localEntries,\n];\n```\n\nUse `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.\n\nEach public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.\n\nAn existing consumer-owned `eslint.examples.config.mjs` requires explicit adoption before synchronization can replace it. Status, dry-run, and sync report an actionable error instead of overwriting or deleting it. Move its repository-specific overrides into `eslint.local.config.mjs`, preserving existing entries and the examples-only file scope; retain custom parser options there when needed. Remove the old examples config only after that transfer, then rerun sync and the examples lint. The generated wrapper carries a Devtools ownership marker and subsequent synchronization updates it normally. Do not mark an old consumer config as managed to bypass this transfer.\n\nRepositories can lint their independently runnable examples explicitly:\n\n```bash\nankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0\n```\n\n## Prettier\n\n`ankh devtools prettier sync` owns `.prettierrc.js`, emits the correct ESM or CommonJS wrapper based on the repository's `package.json` module type, and creates `prettier.local.config.js` once for narrow repository-specific options.\n\nThe consumer delegates formatting policy to:\n\n```text\n@ankhorage/devtools/prettier\n```\n\nThe wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.\n\n## Knip\n\n`ankh devtools knip sync` bootstraps `knip.config.ts` with:\n\n```ts\nimport { createKnipConfig } from '@ankhorage/devtools/knip';\n\nexport default createKnipConfig();\n```\n\n`knip.config.ts` is create-only after bootstrap so repositories can retain narrow local entries, projects, ignores, binaries, dependencies, or switch to `createKnipMonorepoConfig()` without synchronization overwriting those extensions.\n\n## Managed Bun runtime policy\n\nThe canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:\n\n<!-- devtools-bun-policy:start -->\n\n```text\nBun runtime       1.4.2\npackageManager    bun@1.4.2\n@types/bun        ^1.4.1\n```\n\n<!-- devtools-bun-policy:end -->\n\nRenovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.ts`. Its trusted base-branch workflow invokes `bun scripts/sync-renovate-owner.ts sync repository` to regenerate `packageManager`, `@types/bun`, the Bun workflow setup versions, this documentation block, and `bun.lock`, then runs `bun scripts/sync-renovate-owner.ts status repository` to reject stale generated artifacts. Do not synchronize those values manually in a Renovate branch.\n\n## Managed package contract\n\n`ankh devtools package sync` merge-updates `package.json` rather than replacing it.\n\nIt owns:\n\n- the `@ankhorage/devtools` dependency version range\n- removal of direct consumer `@changesets/cli` dependencies\n- `packageManager` according to the managed Bun runtime policy\n- the `@types/bun` development dependency according to the managed Bun runtime policy\n- `lint`\n- `lint:fix`\n- `format`\n- `format:check`\n- `knip:check`\n- `changeset`, `changeset:status`, and `version-packages` for Changesets-enabled repositories\n\nFor normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.\n\nWhen this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct dependencies for Changesets and direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.\n\nA repository participates in Changesets synchronization when `.changeset/config.json` exists or any of the canonical `changeset`, `changeset:status`, or `version-packages` script keys is present. This explicit rule migrates partially configured repositories while ensuring repositories without Changesets do not acquire release tooling. The repository continues to own `.changeset/config.json`, pending `.changeset/*.md` files, and its package release semantics. Direct `@changesets/cli` declarations, ambient `changeset` scripts, and `bunx changeset` workflow commands are not supported consumer forms.\n\n## Managed GitHub Actions workflows\n\n`workflows` owns exactly:\n\n```text\n.github/workflows/ci.yml\n.github/workflows/renovate.yml\n.github/workflows/release.yml\n```\n\nCI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. They also render Changesets status, version, and publish commands from the same policy that owns the synchronized package scripts. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.\n\nThe Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates. The trusted workflow scopes the Ankhorage Renovate Sync GitHub App token to the current repository and uses it only for the validated commit, allowing every normal pull-request CI workflow to start without manual approval. It never checks out or executes pull-request code in the privileged `pull_request_target` context.\n\n## Managed VS Code configuration\n\n`vscode` owns exactly:\n\n```text\n.vscode/settings.json\n.vscode/extensions.json\n```\n\nUnknown workflow and VS Code files are never deleted.\n\n## Adding another managed concern\n\nA new concern should:\n\n1. live in its own sibling directory under `src/tools`\n2. define only the files and behavior it owns\n3. expose deterministic status and synchronization\n4. add provider commands under `ankh devtools`\n5. include dry-run, status, and idempotence coverage\n6. document its central ownership and repository-owned extension points\n\n## Package-owned APM release gates\n\nA package opts in through `ankh.apm` in its `package.json`:\n\n```json\n{\n  \"ankh\": {\n    \"apm\": { \"protocolVersion\": 1, \"descriptor\": \"./apm/update.json\" }\n  }\n}\n```\n\nInclude the descriptor in `files` and expose any executable extension with an explicit public\n`exports` subpath. Use the released APM descriptor and extension types from `@ankhorage/apm/types`;\nDevtools does not own or duplicate the protocol. Add `test:apm` to run the owner's deterministic\nsource-to-target fixtures, including skipped versions, unsupported old states, idempotency and\ninterruption recovery. A no-migration release still declares supported history explicitly and\ncan pass without an extension. Absence of metadata is reported as inapplicable, not migration-safe.\n\n```sh\nankh devtools apm sync .\nankh devtools apm validate . --allow-owner-code --artifact /tmp/reviewed-owner.tgz\n```\n\nThe standalone `ankhorage-apm-release sync|validate` binary runs the same operations. The public\n`@ankhorage/devtools/apm-release` entrypoint exports `synchronizeApmReleaseDescriptorAsync`,\n`validatePackedApmReleaseAsync` and `validateApmReleaseCandidate`; types are available from\n`@ankhorage/devtools/types`. Programmatic callers can supply `previousDescriptors` to enforce\nunchanged migration checksums and `relatedDescriptors` for cross-owner prerequisites. Owners\nmust include historical descriptors in their `test:apm` fixtures where their migrations require them.\n\nValidation packs with lifecycle scripts disabled, reads only the packed descriptor, checks owner\nidentity, protocol/schema, migration/projection IDs, prerequisite graphs and public extension\ncapabilities using APM's canonical validators. Invalid metadata is a failure, not an opt-out.\n`--allow-owner-code` is explicit permission to import the packed extension in a bounded child\nprocess. The child is **not a security sandbox**; run only trusted owner code. Registry metadata\nalone never grants this permission. Installed dependency resolution uses the repository's\nfrozen dependency graph; the package's own code is loaded through native public export resolution\nfrom the extracted archive, never from the source checkout.\n\n`--artifact` creates a new file containing exactly the validated bytes and refuses an existing\noutput. The JSON result includes SHA-512 integrity; `--expected-integrity` refuses a different\narchive. Keep the retained archive immutable. The managed release workflow versions with\nChangesets, synchronizes descriptor identity, rebuilds, runs `test:apm`, validates a fresh archive,\nand publishes that same archive using `npm publish --ignore-scripts`, without repacking.\nAuthentication and network errors are not treated as an unpublished version. Packages without\nAPM metadata retain their existing Changesets publication path.\n\nProducer order is: released APM protocol, validated owner package release, then consumer rollout.\nNever declare an unpublished owner version. Project migration recovery is owned by APM and the\npackage's declared handlers; passing this release gate does not execute migrations against user\nprojects, deploy production services, or prove compatibility with shipped native binaries.\n",
   "readmeUsage": [],
   "readmeCli": {
-    "description": "Run and synchronize the shared development toolchain through the Ankh CLI.\n\n`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and\n`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.\nRepository synchronization is available through\n`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,\n`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.\n\nSync commands accept an optional target directory and `--dry-run`. Aggregate sync is\ndeterministic and idempotent: canonical managed files and skill trees are created or updated,\nunrelated repository-local skills and create-only local extension files remain repository-owned,\nand package metadata is merge-updated without replacing unrelated fields.\n\nFresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding\n`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a\nlocal extension before the canonical auto-detecting wrapper is installed.",
+    "description": "Run and synchronize the shared development toolchain through the Ankh CLI.\n\n`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and\n`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.\nRepository synchronization is available through\n`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,\n`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.\n\nSync commands accept an optional target directory and `--dry-run`. Aggregate sync is\ndeterministic and idempotent: canonical managed files and skill trees are created or updated,\nunrelated repository-local skills and create-only local extension files remain repository-owned,\nand package metadata is merge-updated without replacing unrelated fields.\n\nFresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding\n`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a\nlocal extension before the canonical auto-detecting wrapper is installed.\n\nAPM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid\ndescriptor to the selected Changesets version. `ankh devtools apm validate .` checks a\nscript-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.\n`--artifact <path>` retains the exact accepted tarball and `--expected-integrity <SRI>`\nrejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.\nCI runs that owner suite and the packed check. Release rebuilds after versioning, validates,\nthen publishes the retained archive with scripts disabled through the existing release job.\nPackages without metadata keep their existing Changesets publish path unchanged.",
     "sourcePath": "src/cli/index.ts"
   },
   "readmeConfig": null,
   "config": null,
-  "entrypoints": ["src/cli/index.ts", "src/tools/eslint/index.ts", "src/tools/knip/index.ts"],
+  "entrypoints": [
+    "src/apmRelease.ts",
+    "src/cli/index.ts",
+    "src/tools/eslint/index.ts",
+    "src/tools/knip/index.ts",
+    "src/types/public.ts"
+  ],
   "modules": [
+    {
+      "path": "src/apmRelease.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": [
+        "ApmPackedReleaseCandidate",
+        "ApmReleaseValidationOptions",
+        "ApmReleaseValidationResult",
+        "synchronizeApmReleaseDescriptorAsync",
+        "validateApmReleaseCandidate",
+        "validatePackedApmReleaseAsync"
+      ]
+    },
+    {
+      "path": "src/cli/bin/apm-release.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      ],
+      "exports": []
+    },
     {
       "path": "src/cli/bin/changeset.ts",
       "isEntrypoint": false,
@@ -130,6 +161,24 @@
       ]
     },
     {
+      "path": "src/cli/commands/apm/sync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/runProviderCommand.ts",
+        "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      ],
+      "exports": ["sync"]
+    },
+    {
+      "path": "src/cli/commands/apm/validate.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/runProviderCommand.ts",
+        "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      ],
+      "exports": ["validate"]
+    },
+    {
       "path": "src/cli/index.ts",
       "isEntrypoint": true,
       "dependencies": ["src/cli/commands.ts", "src/cli/runProviderCommand.ts"],
@@ -146,6 +195,8 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/commands.ts",
+        "src/cli/commands/apm/sync.ts",
+        "src/cli/commands/apm/validate.ts",
         "src/cli/runExternalTool.ts",
         "src/cli/runRepositoryCommand.ts"
       ],
@@ -179,6 +230,99 @@
       "isEntrypoint": false,
       "dependencies": ["src/cli/commands.ts", "src/cli/runExternalTool.ts"],
       "exports": ["runStandaloneTool"]
+    },
+    {
+      "path": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": ["runApmReleaseCommandAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": ["createApmReleaseDescriptorPort"]
+    },
+    {
+      "path": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+        "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": ["inspectPackedApmReleaseCandidateAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": ["src/types/apm-release-validation.ts"],
+      "exports": ["probePackedApmExtensionAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["readApmReleaseManifestAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts"
+      ],
+      "exports": ["resolveApmReleaseCommandAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": ["synchronizeApmReleaseMetadataAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": ["validateApmReleaseCandidate"]
+    },
+    {
+      "path": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+        "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      ],
+      "exports": ["synchronizeApmReleaseDescriptorAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": ["validatePackedApmReleaseAsync"]
+    },
+    {
+      "path": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": ["readApmReleaseMetadata"]
     },
     {
       "path": "src/internal/readmeDocs.ts",
@@ -411,6 +555,7 @@
       "path": "src/tools/workflows/index.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/policy/bunRuntimePolicy.ts",
         "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
@@ -431,13 +576,210 @@
       "exports": ["renderWorkflowAsync", "WorkflowPolicy"]
     },
     {
+      "path": "src/types/apm-release-validation.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "ApmPackedReleaseCandidate",
+        "ApmReleaseDescriptorPort",
+        "ApmReleaseValidationOptions",
+        "ApmReleaseValidationResult"
+      ]
+    },
+    {
       "path": "src/types/bunPolicy.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": ["BunPolicy"]
+    },
+    {
+      "path": "src/types/public.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": [
+        "ApmPackedReleaseCandidate",
+        "ApmReleaseValidationOptions",
+        "ApmReleaseValidationResult"
+      ]
     }
   ],
   "exports": [
+    {
+      "name": "ApmPackedReleaseCandidate",
+      "description": "Packed bytes and loaded owner evidence supplied to the canonical APM validators.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/apm-release-validation.ts",
+      "sourceLocation": {
+        "filePath": "src/types/apm-release-validation.ts",
+        "line": 4,
+        "column": 1
+      },
+      "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "descriptor",
+          "kind": "property",
+          "type": "unknown",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "descriptorSource",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "extension",
+          "kind": "property",
+          "type": "unknown",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "integrity",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "packageJson",
+          "kind": "property",
+          "type": "Readonly<Record<string, unknown>>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "ApmReleaseValidationOptions",
+      "description": "Explicit release-validation inputs; owner code is never trusted by default.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/apm-release-validation.ts",
+      "sourceLocation": {
+        "filePath": "src/types/apm-release-validation.ts",
+        "line": 13,
+        "column": 1
+      },
+      "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "allowOwnerCode",
+          "kind": "property",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "artifactPath",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "expectedIntegrity",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "previousDescriptors",
+          "kind": "property",
+          "type": "readonly ApmUpdateDescriptor[] | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "relatedDescriptors",
+          "kind": "property",
+          "type": "readonly ApmUpdateDescriptor[] | undefined",
+          "required": false,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "ApmReleaseValidationResult",
+      "description": "Evidence for one exact packed release; inapplicable never means migration-safe.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "type",
+      "modulePath": "src/types/apm-release-validation.ts",
+      "sourceLocation": {
+        "filePath": "src/types/apm-release-validation.ts",
+        "line": 22,
+        "column": 1
+      },
+      "exportPaths": ["src/apmRelease.ts", "src/types/public.ts"],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "applicable",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "artifactPath",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "blockers",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "integrity",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "packageName",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "packageVersion",
+          "kind": "property",
+          "type": "string | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "valid",
+          "kind": "property",
+          "type": "boolean",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
     {
       "name": "createConfig",
       "description": null,
@@ -880,7 +1222,7 @@
       "modulePath": "src/cli/index.ts",
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 31,
+        "line": 40,
         "column": 7
       },
       "exportPaths": ["src/cli/index.ts"],
@@ -939,6 +1281,118 @@
         }
       ],
       "structuredRows": []
+    },
+    {
+      "name": "synchronizeApmReleaseDescriptorAsync",
+      "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
+      "isReadme": false,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "line": 5,
+        "column": 1
+      },
+      "exportPaths": ["src/apmRelease.ts"],
+      "relatedSymbols": [],
+      "signatures": [
+        {
+          "label": "(targetDirectory: string) => Promise<boolean>",
+          "parameters": [
+            {
+              "name": "targetDirectory",
+              "type": "string",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Promise<boolean>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "validateApmReleaseCandidate",
+      "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
+      "isReadme": true,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "line": 31,
+        "column": 1
+      },
+      "exportPaths": ["src/apmRelease.ts"],
+      "relatedSymbols": [
+        "ApmPackedReleaseCandidate",
+        "ApmReleaseValidationOptions",
+        "ApmReleaseValidationResult"
+      ],
+      "signatures": [
+        {
+          "label": "(candidate: ApmPackedReleaseCandidate, options?: ApmReleaseValidationOptions) => ApmReleaseValidationResult",
+          "parameters": [
+            {
+              "name": "candidate",
+              "type": "ApmPackedReleaseCandidate",
+              "required": true,
+              "description": null
+            },
+            {
+              "name": "options",
+              "type": "ApmReleaseValidationOptions",
+              "required": false,
+              "description": null
+            }
+          ],
+          "returnType": "ApmReleaseValidationResult",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "validatePackedApmReleaseAsync",
+      "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
+      "isReadme": true,
+      "examples": [],
+      "kind": "function",
+      "modulePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "line": 17,
+        "column": 1
+      },
+      "exportPaths": ["src/apmRelease.ts"],
+      "relatedSymbols": ["ApmReleaseValidationOptions", "ApmReleaseValidationResult"],
+      "signatures": [
+        {
+          "label": "(targetDirectory: string, options?: ApmReleaseValidationOptions) => Promise<ApmReleaseValidationResult>",
+          "parameters": [
+            {
+              "name": "options",
+              "type": "ApmReleaseValidationOptions",
+              "required": false,
+              "description": null
+            },
+            {
+              "name": "targetDirectory",
+              "type": "string",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "Promise<ApmReleaseValidationResult>",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
     }
   ],
   "components": [],
@@ -948,7 +1402,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 197,
+        "line": 220,
         "column": 1
       }
     },
@@ -957,7 +1411,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 201,
+        "line": 224,
         "column": 1
       }
     },
@@ -966,7 +1420,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 213,
+        "line": 236,
         "column": 1
       }
     },
@@ -975,7 +1429,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 225,
+        "line": 248,
         "column": 1
       }
     },
@@ -984,7 +1438,25 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 246,
+        "line": 269,
+        "column": 1
+      }
+    },
+    {
+      "name": "sync",
+      "description": "Adapt the public APM release sync command to the shared release boundary.",
+      "sourceLocation": {
+        "filePath": "src/cli/commands/apm/sync.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "validate",
+      "description": "Adapt the public APM release validate command to the shared release boundary.",
+      "sourceLocation": {
+        "filePath": "src/cli/commands/apm/validate.ts",
+        "line": 5,
         "column": 1
       }
     },
@@ -993,7 +1465,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 51,
+        "line": 60,
         "column": 1
       }
     },
@@ -1002,7 +1474,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 63,
+        "line": 72,
         "column": 1
       }
     },
@@ -1011,7 +1483,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 67,
+        "line": 76,
         "column": 1
       }
     },
@@ -1101,7 +1573,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/cli/runProviderCommand.ts",
-        "line": 12,
+        "line": 14,
         "column": 1
       }
     },
@@ -1205,6 +1677,213 @@
       }
     },
     {
+      "name": "runApmReleaseCommandAsync",
+      "description": "Parse release CLI input and report the same structured validation result on every entrypoint.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseArguments",
+      "description": "Separate release argument validation from execution; reject duplicates and incomplete flags.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionIndex",
+      "description": "Require a single option occurrence followed by a value.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "createApmReleaseDescriptorPort",
+      "description": "Supply bounded owner-document reads and idempotent writes for release synchronization.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+        "line": 11,
+        "column": 1
+      }
+    },
+    {
+      "name": "descriptorPathAsync",
+      "description": "Prevent descriptor reads and writes from following paths or symlinks outside the owner root.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+        "line": 32,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectPackedApmReleaseCandidateAsync",
+      "description": "Validate the actual script-free packed candidate outside the checkout, retaining only accepted bytes.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "packCandidateAsync",
+      "description": "Build and extract only a script-free local package archive under a separate temporary root.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "line": 48,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackedCandidateAsync",
+      "description": "Read owner metadata strictly from the archive, not the source-tree descriptor.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
+      "name": "validatePackedCandidateAsync",
+      "description": "Require valid static evidence before optionally loading the exact packed owner extension.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "line": 93,
+        "column": 1
+      }
+    },
+    {
+      "name": "probePackedApmExtensionAsync",
+      "description": "Load the native public ESM export in a bounded child process only after explicit owner-code consent.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "line": 15,
+        "column": 1
+      }
+    },
+    {
+      "name": "prepareProbeAsync",
+      "description": "Materialize a probe that uses native self-reference export resolution in the extracted package.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
+      "name": "readProbeResultAsync",
+      "description": "Validate child-process response data before exposing a structured report.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "line": 84,
+        "column": 1
+      }
+    },
+    {
+      "name": "readApmReleaseManifestAsync",
+      "description": "Read a release-owned JSON object while rejecting malformed documents.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveApmReleaseCommandAsync",
+      "description": "Use Devtools' own built CLI for self-validation and the installed dependency binary in consumers.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "synchronizeApmReleaseMetadataAsync",
+      "description": "Bind valid owner metadata to the selected candidate version; never silently skip malformed opt-in.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateApmReleaseCandidate",
+      "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "line": 31,
+        "column": 1
+      }
+    },
+    {
+      "name": "extensionBlockers",
+      "description": "Validate executable binding and required handlers after static metadata has passed.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "line": 73,
+        "column": 1
+      }
+    },
+    {
+      "name": "isBoundExtension",
+      "description": "Narrow unknown executable evidence only after the canonical runtime validator accepts it.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "result",
+      "description": "Preserve structured candidate identity and canonical blocker reasons.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "messages",
+      "description": "Render the protocol's own diagnostics without reinterpreting their semantics.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "synchronizeApmReleaseDescriptorAsync",
+      "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "validatePackedApmReleaseAsync",
+      "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "readApmReleaseMetadata",
+      "description": "Read opt-in owner metadata without copying the APM discovery schema.",
+      "sourceLocation": {
+        "filePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
       "name": "getReadmeDocumentationErrors",
       "description": null,
       "sourceLocation": {
@@ -1281,7 +1960,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 163,
+        "line": 162,
         "column": 1
       }
     },
@@ -1290,7 +1969,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 187,
+        "line": 186,
         "column": 1
       }
     },
@@ -1299,7 +1978,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 191,
+        "line": 190,
         "column": 1
       }
     },
@@ -2253,7 +2932,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 31,
+        "line": 32,
         "column": 1
       }
     },
@@ -2262,7 +2941,7 @@
       "description": "Creates the managed workflow whose immutable digest remains Renovate-owned.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 44,
+        "line": 46,
         "column": 1
       }
     },
@@ -2307,7 +2986,7 @@
       "description": "Renders one workflow template with the canonical runtime and Changesets policy.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 11,
+        "line": 12,
         "column": 1
       }
     }
@@ -2336,10 +3015,54 @@
       "symbolName": "createKnipMonorepoConfig",
       "description": "Build shared monorepo Knip configuration.",
       "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "synchronizeApmReleaseDescriptorAsync",
+      "sourcePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+      "symbolName": "synchronizeApmReleaseDescriptorAsync",
+      "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
+      "isReadme": false
+    },
+    {
+      "kind": "export",
+      "name": "validateApmReleaseCandidate",
+      "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+      "symbolName": "validateApmReleaseCandidate",
+      "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
+      "isReadme": true
+    },
+    {
+      "kind": "export",
+      "name": "validatePackedApmReleaseAsync",
+      "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+      "symbolName": "validatePackedApmReleaseAsync",
+      "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
+      "isReadme": true
     }
   ],
   "graphs": {
     "imports": [
+      {
+        "fromPath": "src/apmRelease.ts",
+        "toPath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "sourcePath": "src/apmRelease.ts"
+      },
+      {
+        "fromPath": "src/apmRelease.ts",
+        "toPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "sourcePath": "src/apmRelease.ts"
+      },
+      {
+        "fromPath": "src/apmRelease.ts",
+        "toPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "sourcePath": "src/apmRelease.ts"
+      },
+      {
+        "fromPath": "src/apmRelease.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/apmRelease.ts"
+      },
       {
         "fromPath": "src/cli/index.ts",
         "toPath": "src/cli/commands.ts",
@@ -2358,6 +3081,16 @@
       {
         "fromPath": "src/cli/runProviderCommand.ts",
         "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/commands/apm/sync.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/commands/apm/validate.ts",
         "sourcePath": "src/cli/runProviderCommand.ts"
       },
       {
@@ -2457,11 +3190,6 @@
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "toPath": "src/types/bunPolicy.ts",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
@@ -2471,9 +3199,24 @@
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/types/bunPolicy.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
         "fromPath": "src/policy/renderBunPolicyDocumentation.ts",
         "toPath": "src/types/bunPolicy.ts",
         "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
+      },
+      {
+        "fromPath": "src/types/public.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/types/public.ts"
+      },
+      {
+        "fromPath": "src/cli/bin/apm-release.ts",
+        "toPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "sourcePath": "src/cli/bin/apm-release.ts"
       },
       {
         "fromPath": "src/cli/bin/changeset.ts",
@@ -2597,6 +3340,11 @@
       },
       {
         "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/policy/bunRuntimePolicy.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
@@ -2624,6 +3372,126 @@
         "fromPath": "src/tools/workflows/renderWorkflowAsync.ts",
         "toPath": "src/policy/changesetsPolicy.ts",
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/apm/sync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "sourcePath": "src/cli/commands/apm/sync.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/apm/sync.ts",
+        "toPath": "src/cli/runProviderCommand.ts",
+        "sourcePath": "src/cli/commands/apm/sync.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/apm/validate.ts",
+        "toPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "sourcePath": "src/cli/commands/apm/validate.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/apm/validate.ts",
+        "toPath": "src/cli/runProviderCommand.ts",
+        "sourcePath": "src/cli/commands/apm/validate.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
+        "toPath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "toPath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+        "sourcePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "toPath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "toPath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "toPath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts"
       }
     ],
     "calls": [
@@ -2818,6 +3686,18 @@
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromSymbol": "runProviderCommand",
+        "toSymbol": "sync",
+        "callExpression": "sync",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromSymbol": "runProviderCommand",
+        "toSymbol": "validate",
+        "callExpression": "validate",
+        "sourcePath": "src/cli/runProviderCommand.ts"
       },
       {
         "fromSymbol": "runProviderCommand",
@@ -3184,6 +4064,12 @@
         "toSymbol": "renderReadmePolicy",
         "callExpression": "renderReadmePolicy",
         "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
+      },
+      {
+        "fromSymbol": "src/cli/bin/apm-release.ts",
+        "toSymbol": "runApmReleaseCommandAsync",
+        "callExpression": "runApmReleaseCommandAsync",
+        "sourcePath": "src/cli/bin/apm-release.ts"
       },
       {
         "fromSymbol": "src/cli/bin/changeset.ts",
@@ -4363,6 +5249,12 @@
       },
       {
         "fromSymbol": "render",
+        "toSymbol": "resolveApmReleaseCommandAsync",
+        "callExpression": "resolveApmReleaseCommandAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
         "toSymbol": "renderRenovateWorkflowAsync",
         "callExpression": "renderRenovateWorkflowAsync",
         "sourcePath": "src/tools/workflows/index.ts"
@@ -4408,6 +5300,504 @@
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "sync",
+        "toSymbol": "runApmReleaseCommandAsync",
+        "callExpression": "runApmReleaseCommandAsync",
+        "sourcePath": "src/cli/commands/apm/sync.ts"
+      },
+      {
+        "fromSymbol": "validate",
+        "toSymbol": "runApmReleaseCommandAsync",
+        "callExpression": "runApmReleaseCommandAsync",
+        "sourcePath": "src/cli/commands/apm/validate.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "readPackageAsync",
+        "callExpression": "port.readPackageAsync",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "readApmReleaseMetadata",
+        "callExpression": "readApmReleaseMetadata",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "validatePackageUpdateMetadata",
+        "callExpression": "validatePackageUpdateMetadata",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "readDescriptorAsync",
+        "callExpression": "port.readDescriptorAsync",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "validateUpdateDescriptor",
+        "callExpression": "validateUpdateDescriptor",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseMetadataAsync",
+        "toSymbol": "writeDescriptorAsync",
+        "callExpression": "port.writeDescriptorAsync",
+        "sourcePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toSymbol": "readApmReleaseMetadata",
+        "callExpression": "readApmReleaseMetadata",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toSymbol": "validatePackageUpdateMetadata",
+        "callExpression": "validatePackageUpdateMetadata",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toSymbol": "result",
+        "callExpression": "result",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toSymbol": "messages",
+        "callExpression": "messages",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toSymbol": "validateUpdateDescriptor",
+        "callExpression": "validateUpdateDescriptor",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toSymbol": "extensionBlockers",
+        "callExpression": "extensionBlockers",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "extensionBlockers",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "extensionBlockers",
+        "toSymbol": "isBoundExtension",
+        "callExpression": "isBoundExtension",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "extensionBlockers",
+        "toSymbol": "messages",
+        "callExpression": "messages",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "extensionBlockers",
+        "toSymbol": "validateUpdateExtensionBinding",
+        "callExpression": "validateUpdateExtensionBinding",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "extensionBlockers",
+        "toSymbol": "validateUpdateExtensionCapabilities",
+        "callExpression": "validateUpdateExtensionCapabilities",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "isBoundExtension",
+        "toSymbol": "validateUpdateExtensionBinding",
+        "callExpression": "validateUpdateExtensionBinding",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseDescriptorAsync",
+        "toSymbol": "synchronizeApmReleaseMetadataAsync",
+        "callExpression": "synchronizeApmReleaseMetadataAsync",
+        "sourcePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeApmReleaseDescriptorAsync",
+        "toSymbol": "createApmReleaseDescriptorPort",
+        "callExpression": "createApmReleaseDescriptorPort",
+        "sourcePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "validatePackedApmReleaseAsync",
+        "toSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "callExpression": "inspectPackedApmReleaseCandidateAsync",
+        "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromSymbol": "readApmReleaseMetadata",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"
+      },
+      {
+        "fromSymbol": "readApmReleaseMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "parseArguments",
+        "callExpression": "parseArguments",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "synchronizeApmReleaseDescriptorAsync",
+        "callExpression": "synchronizeApmReleaseDescriptorAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "validatePackedApmReleaseAsync",
+        "callExpression": "validatePackedApmReleaseAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseArguments",
+        "toSymbol": "optionIndex",
+        "callExpression": "optionIndex",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseArguments",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageAsync",
+        "toSymbol": "readApmReleaseManifestAsync",
+        "callExpression": "readApmReleaseManifestAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "readPackageAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "readDescriptorAsync",
+        "toSymbol": "readApmReleaseManifestAsync",
+        "callExpression": "readApmReleaseManifestAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "readDescriptorAsync",
+        "toSymbol": "descriptorPathAsync",
+        "callExpression": "descriptorPathAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "writeDescriptorAsync",
+        "toSymbol": "descriptorPathAsync",
+        "callExpression": "descriptorPathAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "writeDescriptorAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "writeDescriptorAsync",
+        "toSymbol": "format",
+        "callExpression": "format",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "writeDescriptorAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "descriptorPathAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "descriptorPathAsync",
+        "toSymbol": "resolvePathWithinRoot",
+        "callExpression": "resolvePathWithinRoot",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "descriptorPathAsync",
+        "toSymbol": "relative",
+        "callExpression": "relative",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "packCandidateAsync",
+        "callExpression": "packCandidateAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "readPackedCandidateAsync",
+        "callExpression": "readPackedCandidateAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "validatePackedCandidateAsync",
+        "callExpression": "validatePackedCandidateAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "copyFile",
+        "callExpression": "copyFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectPackedApmReleaseCandidateAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "packCandidateAsync",
+        "toSymbol": "execFileAsync",
+        "callExpression": "execFileAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "packCandidateAsync",
+        "toSymbol": "resolvePathWithinRoot",
+        "callExpression": "resolvePathWithinRoot",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "createHash",
+        "callExpression": "createHash",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "readApmReleaseManifestAsync",
+        "callExpression": "readApmReleaseManifestAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "validatePackageUpdateMetadata",
+        "callExpression": "validatePackageUpdateMetadata",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "readApmReleaseMetadata",
+        "callExpression": "readApmReleaseMetadata",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "realpath",
+        "callExpression": "realpath",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "resolvePathWithinRoot",
+        "callExpression": "resolvePathWithinRoot",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackedCandidateAsync",
+        "toSymbol": "relative",
+        "callExpression": "relative",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "validatePackedCandidateAsync",
+        "toSymbol": "validateUpdateDescriptor",
+        "callExpression": "validateUpdateDescriptor",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "validatePackedCandidateAsync",
+        "toSymbol": "validateApmReleaseCandidate",
+        "callExpression": "validateApmReleaseCandidate",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "validatePackedCandidateAsync",
+        "toSymbol": "probePackedApmExtensionAsync",
+        "callExpression": "probePackedApmExtensionAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "validatePackedCandidateAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts"
+      },
+      {
+        "fromSymbol": "probePackedApmExtensionAsync",
+        "toSymbol": "prepareProbeAsync",
+        "callExpression": "prepareProbeAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "probePackedApmExtensionAsync",
+        "toSymbol": "execFileAsync",
+        "callExpression": "execFileAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "probePackedApmExtensionAsync",
+        "toSymbol": "readProbeResultAsync",
+        "callExpression": "readProbeResultAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareProbeAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareProbeAsync",
+        "toSymbol": "symlink",
+        "callExpression": "symlink",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "prepareProbeAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "readProbeResultAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "readProbeResultAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts"
+      },
+      {
+        "fromSymbol": "readApmReleaseManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts"
+      },
+      {
+        "fromSymbol": "readApmReleaseManifestAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveApmReleaseCommandAsync",
+        "toSymbol": "readApmReleaseManifestAsync",
+        "callExpression": "readApmReleaseManifestAsync",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveApmReleaseCommandAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts"
       }
     ],
     "typeReferences": [
@@ -4485,6 +5875,41 @@
         "fromSymbol": "DevtoolsKnipMonorepoConfigOptions",
         "toType": "DevtoolsKnipWorkspaceConfigOptions",
         "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toType": "ApmPackedReleaseCandidate",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toType": "ApmReleaseValidationOptions",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validateApmReleaseCandidate",
+        "toType": "ApmReleaseValidationResult",
+        "sourcePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts"
+      },
+      {
+        "fromSymbol": "validatePackedApmReleaseAsync",
+        "toType": "ApmReleaseValidationOptions",
+        "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromSymbol": "validatePackedApmReleaseAsync",
+        "toType": "ApmReleaseValidationResult",
+        "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromSymbol": "ApmPackedReleaseCandidate",
+        "toType": "Readonly",
+        "sourcePath": "src/types/apm-release-validation.ts"
+      },
+      {
+        "fromSymbol": "ApmReleaseValidationOptions",
+        "toType": "ApmUpdateDescriptor",
+        "sourcePath": "src/types/apm-release-validation.ts"
       }
     ],
     "componentComposition": []

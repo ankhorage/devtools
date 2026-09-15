@@ -1,128 +1,117 @@
-import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
+import { constants } from 'node:fs';
+import { copyFile, mkdir, mkdtemp, readFile, realpath, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { relative, resolve } from 'node:path';
 import { promisify } from 'node:util';
 
-import { validatePackageUpdateMetadata } from '@ankhorage/apm';
-import type { ApmUpdateExtension } from '@ankhorage/apm/types';
-import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
+import { validatePackageUpdateMetadata, validateUpdateDescriptor } from '@ankhorage/apm';
+import { resolvePathWithinRoot } from '@ankhorage/utility/node/path';
 
-import type { ApmPackedReleaseCandidate } from '../../../../types/apm-release-validation';
+import type {
+  ApmPackedReleaseCandidate,
+  ApmReleaseValidationOptions,
+  ApmReleaseValidationResult,
+} from '../../../../types/apm-release-validation.js';
+import { validateApmReleaseCandidate } from '../../application/validateApmReleaseCandidate.js';
+import { readApmReleaseMetadata } from '../../utils/readApmReleaseMetadata.js';
+import { probePackedApmExtensionAsync } from './probePackedApmExtensionAsync.js';
+import { readApmReleaseManifestAsync } from './readApmReleaseManifestAsync.js';
 
-const execFileAsync = promisify(execFile);
-
-/*** Pack one exact release candidate and load only the APM evidence shipped inside that tarball. */
+/*** Validate the actual script-free packed candidate outside the checkout, retaining only accepted bytes. */
 export async function inspectPackedApmReleaseCandidateAsync(
   targetDirectory: string,
-): Promise<ApmPackedReleaseCandidate> {
-  const rootPath = resolve(targetDirectory);
-  const temporaryRoot = await mkdtemp(resolve(rootPath, '.ankh-apm-release-'));
-  const tarballPath = resolve(temporaryRoot, 'candidate.tgz');
-  const extractRoot = resolve(temporaryRoot, 'extract');
-
+  options: ApmReleaseValidationOptions = {},
+): Promise<ApmReleaseValidationResult> {
+  const root = await realpath(targetDirectory);
+  const temporaryRoot = await mkdtemp(resolve(tmpdir(), 'ankh-apm-release-'));
   try {
-    await execFileAsync(
-      'bun',
-      ['pm', 'pack', '--filename', tarballPath, '--ignore-scripts', '--quiet'],
-      { cwd: rootPath },
-    );
-    await execFileAsync('mkdir', ['-p', extractRoot], { cwd: rootPath });
-    await execFileAsync('tar', ['-xzf', tarballPath, '-C', extractRoot], { cwd: rootPath });
-
-    const packageRoot = resolve(extractRoot, 'package');
-    const packageJson = await readJsonRecordAsync(resolve(packageRoot, 'package.json'));
-    const metadataValidation = validatePackageUpdateMetadata(readApmMetadata(packageJson));
-    if (!metadataValidation.valid) {
-      return {
-        packageJson,
-        descriptor: undefined,
-        descriptorSource: '',
-        integrity: await tarballIntegrityAsync(tarballPath),
-      };
-    }
-
-    const descriptorPath = resolvePackagePath(packageRoot, metadataValidation.metadata.descriptor);
-    const descriptorSource = await readFile(descriptorPath, 'utf8');
-    const descriptor: unknown = JSON.parse(descriptorSource);
-    const extensionSubpath = readExtensionSubpath(descriptor);
-    const extension =
-      extensionSubpath === undefined
-        ? undefined
-        : await loadPackedExtensionAsync(packageRoot, packageJson, extensionSubpath);
-
-    return {
-      packageJson,
-      descriptor,
-      descriptorSource,
-      integrity: await tarballIntegrityAsync(tarballPath),
-      ...(extension === undefined ? {} : { extension }),
-    };
+    const archive = resolve(temporaryRoot, 'candidate.tgz');
+    const packageRoot = resolve(temporaryRoot, 'package');
+    await packCandidateAsync(root, temporaryRoot, archive);
+    const candidate = await readPackedCandidateAsync(packageRoot, archive);
+    const result = await validatePackedCandidateAsync(candidate, packageRoot, root, options);
+    if (!result.valid || options.artifactPath === undefined) return result;
+    const artifactPath = resolve(options.artifactPath);
+    if (artifactPath === archive)
+      throw new Error('Artifact output must survive temporary validation cleanup.');
+    await mkdir(resolve(artifactPath, '..'), { recursive: true });
+    await copyFile(archive, artifactPath, constants.COPYFILE_EXCL);
+    return { ...result, artifactPath };
   } finally {
     await rm(temporaryRoot, { recursive: true, force: true });
   }
 }
 
-/*** Read one package JSON object from the packed candidate. */
-async function readJsonRecordAsync(filePath: string): Promise<Readonly<Record<string, unknown>>> {
-  const value: unknown = JSON.parse(await readFile(filePath, 'utf8'));
-  if (!isRecord(value)) throw new Error(`Packed ${filePath} must contain a JSON object.`);
-  return value;
+/*** Build and extract only a script-free local package archive under a separate temporary root. */
+async function packCandidateAsync(
+  root: string,
+  temporaryRoot: string,
+  archive: string,
+): Promise<void> {
+  await execFileAsync('bun', ['pm', 'pack', '--filename', archive, '--ignore-scripts', '--quiet'], {
+    cwd: root,
+    ...PROCESS_LIMITS,
+  });
+  const { stdout } = await execFileAsync('tar', ['-tzf', archive], PROCESS_LIMITS);
+  for (const entry of stdout.trim().split('\n')) {
+    if (!entry.startsWith('package/'))
+      throw new Error('Packed file is outside the package prefix.');
+    resolvePathWithinRoot(temporaryRoot, entry);
+  }
+  await execFileAsync(
+    'tar',
+    ['-xzf', archive, '-C', temporaryRoot, '--no-same-owner', '--no-same-permissions'],
+    PROCESS_LIMITS,
+  );
 }
 
-/*** Read the package's opt-in APM metadata without interpreting its schema locally. */
-function readApmMetadata(packageJson: Readonly<Record<string, unknown>>): unknown {
-  const ankh = readOwnProperty(packageJson, 'ankh');
-  return isRecord(ankh) ? readOwnProperty(ankh, 'apm') : undefined;
-}
-
-/*** Resolve a validator-approved package-relative path inside the packed package root. */
-function resolvePackagePath(packageRoot: string, subpath: string): string {
-  return resolve(packageRoot, subpath.slice(2));
-}
-
-/*** Read an optional executable extension export from untrusted descriptor JSON. */
-function readExtensionSubpath(descriptor: unknown): string | undefined {
-  if (!isRecord(descriptor) || !isRecord(descriptor.extension)) return undefined;
-  return typeof descriptor.extension.export === 'string' ? descriptor.extension.export : undefined;
-}
-
-/*** Import the exact extension file referenced by the packed package export map. */
-async function loadPackedExtensionAsync(
+/*** Read owner metadata strictly from the archive, not the source-tree descriptor. */
+async function readPackedCandidateAsync(
   packageRoot: string,
-  packageJson: Readonly<Record<string, unknown>>,
-  subpath: string,
-): Promise<ApmUpdateExtension | undefined> {
-  const target = resolveExportTarget(readOwnProperty(packageJson, 'exports'), subpath);
-  if (target === undefined) return undefined;
-  const module: unknown = await import(pathToFileURL(resolvePackagePath(packageRoot, target)).href);
-  if (!isRecord(module)) return undefined;
-  const value = readOwnProperty(module, 'default');
-  return isRecord(value) ? (value as ApmUpdateExtension) : undefined;
+  archive: string,
+): Promise<ApmPackedReleaseCandidate> {
+  const integrity = `sha512-${createHash('sha512')
+    .update(await readFile(archive))
+    .digest('base64')}`;
+  const packageJson = await readApmReleaseManifestAsync(resolve(packageRoot, 'package.json'));
+  const discovery = validatePackageUpdateMetadata(readApmReleaseMetadata(packageJson));
+  if (!discovery.valid || discovery.metadata === undefined) {
+    return { packageJson, integrity, descriptor: undefined, descriptorSource: '' };
+  }
+  const descriptorPath = await realpath(
+    resolvePathWithinRoot(packageRoot, discovery.metadata.descriptor),
+  );
+  resolvePathWithinRoot(packageRoot, relative(packageRoot, descriptorPath));
+  const descriptorSource = await readFile(descriptorPath, 'utf8');
+  const descriptor: unknown = JSON.parse(descriptorSource);
+  return { packageJson, descriptor, descriptorSource, integrity };
 }
 
-/*** Resolve one public package export target for ESM validation. */
-function resolveExportTarget(exportsValue: unknown, subpath: string): string | undefined {
-  if (!isRecord(exportsValue)) return undefined;
-  const entry = readOwnProperty(exportsValue, subpath);
-  if (typeof entry === 'string') return isPackageSubpath(entry) ? entry : undefined;
-  if (!isRecord(entry)) return undefined;
-  const importTarget = readOwnProperty(entry, 'import');
-  if (typeof importTarget === 'string' && isPackageSubpath(importTarget)) return importTarget;
-  const defaultTarget = readOwnProperty(entry, 'default');
-  return typeof defaultTarget === 'string' && isPackageSubpath(defaultTarget)
-    ? defaultTarget
-    : undefined;
+/*** Require valid static evidence before optionally loading the exact packed owner extension. */
+async function validatePackedCandidateAsync(
+  candidate: ApmPackedReleaseCandidate,
+  packageRoot: string,
+  root: string,
+  options: ApmReleaseValidationOptions,
+): Promise<ApmReleaseValidationResult> {
+  const validation = validateUpdateDescriptor({ descriptor: candidate.descriptor });
+  const staticResult = validateApmReleaseCandidate(candidate, options);
+  const onlyExtensionMissing = staticResult.blockers.every((blocker) =>
+    blocker.startsWith('protocol.extension-binding-mismatch:'),
+  );
+  const extension = validation.descriptor?.extension;
+  return extension !== undefined && validation.valid && onlyExtensionMissing
+    ? probePackedApmExtensionAsync({
+        candidate,
+        packageRoot,
+        dependencyRoot: resolve(root, 'node_modules'),
+        subpath: extension.export,
+        options,
+      })
+    : staticResult;
 }
 
-/*** Accept only traversal-free package-local export paths. */
-function isPackageSubpath(value: string): boolean {
-  return value.startsWith('./') && !value.split('/').includes('..');
-}
-
-/*** Bind validation to the exact bytes of the packed release candidate. */
-async function tarballIntegrityAsync(tarballPath: string): Promise<string> {
-  const contents = await readFile(tarballPath);
-  return `sha512-${createHash('sha512').update(contents).digest('base64')}`;
-}
+const execFileAsync = promisify(execFile);
+const PROCESS_LIMITS = { timeout: 60_000, maxBuffer: 4 * 1024 * 1024 } as const;

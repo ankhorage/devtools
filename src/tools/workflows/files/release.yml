@@ -73,6 +73,9 @@ jobs:
 
           before_version="$(node -p "require('./package.json').version")"
           __ANKH_CHANGESETS_VERSION_COMMAND__
+          if node -e "const p=require('./package.json'); process.exit(p.ankh?.apm === undefined ? 1 : 0)"; then
+            __ANKH_APM_RELEASE_COMMAND__ sync .
+          fi
           after_version="$(node -p "require('./package.json').version")"
 
           if git diff --quiet; then
@@ -100,7 +103,29 @@ jobs:
 
       - name: Publish unpublished packages
         if: hashFiles('.changeset/config.json') != ''
-        run: __ANKH_CHANGESETS_PUBLISH_COMMAND__
+        run: |
+          if ! node -e "const p=require('./package.json'); process.exit(p.ankh?.apm === undefined ? 1 : 0)"; then
+            __ANKH_CHANGESETS_PUBLISH_COMMAND__
+            exit 0
+          fi
+
+          package_name="$(node -p "require('./package.json').name")"
+          package_version="$(node -p "require('./package.json').version")"
+          registry_evidence="${RUNNER_TEMP}/apm-registry.json"
+          if npm view "${package_name}@${package_version}" version --json > "$registry_evidence"; then
+            echo "Exact APM owner version is already published."
+          else
+            # Authentication/network errors must never be treated as an unpublished version.
+            node -e "const p=require(process.argv[1]); if(p.error?.code !== 'E404') process.exit(1)" "$registry_evidence"
+            bun run build
+            bun run test:apm
+            artifact="$(mktemp -d "${RUNNER_TEMP}/apm-publish.XXXXXX")/candidate.tgz"
+            __ANKH_APM_RELEASE_COMMAND__ validate . --allow-owner-code --artifact "$artifact"
+            npm publish "$artifact" --ignore-scripts
+          fi
+          if ! git rev-parse -q --verify "refs/tags/v${package_version}" >/dev/null; then
+            git tag "v${package_version}"
+          fi
 
       - name: Finalize Changesets v3 tags and GitHub releases
         if: hashFiles('.changeset/config.json') != ''

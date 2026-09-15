@@ -7,6 +7,8 @@ import {
 } from './commands.js';
 
 const repositoryCommandPaths = [
+  'apm sync',
+  'apm validate',
   'changeset',
   'lint',
   'format',

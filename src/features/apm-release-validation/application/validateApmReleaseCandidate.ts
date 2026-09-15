@@ -6,115 +6,107 @@ import {
   validateUpdateExtensionBinding,
   validateUpdateExtensionCapabilities,
 } from '@ankhorage/apm';
-import type { ApmExtensionArtifactIdentity } from '@ankhorage/apm/types';
-import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
+import type {
+  ApmExtensionArtifactIdentity,
+  ApmUpdateDescriptor,
+  ApmUpdateExtension,
+} from '@ankhorage/apm/types';
 
 import type {
   ApmPackedReleaseCandidate,
+  ApmReleaseValidationOptions,
   ApmReleaseValidationResult,
-} from '../../../types/apm-release-validation';
+} from '../../../types/apm-release-validation.js';
+import { readApmReleaseMetadata } from '../utils/readApmReleaseMetadata.js';
 
-/*** Validate one exact packed package candidate through the canonical public APM protocol validators. */
+/*** Validate packed owner evidence using the released APM protocol, never a copied schema.
+ * Opt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.
+ * No metadata means not applicable, not a claim that no migration is needed. The descriptor
+ * declares supported no-migration, required migration, or unsupported/manual history explicitly.
+ * Previous descriptors enforce immutable migration checksums and related descriptors validate
+ * cross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,
+ * idempotency, interruption/recovery, and unsupported historical states.
+ * @readme
+ */
 export function validateApmReleaseCandidate(
   candidate: ApmPackedReleaseCandidate,
+  options: ApmReleaseValidationOptions = {},
 ): ApmReleaseValidationResult {
-  const identity = packageIdentity(candidate.packageJson);
-  const metadata = packageApmMetadata(candidate.packageJson);
+  const { name, version } = candidate.packageJson;
+  const identity = {
+    ...(typeof name === 'string' ? { packageName: name } : {}),
+    ...(typeof version === 'string' ? { packageVersion: version } : {}),
+    integrity: candidate.integrity,
+  };
+  const metadata = readApmReleaseMetadata(candidate.packageJson);
+  const integrityBlockers =
+    options.expectedIntegrity !== undefined && options.expectedIntegrity !== candidate.integrity
+      ? ['release.integrity-mismatch: Packed bytes differ from the selected release artifact.']
+      : [];
   if (metadata === undefined) {
     return {
+      ...identity,
       applicable: false,
-      valid: true,
-      ...(identity.name === undefined ? {} : { packageName: identity.name }),
-      ...(identity.version === undefined ? {} : { packageVersion: identity.version }),
-      blockers: [],
+      valid: integrityBlockers.length === 0,
+      blockers: integrityBlockers,
     };
   }
-
   const metadataValidation = validatePackageUpdateMetadata(metadata);
-  if (!metadataValidation.valid || identity.name === undefined || identity.version === undefined) {
-    return result(identity, protocolBlockers(metadataValidation.blockers, identity));
+  if (typeof name !== 'string' || !name || typeof version !== 'string' || !version) {
+    return result(identity, ['release.identity: Package must define name and exact version.']);
   }
-
-  const descriptorValidation = validateUpdateDescriptor({
+  if (!metadataValidation.valid)
+    return result(identity, [...integrityBlockers, ...messages(metadataValidation.blockers)]);
+  const validation = validateUpdateDescriptor({
     descriptor: candidate.descriptor,
-    expectedOwner: { name: identity.name, version: identity.version },
+    expectedOwner: { name, version },
+    previousDescriptors: options.previousDescriptors,
+    relatedDescriptors: options.relatedDescriptors,
   });
-  if (!descriptorValidation.valid || descriptorValidation.descriptor === undefined) {
-    return result(identity, protocolBlockers(descriptorValidation.blockers, identity));
+  if (!validation.valid || validation.descriptor === undefined || integrityBlockers.length > 0) {
+    return result(identity, [...integrityBlockers, ...messages(validation.blockers)]);
   }
+  return result(identity, extensionBlockers(candidate, validation.descriptor));
+}
 
-  const descriptor = descriptorValidation.descriptor;
-  if (descriptor.extension === undefined) return result(identity, []);
-  if (candidate.extension === undefined) {
-    return result(identity, [
-      `protocol.extension-binding-mismatch: Packed candidate does not expose executable extension ${descriptor.extension.export}.`,
-    ]);
-  }
-
+/*** Validate executable binding and required handlers after static metadata has passed. */
+function extensionBlockers(
+  candidate: ApmPackedReleaseCandidate,
+  descriptor: ApmUpdateDescriptor,
+): readonly string[] {
+  if (descriptor.extension === undefined) return [];
   const artifact: ApmExtensionArtifactIdentity = {
     role: 'target',
-    packageName: identity.name,
-    version: identity.version,
+    packageName: descriptor.owner.name,
+    version: descriptor.owner.version,
     integrity: candidate.integrity,
-    descriptorDigest: sha256(candidate.descriptorSource),
+    descriptorDigest: createHash('sha256').update(candidate.descriptorSource).digest('hex'),
   };
-  return result(identity, [
-    ...protocolBlockers(validateUpdateExtensionBinding(artifact, candidate.extension), identity),
-    ...protocolBlockers(
-      validateUpdateExtensionCapabilities(descriptor, artifact, candidate.extension),
-      identity,
-    ),
-  ]);
+  if (!isBoundExtension(artifact, candidate.extension)) {
+    return messages(validateUpdateExtensionBinding(artifact, candidate.extension));
+  }
+  return messages(validateUpdateExtensionCapabilities(descriptor, artifact, candidate.extension));
 }
 
-/*** Read package identity fields without assuming candidate JSON shape. */
-function packageIdentity(packageJson: Readonly<Record<string, unknown>>): {
-  readonly name?: string;
-  readonly version?: string;
-} {
-  const name = readOwnProperty(packageJson, 'name');
-  const version = readOwnProperty(packageJson, 'version');
-  return {
-    ...(typeof name === 'string' && name.trim() !== '' ? { name } : {}),
-    ...(typeof version === 'string' && version.trim() !== '' ? { version } : {}),
-  };
+/*** Narrow unknown executable evidence only after the canonical runtime validator accepts it. */
+function isBoundExtension(
+  artifact: ApmExtensionArtifactIdentity,
+  value: unknown,
+): value is ApmUpdateExtension {
+  return validateUpdateExtensionBinding(artifact, value).length === 0;
 }
 
-/*** Read opt-in APM metadata from the package's existing `ankh` namespace. */
-function packageApmMetadata(packageJson: Readonly<Record<string, unknown>>): unknown {
-  const ankh = readOwnProperty(packageJson, 'ankh');
-  return isRecord(ankh) ? readOwnProperty(ankh, 'apm') : undefined;
-}
-
-/*** Build the stable validation result around one candidate package identity. */
+/*** Preserve structured candidate identity and canonical blocker reasons. */
 function result(
-  identity: { readonly name?: string; readonly version?: string },
+  identity: Pick<ApmReleaseValidationResult, 'packageName' | 'packageVersion' | 'integrity'>,
   blockers: readonly string[],
 ): ApmReleaseValidationResult {
-  return {
-    applicable: true,
-    valid: blockers.length === 0,
-    ...(identity.name === undefined ? {} : { packageName: identity.name }),
-    ...(identity.version === undefined ? {} : { packageVersion: identity.version }),
-    blockers,
-  };
+  return { ...identity, applicable: true, valid: blockers.length === 0, blockers };
 }
 
-/*** Render canonical APM blockers into bounded CLI/workflow evidence. */
-function protocolBlockers(
+/*** Render the protocol's own diagnostics without reinterpreting their semantics. */
+function messages(
   blockers: readonly { readonly code: string; readonly reason: string }[],
-  identity: { readonly name?: string; readonly version?: string },
 ): readonly string[] {
-  const missingIdentity = [
-    ...(identity.name === undefined ? ['package.identity: Packed candidate has no package name.'] : []),
-    ...(identity.version === undefined
-      ? ['package.identity: Packed candidate has no exact package version.']
-      : []),
-  ];
-  return [...missingIdentity, ...blockers.map(({ code, reason }) => `${code}: ${reason}`)];
-}
-
-/*** Return the descriptor digest format required by APM extension binding. */
-function sha256(value: string): string {
-  return createHash('sha256').update(value).digest('hex');
+  return blockers.map(({ code, reason }) => `${code}: ${reason}`);
 }

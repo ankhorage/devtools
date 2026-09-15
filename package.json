@@ -19,6 +19,8 @@
     "category": "devtools",
     "provider": "./dist/cli/index.js",
     "capabilities": [
+      "devtools.apm.sync",
+      "devtools.apm.validate",
       "devtools.changeset",
       "devtools.lint",
       "devtools.format",
@@ -60,7 +62,8 @@
     "ankhorage-changeset": "./dist/cli/bin/changeset.js",
     "ankhorage-eslint": "./dist/cli/bin/eslint.js",
     "ankhorage-knip": "./dist/cli/bin/knip.js",
-    "ankhorage-prettier": "./dist/cli/bin/prettier.js"
+    "ankhorage-prettier": "./dist/cli/bin/prettier.js",
+    "ankhorage-apm-release": "./dist/cli/bin/apm-release.js"
   },
   "exports": {
     "./cli": {
@@ -83,6 +86,14 @@
       "import": "./dist/tools/prettier/index.cjs",
       "require": "./dist/tools/prettier/index.cjs",
       "default": "./dist/tools/prettier/index.cjs"
+    },
+    "./apm-release": {
+      "types": "./dist/apmRelease.d.ts",
+      "import": "./dist/apmRelease.js"
+    },
+    "./types": {
+      "types": "./dist/types/public.d.ts",
+      "import": "./dist/types/public.js"
     }
   },
   "files": [
@@ -93,7 +104,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && mkdir -p dist/tools/prettier dist/tools/workflows dist/tools/vscode dist/tools/skills && cp src/tools/prettier/index.cjs dist/tools/prettier/index.cjs && cp -R src/tools/workflows/files dist/tools/workflows/files && cp -R src/tools/vscode/files dist/tools/vscode/files && cp -R src/tools/skills/assets dist/tools/skills/assets",
-    "typecheck": "bun x tsc --noEmit -p tsconfig.test.json",
+    "typecheck": "bun run check-types",
     "doctor": "ankhorage-doctor validate .",
     "knip:check": "knip",
     "lint": "eslint .",
@@ -105,9 +116,11 @@
     "test": "bun test",
     "changeset": "bun src/cli/bin/changeset.ts",
     "changeset:status": "bun src/cli/bin/changeset.ts status --since=origin/main",
-    "version-packages": "bun src/cli/bin/changeset.ts version"
+    "version-packages": "bun src/cli/bin/changeset.ts version",
+    "check-types": "bun x tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
+    "@ankhorage/apm": "^0.6.0",
     "@ankhorage/project-detector": "^0.1.0",
     "@ankhorage/utility": "^0.5.1",
     "@changesets/cli": "^3.0.2",

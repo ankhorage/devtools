@@ -17,7 +17,13 @@ export default defineParadoxConfig({
   },
   package: {
     root: '.',
-    entrypoints: ['src/cli/index.ts', 'src/tools/eslint/index.ts', 'src/tools/knip/index.ts'],
+    entrypoints: [
+      'src/cli/index.ts',
+      'src/tools/eslint/index.ts',
+      'src/tools/knip/index.ts',
+      'src/apmRelease.ts',
+      'src/types/public.ts',
+    ],
   },
   output: { dir: './paradox' },
 });

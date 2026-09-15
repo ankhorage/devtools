@@ -16,6 +16,15 @@
  * `@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a
  * local extension before the canonical auto-detecting wrapper is installed.
  *
+ * APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid
+ * descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a
+ * script-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.
+ * `--artifact <path>` retains the exact accepted tarball and `--expected-integrity <SRI>`
+ * rejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.
+ * CI runs that owner suite and the packed check. Release rebuilds after versioning, validates,
+ * then publishes the retained archive with scripts disabled through the existing release job.
+ * Packages without metadata keep their existing Changesets publish path unchanged.
+ *
  * @readme
  */
 import { readFileSync } from 'node:fs';

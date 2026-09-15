@@ -4,6 +4,8 @@ type DevtoolsManagedScope =
 type DevtoolsManagedOperation = 'status' | 'sync';
 
 type DevtoolsCapability =
+  | 'devtools.apm.sync'
+  | 'devtools.apm.validate'
   | 'devtools.changeset'
   | 'devtools.format'
   | 'devtools.knip'
@@ -46,10 +48,31 @@ export interface DevtoolsRepositoryCommandDefinition extends DevtoolsCommandBase
   readonly operation: DevtoolsManagedOperation;
 }
 
+interface DevtoolsApmReleaseCommandDefinition extends DevtoolsCommandBase {
+  readonly kind: 'apm-release';
+  readonly operation: 'sync' | 'validate';
+}
+
 export type DevtoolsCommandDefinition =
-  DevtoolsExternalCommandDefinition | DevtoolsRepositoryCommandDefinition;
+  | DevtoolsExternalCommandDefinition
+  | DevtoolsRepositoryCommandDefinition
+  | DevtoolsApmReleaseCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
+  {
+    kind: 'apm-release',
+    operation: 'sync',
+    path: ['apm', 'sync'],
+    capability: 'devtools.apm.sync',
+    summary: 'Bind owner metadata to the Changesets release version.',
+  },
+  {
+    kind: 'apm-release',
+    operation: 'validate',
+    path: ['apm', 'validate'],
+    capability: 'devtools.apm.validate',
+    summary: 'Validate the exact packed APM release artifact.',
+  },
   externalCommand(
     'changeset',
     'devtools.changeset',
@@ -205,7 +228,7 @@ export function findDevtoolsCommandByPath(
     DEVTOOLS_COMMANDS.find(
       (command) =>
         command.path.length === path.length &&
-        command.path.every((segment, index) => segment === path[index]),
+        command.path.every((segment, index) => segment === path.at(index)),
     ) ?? null
   );
 }

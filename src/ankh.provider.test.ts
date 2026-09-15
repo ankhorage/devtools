@@ -18,6 +18,8 @@ describe('devtools package provider', () => {
       })),
     );
     expect(provider.commands.map((command) => command.path.join(' '))).toEqual([
+      'apm sync',
+      'apm validate',
       'changeset',
       'lint',
       'format',
