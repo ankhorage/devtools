@@ -28,7 +28,7 @@ jobs:
           node-version: '24'
       - name: Apply the reviewed implementation patch
         run: |
-          test "$(git rev-parse HEAD^)" = fe47fd61dcdd2a2d148c443189ed9ce99e22c024
+          test "$(git rev-parse HEAD^)" = 2fcbc8200544df4b00290a89e47c1fc38af9c206
           cat .github/apm-release-part1.bz2 .github/apm-release-part2.bz2 | bzip2 -dc > "$RUNNER_TEMP/implementation.patch"
           echo "c1a25277bc05564f8d91d208b3a038e219ae73b223ff2d6373cf6f6d315fc61d  $RUNNER_TEMP/implementation.patch" | sha256sum -c -
           git apply --check "$RUNNER_TEMP/implementation.patch"
@@ -80,12 +80,33 @@ jobs:
           node --input-type=module -e "const api=await import('@ankhorage/devtools/apm-release');if(typeof api.validatePackedApmReleaseAsync!=='function')throw Error('Missing public API');"
           ./node_modules/.bin/ankhorage-apm-release validate . --allow-owner-code --artifact "$RUNNER_TEMP/reviewed-owner.tgz" > "$RUNNER_TEMP/cold-report.json"
           node -e "const r=require(process.argv[1]);if(!r.valid||!r.applicable||!r.integrity.startsWith('sha512-'))throw Error('Cold owner validation failed');console.log(JSON.stringify(r));" "$RUNNER_TEMP/cold-report.json"
-      - name: Commit validated changes on the task branch only
+      - name: Export the validated source and intended workflow changes
         run: |
           git diff --check
           git add --all
+          git diff --cached --binary > "$RUNNER_TEMP/devtools-apm-validated.patch"
+          git ls-files -z | tar --null -T - -czf "$RUNNER_TEMP/devtools-validated-source.tgz"
+          sha256sum "$RUNNER_TEMP/devtools-validated-source.tgz" "$RUNNER_TEMP/devtools-apm-validated.patch" > "$RUNNER_TEMP/validated-sha256.txt"
+      - name: Preserve validation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: apm-validated-source
+          path: |
+            ${{ runner.temp }}/devtools-validated-source.tgz
+            ${{ runner.temp }}/devtools-apm-validated.patch
+            ${{ runner.temp }}/validated-sha256.txt
+            ${{ runner.temp }}/cold-report.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Commit validated source within the token's content permissions
+        run: |
+          # The Actions token cannot edit workflow files. Preserve those paths exactly;
+          # their reviewed changes are exported above for the authorized repository editor.
+          git restore --source=HEAD --staged --worktree -- .github/workflows
+          test -z "$(git diff --cached --name-only -- .github/workflows)"
+          git diff --cached --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'feat: validate packed APM owner releases' -m 'Refs #208' -m 'Roadmap: ankhorage/apm#1'
           git push origin HEAD:refs/heads/feat/208-apm-release-validation
-          echo "Validated implementation: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          echo "Validated source: $(git rev-parse HEAD); workflow adoption remains separate." >> "$GITHUB_STEP_SUMMARY"
