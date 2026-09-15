@@ -42,6 +42,7 @@ async function isGitignorePresent(targetDirectory: string): Promise<boolean> {
   }
 }
 
+/*** Check whether an unknown failure carries a Node.js error code. */
 function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }
