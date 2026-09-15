@@ -78,6 +78,14 @@ jobs:
           fi
           after_version="$(node -p "require('./package.json').version")"
 
+          if [ "$before_version" != "$after_version" ]; then
+            if node -e "const p=require('./package.json'); process.exit(p.scripts?.docs ? 0 : 1)"; then
+              bun run docs
+            else
+              echo "No docs script found; skipping."
+            fi
+          fi
+
           if git diff --quiet; then
             echo "versioned=false" >> "$GITHUB_OUTPUT"
             exit 0
