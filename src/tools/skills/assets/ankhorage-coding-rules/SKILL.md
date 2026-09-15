@@ -45,6 +45,26 @@ exceptions or replaced by generic preferences from this skill.
 - Keep one canonical implementation. Do not add compatibility aliases, dual paths, historical-state
   fallbacks, or sibling-source imports.
 
+## Comments and Paradox documentation
+
+- Give every named production function under `src` a concise Paradox `/*** ... */` comment,
+  including exported functions and internal named helpers. Inline callbacks are exempt.
+- Use ordinary inline comments when they explain non-obvious intent, invariants, constraints, or the
+  reason behind a decision. Do not narrate self-explanatory code or duplicate what names and types
+  already express.
+- Paradox documentation metadata belongs only inside `/*** ... */` comments. Use only supported
+  Paradox tags: `@readme`, `@config`, `@example`, and `@usage`. Do not use JSDoc-only tags such as
+  `@param` or `@returns` as Paradox metadata.
+- Add a supported Paradox tag only when it changes or usefully enriches generated documentation;
+  plain function descriptions do not need tags.
+- Update documentation sources in the pull request, including repository-owned manual documentation
+  outside the configured generated output. Never hand-edit generated README or Paradox artifacts.
+- Generated documentation is release-owned. Ordinary feature pull requests must not regenerate or
+  commit `README.md` or the configured Paradox output. The managed release workflow runs
+  `bun run docs` after the package version bump and commits the result in the release commit.
+- Run `bun run docs` locally only when the task explicitly changes or validates Paradox generation;
+  do not commit that generated diff from an ordinary feature pull request.
+
 ## Testing
 
 - Test observable behavior at the owning boundary. Keep tests deterministic and independent of
@@ -59,20 +79,6 @@ exceptions or replaced by generic preferences from this skill.
 - Do not rerun an unchanged E2E or smoke failure without a new hypothesis. After two unsuccessful
   full reruns without a substantive code or configuration change, stop cycling, inspect logs and
   artifacts, and report the blocker.
-
-## Paradox documentation
-
-- Give every named production function under `src` a concise Paradox `/*** ... */` description,
-  including internal helpers. Inline callbacks are exempt.
-- Add `@param`, `@returns`, `@example`, or `@readme` to public APIs only when the tag adds useful
-  information.
-- Update documentation sources in the pull request, including repository-owned manual documentation
-  outside the configured generated output. Never hand-edit generated README or Paradox artifacts.
-- Generated documentation is release-owned. Ordinary feature pull requests must not regenerate or
-  commit `README.md` or the configured Paradox output. The managed release workflow runs
-  `bun run docs` after the package version bump and commits the result in the release commit.
-- Run `bun run docs` locally only when the task explicitly changes or validates Paradox generation;
-  do not commit that generated diff from an ordinary feature pull request.
 
 ## Public API and release quality
 
