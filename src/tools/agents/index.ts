@@ -27,7 +27,16 @@ Package: \`${escapeInlineCode(packageName)}\`
 
 ${description}
 
-## Current architecture only
+${renderCurrentArchitectureInstructions()}
+${renderRequiredRepositoryInstructions()}
+${renderDocumentationInstructions()}
+${renderPullRequestInstructions()}
+${renderSkillScriptInstructions()}`;
+}
+
+/*** Render the current-architecture policy shared by every managed repository. */
+function renderCurrentArchitectureInstructions(): string {
+  return `## Current architecture only
 
 Only the current Ankhorage architecture is valid. Do not add or retain deprecated APIs,
 compatibility aliases, shims, dual old/new paths, historical-state fallbacks, or migrations whose
@@ -40,7 +49,12 @@ published public APIs and declared dependencies, never sibling source files.
 Current-runtime error handling and canonical database or infrastructure migrations remain valid
 when they support states that the current architecture can intentionally produce.
 
-## Required repository instructions
+`;
+}
+
+/*** Render contextual repository skill-selection requirements. */
+function renderRequiredRepositoryInstructions(): string {
+  return `## Required repository instructions
 
 Before changing any file, read this \`AGENTS.md\` completely and inspect \`.agents/skills/\`.
 Treat skill selection as a mandatory precondition to editing, then follow every selected skill
@@ -59,7 +73,12 @@ Do not load unrelated skills merely because they are installed. If the task scop
 \`.agents/skills/\` again and load the newly relevant skills before continuing. Do not substitute
 remembered, globally installed, or generic guidance for the repository-local versions.
 
-## Documentation
+`;
+}
+
+/*** Render the release-owned generated documentation policy. */
+function renderDocumentationInstructions(): string {
+  return `## Documentation
 
 \`README.md\` and the configured Paradox output are generated release artifacts. Never edit them
 manually, and do not regenerate or commit them in ordinary feature pull requests. Update the owning
@@ -68,7 +87,12 @@ the README, plus any repository-owned manual documentation outside the generated
 release workflow runs \`bun run docs\` after the package version bump and commits the regenerated
 artifacts in the release commit.
 
-## Pull requests
+`;
+}
+
+/*** Render canonical pull-request validation commands. */
+function renderPullRequestInstructions(): string {
+  return `## Pull requests
 
 Before creating a pull request, run all of these commands in this order and resolve every failure:
 
@@ -81,7 +105,12 @@ bun run changeset
 bun run format
 \`\`\`
 
-## Skill scripts
+`;
+}
+
+/*** Render the repository rule for executable Agent Skill scripts. */
+function renderSkillScriptInstructions(): string {
+  return `## Skill scripts
 
 Scripts inside an Agent Skill must always be TypeScript files with the \`.ts\` extension.
 JavaScript skill scripts using \`.js\`, \`.mjs\`, or \`.cjs\` are not allowed. Run TypeScript
