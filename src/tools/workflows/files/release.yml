@@ -184,9 +184,9 @@ jobs:
             last_stage="registry-metadata"
 
             if npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"; then
-              resolved_version="$(node -e "const p=require(process.argv[1]); process.stdout.write(p.version ?? '')" "$registry_evidence")"
-              tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
-              integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
+              resolved_version="$(node -e "const raw=require(process.argv[1]); const p=Array.isArray(raw)&&raw.length===1?raw[0]:raw; process.stdout.write(typeof p?.version==='string'?p.version:'')" "$registry_evidence")"
+              tarball="$(node -e "const raw=require(process.argv[1]); const p=Array.isArray(raw)&&raw.length===1?raw[0]:raw; process.stdout.write(typeof p?.['dist.tarball']==='string'?p['dist.tarball']:'')" "$registry_evidence")"
+              integrity="$(node -e "const raw=require(process.argv[1]); const p=Array.isArray(raw)&&raw.length===1?raw[0]:raw; process.stdout.write(typeof p?.['dist.integrity']==='string'?p['dist.integrity']:'')" "$registry_evidence")"
 
               if [ "$resolved_version" = "$PUBLISHED_PACKAGE_VERSION" ] && [ -n "$tarball" ] && [ -n "$integrity" ]; then
                 last_stage="tarball-download"
