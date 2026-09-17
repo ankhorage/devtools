@@ -5,10 +5,12 @@ import { dirname, resolve } from 'node:path';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
 import { nodeRuntimePolicy } from '../policy/bunRuntimePolicy.js';
 import { renderBunPolicyDocumentation } from '../policy/renderBunPolicyDocumentation.js';
+import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from '../tools/workflows/renderWorkflowAsync.js';
 import type { BunPolicy } from '../types/bunPolicy.js';
 
+/*** Synchronize or validate Renovate-owned Devtools policy artifacts. */
 export async function synchronizeRenovateOwnerAsync(
   operation: OwnerSyncOperation,
   targetDirectory: string,
@@ -48,6 +50,7 @@ interface OwnerSyncOptions {
   ) => Promise<void>;
 }
 
+/*** Assert that Renovate owner synchronization targets the Devtools repository. */
 async function assertDevtoolsTargetAsync(targetDirectory: string): Promise<void> {
   const manifest = JSON.parse(
     await readFile(resolve(targetDirectory, 'package.json'), 'utf8'),
@@ -57,6 +60,7 @@ async function assertDevtoolsTargetAsync(targetDirectory: string): Promise<void>
   }
 }
 
+/*** Build the canonical owner-managed artifact definitions for the target repository. */
 async function createManagedDefinitionsAsync(
   targetDirectory: string,
   policy: BunPolicy,
@@ -71,6 +75,7 @@ async function createManagedDefinitionsAsync(
   const readme = await readFile(resolve(targetDirectory, 'README.md'), 'utf8');
   const workflowPolicy = {
     bunVersion: policy.version,
+    doctorVersion: readCurrentDoctorVersion(),
     nodeVersion: nodeRuntimePolicy.setupVersion,
   };
 
@@ -108,6 +113,7 @@ async function createManagedDefinitionsAsync(
   ];
 }
 
+/*** Return owner-managed artifact paths whose current bytes differ from policy output. */
 async function getOutdatedPathsAsync(
   targetDirectory: string,
   definitions: readonly ManagedDefinition[],
@@ -126,14 +132,17 @@ async function getOutdatedPathsAsync(
   return results.filter((relativePath): relativePath is string => relativePath !== null);
 }
 
+/*** Narrow an unknown error to a Node error carrying an error code. */
 function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }
 
+/*** Narrow an unknown JSON-like value to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/*** Read the target repository's canonical Bun policy literals. */
 async function readTargetBunPolicyAsync(targetDirectory: string): Promise<BunPolicy> {
   const contents = await readFile(
     resolve(targetDirectory, 'src/policy/bunRuntimePolicy.ts'),
@@ -159,6 +168,7 @@ async function readTargetBunPolicyAsync(targetDirectory: string): Promise<BunPol
   };
 }
 
+/*** Synchronize or validate the target Bun lockfile through Bun itself. */
 async function runBunLockfileAsync(
   operation: OwnerSyncOperation,
   targetDirectory: string,
@@ -183,10 +193,12 @@ async function runBunLockfileAsync(
   });
 }
 
+/*** Serialize a package manifest using repository formatting. */
 function serializePackageManifest(manifest: Record<string, unknown>): string {
   return `${JSON.stringify(manifest, null, 2)}\n`;
 }
 
+/*** Write changed owner-managed artifacts while preserving byte-identical files. */
 async function syncDefinitionsAsync(
   targetDirectory: string,
   definitions: readonly ManagedDefinition[],
