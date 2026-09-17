@@ -49,7 +49,7 @@ jobs:
           fi
 
       - name: Validate Ankhorage repository
-        run: bunx @ankhorage/ankh doctor validate .
+        run: BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@__ANKH_DOCTOR_VERSION__ validate .
 
       - name: Run lint
         run: |
