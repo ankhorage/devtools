@@ -22,6 +22,7 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   expect(release).toContain("needs.verify-publication.result == 'success'");
   expect(release).toContain('ref: ${{ needs.release.outputs.release_sha }}');
   expect(release).toContain('npm view "$package_spec" version dist.tarball dist.integrity --json');
+  expect(release).toContain('Array.isArray(raw)&&raw.length===1?raw[0]:raw');
   expect(release).toContain('curl --fail --location --silent --show-error --output "$artifact"');
   expect(release).toContain("const actual='sha512-'");
   expect(release).toContain('npm pack "$package_spec" --pack-destination "$attempt_pack_dir"');
