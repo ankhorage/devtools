@@ -110,24 +110,156 @@ test('generates documentation after versioning and before the release commit', a
   expect(commitIndex).toBeGreaterThan(docsIndex);
 });
 
-test('managed release recovers a canonical versioned commit without another bump', async () => {
+test('managed release synchronizes main before build and recovers a matching historical release', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+  const syncIndex = release.indexOf('Synchronize latest main');
+  const installIndex = release.indexOf('Install dependencies');
+  const buildIndex = release.indexOf('Build package');
+  expect(syncIndex).toBeGreaterThanOrEqual(0);
+  expect(syncIndex).toBeLessThan(installIndex);
+  expect(syncIndex).toBeLessThan(buildIndex);
+  expect(release.match(/git checkout -B main origin\/main/gu)).toHaveLength(1);
 
   expect(release).toContain(
     `find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit`,
   );
-  expect(release).toContain('current_subject="$(git log -1 --pretty=%s)"');
+  expect(release).toContain('current_version="$(node -p "require(\'./package.json\').version")"');
   expect(release).toContain(
-    'if [ "$current_subject" = "chore(release): version packages [skip ci]" ]; then',
+    "git log --format=%H --grep='^chore(release): version packages \\[skip ci\\]
+describe('managed CI Changesets contract', () => {
+  test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
+    const ci = await workflowManagedFiles[0].render?.('.');
+
+    expect(ci).toContain(
+      `      - name: Check changesets
+        if: github.event_name == 'pull_request'
+        run: |
+          if node -e "const p=require('./package.json'); process.exit(p.scripts?.['changeset:status'] ? 0 : 1)"; then
+            ${changesetsPolicy.workflowCommands.status}
+          else
+            echo "No changeset:status script found; skipping."
+          fi`,
+    );
+    expect(changesetsPolicy.packageScripts['changeset:status']).toContain('--since=origin/main');
+  });
+});
+
+describe('managed Renovate workflow', () => {
+  test('pins the Renovate workflow and passes scoped App credentials', async () => {
+    const definition = getRenovateWorkflowDefinition();
+    const rendered = await definition.render?.('.');
+
+    expect(rendered).toMatch(
+      /ankhorage\/renovate\/\.github\/workflows\/changeset\.yml@[0-9a-f]{40}/u,
+    );
+    expect(rendered).toContain("github.event.pull_request.user.login == 'renovate[bot]'");
+    expect(rendered).toContain(
+      "github.event.pull_request.user.login == 'ankhorage-renovate-sync[bot]'",
+    );
+    expect(rendered).toContain('      - labeled');
+    expect(rendered).toContain(
+      'group: renovate-${{ github.repository }}-${{ github.event.pull_request.number }}',
+    );
+    expect(rendered).toContain('cancel-in-progress: true');
+    const template = await readFile(new URL('./files/renovate.yml', import.meta.url), 'utf8');
+    expect(template).toContain(
+      'ankhorage/renovate/.github/workflows/changeset.yml@db48610ed5bc6a1191798b123ce86419571d7bc6',
+    );
+    expect(rendered).toContain('contents: read');
+    expect(rendered).toContain('checks: read');
+    expect(rendered).toContain('issues: read');
+    expect(rendered).toContain('statuses: read');
+    expect(rendered).not.toContain('actions: write');
+    expect(rendered).toContain(
+      'renovate_sync_client_id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}',
+    );
+    expect(rendered).toContain(
+      'renovate_sync_private_key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}',
+    );
+
+    const ci = await workflowManagedFiles[0].render?.('.');
+    expect(ci).toContain('workflow_dispatch:');
+  });
+});
+
+test('preserves a valid Renovate-managed digest across status, dry-run, and sync', async () => {
+  const target = await createWorkflowTarget();
+  const definition = getRenovateWorkflowDefinition();
+  const bootstrap = await definition.render?.(target);
+  if (bootstrap === undefined) throw new Error('Expected the Renovate workflow renderer.');
+
+  const preserved = bootstrap.replace(
+    /(changeset\.yml@)[0-9a-f]{40}/u,
+    `$1${PRESERVED_RENOVATE_DIGEST}`,
   );
-  expect(release).toContain('Recovering the canonical versioned release commit');
-  expect(release).toContain('echo "versioned=true" >> "$GITHUB_OUTPUT"');
-  expect(release).toContain('echo "package_name=$(node -p "require(\'./package.json\').name")"');
-  expect(release).toContain(
-    'echo "package_version=$(node -p "require(\'./package.json\').version")"',
+  const workflowPath = join(target, definition.relativePath);
+  const outdated = preserved.replace('contents: read', 'contents: none');
+  await writeFile(workflowPath, outdated);
+
+  expect(await inspectManagedFiles(target, [definition])).toEqual([
+    { relativePath: definition.relativePath, state: 'outdated' },
+  ]);
+  expect(await syncManagedFiles(target, [definition], { dryRun: true })).toEqual([
+    { relativePath: definition.relativePath, action: 'would-update' },
+  ]);
+  expect(await readFile(workflowPath, 'utf8')).toBe(outdated);
+  expect(await syncManagedFiles(target, [definition], { dryRun: false })).toEqual([
+    { relativePath: definition.relativePath, action: 'updated' },
+  ]);
+  expect(await readFile(workflowPath, 'utf8')).toBe(preserved);
+  expect(await syncManagedFiles(target, [definition], { dryRun: false })).toEqual([
+    { relativePath: definition.relativePath, action: 'unchanged' },
+  ]);
+});
+
+test('rejects mutable and ambiguous Renovate workflow references', async () => {
+  const target = await createWorkflowTarget();
+  const definition = getRenovateWorkflowDefinition();
+  const bootstrap = await definition.render?.(target);
+  if (bootstrap === undefined) throw new Error('Expected the Renovate workflow renderer.');
+  const workflowPath = join(target, definition.relativePath);
+
+  await writeFile(
+    workflowPath,
+    bootstrap.replace(/changeset\.yml@[0-9a-f]{40}/u, 'changeset.yml@main'),
   );
-  expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)"');
+  expect(definition.render?.(target)).rejects.toThrow(
+    'Expected exactly one immutable Renovate digest in the target workflow.',
+  );
+
+  await writeFile(
+    workflowPath,
+    `${bootstrap}    uses: ankhorage/renovate/.github/workflows/changeset.yml@${PRESERVED_RENOVATE_DIGEST}\n`,
+  );
+  expect(definition.render?.(target)).rejects.toThrow(
+    'Expected exactly one immutable Renovate digest in the target workflow.',
+  );
+});
+
+function getRenovateWorkflowDefinition() {
+  const definition = workflowManagedFiles.find(
+    ({ relativePath }) => relativePath === '.github/workflows/renovate.yml',
+  );
+  if (definition === undefined) throw new Error('Missing managed Renovate workflow definition.');
+  return definition;
+}
+
+async function createWorkflowTarget(): Promise<string> {
+  const target = await mkdtemp('/tmp/devtools-workflow-');
+  temporaryDirectories.push(target);
+  await mkdir(join(target, '.github/workflows'), { recursive: true });
+  return target;
+}
+
+const PRESERVED_RENOVATE_DIGEST = 'f'.repeat(40);
+",
+  );
+  expect(release).toContain('git show "${candidate_sha}:package.json"');
+  expect(release).toContain('if [ "$candidate_version" = "$current_version" ]; then');
+  expect(release).toContain('echo "package_version=$current_version" >> "$GITHUB_OUTPUT"');
+  expect(release).toContain('echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
 });
 
