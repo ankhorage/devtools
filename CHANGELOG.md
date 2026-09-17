@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.6
+
+### Patch Changes
+
+- f03987d: Extend managed npm post-publish verification to tolerate edge-local propagation delays and report the exact readiness stage on each retry.
+
 ## 1.15.5
 
 ### Patch Changes
