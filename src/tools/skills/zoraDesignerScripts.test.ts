@@ -185,6 +185,62 @@ describe('zora-designer owner repository discovery', () => {
   });
 });
 
+describe('zora-designer package-driven plugin discovery', () => {
+  it('derives arbitrary ZORA plugin release gates from the consumer dependency', async () => {
+    const target = await createOwnerFixture();
+    await writeJson(join(target, 'package.json'), {
+      name: 'fixture',
+      type: 'module',
+      dependencies: { '@ankhorage/zora-game': '^0.3.1' },
+    });
+    await writeFixturePackage(target, '@ankhorage/zora-game', '0.3.1', {
+      './metadata': './metadata.js',
+      './package.json': './package.json',
+    });
+    await writeFile(
+      join(target, 'node_modules/@ankhorage/zora-game/metadata.js'),
+      `export const ZORA_PLUGIN_METADATA = {
+  packageName: '@ankhorage/zora-game',
+  componentMeta: {
+    GameField: { name: 'GameField', directManifestNode: true, allowedChildren: [], props: {} },
+  },
+  placements: [{ child: 'GameField', parents: ['View'] }],
+};\n`,
+    );
+
+    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+    expect(result.exitCode).toBe(0);
+    const output = JSON.parse(result.stdout) as {
+      components: string[];
+      versions: { plugins: Record<string, string> };
+    };
+    expect(output.components).toContain('GameField');
+    expect(output.versions.plugins['@ankhorage/zora-game']).toBe('0.3.1');
+  });
+
+  it('rejects an installed ZORA plugin below the consumer-declared lower bound', async () => {
+    const target = await createOwnerFixture();
+    await writeJson(join(target, 'package.json'), {
+      name: 'fixture',
+      type: 'module',
+      dependencies: { '@ankhorage/zora-game': '^0.4.0' },
+    });
+    await writeFixturePackage(target, '@ankhorage/zora-game', '0.3.9', {
+      './metadata': './metadata.js',
+      './package.json': './package.json',
+    });
+    await writeFile(
+      join(target, 'node_modules/@ankhorage/zora-game/metadata.js'),
+      `export const ZORA_PLUGIN_METADATA = { packageName: '@ankhorage/zora-game', componentMeta: {} };\n`,
+    );
+
+    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain('@ankhorage/zora-game >=0.4.0');
+    expect(result.stderr).toContain('is outdated');
+  });
+});
+
 describe('zora-designer evidence and artifact calculation', () => {
   it('keeps URL/image-series evidence limits and serializes deterministic weighted results', async () => {
     const target = await createTarget('fixture');
