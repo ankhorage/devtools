@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.15.7
+
+### Patch Changes
+
+- d796f76: Fail managed releases with an actionable Renovate Sync App repository-installation diagnostic when
+  the scoped release token cannot be created.
+- bd564e4: Verify newly published npm artifacts on a fresh runner, then finalize the exact release commit and trigger rollout only after public artifact verification succeeds.
+
 ## 1.15.6
 
 ### Patch Changes
