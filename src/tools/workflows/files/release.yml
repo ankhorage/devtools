@@ -283,7 +283,7 @@ jobs:
             };
             if (
               release.name !== '@ankhorage/devtools' ||
-              !/^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$/.test(release.version)
+              !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(release.version)
             ) {
               throw new Error('Changesets must report one exact published Devtools version.');
             }
