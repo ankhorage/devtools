@@ -138,6 +138,54 @@ describe('zora-designer owner repository discovery', () => {
     );
   });
 
+  it('reports interaction choices from their released owners', async () => {
+    const target = await createOwnerFixture();
+    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+    expect(result.exitCode).toBe(0);
+    const output = JSON.parse(result.stdout) as {
+      appCategories: string[];
+      categoryPresets: Record<string, { category: string; density: string }>;
+      events: { component: string; description: string; eventType: string; label: string }[];
+      harmonyIds: string[];
+      harmonies: { description: string; id: string; label: string }[];
+      navigatorTypes: string[];
+    };
+    expect(output.appCategories).toEqual(['business_productivity']);
+    expect(output.categoryPresets.business_productivity).toMatchObject({
+      category: 'business_productivity',
+      density: 'compact',
+    });
+    expect(output.harmonyIds).toEqual(['monochromatic', 'complementary']);
+    expect(output.harmonies).toEqual([
+      { id: 'monochromatic', label: 'Monochromatic', description: 'One hue.' },
+      { id: 'complementary', label: 'Complementary', description: 'Opposing hues.' },
+    ]);
+    expect(output.navigatorTypes).toEqual(['stack', 'tabs', 'drawer']);
+    expect(output.events).toContainEqual({
+      component: 'Text',
+      eventType: 'text.press',
+      label: 'Press',
+      description: 'Text was pressed.',
+    });
+  });
+
+  it('uses the current package public export when the target is the owner repository', async () => {
+    const target = await createOwnerFixture();
+    await writeJson(join(target, 'package.json'), {
+      name: '@ankhorage/templates',
+      version: OWNER_RELEASES.templates.minimumVersion,
+      type: 'module',
+      exports: { '.': './index.js', './package.json': './package.json' },
+    });
+    await writeFile(join(target, 'index.js'), TEMPLATES_FIXTURE_SOURCE);
+
+    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain(`"templates": "${OWNER_RELEASES.templates.minimumVersion}"`);
+  });
+});
+
+describe('zora-designer package-driven plugin discovery', () => {
   it('derives arbitrary ZORA plugin release gates from the consumer dependency', async () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
@@ -192,51 +240,6 @@ describe('zora-designer owner repository discovery', () => {
     expect(result.stderr).toContain('is outdated');
   });
 
-  it('reports interaction choices from their released owners', async () => {
-    const target = await createOwnerFixture();
-    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
-    expect(result.exitCode).toBe(0);
-    const output = JSON.parse(result.stdout) as {
-      appCategories: string[];
-      categoryPresets: Record<string, { category: string; density: string }>;
-      events: { component: string; description: string; eventType: string; label: string }[];
-      harmonyIds: string[];
-      harmonies: { description: string; id: string; label: string }[];
-      navigatorTypes: string[];
-    };
-    expect(output.appCategories).toEqual(['business_productivity']);
-    expect(output.categoryPresets.business_productivity).toMatchObject({
-      category: 'business_productivity',
-      density: 'compact',
-    });
-    expect(output.harmonyIds).toEqual(['monochromatic', 'complementary']);
-    expect(output.harmonies).toEqual([
-      { id: 'monochromatic', label: 'Monochromatic', description: 'One hue.' },
-      { id: 'complementary', label: 'Complementary', description: 'Opposing hues.' },
-    ]);
-    expect(output.navigatorTypes).toEqual(['stack', 'tabs', 'drawer']);
-    expect(output.events).toContainEqual({
-      component: 'Text',
-      eventType: 'text.press',
-      label: 'Press',
-      description: 'Text was pressed.',
-    });
-  });
-
-  it('uses the current package public export when the target is the owner repository', async () => {
-    const target = await createOwnerFixture();
-    await writeJson(join(target, 'package.json'), {
-      name: '@ankhorage/templates',
-      version: OWNER_RELEASES.templates.minimumVersion,
-      type: 'module',
-      exports: { '.': './index.js', './package.json': './package.json' },
-    });
-    await writeFile(join(target, 'index.js'), TEMPLATES_FIXTURE_SOURCE);
-
-    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
-    expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain(`"templates": "${OWNER_RELEASES.templates.minimumVersion}"`);
-  });
 });
 
 describe('zora-designer evidence and artifact calculation', () => {

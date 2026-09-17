@@ -256,7 +256,7 @@ function resolvePluginMinimumVersion(
   packageName: string,
 ): string {
   if (targetManifest.name === packageName) {
-    const version = targetManifest.version;
+    const { version } = targetManifest;
     if (typeof version === 'string' && parseVersion(version)[0] >= 0) return version;
     throw new Error(`ZORA plugin owner package ${packageName} must declare a semantic version.`);
   }
