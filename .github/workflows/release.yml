@@ -79,7 +79,16 @@ jobs:
           git checkout -B main origin/main
 
           if [ -z "$(find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit)" ]; then
-            echo "versioned=false" >> "$GITHUB_OUTPUT"
+            current_subject="$(git log -1 --pretty=%s)"
+            if [ "$current_subject" = "chore(release): version packages [skip ci]" ]; then
+              echo "Recovering the canonical versioned release commit without another version bump."
+              echo "versioned=true" >> "$GITHUB_OUTPUT"
+              echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
+              echo "package_version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+              echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            else
+              echo "versioned=false" >> "$GITHUB_OUTPUT"
+            fi
             exit 0
           fi
 

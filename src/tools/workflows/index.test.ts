@@ -110,12 +110,24 @@ test('generates documentation after versioning and before the release commit', a
   expect(commitIndex).toBeGreaterThan(docsIndex);
 });
 
-test('managed release skips direct versioning without unreleased changesets', async () => {
+test('managed release recovers a canonical versioned commit without another bump', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
   expect(release).toContain(
     `find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit`,
   );
+  expect(release).toContain('current_subject="$(git log -1 --pretty=%s)"');
+  expect(release).toContain(
+    'if [ "$current_subject" = "chore(release): version packages [skip ci]" ]; then',
+  );
+  expect(release).toContain('Recovering the canonical versioned release commit');
+  expect(release).toContain('echo "versioned=true" >> "$GITHUB_OUTPUT"');
+  expect(release).toContain('echo "package_name=$(node -p "require(\'./package.json\').name")"');
+  expect(release).toContain(
+    'echo "package_version=$(node -p "require(\'./package.json\').version")"',
+  );
+  expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)"');
   expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
 });
 
