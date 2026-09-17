@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.15.9
+
+### Patch Changes
+
+- 33ef955: Synchronize managed release jobs to latest main before build output exists and recover the newest
+  canonical release commit matching the current package version when later commits have advanced main.
+
 ## 1.15.8
 
 ### Patch Changes
