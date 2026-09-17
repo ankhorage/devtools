@@ -73,6 +73,7 @@ describe('managed workflows', () => {
 
 test('fails release with an actionable diagnostic when the scoped App token is unavailable', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
   expect(release).toContain('continue-on-error: true');
   expect(release).toContain("if: steps.release-token.outcome == 'failure'");
