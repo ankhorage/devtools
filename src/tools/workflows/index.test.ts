@@ -124,7 +124,9 @@ test('managed release recovers a canonical versioned commit without another bump
   expect(release).toContain('Recovering the canonical versioned release commit');
   expect(release).toContain('echo "versioned=true" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('echo "package_name=$(node -p "require(\'./package.json\').name")"');
-  expect(release).toContain('echo "package_version=$(node -p "require(\'./package.json\').version")"');
+  expect(release).toContain(
+    'echo "package_version=$(node -p "require(\'./package.json\').version")"',
+  );
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)"');
   expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
 });
