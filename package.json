@@ -49,14 +49,15 @@
     "renovateSyncProtocol": 1
   },
   "keywords": [
-    "typescript",
+    "ankhorage",
+    "developer-tools",
     "eslint",
-    "prettier",
-    "knip",
     "github-actions",
-    "vscode",
+    "knip",
+    "prettier",
     "repository-sync",
-    "developer-tools"
+    "typescript",
+    "vscode"
   ],
   "bin": {
     "ankhorage-changeset": "./dist/cli/bin/changeset.js",
