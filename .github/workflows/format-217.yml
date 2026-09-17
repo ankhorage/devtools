@@ -1,0 +1,31 @@
+name: Format 217
+
+on:
+  push:
+    branches:
+      - fix/217-zora-plugin-discovery
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/217-zora-plugin-discovery
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - run: bun install --frozen-lockfile
+      - run: bun x prettier --write src/tools/skills/zoraDesignerScripts.test.ts
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/tools/skills/zoraDesignerScripts.test.ts
+          if ! git diff --cached --quiet; then
+            git commit -m "style: format ZORA plugin discovery tests"
+            git push origin HEAD:fix/217-zora-plugin-discovery
+          fi
