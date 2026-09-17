@@ -25,6 +25,12 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   expect(release).toContain('curl --fail --location --silent --show-error --output "$artifact"');
   expect(release).toContain("const actual='sha512-'");
   expect(release).toContain('npm pack "$package_spec" --pack-destination "$pack_dir"');
-  expect(release).toContain('max_attempts=30');
+  expect(release).toContain('max_attempts=60');
   expect(release).toContain('retry_seconds=30');
+  expect(release).toContain('last_stage="registry-metadata"');
+  expect(release).toContain('last_stage="tarball-download"');
+  expect(release).toContain('last_stage="integrity"');
+  expect(release).toContain('last_stage="npm-pack"');
+  expect(release).toContain('Published npm artifact not ready at stage: ${last_stage}.');
+  expect(release).toContain('attempt_pack_dir="$pack_dir/attempt-${attempt}"');
 });
