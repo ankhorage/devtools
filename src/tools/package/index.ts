@@ -2,10 +2,9 @@
  * Synchronize the consumer `package.json` contract owned by `@ankhorage/devtools`.
  *
  * Package synchronization is merge-aware. It installs the current `@ankhorage/devtools` version
- * as a development dependency for normal consumers, while `@ankhorage/ankh` keeps devtools as a
- * runtime dependency because the CLI loads it as a bundled core provider. Individually installed
- * toolchain packages that devtools now owns are removed, and the canonical `lint`, `lint:fix`,
- * `format`, `format:check`, and `knip:check` scripts are written.
+ * as a development dependency for every consumer, including `@ankhorage/ankh`. Individually
+ * installed toolchain packages that devtools now owns are removed, and the canonical `lint`,
+ * `lint:fix`, `format`, `format:check`, and `knip:check` scripts are written.
  * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
  *
  * The Bun runtime policy is shared by every repository, including devtools itself. Devtools skips
@@ -28,7 +27,6 @@ import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managed
 
 const PACKAGE_PATH = 'package.json';
 const DEVTOOLS_PACKAGE_NAME = '@ankhorage/devtools';
-const ANKH_PACKAGE_NAME = '@ankhorage/ankh';
 const BUN_TYPES_PACKAGE_NAME = '@types/bun';
 const CHANGESETS_CONFIG_PATH = '.changeset/config.json';
 
@@ -63,6 +61,7 @@ interface PackageManifestSnapshot {
   readonly manifest: Record<string, unknown>;
 }
 
+/*** Inspect whether the Devtools-owned package manifest contract is current. */
 export async function inspectPackageManifest(
   targetDirectory: string,
   devtoolsVersion: string,
@@ -84,6 +83,7 @@ export async function inspectPackageManifest(
   };
 }
 
+/*** Synchronize the Devtools-owned package manifest fields. */
 export async function syncPackageManifest(
   targetDirectory: string,
   devtoolsVersion: string,
@@ -124,6 +124,7 @@ export async function syncPackageManifest(
   };
 }
 
+/*** Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy. */
 export function applyManagedPackageContract(
   manifest: Record<string, unknown>,
   devtoolsVersion: string,
@@ -145,7 +146,7 @@ export function applyManagedPackageContract(
   delete dependencies[changesetsPolicy.packageName];
   delete devDependencies[changesetsPolicy.packageName];
 
-  applyDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion);
+  applyDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion);
 
   return applyBunRuntimePolicy(
     {
@@ -158,6 +159,7 @@ export function applyManagedPackageContract(
   );
 }
 
+/*** Check whether the Devtools-owned package manifest fields match current policy. */
 export function isManagedPackageContractCurrent(
   manifest: Record<string, unknown>,
   devtoolsVersion: string,
@@ -181,10 +183,11 @@ export function isManagedPackageContractCurrent(
     dependencies[changesetsPolicy.packageName] === undefined &&
     devDependencies[changesetsPolicy.packageName] === undefined &&
     hasCurrentChangesetsScripts(scripts, changesetsEnabled) &&
-    hasCurrentDevtoolsDependencyPlacement(manifest, dependencies, devDependencies, devtoolsVersion)
+    hasCurrentDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion)
   );
 }
 
+/*** Read the current Devtools package version used for consumer synchronization. */
 export function readCurrentDevtoolsVersion(): string {
   const parsed = JSON.parse(
     readFileSync(new URL('../../../package.json', import.meta.url), 'utf8'),
@@ -195,6 +198,7 @@ export function readCurrentDevtoolsVersion(): string {
   return parsed.version;
 }
 
+/*** Read one package manifest snapshot and Changesets applicability state. */
 async function readPackageManifest(targetDirectory: string): Promise<PackageManifestSnapshot> {
   const changesetsConfigExists = existsSync(resolve(targetDirectory, CHANGESETS_CONFIG_PATH));
   try {
@@ -212,6 +216,7 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
   }
 }
 
+/*** Check the Bun package manager and Bun type dependency contract. */
 function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean {
   const devDependencies = toRecord(manifest.devDependencies);
   return (
@@ -220,43 +225,29 @@ function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean 
   );
 }
 
+/*** Place Devtools in development dependencies for every consuming repository. */
 function applyDevtoolsDependencyPlacement(
-  manifest: Record<string, unknown>,
   dependencies: Record<string, unknown>,
   devDependencies: Record<string, unknown>,
   devtoolsVersion: string,
 ): void {
-  const versionRange = `^${devtoolsVersion}`;
-  if (manifest.name === ANKH_PACKAGE_NAME) {
-    dependencies[DEVTOOLS_PACKAGE_NAME] = versionRange;
-    delete devDependencies[DEVTOOLS_PACKAGE_NAME];
-    return;
-  }
-
-  devDependencies[DEVTOOLS_PACKAGE_NAME] = versionRange;
+  devDependencies[DEVTOOLS_PACKAGE_NAME] = `^${devtoolsVersion}`;
   delete dependencies[DEVTOOLS_PACKAGE_NAME];
 }
 
+/*** Check that Devtools is development-only at the current synchronized version. */
 function hasCurrentDevtoolsDependencyPlacement(
-  manifest: Record<string, unknown>,
   dependencies: Record<string, unknown>,
   devDependencies: Record<string, unknown>,
   devtoolsVersion: string,
 ): boolean {
-  const versionRange = `^${devtoolsVersion}`;
-  if (manifest.name === ANKH_PACKAGE_NAME) {
-    return (
-      dependencies[DEVTOOLS_PACKAGE_NAME] === versionRange &&
-      devDependencies[DEVTOOLS_PACKAGE_NAME] === undefined
-    );
-  }
-
   return (
-    devDependencies[DEVTOOLS_PACKAGE_NAME] === versionRange &&
+    devDependencies[DEVTOOLS_PACKAGE_NAME] === `^${devtoolsVersion}` &&
     dependencies[DEVTOOLS_PACKAGE_NAME] === undefined
   );
 }
 
+/*** Remove direct development dependencies owned by the Devtools package. */
 function removeOwnedDependencies(
   devDependencies: Record<string, unknown>,
 ): Record<string, unknown> {
@@ -266,6 +257,7 @@ function removeOwnedDependencies(
   return devDependencies;
 }
 
+/*** Preserve an existing dependencies object or omit a newly empty one. */
 function normalizedDependencies(
   manifest: Record<string, unknown>,
   dependencies: Record<string, unknown>,
@@ -275,6 +267,7 @@ function normalizedDependencies(
     : { dependencies };
 }
 
+/*** Check the canonical development-tool scripts. */
 function hasStandardScripts(scripts: Record<string, unknown>): boolean {
   return (
     scripts.knip === undefined &&
@@ -282,6 +275,7 @@ function hasStandardScripts(scripts: Record<string, unknown>): boolean {
   );
 }
 
+/*** Check Changesets scripts when the repository participates in Changesets. */
 function hasCurrentChangesetsScripts(
   scripts: Record<string, unknown>,
   changesetsEnabled: boolean,
@@ -294,6 +288,7 @@ function hasCurrentChangesetsScripts(
   );
 }
 
+/*** Determine whether the repository participates in Changesets synchronization. */
 function isChangesetsEnabled(
   scripts: Record<string, unknown>,
   changesetsConfigExists: boolean,
@@ -306,18 +301,22 @@ function isChangesetsEnabled(
   );
 }
 
+/*** Serialize a package manifest using the repository formatting contract. */
 function serializePackageManifest(manifest: Record<string, unknown>): string {
   return `${JSON.stringify(manifest, null, 2)}\n`;
 }
 
+/*** Copy a JSON-like value to a mutable record or return an empty record. */
 function toRecord(value: unknown): Record<string, unknown> {
   return isRecord(value) ? { ...value } : {};
 }
 
+/*** Narrow an unknown JSON-like value to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/*** Narrow an unknown error to a Node error carrying an error code. */
 function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }

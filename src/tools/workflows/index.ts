@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
+import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
@@ -29,6 +30,7 @@ export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
   },
 ];
 
+/*** Create a managed workflow definition rendered from current shared runtime policies. */
 function createWorkflowDefinition(relativePath: string, sourcePath: string): ManagedFileDefinition {
   const sourceUrl = new URL(sourcePath, import.meta.url);
   return {
@@ -37,6 +39,7 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
       await renderWorkflowAsync(sourceUrl, {
         apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         bunVersion: bunRuntimePolicy.version,
+        doctorVersion: readCurrentDoctorVersion(),
         nodeVersion: nodeRuntimePolicy.setupVersion,
       }),
   };
@@ -51,6 +54,7 @@ function createRenovateWorkflowDefinition(): ManagedFileDefinition {
       await renderRenovateWorkflowAsync(sourceUrl, targetDirectory, {
         apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         bunVersion: bunRuntimePolicy.version,
+        doctorVersion: readCurrentDoctorVersion(),
         nodeVersion: nodeRuntimePolicy.setupVersion,
       }),
   };

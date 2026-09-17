@@ -5,6 +5,7 @@ import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
 import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
+import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { findDevtoolsCommandByPath } from './commands.js';
 import { parseRepositoryArguments, runRepositoryCommand } from './runRepositoryCommand.js';
 
@@ -26,8 +27,9 @@ test('syncs only the selected concern and aggregate status reports drift', async
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
     `bun-version: '${bunRuntimePolicy.version}'`,
   );
+  const doctorVersion = readCurrentDoctorVersion();
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
-    'bunx @ankhorage/ankh doctor validate .',
+    `BUN_INSTALL_CACHE_DIR="\${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@${doctorVersion} validate .`,
   );
   expect(await Bun.file(join(target, '.vscode/settings.json')).exists()).toBe(false);
 
