@@ -136,6 +136,48 @@ jobs:
             git tag "v${package_version}"
           fi
 
+      - name: Verify published npm artifact
+        if: steps.release.outputs.versioned == 'true'
+        env:
+          PUBLISHED_PACKAGE_NAME: ${{ steps.release.outputs.package_name }}
+          PUBLISHED_PACKAGE_VERSION: ${{ steps.release.outputs.package_version }}
+        run: |
+          set -euo pipefail
+          package_spec="${PUBLISHED_PACKAGE_NAME}@${PUBLISHED_PACKAGE_VERSION}"
+          registry_evidence="${RUNNER_TEMP}/npm-publish-verification.json"
+          artifact="${RUNNER_TEMP}/npm-publish-verification.tgz"
+          pack_dir="${RUNNER_TEMP}/npm-pack-verification"
+          max_attempts=30
+          retry_seconds=30
+          mkdir -p "$pack_dir"
+
+          for attempt in $(seq 1 "$max_attempts"); do
+            echo "Verifying ${package_spec} on npm (attempt ${attempt}/${max_attempts})..."
+            if npm view "$package_spec" version dist.tarball dist.integrity --json > "$registry_evidence"; then
+              resolved_version="$(node -e "const p=require(process.argv[1]); process.stdout.write(p.version ?? '')" "$registry_evidence")"
+              tarball="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.tarball'] ?? '')" "$registry_evidence")"
+              integrity="$(node -e "const p=require(process.argv[1]); process.stdout.write(p['dist.integrity'] ?? '')" "$registry_evidence")"
+
+              if [ "$resolved_version" = "$PUBLISHED_PACKAGE_VERSION" ] && [ -n "$tarball" ] && [ -n "$integrity" ]; then
+                if curl --fail --location --silent --show-error --output "$artifact" "$tarball"; then
+                  if EXPECTED_INTEGRITY="$integrity" ARTIFACT="$artifact" node -e "const { createHash }=require('node:crypto'); const { readFileSync }=require('node:fs'); const actual='sha512-'+createHash('sha512').update(readFileSync(process.env.ARTIFACT)).digest('base64'); if(actual!==process.env.EXPECTED_INTEGRITY){console.error('Downloaded npm tarball integrity mismatch.'); process.exit(1)}"; then
+                    npm pack "$package_spec" --pack-destination "$pack_dir" >/dev/null
+                    echo "Verified ${package_spec}: metadata, integrity, tarball download, and npm pack are available."
+                    exit 0
+                  fi
+                fi
+              fi
+            fi
+
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              sleep "$retry_seconds"
+            fi
+          done
+
+          echo "Published npm artifact did not become retrievable after ${max_attempts} attempts."
+          cat "$registry_evidence" 2>/dev/null || true
+          exit 1
+
       - name: Finalize Changesets v3 tags and GitHub releases
         if: hashFiles('.changeset/config.json') != ''
         env:
