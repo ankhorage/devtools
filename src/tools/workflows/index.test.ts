@@ -52,6 +52,21 @@ describe('managed workflows', () => {
     expect(release).not.toContain('bunx changeset');
   });
 
+  test('fails release with an actionable diagnostic when the scoped App token is unavailable', async () => {
+    const release = await workflowManagedFiles[1].render?.('.');
+
+    expect(release).toContain('continue-on-error: true');
+    expect(release).toContain("if: steps.release-token.outcome == 'failure'");
+    expect(release).toContain('Renovate Sync App repository access required');
+    expect(release).toContain('ankhorage-renovate-sync GitHub App is installed and authorized');
+    expect(release).toContain('https://github.com/ankhorage/renovate/issues/115');
+    expect(release).toContain('exit 1');
+    expect(release).toContain('token: ${{ steps.release-token.outputs.token }}');
+    expect(release.indexOf('Diagnose unavailable scoped release token')).toBeLessThan(
+      release.indexOf('Checkout repository'),
+    );
+  });
+
   test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
