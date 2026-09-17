@@ -28,16 +28,20 @@ test('preserves custom Prettier ignores and appends generated artifacts once', a
   expect(second.find((result) => result.relativePath === '.prettierignore')?.action).toBe(
     'unchanged',
   );
-  expect((await inspectManagedFiles(target, prettierManagedFiles)).find(
-    (status) => status.relativePath === '.prettierignore',
-  )?.state).toBe('current');
+  expect(
+    (await inspectManagedFiles(target, prettierManagedFiles)).find(
+      (status) => status.relativePath === '.prettierignore',
+    )?.state,
+  ).toBe('current');
 });
 
 test('creates the canonical Prettier ignore file when it is missing', async () => {
   const target = await createTarget();
 
   const results = await syncManagedFiles(target, prettierManagedFiles, { dryRun: false });
-  expect(results.find((result) => result.relativePath === '.prettierignore')?.action).toBe('created');
+  expect(results.find((result) => result.relativePath === '.prettierignore')?.action).toBe(
+    'created',
+  );
   expect(await readFile(join(target, '.prettierignore'), 'utf8')).toBe(
     'node_modules\ndist\nREADME.md\nparadox/\n',
   );
