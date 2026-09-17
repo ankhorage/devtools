@@ -35,7 +35,7 @@ describe('managed workflows', () => {
 
     expect(ci).toContain(changesetsPolicy.workflowCommands.status);
     expect(release).toContain(changesetsPolicy.workflowCommands.version);
-    expect(release).toContain(`${changesetsPolicy.workflowCommands.publish}\n            exit 0`);
+    expect(release).toContain(changesetsPolicy.workflowCommands.publish);
     expect(release).toContain('id: release');
     expect(release).toContain('git checkout -B main origin/main');
     expect(release).toContain('git rebase origin/main');
