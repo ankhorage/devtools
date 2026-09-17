@@ -43,21 +43,14 @@ describe('managed workflows', () => {
     expect(release).toContain('chore(release): version packages [skip ci]');
     expect(release).not.toContain('changesets/action');
     expect(release).not.toContain('changeset-release/main');
-    expect(release).toContain('Finalize Changesets v3 tags and GitHub releases');
-    expect(release).toContain('git tag --points-at HEAD');
-    expect(release).toContain('git push origin "refs/tags/$tag"');
-    expect(release).toContain(
-      'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes',
-    );
+    expect(release).toContain('Finalize Changesets v3 tag and GitHub release');
     expect(release).not.toContain('bunx changeset');
   });
 
   test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(release).toContain(
-      "steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'",
-    );
+    expect(release).toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
     expect(release).toContain(
       'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
     );

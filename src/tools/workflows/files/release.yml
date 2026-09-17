@@ -16,6 +16,11 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      versioned: ${{ steps.release.outputs.versioned }}
+      package_name: ${{ steps.release.outputs.package_name }}
+      package_version: ${{ steps.release.outputs.package_version }}
+      release_sha: ${{ steps.release.outputs.release_sha }}
 
     steps:
       - name: Create the scoped release token
@@ -107,6 +112,7 @@ jobs:
             echo "versioned=true" >> "$GITHUB_OUTPUT"
             echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
             echo "package_version=$after_version" >> "$GITHUB_OUTPUT"
+            echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Publish unpublished packages
@@ -132,15 +138,29 @@ jobs:
             __ANKH_APM_RELEASE_COMMAND__ validate . --allow-owner-code --artifact "$artifact"
             npm publish "$artifact" --ignore-scripts
           fi
-          if ! git rev-parse -q --verify "refs/tags/v${package_version}" >/dev/null; then
-            git tag "v${package_version}"
-          fi
+      - name: Skip release tooling
+        if: hashFiles('.changeset/config.json') == ''
+        run: echo "No Changesets config found; skipping versioning and publishing."
 
-      - name: Verify published npm artifact
-        if: steps.release.outputs.versioned == 'true'
+  verify-publication:
+    needs: release
+    if: needs.release.outputs.versioned == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node for npm verification
+        uses: actions/setup-node@v4
+        with:
+          node-version: '__ANKH_NODE_VERSION__'
+          registry-url: https://registry.npmjs.org
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Verify published npm artifact from a fresh runner
         env:
-          PUBLISHED_PACKAGE_NAME: ${{ steps.release.outputs.package_name }}
-          PUBLISHED_PACKAGE_VERSION: ${{ steps.release.outputs.package_version }}
+          PUBLISHED_PACKAGE_NAME: ${{ needs.release.outputs.package_name }}
+          PUBLISHED_PACKAGE_VERSION: ${{ needs.release.outputs.package_version }}
         run: |
           set -euo pipefail
           package_spec="${PUBLISHED_PACKAGE_NAME}@${PUBLISHED_PACKAGE_VERSION}"
@@ -188,24 +208,58 @@ jobs:
           cat "$registry_evidence" 2>/dev/null || true
           exit 1
 
-      - name: Finalize Changesets v3 tags and GitHub releases
-        if: hashFiles('.changeset/config.json') != ''
+  finalize:
+    needs:
+      - release
+      - verify-publication
+    if: needs.release.outputs.versioned == 'true' && needs.verify-publication.result == 'success'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create the scoped release token
+        id: release-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}
+          private-key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}
+          owner: ankhorage
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+
+      - name: Checkout exact release commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.release.outputs.release_sha }}
+          token: ${{ steps.release-token.outputs.token }}
+
+      - name: Finalize Changesets v3 tag and GitHub release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.release-token.outputs.token }}
+          PUBLISHED_PACKAGE_VERSION: ${{ needs.release.outputs.package_version }}
+          RELEASE_SHA: ${{ needs.release.outputs.release_sha }}
         run: |
-          git tag --points-at HEAD | while IFS= read -r tag; do
-            if [ -z "$tag" ]; then
-              continue
+          set -euo pipefail
+          tag="v${PUBLISHED_PACKAGE_VERSION}"
+          remote_sha="$(git ls-remote --tags origin "refs/tags/$tag" | cut -f1)"
+
+          if [ -n "$remote_sha" ]; then
+            if [ "$remote_sha" != "$RELEASE_SHA" ]; then
+              echo "Existing tag $tag points to $remote_sha, expected $RELEASE_SHA."
+              exit 1
             fi
+          else
+            git tag "$tag" "$RELEASE_SHA"
             git push origin "refs/tags/$tag"
-            if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-              gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes
-            fi
-          done
+          fi
+
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"
+          fi
 
       - name: Create the scoped rollout token
         id: rollout-token
-        if: steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'
+        if: needs.release.outputs.package_name == '@ankhorage/devtools'
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}
@@ -215,11 +269,11 @@ jobs:
           permission-contents: write
 
       - name: Trigger the Devtools consumer rollout
-        if: steps.release.outputs.versioned == 'true' && steps.release.outputs.package_name == '@ankhorage/devtools'
+        if: needs.release.outputs.package_name == '@ankhorage/devtools'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
-          PUBLISHED_PACKAGE_NAME: ${{ steps.release.outputs.package_name }}
-          PUBLISHED_PACKAGE_VERSION: ${{ steps.release.outputs.package_version }}
+          PUBLISHED_PACKAGE_NAME: ${{ needs.release.outputs.package_name }}
+          PUBLISHED_PACKAGE_VERSION: ${{ needs.release.outputs.package_version }}
         with:
           github-token: ${{ steps.rollout-token.outputs.token }}
           script: |
@@ -240,7 +294,3 @@ jobs:
               event_type: 'devtools-release',
               client_payload: { version: release.version },
             });
-
-      - name: Skip release tooling
-        if: hashFiles('.changeset/config.json') == ''
-        run: echo "No Changesets config found; skipping versioning and publishing."
