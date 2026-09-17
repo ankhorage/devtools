@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.15.8
+
+### Patch Changes
+
+- 840790a: Diagnose first-publish npm scope authorization failures and document the one-time publishing
+  credential bootstrap for new Ankhorage packages.
+- 7d581a2: Recover an already-versioned canonical release commit on workflow rerun so publication verification,
+  tagging, and GitHub release finalization complete without another version bump.
+- f384f43: Normalize npm view JSON that may be returned either as one object or as a single-element array during post-publish artifact verification.
+
 ## 1.15.7
 
 ### Patch Changes
