@@ -239,7 +239,6 @@ describe('zora-designer package-driven plugin discovery', () => {
     expect(result.stderr).toContain('@ankhorage/zora-game >=0.4.0');
     expect(result.stderr).toContain('is outdated');
   });
-
 });
 
 describe('zora-designer evidence and artifact calculation', () => {
