@@ -147,7 +147,7 @@ jobs:
           registry_evidence="${RUNNER_TEMP}/npm-publish-verification.json"
           artifact="${RUNNER_TEMP}/npm-publish-verification.tgz"
           pack_dir="${RUNNER_TEMP}/npm-pack-verification"
-          max_attempts=30
+          max_attempts=60
           retry_seconds=30
           mkdir -p "$pack_dir"
 
