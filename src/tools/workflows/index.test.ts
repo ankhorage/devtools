@@ -80,6 +80,21 @@ test('fails release with an actionable diagnostic when the scoped App token is u
   );
 });
 
+test('diagnoses npm scope authorization when an initial package publish fails', async () => {
+  const release = await workflowManagedFiles[1].render?.('.');
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+  expect(release).toContain('package_absent=false');
+  expect(release).toContain('npm view "$package_name" version --json > "$registry_evidence"');
+  expect(release).toContain("p.error?.code !== 'E404'");
+  expect(release).toContain(`if ! ${changesetsPolicy.workflowCommands.publish}; then`);
+  expect(release).toContain('npm scope publish access required');
+  expect(release).toContain('Read and write (publish and stage) access to the @ankhorage scope');
+  expect(release).toContain('The already-versioned release commit on main is reusable');
+  expect(release).toContain('do not create another version bump');
+  expect(release).toContain('https://github.com/ankhorage/devtools/issues/225');
+});
+
 test('generates documentation after versioning and before the release commit', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
