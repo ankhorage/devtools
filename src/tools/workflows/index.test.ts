@@ -126,8 +126,11 @@ test('managed release synchronizes main before build and recovers a matching his
     `find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit`,
   );
   expect(release).toContain('current_version="$(node -p "require(\'./package.json\').version")"');
-  expect(release).toContain('git log --format=%H --grep=');
-  expect(release).toContain('chore(release): version packages');
+  expect(release).toContain('for candidate_sha in $(git rev-list HEAD); do');
+  expect(release).toContain('candidate_subject="$(git show -s --format=%s "$candidate_sha")"');
+  expect(release).toContain(
+    'if [ "$candidate_subject" != "chore(release): version packages [skip ci]" ]; then',
+  );
   expect(release).toContain('git show "${candidate_sha}:package.json"');
   expect(release).toContain('if [ "$candidate_version" = "$current_version" ]; then');
   expect(release).toContain('echo "package_version=$current_version" >> "$GITHUB_OUTPUT"');
