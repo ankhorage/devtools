@@ -46,6 +46,11 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.release-token.outputs.token }}
 
+      - name: Synchronize latest main
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -75,23 +80,32 @@ jobs:
         id: release
         if: hashFiles('.changeset/config.json') != ''
         run: |
-          git fetch origin main
-          git checkout -B main origin/main
-
           if [ -z "$(find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit)" ]; then
-            current_subject="$(git log -1 --pretty=%s)"
-            if [ "$current_subject" = "chore(release): version packages [skip ci]" ]; then
-              echo "Recovering the canonical versioned release commit without another version bump."
+            current_version="$(node -p "require('./package.json').version")"
+            release_sha=""
+            for candidate_sha in $(git rev-list HEAD); do
+              candidate_subject="$(git show -s --format=%s "$candidate_sha")"
+              if [ "$candidate_subject" != "chore(release): version packages [skip ci]" ]; then
+                continue
+              fi
+              candidate_version="$(git show "${candidate_sha}:package.json" | node -e "let s=''; process.stdin.on('data',(d)=>s+=d); process.stdin.on('end',()=>process.stdout.write(JSON.parse(s).version ?? ''))")"
+              if [ "$candidate_version" = "$current_version" ]; then
+                release_sha="$candidate_sha"
+                break
+              fi
+            done
+
+            if [ -n "$release_sha" ]; then
+              echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
               echo "versioned=true" >> "$GITHUB_OUTPUT"
               echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
-              echo "package_version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
-              echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+              echo "package_version=$current_version" >> "$GITHUB_OUTPUT"
+              echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"
             else
               echo "versioned=false" >> "$GITHUB_OUTPUT"
             fi
             exit 0
           fi
-
           before_version="$(node -p "require('./package.json').version")"
           bun run version-packages
           if node -e "const p=require('./package.json'); process.exit(p.ankh?.apm === undefined ? 1 : 0)"; then

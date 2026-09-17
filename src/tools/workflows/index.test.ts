@@ -110,24 +110,31 @@ test('generates documentation after versioning and before the release commit', a
   expect(commitIndex).toBeGreaterThan(docsIndex);
 });
 
-test('managed release recovers a canonical versioned commit without another bump', async () => {
+test('managed release synchronizes main before build and recovers a matching historical release', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+  const syncIndex = release.indexOf('Synchronize latest main');
+  const installIndex = release.indexOf('Install dependencies');
+  const buildIndex = release.indexOf('Build package');
+  expect(syncIndex).toBeGreaterThanOrEqual(0);
+  expect(syncIndex).toBeLessThan(installIndex);
+  expect(syncIndex).toBeLessThan(buildIndex);
+  expect(release.match(/git checkout -B main origin\/main/gu)).toHaveLength(1);
 
   expect(release).toContain(
     `find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit`,
   );
-  expect(release).toContain('current_subject="$(git log -1 --pretty=%s)"');
+  expect(release).toContain('current_version="$(node -p "require(\'./package.json\').version")"');
+  expect(release).toContain('for candidate_sha in $(git rev-list HEAD); do');
+  expect(release).toContain('candidate_subject="$(git show -s --format=%s "$candidate_sha")"');
   expect(release).toContain(
-    'if [ "$current_subject" = "chore(release): version packages [skip ci]" ]; then',
+    'if [ "$candidate_subject" != "chore(release): version packages [skip ci]" ]; then',
   );
-  expect(release).toContain('Recovering the canonical versioned release commit');
-  expect(release).toContain('echo "versioned=true" >> "$GITHUB_OUTPUT"');
-  expect(release).toContain('echo "package_name=$(node -p "require(\'./package.json\').name")"');
-  expect(release).toContain(
-    'echo "package_version=$(node -p "require(\'./package.json\').version")"',
-  );
-  expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)"');
+  expect(release).toContain('git show "${candidate_sha}:package.json"');
+  expect(release).toContain('if [ "$candidate_version" = "$current_version" ]; then');
+  expect(release).toContain('echo "package_version=$current_version" >> "$GITHUB_OUTPUT"');
+  expect(release).toContain('echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
 });
 
