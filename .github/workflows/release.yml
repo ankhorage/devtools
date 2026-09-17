@@ -25,6 +25,7 @@ jobs:
     steps:
       - name: Create the scoped release token
         id: release-token
+        continue-on-error: true
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           client-id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}
@@ -32,6 +33,12 @@ jobs:
           owner: ankhorage
           repositories: ${{ github.event.repository.name }}
           permission-contents: write
+
+      - name: Diagnose unavailable scoped release token
+        if: steps.release-token.outcome == 'failure'
+        run: |
+          echo "::error title=Renovate Sync App repository access required::Could not create the scoped Ankhorage release token for ${GITHUB_REPOSITORY}. Ensure the ankhorage-renovate-sync GitHub App is installed and authorized for this repository, then rerun Release. Bootstrap policy: https://github.com/ankhorage/renovate/issues/115"
+          exit 1
 
       - name: Checkout repository
         uses: actions/checkout@v4
