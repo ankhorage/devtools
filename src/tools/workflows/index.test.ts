@@ -35,7 +35,7 @@ describe('managed workflows', () => {
 
     expect(ci).toContain(changesetsPolicy.workflowCommands.status);
     expect(release).toContain(changesetsPolicy.workflowCommands.version);
-    expect(release).toContain(`${changesetsPolicy.workflowCommands.publish}\n            exit 0`);
+    expect(release).toContain(changesetsPolicy.workflowCommands.publish);
     expect(release).toContain('id: release');
     expect(release).toContain('git checkout -B main origin/main');
     expect(release).toContain('git rebase origin/main');
@@ -78,6 +78,21 @@ test('fails release with an actionable diagnostic when the scoped App token is u
   expect(release.indexOf('Diagnose unavailable scoped release token')).toBeLessThan(
     release.indexOf('Checkout repository'),
   );
+});
+
+test('diagnoses npm scope authorization when an initial package publish fails', async () => {
+  const release = await workflowManagedFiles[1].render?.('.');
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+  expect(release).toContain('package_absent=false');
+  expect(release).toContain('npm view "$package_name" version --json > "$registry_evidence"');
+  expect(release).toContain("p.error?.code !== 'E404'");
+  expect(release).toContain(`if ! ${changesetsPolicy.workflowCommands.publish}; then`);
+  expect(release).toContain('npm scope publish access required');
+  expect(release).toContain('Read and write (publish and stage) access to the @ankhorage scope');
+  expect(release).toContain('The already-versioned release commit on main is reusable');
+  expect(release).toContain('do not create another version bump');
+  expect(release).toContain('https://github.com/ankhorage/devtools/issues/225');
 });
 
 test('generates documentation after versioning and before the release commit', async () => {
