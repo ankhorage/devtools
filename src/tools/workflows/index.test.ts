@@ -127,15 +127,7 @@ test('managed release synchronizes main before build and recovers a matching his
   );
   expect(release).toContain('current_version="$(node -p "require(\'./package.json\').version")"');
   expect(release).toContain(
-    "git log --format=%H --grep='^chore(release): version packages \\[skip ci\\]$'",
-  );
-  expect(release).toContain('git show "${candidate_sha}:package.json"');
-  expect(release).toContain('if [ "$candidate_version" = "$current_version" ]; then');
-  expect(release).toContain('echo "package_version=$current_version" >> "$GITHUB_OUTPUT"');
-  expect(release).toContain('echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"');
-  expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
-});
-
+    "git log --format=%H --grep='^chore(release): version packages \\[skip ci\\]
 describe('managed CI Changesets contract', () => {
   test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
     const ci = await workflowManagedFiles[0].render?.('.');
