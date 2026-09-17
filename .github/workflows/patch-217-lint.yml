@@ -1,0 +1,51 @@
+name: Patch 217 Lint
+
+on:
+  push:
+    branches:
+      - fix/217-zora-plugin-discovery
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/217-zora-plugin-discovery
+          fetch-depth: 0
+      - name: Apply lint cleanup
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          owner = Path('src/tools/skills/assets/zora-designer/scripts/owner-api.ts')
+          source = owner.read_text().replace(
+              "    const version = targetManifest.version;\n",
+              "    const { version } = targetManifest;\n",
+              1,
+          )
+          owner.write_text(source)
+
+          test = Path('src/tools/skills/zoraDesignerScripts.test.ts')
+          source = test.read_text()
+          first = source.index("  it('derives arbitrary ZORA plugin release gates from the consumer dependency'")
+          last_marker = "  it('reports interaction choices from their released owners'"
+          last = source.index(last_marker, first)
+          block = source[first:last]
+          source = source[:first] + source[last:]
+          insert_marker = "describe('zora-designer evidence and artifact calculation'"
+          insert = source.index(insert_marker)
+          standalone = "describe('zora-designer package-driven plugin discovery', () => {\n" + block + "});\n\n"
+          source = source[:insert] + standalone + source[insert:]
+          test.write_text(source)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/tools/skills/assets/zora-designer/scripts/owner-api.ts src/tools/skills/zoraDesignerScripts.test.ts
+          if ! git diff --cached --quiet; then
+            git commit -m "refactor: satisfy ZORA plugin discovery lint rules"
+            git push origin HEAD:fix/217-zora-plugin-discovery
+          fi
