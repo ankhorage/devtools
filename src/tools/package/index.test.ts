@@ -117,7 +117,7 @@ test('removes the obsolete knip script that conflicts with the installed binary'
   expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });
 
-test('preserves devtools as a runtime dependency for ankh', () => {
+test('moves devtools to devDependencies for ankh', () => {
   const updated = applyManagedPackageContract(
     {
       name: '@ankhorage/ankh',
@@ -137,27 +137,29 @@ test('preserves devtools as a runtime dependency for ankh', () => {
   expect(updated).toMatchObject({
     packageManager: bunRuntimePolicy.packageManager,
     dependencies: {
-      '@ankhorage/devtools': '^2.3.4',
       yaml: '^2.8.1',
     },
     devDependencies: {
       typescript: '^5.9.3',
+      '@ankhorage/devtools': '^2.3.4',
       '@types/bun': bunRuntimePolicy.typesRange,
     },
   });
-  expect(readNestedValue(updated, 'devDependencies', '@ankhorage/devtools')).toBeUndefined();
+  expect(readNestedValue(updated, 'dependencies', '@ankhorage/devtools')).toBeUndefined();
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
   expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });
 
-test('detects incorrect devtools dependency placement for ankh', () => {
+test('detects runtime devtools placement as drift for ankh', () => {
   const manifest = applyManagedPackageContract({ name: '@ankhorage/ankh' }, '2.3.4');
   const misplaced = {
     ...manifest,
-    dependencies: {},
+    dependencies: {
+      '@ankhorage/devtools': '^2.3.4',
+    },
     devDependencies: {
       ...readNestedRecord(manifest, 'devDependencies'),
-      '@ankhorage/devtools': '^2.3.4',
+      '@ankhorage/devtools': undefined,
     },
   };
 
