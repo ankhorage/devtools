@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.3
+
+### Patch Changes
+
+- d0d65f2: Align managed package and CI policies with dynamic Ankh providers by keeping Devtools development-only for all consumers and validating repositories through the pinned standalone Doctor CLI.
+
 ## 1.15.2
 
 ### Patch Changes

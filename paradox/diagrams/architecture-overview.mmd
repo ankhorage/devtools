@@ -117,6 +117,7 @@ graph TD
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_applyBunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_renderBunPolicyDocumentation_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_types_bunPolicy_ts
@@ -193,8 +194,11 @@ graph TD
   module_src_tools_workflows_index_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --> module_src_tools_shared_managedFiles_ts
+  module_src_tools_workflows_index_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_readCurrentDoctorVersion_ts["src/tools/workflows/readCurrentDoctorVersion.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts["src/tools/workflows/renderRenovateWorkflowAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.15.2",
+      "value": "v1.15.3",
       "color": "cb3837"
     },
     {
@@ -397,6 +397,7 @@
         "src/policy/applyBunRuntimePolicy.ts",
         "src/policy/bunRuntimePolicy.ts",
         "src/policy/renderBunPolicyDocumentation.ts",
+        "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts",
         "src/types/bunPolicy.ts"
@@ -687,11 +688,20 @@
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/policy/bunRuntimePolicy.ts",
         "src/tools/shared/managedFiles.ts",
+        "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
       ],
       "exports": [
         "workflowManagedFiles"
+      ]
+    },
+    {
+      "path": "src/tools/workflows/readCurrentDoctorVersion.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "readCurrentDoctorVersion"
       ]
     },
     {
@@ -2096,91 +2106,91 @@
     },
     {
       "name": "synchronizeRenovateOwnerAsync",
-      "description": null,
+      "description": "Synchronize or validate Renovate-owned Devtools policy artifacts.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 12,
+        "line": 14,
         "column": 1
       }
     },
     {
       "name": "assertDevtoolsTargetAsync",
-      "description": null,
+      "description": "Assert that Renovate owner synchronization targets the Devtools repository.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 51,
+        "line": 54,
         "column": 1
       }
     },
     {
       "name": "createManagedDefinitionsAsync",
-      "description": null,
+      "description": "Build the canonical owner-managed artifact definitions for the target repository.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 60,
+        "line": 64,
         "column": 1
       }
     },
     {
       "name": "getOutdatedPathsAsync",
-      "description": null,
+      "description": "Return owner-managed artifact paths whose current bytes differ from policy output.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 111,
+        "line": 117,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
-      "description": null,
+      "description": "Narrow an unknown error to a Node error carrying an error code.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 129,
+        "line": 136,
         "column": 1
       }
     },
     {
       "name": "isRecord",
-      "description": null,
+      "description": "Narrow an unknown JSON-like value to a non-array record.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 133,
+        "line": 141,
         "column": 1
       }
     },
     {
       "name": "readTargetBunPolicyAsync",
-      "description": null,
+      "description": "Read the target repository's canonical Bun policy literals.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 137,
+        "line": 146,
         "column": 1
       }
     },
     {
       "name": "runBunLockfileAsync",
-      "description": null,
+      "description": "Synchronize or validate the target Bun lockfile through Bun itself.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 162,
+        "line": 172,
         "column": 1
       }
     },
     {
       "name": "serializePackageManifest",
-      "description": null,
+      "description": "Serialize a package manifest using repository formatting.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 186,
+        "line": 197,
         "column": 1
       }
     },
     {
       "name": "syncDefinitionsAsync",
-      "description": null,
+      "description": "Write changed owner-managed artifacts while preserving byte-identical files.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 190,
+        "line": 202,
         "column": 1
       }
     },
@@ -2573,16 +2583,16 @@
     },
     {
       "name": "inspectPackageManifest",
-      "description": null,
+      "description": "Inspect whether the Devtools-owned package manifest contract is current.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 66,
+        "line": 65,
         "column": 1
       }
     },
     {
       "name": "syncPackageManifest",
-      "description": null,
+      "description": "Synchronize the Devtools-owned package manifest fields.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
         "line": 87,
@@ -2591,145 +2601,145 @@
     },
     {
       "name": "applyManagedPackageContract",
-      "description": null,
+      "description": "Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 127,
+        "line": 128,
         "column": 1
       }
     },
     {
       "name": "isManagedPackageContractCurrent",
-      "description": null,
+      "description": "Check whether the Devtools-owned package manifest fields match current policy.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 161,
+        "line": 163,
         "column": 1
       }
     },
     {
       "name": "readCurrentDevtoolsVersion",
-      "description": null,
+      "description": "Read the current Devtools package version used for consumer synchronization.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 188,
+        "line": 191,
         "column": 1
       }
     },
     {
       "name": "readPackageManifest",
-      "description": null,
+      "description": "Read one package manifest snapshot and Changesets applicability state.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 198,
+        "line": 202,
         "column": 1
       }
     },
     {
       "name": "hasCurrentBunRuntimePolicy",
-      "description": null,
+      "description": "Check the Bun package manager and Bun type dependency contract.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 215,
+        "line": 220,
         "column": 1
       }
     },
     {
       "name": "applyDevtoolsDependencyPlacement",
-      "description": null,
+      "description": "Place Devtools in development dependencies for every consuming repository.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 223,
+        "line": 229,
         "column": 1
       }
     },
     {
       "name": "hasCurrentDevtoolsDependencyPlacement",
-      "description": null,
+      "description": "Check that Devtools is development-only at the current synchronized version.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 240,
+        "line": 239,
         "column": 1
       }
     },
     {
       "name": "removeOwnedDependencies",
-      "description": null,
+      "description": "Remove direct development dependencies owned by the Devtools package.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 260,
+        "line": 251,
         "column": 1
       }
     },
     {
       "name": "normalizedDependencies",
-      "description": null,
+      "description": "Preserve an existing dependencies object or omit a newly empty one.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 269,
+        "line": 261,
         "column": 1
       }
     },
     {
       "name": "hasStandardScripts",
-      "description": null,
+      "description": "Check the canonical development-tool scripts.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 278,
+        "line": 271,
         "column": 1
       }
     },
     {
       "name": "hasCurrentChangesetsScripts",
-      "description": null,
+      "description": "Check Changesets scripts when the repository participates in Changesets.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 285,
+        "line": 279,
         "column": 1
       }
     },
     {
       "name": "isChangesetsEnabled",
-      "description": null,
+      "description": "Determine whether the repository participates in Changesets synchronization.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 297,
+        "line": 292,
         "column": 1
       }
     },
     {
       "name": "serializePackageManifest",
-      "description": null,
+      "description": "Serialize a package manifest using the repository formatting contract.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 309,
+        "line": 305,
         "column": 1
       }
     },
     {
       "name": "toRecord",
-      "description": null,
+      "description": "Copy a JSON-like value to a mutable record or return an empty record.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 313,
+        "line": 310,
         "column": 1
       }
     },
     {
       "name": "isRecord",
-      "description": null,
+      "description": "Narrow an unknown JSON-like value to a non-array record.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 317,
+        "line": 315,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
-      "description": null,
+      "description": "Narrow an unknown error to a Node error carrying an error code.",
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 321,
+        "line": 320,
         "column": 1
       }
     },
@@ -3212,10 +3222,10 @@
     },
     {
       "name": "createWorkflowDefinition",
-      "description": null,
+      "description": "Create a managed workflow definition rendered from current shared runtime policies.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 32,
+        "line": 34,
         "column": 1
       }
     },
@@ -3224,7 +3234,16 @@
       "description": "Creates the managed workflow whose immutable digest remains Renovate-owned.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 46,
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCurrentDoctorVersion",
+      "description": "Read the exact Doctor version owned by the current Devtools package release.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readCurrentDoctorVersion.ts",
+        "line": 8,
         "column": 1
       }
     },
@@ -3266,10 +3285,10 @@
     },
     {
       "name": "renderWorkflowAsync",
-      "description": "Renders one workflow template with the canonical runtime and Changesets policy.",
+      "description": "Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 12,
+        "line": 13,
         "column": 1
       }
     }
@@ -3478,6 +3497,11 @@
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
@@ -3644,6 +3668,11 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/tools/shared/managedFiles.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -4230,6 +4259,12 @@
         "fromSymbol": "createManagedDefinitionsAsync",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createManagedDefinitionsAsync",
+        "toSymbol": "readCurrentDoctorVersion",
+        "callExpression": "readCurrentDoctorVersion",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
@@ -5626,9 +5661,27 @@
       },
       {
         "fromSymbol": "render",
+        "toSymbol": "readCurrentDoctorVersion",
+        "callExpression": "readCurrentDoctorVersion",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
         "toSymbol": "renderRenovateWorkflowAsync",
         "callExpression": "renderRenovateWorkflowAsync",
         "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "readCurrentDoctorVersion",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/tools/workflows/readCurrentDoctorVersion.ts"
+      },
+      {
+        "fromSymbol": "readCurrentDoctorVersion",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/workflows/readCurrentDoctorVersion.ts"
       },
       {
         "fromSymbol": "renderRenovateWorkflowAsync",
