@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.15.5
+
+### Patch Changes
+
+- 7c8ba56: Derive ZORA Designer plugin version gates directly from consumer package declarations so newly
+  published ZORA plugins are discovered without plugin-specific Devtools branches.
+
 ## 1.15.4
 
 ### Patch Changes
