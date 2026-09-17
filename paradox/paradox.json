@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.15.1",
+      "value": "v1.15.2",
       "color": "cb3837"
     },
     {
@@ -2762,55 +2762,64 @@
     },
     {
       "name": "renderPrettierConfig",
-      "description": null,
+      "description": "Renders the shared Prettier wrapper for the target package module type.",
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
-        "line": 45,
+        "line": 52,
         "column": 1
       }
     },
     {
       "name": "renderInitialLocalConfig",
-      "description": null,
+      "description": "Preserves an existing repository Prettier config as its initial local extension.",
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
-        "line": 49,
+        "line": 57,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPrettierIgnore",
+      "description": "Preserves repository-owned ignore entries while appending required generated-artifact ignores.",
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/managed.ts",
+        "line": 69,
         "column": 1
       }
     },
     {
       "name": "readPackageType",
-      "description": null,
+      "description": "Reads whether the target package uses ESM or CommonJS package semantics.",
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
-        "line": 60,
+        "line": 94,
         "column": 1
       }
     },
     {
       "name": "isRecord",
-      "description": null,
+      "description": "Narrows an unknown JSON value to a non-array record.",
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
-        "line": 73,
+        "line": 108,
         "column": 1
       }
     },
     {
       "name": "isSharedOnlyConfig",
-      "description": null,
+      "description": "Identifies Prettier wrappers that contain no repository-owned configuration.",
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
-        "line": 77,
+        "line": 113,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
-      "description": null,
+      "description": "Narrows an unknown error to a Node error carrying an error code.",
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
-        "line": 81,
+        "line": 118,
         "column": 1
       }
     },
@@ -4969,6 +4978,24 @@
       },
       {
         "fromSymbol": "renderInitialLocalConfig",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderPrettierIgnore",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "renderPrettierIgnore",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/prettier/managed.ts"
+      },
+      {
+        "fromSymbol": "src/tools/prettier/managed.ts",
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
         "sourcePath": "src/tools/prettier/managed.ts"

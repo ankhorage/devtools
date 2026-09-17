@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.15.2
+
+### Patch Changes
+
+- 03d2d93: Keep release-generated README and Paradox artifacts outside normal Prettier checks while preserving repository-owned ignore entries.
+
 ## 1.15.1
 
 ### Patch Changes
