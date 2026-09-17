@@ -19,7 +19,7 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   expect(finalizationJobIndex).toBeGreaterThan(verificationJobIndex);
   expect(release).toContain('needs: release');
   expect(release).toContain("if: needs.release.outputs.versioned == 'true'");
-  expect(release).toContain('needs.verify-publication.result == \'success\'');
+  expect(release).toContain("needs.verify-publication.result == 'success'");
   expect(release).toContain('ref: ${{ needs.release.outputs.release_sha }}');
   expect(release).toContain('npm view "$package_spec" version dist.tarball dist.integrity --json');
   expect(release).toContain('curl --fail --location --silent --show-error --output "$artifact"');
@@ -37,5 +37,7 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   expect(release).toContain('release_sha: ${{ steps.release.outputs.release_sha }}');
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('git tag "$tag" "$RELEASE_SHA"');
-  expect(release).toContain('gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"');
+  expect(release).toContain(
+    'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"',
+  );
 });
