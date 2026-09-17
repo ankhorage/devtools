@@ -1,5 +1,5 @@
 ---
-"@ankhorage/devtools": patch
+'@ankhorage/devtools': patch
 ---
 
 Derive ZORA Designer plugin version gates from consumer package declarations so newly published
