@@ -226,6 +226,18 @@ function createReactConfig(files: string[]): FlatConfigItem {
   };
 }
 
+/*** Add Next.js rules without re-registering React, Hooks, TypeScript, or import plugins. */
+function createNextConfig(files: string[]): FlatConfigItem {
+  return {
+    files,
+    plugins: { '@next/next': nextPlugin },
+    rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+    },
+  };
+}
+
 function createReactNativeConfig(files: string[]): FlatConfigItem {
   return {
     files,
