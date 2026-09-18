@@ -10,6 +10,6 @@ describe('Renovate sync protocol release metadata', () => {
     const protocol = packageJson.ankhorage?.renovateSyncProtocol;
 
     expect(protocol).toBeInteger();
-    expect(protocol).toBeGreaterThan(0);
+    expect(protocol).toBe(2);
   });
 });
