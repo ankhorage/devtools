@@ -120,10 +120,10 @@ interface LoadedOwnerModule {
 }
 
 const OWNER_RELEASES = {
-  colorTheory: { packageName: '@ankhorage/color-theory', minimumVersion: '0.3.0' },
-  contracts: { packageName: '@ankhorage/contracts', minimumVersion: '10.1.0' },
-  templates: { packageName: '@ankhorage/templates', minimumVersion: '9.3.0' },
-  zora: { packageName: '@ankhorage/zora', minimumVersion: '4.3.0' },
+  colorTheory: { packageName: '@ankhorage/color-theory', minimumVersion: '0.3.1' },
+  contracts: { packageName: '@ankhorage/contracts', minimumVersion: '22.0.2' },
+  templates: { packageName: '@ankhorage/templates', minimumVersion: '12.0.0' },
+  zora: { packageName: '@ankhorage/zora', minimumVersion: '20.0.1' },
 };
 
 const OWNER_REQUIREMENTS = {
@@ -356,7 +356,6 @@ export async function composeDesign(input: unknown, targetDirectory = process.cw
     dataSources: input.dataSources,
     dataBindings: input.dataBindings,
     modules: input.modules,
-    modulesConfig: input.modulesConfig,
     theme: input.theme,
     authoringState: requestedAuthoringState,
   });
