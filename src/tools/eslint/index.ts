@@ -3,12 +3,13 @@
  *
  * The default `profile: 'auto'` reads the nearest `package.json` from `tsconfigRootDir` and uses
  * `@ankhorage/project-detector` to select overlapping project traits. React Native and Expo select
- * the `react-native` profile, React and Next.js select `react`, and other projects use `base`.
+ * `react-native`, Next.js selects `next`, React selects `react`, and other projects use `base`.
  *
  * Every profile includes the shared TypeScript, import, unused-import, Prettier, security, and
  * quality rules. The common quality limits are 50 effective lines per function, 300 effective
  * lines per file, and modified cyclomatic complexity 15. React adds React and Hooks correctness
- * rules; React Native composes the React profile and adds focused React Native rules.
+ * rules; Next.js composes React with Next recommended/Core Web Vitals rules; React Native composes
+ * React with focused React Native rules.
  *
  * Repository-specific behavior stays additive: `additionalIgnores`, `restrictedImports`, and
  * `overrides` extend the central policy instead of replacing it. Narrow local overrides remain the
@@ -19,6 +20,7 @@
  */
 import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
+import nextPlugin from '@next/eslint-plugin-next';
 import type { Linter } from 'eslint';
 import { defineConfig } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier';
@@ -194,12 +196,12 @@ function createProfileConfigs(
   profile: ResolvedDevtoolsEslintProfile,
   files: string[],
 ): FlatConfigItem[] {
-  if (profile === 'base') {
-    return [];
-  }
+  if (profile === 'base') return [];
 
   const reactConfig = createReactConfig(files);
-  return profile === 'react-native' ? [reactConfig, createReactNativeConfig(files)] : [reactConfig];
+  if (profile === 'next') return [reactConfig, createNextConfig(files)];
+  if (profile === 'react-native') return [reactConfig, createReactNativeConfig(files)];
+  return [reactConfig];
 }
 
 function createReactConfig(files: string[]): FlatConfigItem {
