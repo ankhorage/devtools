@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.15.9",
+      "value": "v1.16.0",
       "color": "cb3837"
     },
     {
@@ -950,7 +950,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 75,
+        "line": 77,
         "column": 1
       },
       "exportPaths": [
@@ -1058,7 +1058,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 43,
+        "line": 45,
         "column": 14
       },
       "exportPaths": [
@@ -1078,7 +1078,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 56,
+        "line": 58,
         "column": 14
       },
       "exportPaths": [
@@ -2343,7 +2343,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 75,
+        "line": 77,
         "column": 1
       }
     },
@@ -2352,7 +2352,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 90,
+        "line": 92,
         "column": 1
       }
     },
@@ -2361,7 +2361,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 103,
+        "line": 105,
         "column": 1
       }
     },
@@ -2370,7 +2370,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 111,
+        "line": 113,
         "column": 1
       }
     },
@@ -2379,7 +2379,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 139,
+        "line": 141,
         "column": 1
       }
     },
@@ -2388,7 +2388,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 158,
+        "line": 160,
         "column": 1
       }
     },
@@ -2397,7 +2397,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 178,
+        "line": 180,
         "column": 1
       }
     },
@@ -2406,7 +2406,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 186,
+        "line": 188,
         "column": 1
       }
     },
@@ -2415,7 +2415,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 193,
+        "line": 195,
         "column": 1
       }
     },
@@ -2424,7 +2424,16 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 205,
+        "line": 207,
+        "column": 1
+      }
+    },
+    {
+      "name": "createNextConfig",
+      "description": "Add Next.js rules without re-registering React, Hooks, TypeScript, or import plugins.",
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 230,
         "column": 1
       }
     },
@@ -2433,7 +2442,7 @@
       "description": null,
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 227,
+        "line": 241,
         "column": 1
       }
     },
@@ -4559,6 +4568,12 @@
         "fromSymbol": "createProfileConfigs",
         "toSymbol": "createReactConfig",
         "callExpression": "createReactConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createProfileConfigs",
+        "toSymbol": "createNextConfig",
+        "callExpression": "createNextConfig",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {

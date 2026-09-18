@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.16.0
+
+### Minor Changes
+
+- 13e6c2d: Add a dedicated Next.js ESLint profile that composes the shared React policy with Next recommended and Core Web Vitals rules without duplicate plugin registration.
+
 ## 1.15.9
 
 ### Patch Changes
