@@ -77,7 +77,7 @@ it('executes import sorting through the composed shared config', async () => {
 
 it('preserves base import sorting in React profiles', async () => {
   const source = "import { z } from 'z';\nimport { a } from 'a';\n\nvoid a;\nvoid z;\n";
-  for (const profile of ['react', 'react-native'] as const) {
+  for (const profile of ['next', 'react', 'react-native'] as const) {
     const workspace = await createLintWorkspace(profile);
     const result = await workspace.lint(source, `${profile}.ts`);
     expect(ruleIds(result)).toContain('simple-import-sort/imports');
@@ -98,6 +98,15 @@ it('executes profile-specific React and React Native rules', async () => {
     'native.tsx',
   );
   expect(ruleIds(nativeResult)).toContain('react-native/no-inline-styles');
+});
+
+it('executes Next.js Core Web Vitals rules without duplicate plugins', async () => {
+  const workspace = await createLintWorkspace('next');
+  const result = await workspace.lint(
+    'export const view = <img src="/hero.png" alt="Hero" />;\n',
+    'next.tsx',
+  );
+  expect(ruleIds(result)).toContain('@next/next/no-img-element');
 });
 
 it('keeps export sorting active', async () => {
