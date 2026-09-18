@@ -18,9 +18,9 @@ export function createFixtureManifest(theme: Record<string, unknown>): Record<st
       category: 'business_productivity',
       themeId: 'evidence-theme',
     },
-    themes: [theme],
+    themes: { 'evidence-theme': theme },
     activeThemeId: 'evidence-theme',
-    infra: { modules: [] },
+    infra: { modules: {} },
     settings: { localization: { defaultLocale: 'en', locales: ['en'] } },
   };
 }
