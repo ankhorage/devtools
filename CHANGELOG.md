@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.1
+
+### Patch Changes
+
+- db913c4: Require Renovate sync protocol 2 before rolling out managed consumer root-file changes.
+
 ## 1.17.0
 
 ### Minor Changes
