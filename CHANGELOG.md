@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.0
+
+### Minor Changes
+
+- 2b3023a: Update the Devtools-owned ZORA designer skill to canonical Contracts 22 / Templates 12 manifest collections and remove split modulesConfig authoring.
+
 ## 1.16.0
 
 ### Minor Changes
