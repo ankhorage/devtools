@@ -7,7 +7,7 @@ export interface RestrictedImport {
   readonly message: string;
 }
 
-export type DevtoolsEslintProfile = 'auto' | 'base' | 'react' | 'react-native';
+export type DevtoolsEslintProfile = 'auto' | 'base' | 'next' | 'react' | 'react-native';
 export type ResolvedDevtoolsEslintProfile = Exclude<DevtoolsEslintProfile, 'auto'>;
 
 export interface DevtoolsConfigOptions {
