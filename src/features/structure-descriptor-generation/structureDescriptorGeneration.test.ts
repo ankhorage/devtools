@@ -141,10 +141,10 @@ async function writePackageJson(target: string, source: string): Promise<void> {
 }
 
 const FIXTURE_SOURCE = `
-import type { ThemeConfig } from '@ankhorage/contracts';
 import type {
   EntityRegistry,
   SerializableSet,
+  StructureDescriptorDocument,
   ValueMap,
 } from '@ankhorage/contracts/structure';
 
@@ -184,6 +184,6 @@ export interface AppRoot {
   readonly ordered: readonly Item[];
   readonly tree?: Tree;
   readonly source: Source;
-  readonly externalTheme?: ThemeConfig;
+  readonly externalStructure?: StructureDescriptorDocument;
 }
 `;
