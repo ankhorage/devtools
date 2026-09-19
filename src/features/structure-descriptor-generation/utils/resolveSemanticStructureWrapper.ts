@@ -19,8 +19,13 @@ export function resolveSemanticStructureWrapper(
   const alias = type.aliasSymbol?.declarations?.find(ts.isTypeAliasDeclaration);
   if (!alias || !ts.isTypeReferenceNode(alias.type)) return null;
 
-  const symbol = context.checker.getSymbolAtLocation(alias.type.typeName);
-  if (!symbol || resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
+  const rawSymbol = context.checker.getSymbolAtLocation(alias.type.typeName);
+  if (!rawSymbol) return null;
+  const symbol =
+    (rawSymbol.flags & ts.SymbolFlags.Alias) !== 0
+      ? context.checker.getAliasedSymbol(rawSymbol)
+      : rawSymbol;
+  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
 
   const name = symbol.getName();
   if (!WRAPPER_NAMES.has(name)) return null;
