@@ -104,7 +104,9 @@ function resolveWrapperFromReferenceNode(
   return {
     name,
     arguments:
-      reference.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ?? [],
+      reference.typeArguments?.map((argument) =>
+        context.checker.getTypeFromTypeNode(argument),
+      ) ?? [],
   };
 }
 
