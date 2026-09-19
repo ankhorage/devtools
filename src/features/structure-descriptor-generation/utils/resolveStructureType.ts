@@ -132,7 +132,9 @@ function resolveArrayItem(type: ts.Type, checker: ts.TypeChecker): ts.Type | nul
   if (checker.isTupleType(type)) {
     throw new Error('Tuple types are not supported by structural descriptor generation.');
   }
-  if (checker.isArrayType(type)) return checker.getTypeArguments(type).at(0) ?? null;
+  if (checker.isArrayType(type)) {
+    return checker.getTypeArguments(type as ts.TypeReference).at(0) ?? null;
+  }
   if ((type.flags & ts.TypeFlags.Object) === 0) return null;
 
   const symbolName = type.getSymbol()?.getName();
