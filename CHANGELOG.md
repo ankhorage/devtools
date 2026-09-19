@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.18.2
+
+### Patch Changes
+
+- 63c8bc9: Ship the TypeScript compiler as a Devtools runtime dependency so the isolated Ankh provider can load structural descriptor tooling without an ambient consumer peer.
+
 ## 1.18.1
 
 ### Patch Changes
