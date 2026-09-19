@@ -189,8 +189,11 @@ function resolveObjectField(
 /*** Narrow property declarations that carry a source-level type node. */
 function hasDeclaredTypeNode(
   declaration: ts.Declaration,
-): declaration is ts.PropertyDeclaration | ts.PropertySignature {
-  return ts.isPropertyDeclaration(declaration) || ts.isPropertySignature(declaration);
+): declaration is (ts.PropertyDeclaration | ts.PropertySignature) & { readonly type: ts.TypeNode } {
+  return (
+    (ts.isPropertyDeclaration(declaration) || ts.isPropertySignature(declaration)) &&
+    declaration.type !== undefined
+  );
 }
 
 /*** Resolve a stable discriminator shared by every object-like union variant. */
