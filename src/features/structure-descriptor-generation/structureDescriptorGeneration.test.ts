@@ -8,7 +8,9 @@ import { synchronizeStructureArtifactForDirectoryAsync } from './composition/syn
 const createdDirectories: string[] = [];
 
 afterEach(async () => {
-  await Promise.all(createdDirectories.splice(0).map((directory) => rm(directory, { recursive: true })));
+  await Promise.all(
+    createdDirectories.splice(0).map((directory) => rm(directory, { recursive: true })),
+  );
 });
 
 test('generates deterministic structural semantics from explicit public type roots', async () => {
@@ -63,15 +65,15 @@ test('public semantic changes alter the descriptor fingerprint', async () => {
 test('fails closed for unsupported public structure instead of guessing', async () => {
   const target = await createFixtureProject();
   const sourcePath = join(target, 'src/public.ts');
-  await writeFile(
-    sourcePath,
-    `export interface AppRoot { readonly unsupported: any; }\n`,
-    'utf8',
-  );
+  await writeFile(sourcePath, `export interface AppRoot { readonly unsupported: any; }\n`, 'utf8');
 
-  await expect(synchronizeStructureArtifactForDirectoryAsync('build', target)).rejects.toThrow(
-    /Cannot generate structure.*any.*unsupported TypeScript type/u,
-  );
+  let failure = '';
+  try {
+    await synchronizeStructureArtifactForDirectoryAsync('build', target);
+  } catch (error) {
+    failure = error instanceof Error ? error.message : String(error);
+  }
+  expect(failure).toMatch(/Cannot generate structure.*any.*unsupported TypeScript type/u);
 });
 
 test('check reports stale evidence without mutating it', async () => {
