@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.2
+
+### Patch Changes
+
+- 453a1a6: Dispatch every verified published Ankhorage package release to the trusted Renovate rollout instead of only Devtools releases.
+
 ## 1.17.1
 
 ### Patch Changes
