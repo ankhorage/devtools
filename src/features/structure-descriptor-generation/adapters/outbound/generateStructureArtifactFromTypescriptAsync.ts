@@ -108,12 +108,16 @@ function resolveRoot(
 ): string {
   const sourcePath = resolve(context.targetDirectory, root.source);
   const sourceFile = context.program.getSourceFile(sourcePath);
-  if (!sourceFile?.symbol) {
+  if (!sourceFile) {
     throw new Error(`Structure root "${rootName}" source is not part of the TypeScript program.`);
+  }
+  const moduleSymbol = context.checker.getSymbolAtLocation(sourceFile);
+  if (!moduleSymbol) {
+    throw new Error(`Structure root "${rootName}" source has no module symbol.`);
   }
 
   const exported = context.checker
-    .getExportsOfModule(sourceFile.symbol)
+    .getExportsOfModule(moduleSymbol)
     .find((symbol) => symbol.getName() === root.export);
   if (!exported) {
     throw new Error(`Structure root "${rootName}" cannot find exported type "${root.export}".`);
