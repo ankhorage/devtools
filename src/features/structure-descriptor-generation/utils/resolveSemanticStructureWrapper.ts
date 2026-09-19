@@ -46,8 +46,20 @@ function resolveWrapperNodeMatch(
   const rawSymbol = context.checker.getSymbolAtLocation(node.typeName);
   if (!rawSymbol) return null;
   const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
+  const ownerPackage = resolveStructureSymbolPackage(symbol, context);
+  console.error(
+    '[structure-wrapper-debug]',
+    JSON.stringify({
+      raw: rawSymbol.getName(),
+      rawFlags: rawSymbol.flags,
+      final: symbol.getName(),
+      finalFlags: symbol.flags,
+      ownerPackage,
+      source: symbol.declarations?.at(0)?.getSourceFile().fileName.split('/').slice(-4).join('/'),
+    }),
+  );
 
-  if (resolveStructureSymbolPackage(symbol, context) === '@ankhorage/contracts') {
+  if (ownerPackage === '@ankhorage/contracts') {
     const name = symbol.getName();
     if (!WRAPPER_NAMES.has(name)) return null;
     return {
