@@ -1,7 +1,7 @@
 import type {
   StructureDescriptorDefinition,
   StructureDescriptorDocument,
-} from '@ankhorage/contracts';
+} from '@ankhorage/contracts/structure';
 import type ts from 'typescript';
 
 export interface StructureGenerationRoot {
