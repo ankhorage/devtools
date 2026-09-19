@@ -1,4 +1,4 @@
-import type { StructureDescriptor, StructureLiteralValue } from '@ankhorage/contracts';
+import type { StructureDescriptor, StructureLiteralValue } from '@ankhorage/contracts/structure';
 import ts from 'typescript';
 
 import type { StructureCompilerContext } from '../../../types/structure-generation.js';
