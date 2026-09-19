@@ -12,9 +12,7 @@ afterEach(async () => {
 });
 
 test('uses built self CLI for Devtools and installed bin for consumers', async () => {
-  expect(await resolveStructureReleaseCommandAsync('.')).toBe(
-    'node ./dist/cli/bin/structure.js',
-  );
+  expect(await resolveStructureReleaseCommandAsync('.')).toBe('node ./dist/cli/bin/structure.js');
 
   const target = await mkdtemp('/tmp/devtools-structure-release-');
   roots.push(target);
