@@ -47,20 +47,27 @@ describe('managed workflows', () => {
     expect(release).not.toContain('bunx changeset');
   });
 
-  test('dispatches each published Devtools version to the trusted Renovate rollout', async () => {
+  test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(release).toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
     expect(release).toContain(
       'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
     );
     expect(release).toContain('repositories: renovate');
     expect(release).toContain('permission-contents: write');
     expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
-    expect(release).toContain("release.name !== '@ankhorage/devtools'");
-    expect(release).toContain("event_type: 'devtools-release'");
+    expect(release).not.toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
+    expect(release).toContain("!/^@ankhorage\\/[a-z0-9][a-z0-9-]*$/.test");
+    expect(release).toContain("event_type: 'package-release'");
+    expect(release).not.toContain("event_type: 'devtools-release'");
+    expect(release).toContain('package_name: release.name');
+    expect(release).toContain('version: release.version');
+    expect(release).toContain('source_repository: release.sourceRepository');
+    expect(release).toContain('PUBLISHED_SOURCE_REPOSITORY: ${{ github.repository }}');
     expect(release).toContain("repo: 'renovate'");
-    expect(release).toContain('Changesets must report one exact published Devtools version.');
+    expect(release).toContain(
+      'Changesets must report one exact published Ankhorage package identity.',
+    );
   });
 });
 
