@@ -9,6 +9,8 @@ import {
 const repositoryCommandPaths = [
   'apm sync',
   'apm validate',
+  'structure build',
+  'structure check',
   'changeset',
   'lint',
   'format',
@@ -50,6 +52,12 @@ describe('devtools command table', () => {
     expect(findDevtoolsCommandByPath(['agents', 'sync'])?.capability).toBe('devtools.agents.sync');
     expect(findDevtoolsCommandByPath(['skills', 'status'])?.capability).toBe(
       'devtools.skills.status',
+    );
+    expect(findDevtoolsCommandByPath(['structure', 'build'])?.capability).toBe(
+      'devtools.structure.build',
+    );
+    expect(findDevtoolsCommandByPath(['structure', 'check'])?.capability).toBe(
+      'devtools.structure.check',
     );
     expect(findDevtoolsCommandByPath(['eslint', 'sync'])?.capability).toBe('devtools.eslint.sync');
     expect(findDevtoolsCommandByPath(['package', 'status'])?.capability).toBe(
