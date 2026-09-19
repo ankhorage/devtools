@@ -42,9 +42,8 @@ export function resolveSemanticStructureWrapper(
   const name = symbol.getName();
   if (!WRAPPER_NAMES.has(name)) return null;
   const arguments_ =
-    alias.type.typeArguments?.map((argument) =>
-      context.checker.getTypeFromTypeNode(argument),
-    ) ?? [];
+    alias.type.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ??
+    [];
   return buildWrapperDescriptor(name, arguments_, context, resolveType);
 }
 
@@ -54,10 +53,7 @@ function resolveDirectWrapper(
   context: StructureCompilerContext,
 ): WrapperMatch | null {
   const symbol = type.aliasSymbol;
-  if (
-    !symbol ||
-    resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts'
-  ) {
+  if (!symbol || resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') {
     return null;
   }
 
