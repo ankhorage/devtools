@@ -9,12 +9,16 @@ export function resolveStructureSymbolPackage(
   symbol: ts.Symbol,
   context: StructureCompilerContext,
 ): string | null {
-  const declaration = symbol.declarations?.[0];
+  const [declaration] = symbol.declarations ?? [];
   if (!declaration) return null;
 
-  const fileName = declaration.getSourceFile().fileName;
+  const { fileName } = declaration.getSourceFile();
   const relativePath = relative(context.targetDirectory, fileName);
-  if (relativePath !== '..' && !relativePath.startsWith(`..${sep}`) && !relativePath.startsWith('..')) {
+  if (
+    relativePath !== '..' &&
+    !relativePath.startsWith(`..${sep}`) &&
+    !relativePath.startsWith('..')
+  ) {
     return context.packageName;
   }
 
@@ -25,10 +29,8 @@ export function resolveStructureSymbolPackage(
 
   const packagePath = normalized.slice(markerIndex + marker.length);
   const segments = packagePath.split('/');
-  const first = segments.at(0);
+  const [first, second] = segments;
   if (!first) return null;
   if (!first.startsWith('@')) return first;
-
-  const second = segments.at(1);
   return second ? `${first}/${second}` : null;
 }
