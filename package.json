@@ -21,6 +21,8 @@
     "capabilities": [
       "devtools.apm.sync",
       "devtools.apm.validate",
+      "devtools.structure.build",
+      "devtools.structure.check",
       "devtools.changeset",
       "devtools.lint",
       "devtools.format",
@@ -42,9 +44,7 @@
       "devtools.workflows.sync",
       "devtools.workflows.status",
       "devtools.vscode.sync",
-      "devtools.vscode.status",
-      "devtools.structure.build",
-      "devtools.structure.check"
+      "devtools.vscode.status"
     ]
   },
   "ankhorage": {
