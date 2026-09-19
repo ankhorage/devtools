@@ -171,18 +171,25 @@ function resolveObjectField(
   }
 
   const propertyType = context.checker.getTypeOfSymbolAtLocation(property, declaration);
-  const declaredType = hasDeclaredTypeNode(declaration)
-    ? resolveSemanticStructureWrapperNode(declaration.type, context, (value) =>
-        resolveStructureType(value, context),
-      )
-    : null;
-  return [
-    property.getName(),
-    {
-      value: declaredType ?? resolveStructureType(propertyType, context),
-      ...((property.flags & ts.SymbolFlags.Optional) !== 0 ? { optional: true } : {}),
-    },
-  ];
+  try {
+    const declaredType = hasDeclaredTypeNode(declaration)
+      ? resolveSemanticStructureWrapperNode(declaration.type, context, (value) =>
+          resolveStructureType(value, context),
+        )
+      : null;
+    return [
+      property.getName(),
+      {
+        value: declaredType ?? resolveStructureType(propertyType, context),
+        ...((property.flags & ts.SymbolFlags.Optional) !== 0 ? { optional: true } : {}),
+      },
+    ];
+  } catch (error) {
+    throw new Error(
+      `Cannot generate field "${property.getName()}": ${error instanceof Error ? error.message : String(error)}`,
+      { cause: error },
+    );
+  }
 }
 
 /*** Narrow property declarations that carry a source-level type node. */
