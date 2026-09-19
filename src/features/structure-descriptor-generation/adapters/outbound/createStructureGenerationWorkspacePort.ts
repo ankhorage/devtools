@@ -33,27 +33,28 @@ async function readStructurePackageAsync(
   const raw = JSON.parse(await readFile(packagePath, 'utf8')) as unknown;
   if (!isRecord(raw)) throw new Error('package.json must contain one JSON object.');
 
-  const name = raw.name;
-  const version = raw.version;
-  if (typeof name !== 'string' || name.trim() === '') throw new Error('package.json needs a package name.');
+  const { ankh, name, version } = raw;
+  if (typeof name !== 'string' || name.trim() === '') {
+    throw new Error('package.json needs a package name.');
+  }
   if (typeof version !== 'string' || version.trim() === '') {
     throw new Error('package.json needs a package version.');
   }
-
-  const ankh = raw.ankh;
   if (!isRecord(ankh) || ankh.structure === undefined) return null;
   return { name, version, config: parseStructureConfig(ankh.structure, targetDirectory) };
 }
 
 /*** Parse explicit structure roots and one generated output path without accepting path escapes. */
 function parseStructureConfig(value: unknown, targetDirectory: string): StructureGenerationConfig {
-  if (!isRecord(value) || typeof value.output !== 'string' || !isRecord(value.roots)) {
+  if (!isRecord(value)) throw new Error('ankh.structure must define output and roots.');
+  const { output: configuredOutput, roots: configuredRoots } = value;
+  if (typeof configuredOutput !== 'string' || !isRecord(configuredRoots)) {
     throw new Error('ankh.structure must define output and roots.');
   }
 
-  const output = validateRelativePath(value.output, targetDirectory, 'ankh.structure.output');
+  const output = validateRelativePath(configuredOutput, targetDirectory, 'ankh.structure.output');
   const roots = Object.fromEntries(
-    Object.entries(value.roots)
+    Object.entries(configuredRoots)
       .sort(([left], [right]) => left.localeCompare(right))
       .map(([name, root]) => [name, parseRoot(name, root, targetDirectory)]),
   );
@@ -62,11 +63,7 @@ function parseStructureConfig(value: unknown, targetDirectory: string): Structur
 }
 
 /*** Parse one explicit root source/export declaration. */
-function parseRoot(
-  name: string,
-  value: unknown,
-  targetDirectory: string,
-): StructureGenerationRoot {
+function parseRoot(name: string, value: unknown, targetDirectory: string): StructureGenerationRoot {
   if (
     name.trim() === '' ||
     !isRecord(value) ||
