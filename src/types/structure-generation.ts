@@ -52,4 +52,3 @@ export interface StructureCompilerContext {
   readonly definitionSymbols: Map<string, ts.Symbol>;
   readonly resolving: Set<string>;
 }
-
