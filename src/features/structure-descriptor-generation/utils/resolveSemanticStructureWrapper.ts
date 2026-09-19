@@ -1,9 +1,6 @@
 import ts from 'typescript';
 
-import type {
-  StructureDescriptor,
-  StructureReferenceDescriptor,
-} from '@ankhorage/contracts/structure';
+import type { StructureDescriptor } from '@ankhorage/contracts/structure';
 
 import type { StructureCompilerContext } from '../../../types/structure-generation.js';
 import { resolveStructureSymbolPackage } from './resolveStructureSymbolPackage.js';
@@ -17,7 +14,7 @@ export function resolveSemanticStructureWrapper(
   resolveType: ResolveType,
 ): StructureDescriptor | null {
   const direct = resolveDirectWrapper(type, context);
-  if (direct) return buildWrapperDescriptor(direct.name, direct.arguments, resolveType);
+  if (direct) return buildWrapperDescriptor(direct.name, direct.arguments, context, resolveType);
 
   const alias = type.aliasSymbol?.declarations?.find(ts.isTypeAliasDeclaration);
   if (!alias || !ts.isTypeReferenceNode(alias.type)) return null;
@@ -30,7 +27,7 @@ export function resolveSemanticStructureWrapper(
   const arguments_ = alias.type.typeArguments?.map((argument) =>
     context.checker.getTypeFromTypeNode(argument),
   ) ?? [];
-  return buildWrapperDescriptor(name, arguments_, resolveType);
+  return buildWrapperDescriptor(name, arguments_, context, resolveType);
 }
 
 interface WrapperMatch {
@@ -54,10 +51,11 @@ function resolveDirectWrapper(
 function buildWrapperDescriptor(
   name: string,
   arguments_: readonly ts.Type[],
+  context: StructureCompilerContext,
   resolveType: ResolveType,
 ): StructureDescriptor {
   if (name === 'SerializableSet') {
-    return { kind: 'set', member: resolveType(arguments_.at(0) ?? stringTypeFallback()) };
+    return { kind: 'set', member: resolveType(arguments_.at(0) ?? context.checker.getStringType()) };
   }
 
   const key = arguments_.at(0);
@@ -81,11 +79,6 @@ function resolveIdentityField(
 ): Pick<Extract<StructureDescriptor, { kind: 'entity-registry' }>, 'identityField'> | {} {
   if (!type || (type.flags & ts.TypeFlags.Never) !== 0) return {};
   return type.isStringLiteral() ? { identityField: type.value } : {};
-}
-
-/*** Construct the TypeScript string type fallback used by SerializableSet's default parameter. */
-function stringTypeFallback(): ts.Type {
-  throw new Error('SerializableSet without an explicit member type is not supported for generation.');
 }
 
 const WRAPPER_NAMES = new Set(['EntityRegistry', 'SerializableSet', 'ValueMap']);
