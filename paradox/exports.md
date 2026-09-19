@@ -195,7 +195,7 @@ Source: `src/tools/eslint/types.ts:3:1`
 
 Kind: `value`
 Module: `src/cli/index.ts`
-Source: `src/cli/index.ts:40:7`
+Source: `src/cli/index.ts:42:7`
 
 ## ResolvedDevtoolsEslintProfile
 

@@ -662,7 +662,7 @@
     "modulePath": "src/cli/index.ts",
     "sourceLocation": {
       "filePath": "src/cli/index.ts",
-      "line": 40,
+      "line": 42,
       "column": 7
     },
     "exportPaths": [

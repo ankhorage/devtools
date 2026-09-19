@@ -3,7 +3,7 @@
 
 # @ankhorage/devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v1.17.2](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v1.18.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects
 
@@ -452,6 +452,8 @@ Run and synchronize the shared development toolchain through the Ankh CLI.
 Repository synchronization is available through
 `ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,
 `prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.
+Owner packages can opt into deterministic structural metadata with
+`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.
 
 Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is
 deterministic and idempotent: canonical managed files and skill trees are created or updated,

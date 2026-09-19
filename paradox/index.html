@@ -142,6 +142,16 @@
       <small>1 function</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/cli/commands/structure/build.ts">
+      src/cli/commands/structure/build.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/cli/commands/structure/check.ts">
+      src/cli/commands/structure/check.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/cli/index.ts">
       src/cli/index.ts
       <small>3 functions</small>
@@ -220,6 +230,46 @@
     <button class="nav-button" type="button" data-target="src/features/apm-release-validation/utils/readApmReleaseMetadata.ts">
       src/features/apm-release-validation/utils/readApmReleaseMetadata.ts
       <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts">
+      src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts">
+      src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts
+      <small>8 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts">
+      src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts
+      <small>8 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts">
+      src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts">
+      src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts">
+      src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts
+      <small>11 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts">
+      src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/utils/resolveStructureType.ts">
+      src/features/structure-descriptor-generation/utils/resolveStructureType.ts
+      <small>18 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/internal/readmeDocs.ts">
@@ -358,7 +408,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>58</strong><span class="muted">modules</span></div>
+        <div><strong>69</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -366,7 +416,7 @@
         <li><code>src/apmRelease.ts</code></li><li><code>src/cli/index.ts</code></li><li><code>src/tools/eslint/index.ts</code></li><li><code>src/tools/knip/index.ts</code></li><li><code>src/types/public.ts</code></li>
       </ul>
     </section>
-    <section class="panel" data-search="cli Run and synchronize the shared development toolchain through the Ankh CLI.&#10;&#10;`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and&#10;`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.&#10;Repository synchronization is available through&#10;`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,&#10;`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.&#10;&#10;Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is&#10;deterministic and idempotent: canonical managed files and skill trees are created or updated,&#10;unrelated repository-local skills and create-only local extension files remain repository-owned,&#10;and package metadata is merge-updated without replacing unrelated fields.&#10;&#10;Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding&#10;`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a&#10;local extension before the canonical auto-detecting wrapper is installed.&#10;&#10;APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid&#10;descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a&#10;script-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.&#10;`--artifact &lt;path&gt;` retains the exact accepted tarball and `--expected-integrity &lt;SRI&gt;`&#10;rejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.&#10;CI runs that owner suite and the packed check. Release rebuilds after versioning, validates,&#10;then publishes the retained archive with scripts disabled through the existing release job.&#10;Packages without metadata keep their existing Changesets publish path unchanged. bunx @ankhorage/devtools ankhorage-apm-release bunx @ankhorage/devtools ankhorage-changeset bunx @ankhorage/devtools ankhorage-eslint bunx @ankhorage/devtools ankhorage-knip bunx @ankhorage/devtools ankhorage-prettier">
+    <section class="panel" data-search="cli Run and synchronize the shared development toolchain through the Ankh CLI.&#10;&#10;`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and&#10;`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.&#10;Repository synchronization is available through&#10;`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,&#10;`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.&#10;Owner packages can opt into deterministic structural metadata with&#10;`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.&#10;&#10;Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is&#10;deterministic and idempotent: canonical managed files and skill trees are created or updated,&#10;unrelated repository-local skills and create-only local extension files remain repository-owned,&#10;and package metadata is merge-updated without replacing unrelated fields.&#10;&#10;Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding&#10;`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a&#10;local extension before the canonical auto-detecting wrapper is installed.&#10;&#10;APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid&#10;descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a&#10;script-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.&#10;`--artifact &lt;path&gt;` retains the exact accepted tarball and `--expected-integrity &lt;SRI&gt;`&#10;rejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.&#10;CI runs that owner suite and the packed check. Release rebuilds after versioning, validates,&#10;then publishes the retained archive with scripts disabled through the existing release job.&#10;Packages without metadata keep their existing Changesets publish path unchanged. bunx @ankhorage/devtools ankhorage-apm-release bunx @ankhorage/devtools ankhorage-changeset bunx @ankhorage/devtools ankhorage-eslint bunx @ankhorage/devtools ankhorage-knip bunx @ankhorage/devtools ankhorage-prettier">
     <h2>CLI</h2>
     <p>Run and synchronize the shared development toolchain through the Ankh CLI.
 
@@ -375,6 +425,8 @@
 Repository synchronization is available through
 `ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,
 `prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.
+Owner packages can opt into deterministic structural metadata with
+`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.
 
 Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is
 deterministic and idempotent: canonical managed files and skill trees are created or updated,
@@ -447,6 +499,16 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/runProviderCommand.ts</code>, <code>src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>validate</code></p>
+  </article><article class="item" data-search="src/cli/commands/structure/build.ts src/cli/runProviderCommand.ts src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts build">
+    <h3>src/cli/commands/structure/build.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/cli/runProviderCommand.ts</code>, <code>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts</code></p>
+    <p><strong>Exports:</strong> <code>build</code></p>
+  </article><article class="item" data-search="src/cli/commands/structure/check.ts src/cli/runProviderCommand.ts src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts check">
+    <h3>src/cli/commands/structure/check.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/cli/runProviderCommand.ts</code>, <code>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts</code></p>
+    <p><strong>Exports:</strong> <code>check</code></p>
   </article><article class="item" data-search="src/cli/index.ts src/cli/commands.ts src/cli/runProviderCommand.ts default">
     <h3>src/cli/index.ts</h3>
     <p class="muted">Configured entrypoint</p>
@@ -457,10 +519,10 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code></p>
     <p><strong>Exports:</strong> <code>DevtoolsRunResult</code>, <code>runExternalTool</code>, <code>runExternalToolWithDependencies</code></p>
-  </article><article class="item" data-search="src/cli/runProviderCommand.ts src/cli/commands.ts src/cli/commands/apm/sync.ts src/cli/commands/apm/validate.ts src/cli/runExternalTool.ts src/cli/runRepositoryCommand.ts DevtoolsProviderCommandContext runProviderCommand">
+  </article><article class="item" data-search="src/cli/runProviderCommand.ts src/cli/commands.ts src/cli/commands/apm/sync.ts src/cli/commands/apm/validate.ts src/cli/commands/structure/build.ts src/cli/commands/structure/check.ts src/cli/runExternalTool.ts src/cli/runRepositoryCommand.ts DevtoolsProviderCommandContext runProviderCommand">
     <h3>src/cli/runProviderCommand.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/commands/structure/build.ts</code>, <code>src/cli/commands/structure/check.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code></p>
     <p><strong>Exports:</strong> <code>DevtoolsProviderCommandContext</code>, <code>runProviderCommand</code></p>
   </article><article class="item" data-search="src/cli/runRepositoryCommand.ts src/cli/commands.ts src/tools/agents/index.ts src/tools/eslint/managed.ts src/tools/gitignore/index.ts src/tools/knip/managed.ts src/tools/package/index.ts src/tools/package/syncBunDependencies.ts src/tools/prettier/managed.ts src/tools/shared/managedFiles.ts src/tools/skills/managed.ts src/tools/vscode/index.ts src/tools/workflows/index.ts DevtoolsRepositoryCommandContext DevtoolsRepositoryCommandResult parseRepositoryArguments runRepositoryCommand">
     <h3>src/cli/runRepositoryCommand.ts</h3>
@@ -527,6 +589,46 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>readApmReleaseMetadata</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts runStructureGenerationCommandAsync">
+    <h3>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts</code></p>
+    <p><strong>Exports:</strong> <code>runStructureGenerationCommandAsync</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts src/types/structure-generation.ts createStructureGenerationWorkspacePort">
+    <h3>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts</code>, <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>createStructureGenerationWorkspacePort</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts src/features/structure-descriptor-generation/utils/resolveStructureType.ts src/types/structure-generation.ts generateStructureArtifactFromTypescriptAsync">
+    <h3>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts</code>, <code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts</code>, <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>generateStructureArtifactFromTypescriptAsync</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts src/types/structure-generation.ts synchronizeStructureArtifactAsync">
+    <h3>src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>synchronizeStructureArtifactAsync</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts src/types/structure-generation.ts synchronizeStructureArtifactForDirectoryAsync">
+    <h3>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts</code>, <code>src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts</code>, <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>synchronizeStructureArtifactForDirectoryAsync</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts src/types/structure-generation.ts resolveSemanticStructureWrapper resolveSemanticStructureWrapperNode">
+    <h3>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts</code>, <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>resolveSemanticStructureWrapper</code>, <code>resolveSemanticStructureWrapperNode</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts src/types/structure-generation.ts resolveStructureSymbolPackage">
+    <h3>src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>resolveStructureSymbolPackage</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/utils/resolveStructureType.ts src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts src/types/structure-generation.ts resolveStructureType">
+    <h3>src/features/structure-descriptor-generation/utils/resolveStructureType.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts</code>, <code>src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts</code>, <code>src/types/structure-generation.ts</code></p>
+    <p><strong>Exports:</strong> <code>resolveStructureType</code></p>
   </article><article class="item" data-search="src/internal/readmeDocs.ts src/policy/bunRuntimePolicy.ts getReadmeDocumentationErrors">
     <h3>src/internal/readmeDocs.ts</h3>
     <p class="muted">Referenced module</p>
@@ -692,6 +794,11 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <p class="muted">Configured entrypoint</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>ApmPackedReleaseCandidate</code>, <code>ApmReleaseValidationOptions</code>, <code>ApmReleaseValidationResult</code></p>
+  </article><article class="item" data-search="src/types/structure-generation.ts StructureCompilerContext StructureGenerationArtifact StructureGenerationConfig StructureGenerationPackage StructureGenerationResult StructureGenerationRoot StructureGenerationWorkspacePort">
+    <h3>src/types/structure-generation.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>StructureCompilerContext</code>, <code>StructureGenerationArtifact</code>, <code>StructureGenerationConfig</code>, <code>StructureGenerationPackage</code>, <code>StructureGenerationResult</code>, <code>StructureGenerationRoot</code>, <code>StructureGenerationWorkspacePort</code></p>
   </article>
     </section>
     <section class="panel">
@@ -701,7 +808,7 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
               <h3>src/cli/index.ts</h3>
               <article class="item" id="symbol-provider" data-search="provider value src/cli/index.ts ">
     <h4>provider</h4>
-    <p class="muted">value • <code>src/cli/index.ts:40:7</code></p>
+    <p class="muted">value • <code>src/cli/index.ts:42:7</code></p>
     
     <p><strong>Export paths:</strong> <code>src/cli/index.ts</code></p>
     <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -1366,6 +1473,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_validate_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_build_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_check_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
@@ -1377,6 +1492,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
@@ -1439,6 +1556,38 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureType.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_types_structure_generation_ts
   module_src_internal_readmeDocs_ts[&quot;src/internal/readmeDocs.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_internal_readmeDocs_ts
   module_src_internal_readmeDocs_ts --&gt; module_src_policy_bunRuntimePolicy_ts
@@ -1540,6 +1689,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_bunPolicy_ts
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
+  module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_types_structure_generation_ts
 </div>
     <details>
       <summary>View Mermaid source</summary>
@@ -1581,6 +1732,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_validate_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_build_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_check_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
@@ -1592,6 +1751,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
@@ -1654,6 +1815,38 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureType.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_types_structure_generation_ts
   module_src_internal_readmeDocs_ts[&quot;src/internal/readmeDocs.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_internal_readmeDocs_ts
   module_src_internal_readmeDocs_ts --&gt; module_src_policy_bunRuntimePolicy_ts
@@ -1755,6 +1948,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_bunPolicy_ts
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
+  module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_types_structure_generation_ts
 </pre>
     </details>
   </article><article class="item" data-search="Module relationships diagrams/module-relationships.mmd">
@@ -1770,6 +1965,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
+  module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
@@ -1786,6 +1983,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureType.ts&quot;]
   module_src_internal_readmeDocs_ts[&quot;src/internal/readmeDocs.ts&quot;]
   module_src_owner_synchronizeRenovateOwnerAsync_ts[&quot;src/owner/synchronizeRenovateOwnerAsync.ts&quot;]
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
@@ -1819,6 +2024,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
+  module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   module_src_cli_bin_apm_release_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1828,12 +2034,18 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_sync_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_runExternalTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_cli_commands_ts
@@ -1870,6 +2082,22 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts --&gt; module_src_features_apm_release_validation_application_synchronizeApmReleaseMetadataAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_types_structure_generation_ts
   module_src_internal_readmeDocs_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_bunRuntimePolicy_ts
@@ -1921,6 +2149,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
+  module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
@@ -1937,6 +2167,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureType.ts&quot;]
   module_src_internal_readmeDocs_ts[&quot;src/internal/readmeDocs.ts&quot;]
   module_src_owner_synchronizeRenovateOwnerAsync_ts[&quot;src/owner/synchronizeRenovateOwnerAsync.ts&quot;]
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
@@ -1970,6 +2208,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
+  module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   module_src_cli_bin_apm_release_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1979,12 +2218,18 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_sync_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_runExternalTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_cli_commands_ts
@@ -2021,6 +2266,22 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts --&gt; module_src_features_apm_release_validation_application_synchronizeApmReleaseMetadataAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --&gt; module_src_types_structure_generation_ts
   module_src_internal_readmeDocs_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_bunRuntimePolicy_ts
@@ -2074,6 +2335,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
+  module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
@@ -2090,6 +2353,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureType.ts&quot;]
   module_src_internal_readmeDocs_ts[&quot;src/internal/readmeDocs.ts&quot;]
   module_src_owner_synchronizeRenovateOwnerAsync_ts[&quot;src/owner/synchronizeRenovateOwnerAsync.ts&quot;]
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
@@ -2123,6 +2394,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
+  module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   export_ApmPackedReleaseCandidate[&quot;ApmPackedReleaseCandidate&quot;]
   module_src_types_apm_release_validation_ts --&gt; export_ApmPackedReleaseCandidate
   export_ApmReleaseValidationOptions[&quot;ApmReleaseValidationOptions&quot;]
@@ -2189,6 +2461,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
+  module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
@@ -2205,6 +2479,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts&quot;]
+  module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts[&quot;src/features/structure-descriptor-generation/utils/resolveStructureType.ts&quot;]
   module_src_internal_readmeDocs_ts[&quot;src/internal/readmeDocs.ts&quot;]
   module_src_owner_synchronizeRenovateOwnerAsync_ts[&quot;src/owner/synchronizeRenovateOwnerAsync.ts&quot;]
   module_src_policy_applyBunRuntimePolicy_ts[&quot;src/policy/applyBunRuntimePolicy.ts&quot;]
@@ -2238,6 +2520,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_bunPolicy_ts[&quot;src/types/bunPolicy.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
+  module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   export_ApmPackedReleaseCandidate[&quot;ApmPackedReleaseCandidate&quot;]
   module_src_types_apm_release_validation_ts --&gt; export_ApmPackedReleaseCandidate
   export_ApmReleaseValidationOptions[&quot;ApmReleaseValidationOptions&quot;]
@@ -2319,23 +2602,23 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/commands.ts</h2>
       <article class="item" data-search="getDevtoolsCommands src/cli/commands.ts ">
     <h3>getDevtoolsCommands</h3>
-    <p class="muted"><code>src/cli/commands.ts:220:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:242:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="findDevtoolsCommandByPath src/cli/commands.ts ">
     <h3>findDevtoolsCommandByPath</h3>
-    <p class="muted"><code>src/cli/commands.ts:224:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:246:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="getDevtoolsToolCommand src/cli/commands.ts ">
     <h3>getDevtoolsToolCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:236:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:258:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="externalCommand src/cli/commands.ts ">
     <h3>externalCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:248:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:270:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="repositoryCommand src/cli/commands.ts ">
     <h3>repositoryCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:269:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:291:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -2357,20 +2640,38 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p>Adapt the public APM release validate command to the shared release boundary.</p>
   </article>
     </section>
+  </section><section id="view-src-cli-commands-structure-build-ts" class="view" data-view="src/cli/commands/structure/build.ts" hidden>
+    <section class="panel">
+      <h2>src/cli/commands/structure/build.ts</h2>
+      <article class="item" data-search="build src/cli/commands/structure/build.ts Adapt the public structure build command to deterministic owner artifact generation.">
+    <h3>build</h3>
+    <p class="muted"><code>src/cli/commands/structure/build.ts:5:1</code></p>
+    <p>Adapt the public structure build command to deterministic owner artifact generation.</p>
+  </article>
+    </section>
+  </section><section id="view-src-cli-commands-structure-check-ts" class="view" data-view="src/cli/commands/structure/check.ts" hidden>
+    <section class="panel">
+      <h2>src/cli/commands/structure/check.ts</h2>
+      <article class="item" data-search="check src/cli/commands/structure/check.ts Adapt the public structure check command to deterministic owner artifact verification.">
+    <h3>check</h3>
+    <p class="muted"><code>src/cli/commands/structure/check.ts:5:1</code></p>
+    <p>Adapt the public structure check command to deterministic owner artifact verification.</p>
+  </article>
+    </section>
   </section><section id="view-src-cli-index-ts" class="view" data-view="src/cli/index.ts" hidden>
     <section class="panel">
       <h2>src/cli/index.ts</h2>
       <article class="item" data-search="readPackageVersion src/cli/index.ts ">
     <h3>readPackageVersion</h3>
-    <p class="muted"><code>src/cli/index.ts:60:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:62:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="isNonEmptyString src/cli/index.ts ">
     <h3>isNonEmptyString</h3>
-    <p class="muted"><code>src/cli/index.ts:72:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:74:1</code></p>
     <p class="empty">No description available.</p>
   </article><article class="item" data-search="isRecord src/cli/index.ts ">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/cli/index.ts:76:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:78:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -2420,7 +2721,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/runProviderCommand.ts</h2>
       <article class="item" data-search="runProviderCommand src/cli/runProviderCommand.ts ">
     <h3>runProviderCommand</h3>
-    <p class="muted"><code>src/cli/runProviderCommand.ts:14:1</code></p>
+    <p class="muted"><code>src/cli/runProviderCommand.ts:16:1</code></p>
     <p class="empty">No description available.</p>
   </article>
     </section>
@@ -2636,6 +2937,250 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>readApmReleaseMetadata</h3>
     <p class="muted"><code>src/features/apm-release-validation/utils/readApmReleaseMetadata.ts:4:1</code></p>
     <p>Read opt-in owner metadata without copying the APM discovery schema.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-adapters-inbound-runstructuregenerationcommandasync-ts" class="view" data-view="src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts</h2>
+      <article class="item" data-search="runStructureGenerationCommandAsync src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts Parse structure build/check CLI input and emit one machine-readable result.">
+    <h3>runStructureGenerationCommandAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts:6:1</code></p>
+    <p>Parse structure build/check CLI input and emit one machine-readable result.</p>
+  </article><article class="item" data-search="parseTarget src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts Resolve the optional target directory and reject unsupported flags/extra operands.">
+    <h3>parseTarget</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts:31:1</code></p>
+    <p>Resolve the optional target directory and reject unsupported flags/extra operands.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-adapters-outbound-createstructuregenerationworkspaceport-ts" class="view" data-view="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts</h2>
+      <article class="item" data-search="createStructureGenerationWorkspacePort src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Create the bounded filesystem/compiler adapter used by structure build and check commands.">
+    <h3>createStructureGenerationWorkspacePort</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:15:1</code></p>
+    <p>Create the bounded filesystem/compiler adapter used by structure build and check commands.</p>
+  </article><article class="item" data-search="readStructurePackageAsync src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Read and validate the package-owned structure generation declaration.">
+    <h3>readStructurePackageAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:29:1</code></p>
+    <p>Read and validate the package-owned structure generation declaration.</p>
+  </article><article class="item" data-search="parseStructureConfig src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Parse explicit structure roots and one generated output path without accepting path escapes.">
+    <h3>parseStructureConfig</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:48:1</code></p>
+    <p>Parse explicit structure roots and one generated output path without accepting path escapes.</p>
+  </article><article class="item" data-search="parseRoot src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Parse one explicit root source/export declaration.">
+    <h3>parseRoot</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:66:1</code></p>
+    <p>Parse one explicit root source/export declaration.</p>
+  </article><article class="item" data-search="validateRelativePath src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Require repository-relative paths that resolve inside the selected package root.">
+    <h3>validateRelativePath</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:84:1</code></p>
+    <p>Require repository-relative paths that resolve inside the selected package root.</p>
+  </article><article class="item" data-search="readOptionalFileAsync src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Read an optional generated artifact without treating absence as a filesystem error.">
+    <h3>readOptionalFileAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:95:1</code></p>
+    <p>Read an optional generated artifact without treating absence as a filesystem error.</p>
+  </article><article class="item" data-search="writeGeneratedFileAsync src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Write one generated artifact after ensuring its owning directory exists.">
+    <h3>writeGeneratedFileAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:108:1</code></p>
+    <p>Write one generated artifact after ensuring its owning directory exists.</p>
+  </article><article class="item" data-search="isNodeError src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts Narrow Node filesystem failures without unsafe error casts.">
+    <h3>isNodeError</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts:119:1</code></p>
+    <p>Narrow Node filesystem failures without unsafe error casts.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-adapters-outbound-generatestructureartifactfromtypescriptasync-ts" class="view" data-view="src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts</h2>
+      <article class="item" data-search="generateStructureArtifactFromTypescriptAsync src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Generate one deterministic structural descriptor artifact from explicit public type roots.">
+    <h3>generateStructureArtifactFromTypescriptAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:16:1</code></p>
+    <p>Generate one deterministic structural descriptor artifact from explicit public type roots.</p>
+  </article><article class="item" data-search="createCompiler src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Build a TypeScript program containing the target project plus every explicit structure root source.">
+    <h3>createCompiler</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:62:1</code></p>
+    <p>Build a TypeScript program containing the target project plus every explicit structure root source.</p>
+  </article><article class="item" data-search="assertProgramDiagnostics src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Fail closed when target compilation contains an error diagnostic.">
+    <h3>assertProgramDiagnostics</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:86:1</code></p>
+    <p>Fail closed when target compilation contains an error diagnostic.</p>
+  </article><article class="item" data-search="resolveRoots src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Resolve every opted-in export to a stable local descriptor definition.">
+    <h3>resolveRoots</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:101:1</code></p>
+    <p>Resolve every opted-in export to a stable local descriptor definition.</p>
+  </article><article class="item" data-search="resolveRoot src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Resolve one configured public export and materialize its root definition.">
+    <h3>resolveRoot</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:113:1</code></p>
+    <p>Resolve one configured public export and materialize its root definition.</p>
+  </article><article class="item" data-search="materializeRootDefinition src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Materialize a configured root inline while nested named types remain references.">
+    <h3>materializeRootDefinition</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:145:1</code></p>
+    <p>Materialize a configured root inline while nested named types remain references.</p>
+  </article><article class="item" data-search="renderArtifactSource src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Render a generated source module containing the canonical document and its content fingerprint.">
+    <h3>renderArtifactSource</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:174:1</code></p>
+    <p>Render a generated source module containing the canonical document and its content fingerprint.</p>
+  </article><article class="item" data-search="formatDiagnostic src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts Render one compiler diagnostic without leaking absolute source paths.">
+    <h3>formatDiagnostic</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:194:1</code></p>
+    <p>Render one compiler diagnostic without leaking absolute source paths.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-application-use-cases-synchronizestructureartifactasync-ts" class="view" data-view="src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts</h2>
+      <article class="item" data-search="synchronizeStructureArtifactAsync src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts Build or check the deterministic structural descriptor artifact for one opted-in owner package.">
+    <h3>synchronizeStructureArtifactAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts:7:1</code></p>
+    <p>Build or check the deterministic structural descriptor artifact for one opted-in owner package.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-composition-synchronizestructureartifactfordirectoryasync-ts" class="view" data-view="src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts</h2>
+      <article class="item" data-search="synchronizeStructureArtifactForDirectoryAsync src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts Compose structure artifact generation with the Node workspace adapter for one package root.">
+    <h3>synchronizeStructureArtifactForDirectoryAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts:6:1</code></p>
+    <p>Compose structure artifact generation with the Node workspace adapter for one package root.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-utils-resolvesemanticstructurewrapper-ts" class="view" data-view="src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts</h2>
+      <article class="item" data-search="resolveSemanticStructureWrapper src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Resolve canonical Contracts collection wrappers before generic TypeScript object expansion.">
+    <h3>resolveSemanticStructureWrapper</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:19:1</code></p>
+    <p>Resolve canonical Contracts collection wrappers before generic TypeScript object expansion.</p>
+  </article><article class="item" data-search="resolveSemanticStructureWrapperNode src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Resolve canonical collection semantics from a declared TypeScript type node before normalization.">
+    <h3>resolveSemanticStructureWrapperNode</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:29:1</code></p>
+    <p>Resolve canonical collection semantics from a declared TypeScript type node before normalization.</p>
+  </article><article class="item" data-search="resolveWrapperNodeMatch src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Follow declared type-reference aliases until a canonical Contracts wrapper symbol is reached.">
+    <h3>resolveWrapperNodeMatch</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:39:1</code></p>
+    <p>Follow declared type-reference aliases until a canonical Contracts wrapper symbol is reached.</p>
+  </article><article class="item" data-search="resolveWrapperMatch src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Follow source alias declarations until the exact canonical Contracts wrapper is reached.">
+    <h3>resolveWrapperMatch</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:69:1</code></p>
+    <p>Follow source alias declarations until the exact canonical Contracts wrapper is reached.</p>
+  </article><article class="item" data-search="resolveWrapperFromReferenceNode src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Resolve one source-level type reference against the canonical owner API identity.">
+    <h3>resolveWrapperFromReferenceNode</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:95:1</code></p>
+    <p>Resolve one source-level type reference against the canonical owner API identity.</p>
+  </article><article class="item" data-search="resolveCanonicalWrapperName src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Resolve an exact canonical wrapper through package ownership or its public structure import.">
+    <h3>resolveCanonicalWrapperName</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:113:1</code></p>
+    <p>Resolve an exact canonical wrapper through package ownership or its public structure import.</p>
+  </article><article class="item" data-search="resolveStructureImportName src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Recognize a named type imported from the exact Contracts structure owner subpath.">
+    <h3>resolveStructureImportName</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:128:1</code></p>
+    <p>Recognize a named type imported from the exact Contracts structure owner subpath.</p>
+  </article><article class="item" data-search="resolveAliasedSymbol src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Resolve TypeScript import/re-export alias chains to their final declaration symbol.">
+    <h3>resolveAliasedSymbol</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:145:1</code></p>
+    <p>Resolve TypeScript import/re-export alias chains to their final declaration symbol.</p>
+  </article><article class="item" data-search="resolveDirectWrapper src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Match a direct instantiation of one canonical collection wrapper.">
+    <h3>resolveDirectWrapper</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:161:1</code></p>
+    <p>Match a direct instantiation of one canonical collection wrapper.</p>
+  </article><article class="item" data-search="buildWrapperDescriptor src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Convert one canonical wrapper instantiation to its portable descriptor kind.">
+    <h3>buildWrapperDescriptor</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:173:1</code></p>
+    <p>Convert one canonical wrapper instantiation to its portable descriptor kind.</p>
+  </article><article class="item" data-search="resolveIdentityField src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts Resolve an EntityRegistry identity-field marker from a string literal type argument.">
+    <h3>resolveIdentityField</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts:208:1</code></p>
+    <p>Resolve an EntityRegistry identity-field marker from a string literal type argument.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-utils-resolvestructuresymbolpackage-ts" class="view" data-view="src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts</h2>
+      <article class="item" data-search="resolveStructureSymbolPackage src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts Resolve the owning npm package for a TypeScript symbol without exposing source paths in artifacts.">
+    <h3>resolveStructureSymbolPackage</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts:8:1</code></p>
+    <p>Resolve the owning npm package for a TypeScript symbol without exposing source paths in artifacts.</p>
+  </article><article class="item" data-search="resolveNodeModulePackage src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts Resolve npm package ownership before classifying source paths as local project files.">
+    <h3>resolveNodeModulePackage</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts:31:1</code></p>
+    <p>Resolve npm package ownership before classifying source paths as local project files.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-utils-resolvestructuretype-ts" class="view" data-view="src/features/structure-descriptor-generation/utils/resolveStructureType.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/utils/resolveStructureType.ts</h2>
+      <article class="item" data-search="resolveStructureType src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve one TypeScript type into the canonical structural descriptor graph.">
+    <h3>resolveStructureType</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:17:1</code></p>
+    <p>Resolve one TypeScript type into the canonical structural descriptor graph.</p>
+  </article><article class="item" data-search="resolveNamedType src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve a named local type by reference or preserve an external owner reference.">
+    <h3>resolveNamedType</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:33:1</code></p>
+    <p>Resolve a named local type by reference or preserve an external owner reference.</p>
+  </article><article class="item" data-search="ensureStructureDefinition src/features/structure-descriptor-generation/utils/resolveStructureType.ts Materialize one local named descriptor exactly once while supporting recursive references.">
+    <h3>ensureStructureDefinition</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:47:1</code></p>
+    <p>Materialize one local named descriptor exactly once while supporting recursive references.</p>
+  </article><article class="item" data-search="resolveTypeBody src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve primitives, literals, arrays, unions, and fixed object shapes.">
+    <h3>resolveTypeBody</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:67:1</code></p>
+    <p>Resolve primitives, literals, arrays, unions, and fixed object shapes.</p>
+  </article><article class="item" data-search="resolvePrimitive src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve JSON-safe scalar primitives.">
+    <h3>resolvePrimitive</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:85:1</code></p>
+    <p>Resolve JSON-safe scalar primitives.</p>
+  </article><article class="item" data-search="resolveLiteral src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve one scalar literal while leaving non-literal types untouched.">
+    <h3>resolveLiteral</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:94:1</code></p>
+    <p>Resolve one scalar literal while leaving non-literal types untouched.</p>
+  </article><article class="item" data-search="resolveUnion src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve finite literal unions or a deterministic general union descriptor.">
+    <h3>resolveUnion</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:105:1</code></p>
+    <p>Resolve finite literal unions or a deterministic general union descriptor.</p>
+  </article><article class="item" data-search="isDefinedLiteral src/features/structure-descriptor-generation/utils/resolveStructureType.ts Narrow an optional scalar literal after union projection.">
+    <h3>isDefinedLiteral</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:123:1</code></p>
+    <p>Narrow an optional scalar literal after union projection.</p>
+  </article><article class="item" data-search="resolveArrayItem src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve a homogeneous Array/ReadonlyArray element type while rejecting tuples.">
+    <h3>resolveArrayItem</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:130:1</code></p>
+    <p>Resolve a homogeneous Array/ReadonlyArray element type while rejecting tuples.</p>
+  </article><article class="item" data-search="resolveObject src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve a fixed object shape and reject unmarked records or executable objects.">
+    <h3>resolveObject</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:145:1</code></p>
+    <p>Resolve a fixed object shape and reject unmarked records or executable objects.</p>
+  </article><article class="item" data-search="resolveObjectField src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve one object property including optionality while rejecting methods.">
+    <h3>resolveObjectField</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:163:1</code></p>
+    <p>Resolve one object property including optionality while rejecting methods.</p>
+  </article><article class="item" data-search="hasDeclaredTypeNode src/features/structure-descriptor-generation/utils/resolveStructureType.ts Narrow property declarations that carry a source-level type node.">
+    <h3>hasDeclaredTypeNode</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:196:1</code></p>
+    <p>Narrow property declarations that carry a source-level type node.</p>
+  </article><article class="item" data-search="resolveUnionDiscriminator src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve a stable discriminator shared by every object-like union variant.">
+    <h3>resolveUnionDiscriminator</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:206:1</code></p>
+    <p>Resolve a stable discriminator shared by every object-like union variant.</p>
+  </article><article class="item" data-search="resolveDiscriminatorValue src/features/structure-descriptor-generation/utils/resolveStructureType.ts Resolve one string/number literal discriminator value from an object variant.">
+    <h3>resolveDiscriminatorValue</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:226:1</code></p>
+    <p>Resolve one string/number literal discriminator value from an object variant.</p>
+  </article><article class="item" data-search="resolveNamedSymbol src/features/structure-descriptor-generation/utils/resolveStructureType.ts Return the meaningful alias/interface symbol for reference identity.">
+    <h3>resolveNamedSymbol</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:242:1</code></p>
+    <p>Return the meaningful alias/interface symbol for reference identity.</p>
+  </article><article class="item" data-search="stableSymbolName src/features/structure-descriptor-generation/utils/resolveStructureType.ts Require one stable source-level symbol name independent of declaration file paths.">
+    <h3>stableSymbolName</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:251:1</code></p>
+    <p>Require one stable source-level symbol name independent of declaration file paths.</p>
+  </article><article class="item" data-search="sortLiterals src/features/structure-descriptor-generation/utils/resolveStructureType.ts Sort finite scalar values deterministically without changing scalar identity.">
+    <h3>sortLiterals</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:258:1</code></p>
+    <p>Sort finite scalar values deterministically without changing scalar identity.</p>
+  </article><article class="item" data-search="unsupportedType src/features/structure-descriptor-generation/utils/resolveStructureType.ts Create one actionable unsupported-type error without exposing source paths.">
+    <h3>unsupportedType</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts:265:1</code></p>
+    <p>Create one actionable unsupported-type error without exposing source paths.</p>
   </article>
     </section>
   </section><section id="view-src-internal-readmedocs-ts" class="view" data-view="src/internal/readmeDocs.ts" hidden>
