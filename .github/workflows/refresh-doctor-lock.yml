@@ -26,7 +26,15 @@ jobs:
 
       - name: Refresh lockfile and remove helper
         run: |
-          bun install
+          for attempt in $(seq 1 30); do
+            if bun install; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              exit 1
+            fi
+            sleep 10
+          done
           rm .github/workflows/refresh-doctor-lock.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
