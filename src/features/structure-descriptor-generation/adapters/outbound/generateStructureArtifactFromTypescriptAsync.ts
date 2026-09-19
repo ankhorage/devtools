@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 
-import { isStructureDescriptorDocument } from '@ankhorage/contracts/structure';
+import { isStructureDescriptorDocument } from '@ankhorage/contracts';
 import ts from 'typescript';
 
 import type {
