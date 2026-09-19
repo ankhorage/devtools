@@ -45,30 +45,17 @@ function resolveWrapperNodeMatch(
 
   const rawSymbol = context.checker.getSymbolAtLocation(node.typeName);
   if (!rawSymbol) return null;
-  const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
-  const ownerPackage = resolveStructureSymbolPackage(symbol, context);
-  console.error(
-    '[structure-wrapper-debug]',
-    JSON.stringify({
-      raw: rawSymbol.getName(),
-      rawFlags: rawSymbol.flags,
-      final: symbol.getName(),
-      finalFlags: symbol.flags,
-      ownerPackage,
-      source: symbol.declarations?.at(0)?.getSourceFile().fileName.split('/').slice(-4).join('/'),
-    }),
-  );
 
-  if (ownerPackage === '@ankhorage/contracts') {
-    const name = symbol.getName();
-    if (!WRAPPER_NAMES.has(name)) return null;
+  const canonicalName = resolveCanonicalWrapperName(rawSymbol, context);
+  if (canonicalName) {
     return {
-      name,
+      name: canonicalName,
       arguments:
         node.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ?? [],
     };
   }
 
+  const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
   if (visited.has(symbol)) return null;
   const declaration = symbol.declarations?.find(ts.isTypeAliasDeclaration);
   if (!declaration) return null;
@@ -82,7 +69,7 @@ function resolveWrapperNodeMatch(
 function resolveWrapperMatch(
   type: ts.Type,
   context: StructureCompilerContext,
-  visited: Set<ts.Symbol>,
+  visited: ReadonlySet<ts.Symbol>,
 ): WrapperMatch | null {
   const direct = resolveDirectWrapper(type, context);
   if (direct) return direct;
@@ -99,11 +86,12 @@ function resolveWrapperMatch(
   const nested = targetType === type ? null : resolveWrapperMatch(targetType, context, nextVisited);
   if (nested) return nested;
 
-  if (!ts.isTypeReferenceNode(declaration.type)) return null;
-  return resolveWrapperFromReferenceNode(declaration.type, context);
+  return ts.isTypeReferenceNode(declaration.type)
+    ? resolveWrapperFromReferenceNode(declaration.type, context)
+    : null;
 }
 
-/*** Resolve one source-level type reference against its final imported/re-exported symbol. */
+/*** Resolve one source-level type reference against the canonical owner API identity. */
 function resolveWrapperFromReferenceNode(
   reference: ts.TypeReferenceNode,
   context: StructureCompilerContext,
@@ -111,17 +99,45 @@ function resolveWrapperFromReferenceNode(
   const rawSymbol = context.checker.getSymbolAtLocation(reference.typeName);
   if (!rawSymbol) return null;
 
+  const name = resolveCanonicalWrapperName(rawSymbol, context);
+  if (!name) return null;
+  return {
+    name,
+    arguments:
+      reference.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ?? [],
+  };
+}
+
+/*** Resolve an exact canonical wrapper through package ownership or its public structure import. */
+function resolveCanonicalWrapperName(
+  rawSymbol: ts.Symbol,
+  context: StructureCompilerContext,
+): string | null {
+  const importedName = resolveStructureImportName(rawSymbol);
+  if (importedName && WRAPPER_NAMES.has(importedName)) return importedName;
+
   const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
   if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
 
   const name = symbol.getName();
-  if (!WRAPPER_NAMES.has(name)) return null;
-  return {
-    name,
-    arguments:
-      reference.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ??
-      [],
-  };
+  return WRAPPER_NAMES.has(name) ? name : null;
+}
+
+/*** Recognize a named type imported from the exact Contracts structure owner subpath. */
+function resolveStructureImportName(symbol: ts.Symbol): string | null {
+  for (const declaration of symbol.declarations ?? []) {
+    if (!ts.isImportSpecifier(declaration)) continue;
+    const importDeclaration = declaration.parent.parent.parent;
+    if (
+      !ts.isImportDeclaration(importDeclaration) ||
+      !ts.isStringLiteral(importDeclaration.moduleSpecifier) ||
+      importDeclaration.moduleSpecifier.text !== '@ankhorage/contracts/structure'
+    ) {
+      continue;
+    }
+    return (declaration.propertyName ?? declaration.name).text;
+  }
+  return null;
 }
 
 /*** Resolve TypeScript import/re-export alias chains to their final declaration symbol. */
@@ -133,7 +149,7 @@ function resolveAliasedSymbol(
   if ((symbol.flags & ts.SymbolFlags.Alias) === 0 || visited.has(symbol)) return symbol;
 
   const next = checker.getAliasedSymbol(symbol);
-  if (next === symbol) return symbol;
+  if (next === symbol || next.getName() === 'unknown') return symbol;
 
   const nextVisited = new Set(visited);
   nextVisited.add(symbol);
@@ -148,12 +164,8 @@ function resolveDirectWrapper(
   const rawSymbol = type.aliasSymbol;
   if (!rawSymbol) return null;
 
-  const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
-  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
-
-  const name = symbol.getName();
-  if (!WRAPPER_NAMES.has(name)) return null;
-  return { name, arguments: type.aliasTypeArguments ?? [] };
+  const name = resolveCanonicalWrapperName(rawSymbol, context);
+  return name ? { name, arguments: type.aliasTypeArguments ?? [] } : null;
 }
 
 /*** Convert one canonical wrapper instantiation to its portable descriptor kind. */
