@@ -25,7 +25,6 @@ export function resolveSemanticStructureWrapper(
   return match ? buildWrapperDescriptor(match.name, match.arguments, context, resolveType) : null;
 }
 
-
 /*** Resolve canonical collection semantics from a declared TypeScript type node before normalization. */
 export function resolveSemanticStructureWrapperNode(
   node: ts.TypeNode,
@@ -53,9 +52,8 @@ function resolveWrapperNodeMatch(
     if (!WRAPPER_NAMES.has(name)) return null;
     return {
       name,
-      arguments: node.typeArguments?.map((argument) =>
-        context.checker.getTypeFromTypeNode(argument),
-      ) ?? [],
+      arguments:
+        node.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ?? [],
     };
   }
 
