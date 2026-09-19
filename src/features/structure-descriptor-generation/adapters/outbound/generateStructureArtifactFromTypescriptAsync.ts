@@ -9,6 +9,7 @@ import type {
   StructureGenerationArtifact,
   StructureGenerationPackage,
 } from '../../../../types/structure-generation.js';
+import { resolveSemanticStructureWrapperNode } from '../../utils/resolveSemanticStructureWrapper.js';
 import { resolveStructureType } from '../../utils/resolveStructureType.js';
 
 /*** Generate one deterministic structural descriptor artifact from explicit public type roots. */
@@ -153,9 +154,19 @@ function materializeRootDefinition(
   if (context.definitions.has(id)) return;
 
   const type = context.checker.getDeclaredTypeOfSymbol(symbol);
+  const aliasDeclaration = symbol.declarations?.find(ts.isTypeAliasDeclaration);
+  const declaredDescriptor = aliasDeclaration
+    ? resolveSemanticStructureWrapperNode(aliasDeclaration.type, context, (value) =>
+        resolveStructureType(value, context),
+      )
+    : null;
+
   context.definitionSymbols.set(id, symbol);
   context.resolving.add(id);
-  context.definitions.set(id, { id, descriptor: resolveStructureType(type, context, symbol) });
+  context.definitions.set(id, {
+    id,
+    descriptor: declaredDescriptor ?? resolveStructureType(type, context, symbol),
+  });
   context.resolving.delete(id);
 }
 
