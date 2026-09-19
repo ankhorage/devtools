@@ -182,7 +182,7 @@ function resolveUnionDiscriminator(
   variants: readonly ts.Type[],
   checker: ts.TypeChecker,
 ): string | null {
-  const first = variants[0];
+  const [first] = variants;
   const candidates = first
     .getProperties()
     .map((property) => property.getName())
