@@ -1,0 +1,35 @@
+name: Refresh Doctor lockfile
+
+on:
+  push:
+    branches:
+      - fix/250-isolated-provider-typescript-runtime
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/250-isolated-provider-typescript-runtime
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - name: Refresh lockfile and remove helper
+        run: |
+          bun install
+          rm .github/workflows/refresh-doctor-lock.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: refresh Doctor lockfile"
+          git push origin HEAD:fix/250-isolated-provider-typescript-runtime
