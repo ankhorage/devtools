@@ -73,17 +73,19 @@ function resolveWrapperFromReferenceNode(
 }
 
 /*** Resolve TypeScript import/re-export alias chains to their final declaration symbol. */
-function resolveAliasedSymbol(symbol: ts.Symbol, checker: ts.TypeChecker): ts.Symbol {
-  const visited = new Set<ts.Symbol>();
-  let current = symbol;
+function resolveAliasedSymbol(
+  symbol: ts.Symbol,
+  checker: ts.TypeChecker,
+  visited: ReadonlySet<ts.Symbol> = new Set(),
+): ts.Symbol {
+  if ((symbol.flags & ts.SymbolFlags.Alias) === 0 || visited.has(symbol)) return symbol;
 
-  while ((current.flags & ts.SymbolFlags.Alias) !== 0 && !visited.has(current)) {
-    visited.add(current);
-    const next = checker.getAliasedSymbol(current);
-    if (next === current) break;
-    current = next;
-  }
-  return current;
+  const next = checker.getAliasedSymbol(symbol);
+  if (next === symbol) return symbol;
+
+  const nextVisited = new Set(visited);
+  nextVisited.add(symbol);
+  return resolveAliasedSymbol(next, checker, nextVisited);
 }
 
 /*** Match a direct instantiation of one canonical collection wrapper. */
