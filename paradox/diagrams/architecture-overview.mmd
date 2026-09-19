@@ -26,6 +26,9 @@ graph TD
   module_src_cli_bin_prettier_ts["src/cli/bin/prettier.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_prettier_ts
   module_src_cli_bin_prettier_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_structure_ts["src/cli/bin/structure.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_bin_structure_ts
+  module_src_cli_bin_structure_ts --> module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_ts["src/cli/commands.ts"]
   package__ankhorage_devtools -.-> module_src_cli_commands_ts
   module_src_cli_commands_apm_sync_ts["src/cli/commands/apm/sync.ts"]
@@ -131,6 +134,8 @@ graph TD
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --> module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --> module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --> module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts["src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts["src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts"]
   package__ankhorage_devtools -.-> module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --> module_src_types_structure_generation_ts
@@ -234,6 +239,7 @@ graph TD
   module_src_tools_workflows_index_ts["src/tools/workflows/index.ts"]
   package__ankhorage_devtools -.-> module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
+  module_src_tools_workflows_index_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts

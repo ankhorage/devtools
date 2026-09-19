@@ -247,6 +247,11 @@
       <small>8 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts">
+      src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts">
       src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts
       <small>1 function</small>
@@ -408,7 +413,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>69</strong><span class="muted">modules</span></div>
+        <div><strong>71</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -416,7 +421,7 @@
         <li><code>src/apmRelease.ts</code></li><li><code>src/cli/index.ts</code></li><li><code>src/tools/eslint/index.ts</code></li><li><code>src/tools/knip/index.ts</code></li><li><code>src/types/public.ts</code></li>
       </ul>
     </section>
-    <section class="panel" data-search="cli Run and synchronize the shared development toolchain through the Ankh CLI.&#10;&#10;`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and&#10;`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.&#10;Repository synchronization is available through&#10;`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,&#10;`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.&#10;Owner packages can opt into deterministic structural metadata with&#10;`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.&#10;&#10;Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is&#10;deterministic and idempotent: canonical managed files and skill trees are created or updated,&#10;unrelated repository-local skills and create-only local extension files remain repository-owned,&#10;and package metadata is merge-updated without replacing unrelated fields.&#10;&#10;Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding&#10;`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a&#10;local extension before the canonical auto-detecting wrapper is installed.&#10;&#10;APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid&#10;descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a&#10;script-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.&#10;`--artifact &lt;path&gt;` retains the exact accepted tarball and `--expected-integrity &lt;SRI&gt;`&#10;rejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.&#10;CI runs that owner suite and the packed check. Release rebuilds after versioning, validates,&#10;then publishes the retained archive with scripts disabled through the existing release job.&#10;Packages without metadata keep their existing Changesets publish path unchanged. bunx @ankhorage/devtools ankhorage-apm-release bunx @ankhorage/devtools ankhorage-changeset bunx @ankhorage/devtools ankhorage-eslint bunx @ankhorage/devtools ankhorage-knip bunx @ankhorage/devtools ankhorage-prettier">
+    <section class="panel" data-search="cli Run and synchronize the shared development toolchain through the Ankh CLI.&#10;&#10;`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and&#10;`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.&#10;Repository synchronization is available through&#10;`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,&#10;`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.&#10;Owner packages can opt into deterministic structural metadata with&#10;`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.&#10;&#10;Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is&#10;deterministic and idempotent: canonical managed files and skill trees are created or updated,&#10;unrelated repository-local skills and create-only local extension files remain repository-owned,&#10;and package metadata is merge-updated without replacing unrelated fields.&#10;&#10;Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding&#10;`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a&#10;local extension before the canonical auto-detecting wrapper is installed.&#10;&#10;APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid&#10;descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a&#10;script-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.&#10;`--artifact &lt;path&gt;` retains the exact accepted tarball and `--expected-integrity &lt;SRI&gt;`&#10;rejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.&#10;CI runs that owner suite and the packed check. Release rebuilds after versioning, validates,&#10;then publishes the retained archive with scripts disabled through the existing release job.&#10;Packages without metadata keep their existing Changesets publish path unchanged. bunx @ankhorage/devtools ankhorage-apm-release bunx @ankhorage/devtools ankhorage-changeset bunx @ankhorage/devtools ankhorage-eslint bunx @ankhorage/devtools ankhorage-knip bunx @ankhorage/devtools ankhorage-prettier bunx @ankhorage/devtools ankhorage-structure">
     <h2>CLI</h2>
     <p>Run and synchronize the shared development toolchain through the Ankh CLI.
 
@@ -449,7 +454,8 @@ Packages without metadata keep their existing Changesets publish path unchanged.
 bunx @ankhorage/devtools ankhorage-changeset
 bunx @ankhorage/devtools ankhorage-eslint
 bunx @ankhorage/devtools ankhorage-knip
-bunx @ankhorage/devtools ankhorage-prettier</pre>
+bunx @ankhorage/devtools ankhorage-prettier
+bunx @ankhorage/devtools ankhorage-structure</pre>
     
   </section>
     <section class="panel">
@@ -483,6 +489,11 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <h3>src/cli/bin/prettier.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/runStandaloneTool.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/cli/bin/structure.ts src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts">
+    <h3>src/cli/bin/structure.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/cli/commands.ts DevtoolsCommandDefinition DevtoolsExternalCommandDefinition DevtoolsRepositoryCommandDefinition DevtoolsToolName findDevtoolsCommandByPath getDevtoolsCommands getDevtoolsToolCommand">
     <h3>src/cli/commands.ts</h3>
@@ -604,6 +615,11 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts</code>, <code>src/features/structure-descriptor-generation/utils/resolveStructureType.ts</code>, <code>src/types/structure-generation.ts</code></p>
     <p><strong>Exports:</strong> <code>generateStructureArtifactFromTypescriptAsync</code></p>
+  </article><article class="item" data-search="src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts resolveStructureReleaseCommandAsync">
+    <h3>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>resolveStructureReleaseCommandAsync</code></p>
   </article><article class="item" data-search="src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts src/types/structure-generation.ts synchronizeStructureArtifactAsync">
     <h3>src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts</h3>
     <p class="muted">Referenced module</p>
@@ -759,10 +775,10 @@ bunx @ankhorage/devtools ankhorage-prettier</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/tools/shared/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>vscodeManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/policy/bunRuntimePolicy.ts src/tools/shared/managedFiles.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
+  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/bunRuntimePolicy.ts src/tools/shared/managedFiles.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
     <h3>src/tools/workflows/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/policy/bunRuntimePolicy.ts</code>, <code>src/tools/shared/managedFiles.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/bunRuntimePolicy.ts</code>, <code>src/tools/shared/managedFiles.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>workflowManagedFiles</code></p>
   </article><article class="item" data-search="src/tools/workflows/readCurrentDoctorVersion.ts readCurrentDoctorVersion">
     <h3>src/tools/workflows/readCurrentDoctorVersion.ts</h3>
@@ -1463,6 +1479,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_prettier_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_bin_structure_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_ts
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
@@ -1568,6 +1587,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --&gt; module_src_types_structure_generation_ts
@@ -1671,6 +1692,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
@@ -1722,6 +1744,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_prettier_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_bin_structure_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_ts
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
@@ -1827,6 +1852,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_types_structure_generation_ts
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts --&gt; module_src_types_structure_generation_ts
@@ -1930,6 +1957,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
@@ -1962,6 +1990,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
@@ -1986,6 +2015,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
@@ -2030,6 +2060,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
@@ -2129,6 +2160,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_selection_ts
   module_src_tools_vscode_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
@@ -2146,6 +2178,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
@@ -2170,6 +2203,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
@@ -2214,6 +2248,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
@@ -2313,6 +2348,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_selection_ts
   module_src_tools_vscode_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
@@ -2332,6 +2368,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
@@ -2356,6 +2393,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
@@ -2458,6 +2496,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
@@ -2482,6 +2521,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
+  module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_application_use_cases_synchronizeStructureArtifactAsync_ts[&quot;src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts[&quot;src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts[&quot;src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts&quot;]
@@ -3024,6 +3064,19 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>formatDiagnostic</h3>
     <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts:194:1</code></p>
     <p>Render one compiler diagnostic without leaking absolute source paths.</p>
+  </article>
+    </section>
+  </section><section id="view-src-features-structure-descriptor-generation-adapters-outbound-resolvestructurereleasecommandasync-ts" class="view" data-view="src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</h2>
+      <article class="item" data-search="resolveStructureReleaseCommandAsync src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts Use Devtools&#39; built structure CLI for self-release and the installed binary in consumers.">
+    <h3>resolveStructureReleaseCommandAsync</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts:5:1</code></p>
+    <p>Use Devtools&#39; built structure CLI for self-release and the installed binary in consumers.</p>
+  </article><article class="item" data-search="isPackageNamed src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts Narrow a package manifest by its canonical package name.">
+    <h3>isPackageNamed</h3>
+    <p class="muted"><code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts:22:1</code></p>
+    <p>Narrow a package manifest by its canonical package name.</p>
   </article>
     </section>
   </section><section id="view-src-features-structure-descriptor-generation-application-use-cases-synchronizestructureartifactasync-ts" class="view" data-view="src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts" hidden>
@@ -3797,11 +3850,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/workflows/index.ts</h2>
       <article class="item" data-search="createWorkflowDefinition src/tools/workflows/index.ts Create a managed workflow definition rendered from current shared runtime policies.">
     <h3>createWorkflowDefinition</h3>
-    <p class="muted"><code>src/tools/workflows/index.ts:34:1</code></p>
+    <p class="muted"><code>src/tools/workflows/index.ts:35:1</code></p>
     <p>Create a managed workflow definition rendered from current shared runtime policies.</p>
   </article><article class="item" data-search="createRenovateWorkflowDefinition src/tools/workflows/index.ts Creates the managed workflow whose immutable digest remains Renovate-owned.">
     <h3>createRenovateWorkflowDefinition</h3>
-    <p class="muted"><code>src/tools/workflows/index.ts:49:1</code></p>
+    <p class="muted"><code>src/tools/workflows/index.ts:51:1</code></p>
     <p>Creates the managed workflow whose immutable digest remains Renovate-owned.</p>
   </article>
     </section>
@@ -3840,7 +3893,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/workflows/renderWorkflowAsync.ts</h2>
       <article class="item" data-search="renderWorkflowAsync src/tools/workflows/renderWorkflowAsync.ts Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.">
     <h3>renderWorkflowAsync</h3>
-    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:13:1</code></p>
+    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:14:1</code></p>
     <p>Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.</p>
   </article>
     </section>

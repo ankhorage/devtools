@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.18.0",
+      "value": "v1.18.1",
       "color": "cb3837"
     },
     {
@@ -82,6 +82,10 @@
       {
         "name": "ankhorage-prettier",
         "command": "bunx @ankhorage/devtools ankhorage-prettier"
+      },
+      {
+        "name": "ankhorage-structure",
+        "command": "bunx @ankhorage/devtools ankhorage-structure"
       }
     ]
   },
@@ -151,6 +155,14 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/runStandaloneTool.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/cli/bin/structure.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
       ],
       "exports": []
     },
@@ -435,6 +447,14 @@
       ],
       "exports": [
         "generateStructureArtifactFromTypescriptAsync"
+      ]
+    },
+    {
+      "path": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "resolveStructureReleaseCommandAsync"
       ]
     },
     {
@@ -799,6 +819,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/bunRuntimePolicy.ts",
         "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
@@ -2403,6 +2424,24 @@
       }
     },
     {
+      "name": "resolveStructureReleaseCommandAsync",
+      "description": "Use Devtools' built structure CLI for self-release and the installed binary in consumers.",
+      "sourceLocation": {
+        "filePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPackageNamed",
+      "description": "Narrow a package manifest by its canonical package name.",
+      "sourceLocation": {
+        "filePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
       "name": "synchronizeStructureArtifactAsync",
       "description": "Build or check the deterministic structural descriptor artifact for one opted-in owner package.",
       "sourceLocation": {
@@ -3838,7 +3877,7 @@
       "description": "Create a managed workflow definition rendered from current shared runtime policies.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 34,
+        "line": 35,
         "column": 1
       }
     },
@@ -3847,7 +3886,7 @@
       "description": "Creates the managed workflow whose immutable digest remains Renovate-owned.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 49,
+        "line": 51,
         "column": 1
       }
     },
@@ -3901,7 +3940,7 @@
       "description": "Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 13,
+        "line": 14,
         "column": 1
       }
     }
@@ -4174,6 +4213,11 @@
         "sourcePath": "src/cli/bin/prettier.ts"
       },
       {
+        "fromPath": "src/cli/bin/structure.ts",
+        "toPath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
+        "sourcePath": "src/cli/bin/structure.ts"
+      },
+      {
         "fromPath": "src/tools/agents/index.ts",
         "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/tools/agents/index.ts"
@@ -4281,6 +4325,11 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -5157,6 +5206,12 @@
         "toSymbol": "runStandaloneTool",
         "callExpression": "runStandaloneTool",
         "sourcePath": "src/cli/bin/prettier.ts"
+      },
+      {
+        "fromSymbol": "src/cli/bin/structure.ts",
+        "toSymbol": "runStructureGenerationCommandAsync",
+        "callExpression": "runStructureGenerationCommandAsync",
+        "sourcePath": "src/cli/bin/structure.ts"
       },
       {
         "fromSymbol": "renderAgentsFile",
@@ -6402,6 +6457,12 @@
       },
       {
         "fromSymbol": "render",
+        "toSymbol": "resolveStructureReleaseCommandAsync",
+        "callExpression": "resolveStructureReleaseCommandAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
         "toSymbol": "readCurrentDoctorVersion",
         "callExpression": "readCurrentDoctorVersion",
         "sourcePath": "src/tools/workflows/index.ts"
@@ -7533,6 +7594,24 @@
         "toSymbol": "resolveStructureType",
         "callExpression": "resolveStructureType",
         "sourcePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveStructureReleaseCommandAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveStructureReleaseCommandAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveStructureReleaseCommandAsync",
+        "toSymbol": "isPackageNamed",
+        "callExpression": "isPackageNamed",
+        "sourcePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts"
       },
       {
         "fromSymbol": "synchronizeStructureArtifactAsync",
