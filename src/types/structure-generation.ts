@@ -1,4 +1,7 @@
-import type { StructureDescriptor, StructureDescriptorDefinition, StructureDescriptorDocument } from '@ankhorage/contracts';
+import type {
+  StructureDescriptorDefinition,
+  StructureDescriptorDocument,
+} from '@ankhorage/contracts';
 import type ts from 'typescript';
 
 export interface StructureGenerationRoot {
@@ -50,7 +53,3 @@ export interface StructureCompilerContext {
   readonly resolving: Set<string>;
 }
 
-export interface StructureResolvedType {
-  readonly descriptor: StructureDescriptor;
-  readonly symbolName?: string;
-}
