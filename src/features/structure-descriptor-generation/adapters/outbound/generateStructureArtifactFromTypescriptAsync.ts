@@ -12,10 +12,10 @@ import type {
 import { resolveStructureType } from '../../utils/resolveStructureType.js';
 
 /*** Generate one deterministic structural descriptor artifact from explicit public type roots. */
-export async function generateStructureArtifactFromTypescriptAsync(
+export function generateStructureArtifactFromTypescriptAsync(
   targetDirectory: string,
   packageConfig: StructureGenerationPackage,
-): Promise<StructureGenerationArtifact> {
+): StructureGenerationArtifact {
   const { program, checker } = createCompiler(targetDirectory, packageConfig);
   assertProgramDiagnostics(program, targetDirectory);
 
@@ -41,7 +41,9 @@ export async function generateStructureArtifactFromTypescriptAsync(
   } as const;
 
   if (!isStructureDescriptorDocument(document)) {
-    throw new Error('Generated structural descriptor document failed canonical Contracts validation.');
+    throw new Error(
+      'Generated structural descriptor document failed canonical Contracts validation.',
+    );
   }
 
   const serialized = JSON.stringify(document, null, 2);
@@ -60,10 +62,14 @@ function createCompiler(
   targetDirectory: string,
   packageConfig: StructureGenerationPackage,
 ): { readonly program: ts.Program; readonly checker: ts.TypeChecker } {
-  const configPath = ts.findConfigFile(targetDirectory, ts.sys.fileExists, 'tsconfig.json');
+  const configPath = ts.findConfigFile(
+    targetDirectory,
+    (fileName) => ts.sys.fileExists(fileName),
+    'tsconfig.json',
+  );
   if (!configPath) throw new Error('Structure generation requires a project tsconfig.json.');
 
-  const loaded = ts.readConfigFile(configPath, ts.sys.readFile);
+  const loaded = ts.readConfigFile(configPath, (fileName) => ts.sys.readFile(fileName));
   if (loaded.error) throw new Error(formatDiagnostic(loaded.error, targetDirectory));
 
   const parsed = ts.parseJsonConfigFileContent(loaded.config, ts.sys, targetDirectory);
@@ -77,9 +83,9 @@ function createCompiler(
 
 /*** Fail closed when target compilation contains an error diagnostic. */
 function assertProgramDiagnostics(program: ts.Program, targetDirectory: string): void {
-  const errors = ts.getPreEmitDiagnostics(program).filter(
-    (diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error,
-  );
+  const errors = ts
+    .getPreEmitDiagnostics(program)
+    .filter((diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error);
   if (errors.length === 0) return;
 
   throw new Error(
@@ -141,7 +147,9 @@ function materializeRootDefinition(
   context: StructureCompilerContext,
 ): void {
   const previous = context.definitionSymbols.get(id);
-  if (previous && previous !== symbol) throw new Error(`Duplicate structural descriptor id "${id}".`);
+  if (previous && previous !== symbol) {
+    throw new Error(`Duplicate structural descriptor id "${id}".`);
+  }
   if (context.definitions.has(id)) return;
 
   const type = context.checker.getDeclaredTypeOfSymbol(symbol);
@@ -164,7 +172,9 @@ function renderArtifactSource(
     `export const STRUCTURE_DESCRIPTOR_COMPILER_VERSION = '${compilerVersion}';`,
     `export const STRUCTURE_DESCRIPTOR_FINGERPRINT = '${fingerprint}';`,
     '',
-    'export const STRUCTURE_DESCRIPTOR = ' + serialized + ' as const satisfies StructureDescriptorDocument;',
+    'export const STRUCTURE_DESCRIPTOR = ' +
+      serialized +
+      ' as const satisfies StructureDescriptorDocument;',
     '',
   ].join('\n');
 }
