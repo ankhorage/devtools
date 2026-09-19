@@ -22,9 +22,7 @@ export function resolveSemanticStructureWrapper(
   resolveType: ResolveType,
 ): StructureDescriptor | null {
   const match = resolveWrapperMatch(type, context, new Set());
-  return match
-    ? buildWrapperDescriptor(match.name, match.arguments, context, resolveType)
-    : null;
+  return match ? buildWrapperDescriptor(match.name, match.arguments, context, resolveType) : null;
 }
 
 /*** Follow source alias declarations until the exact canonical Contracts wrapper is reached. */
@@ -36,15 +34,16 @@ function resolveWrapperMatch(
   const direct = resolveDirectWrapper(type, context);
   if (direct) return direct;
 
-  const aliasSymbol = type.aliasSymbol;
+  const { aliasSymbol } = type;
   if (!aliasSymbol || visited.has(aliasSymbol)) return null;
-  visited.add(aliasSymbol);
+  const nextVisited = new Set(visited);
+  nextVisited.add(aliasSymbol);
 
   const declaration = aliasSymbol.declarations?.find(ts.isTypeAliasDeclaration);
   if (!declaration) return null;
 
   const targetType = context.checker.getTypeFromTypeNode(declaration.type);
-  const nested = targetType === type ? null : resolveWrapperMatch(targetType, context, visited);
+  const nested = targetType === type ? null : resolveWrapperMatch(targetType, context, nextVisited);
   if (nested) return nested;
 
   if (!ts.isTypeReferenceNode(declaration.type)) return null;
@@ -66,9 +65,9 @@ function resolveWrapperFromReferenceNode(
   if (!WRAPPER_NAMES.has(name)) return null;
   return {
     name,
-    arguments: reference.typeArguments?.map((argument) =>
-      context.checker.getTypeFromTypeNode(argument),
-    ) ?? [],
+    arguments:
+      reference.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ??
+      [],
   };
 }
 
