@@ -1,4 +1,4 @@
-import type { StructureDescriptor, StructureDescriptorDefinition, StructureDescriptorDocument } from '@ankhorage/contracts/structure';
+import type { StructureDescriptor, StructureDescriptorDefinition, StructureDescriptorDocument } from '@ankhorage/contracts';
 import type ts from 'typescript';
 
 export interface StructureGenerationRoot {
