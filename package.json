@@ -123,7 +123,7 @@
   "dependencies": {
     "@ankhorage/apm": "^0.6.0",
     "@ankhorage/project-detector": "^0.1.0",
-    "@ankhorage/utility": "^0.5.1",
+    "@ankhorage/utility": "^1.4.0",
     "@changesets/cli": "^3.0.2",
     "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
