@@ -16,6 +16,8 @@ const capabilities = [
   'devtools.agents.status',
   'devtools.skills.sync',
   'devtools.skills.status',
+  'devtools.structure.build',
+  'devtools.structure.check',
   'devtools.eslint.sync',
   'devtools.eslint.status',
   'devtools.prettier.sync',
