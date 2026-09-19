@@ -1,4 +1,5 @@
 name: Refresh Contracts lock
+# retry after registry propagation
 
 on:
   push:
