@@ -57,7 +57,7 @@ describe('managed workflows', () => {
     expect(release).toContain('permission-contents: write');
     expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
     expect(release).not.toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
-    expect(release).toContain("!/^@ankhorage\\/[a-z0-9][a-z0-9-]*$/.test");
+    expect(release).toContain('!/^@ankhorage\\/[a-z0-9][a-z0-9-]*$/.test');
     expect(release).toContain("event_type: 'package-release'");
     expect(release).not.toContain("event_type: 'devtools-release'");
     expect(release).toContain('package_name: release.name');
