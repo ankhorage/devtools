@@ -35,5 +35,21 @@ export default createConfig({
         'max-lines-per-function': 'off',
       },
     },
+    {
+      // Type-aware ESLint currently classifies the released Contracts structure subpath as an
+      // error type under this NodeNext project even though tsc resolves and validates it.
+      files: [
+        'src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts',
+        'src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts',
+        'src/features/structure-descriptor-generation/utils/resolveStructureType.ts',
+        'src/types/structure-generation.ts',
+      ],
+      rules: {
+        '@typescript-eslint/no-redundant-type-constituents': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+      },
+    },
   ],
 });
