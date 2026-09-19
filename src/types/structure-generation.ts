@@ -46,6 +46,7 @@ export interface StructureCompilerContext {
   readonly targetDirectory: string;
   readonly packageName: string;
   readonly definitions: Map<string, StructureDescriptorDefinition>;
+  readonly definitionSymbols: Map<string, ts.Symbol>;
   readonly resolving: Set<string>;
 }
 
