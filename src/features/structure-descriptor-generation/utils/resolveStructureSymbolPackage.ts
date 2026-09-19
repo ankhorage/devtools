@@ -9,7 +9,7 @@ export function resolveStructureSymbolPackage(
   symbol: ts.Symbol,
   context: StructureCompilerContext,
 ): string | null {
-  const [declaration] = symbol.declarations ?? [];
+  const declaration = symbol.declarations?.at(0);
   if (!declaration) return null;
 
   const { fileName } = declaration.getSourceFile();
