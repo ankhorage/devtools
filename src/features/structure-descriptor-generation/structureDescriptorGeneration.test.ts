@@ -31,7 +31,7 @@ test('generates deterministic structural semantics from explicit public type roo
   expect(generated).toContain('"kind": "set"');
   expect(generated).toContain('"kind": "ordered-list"');
   expect(generated).toContain('"discriminator": "kind"');
-  expect(generated).toContain('"packageName": "@ankhorage/contracts"');
+  expect(generated).toContain('"packageName": "@example/owner"');
   expect(generated).not.toContain(target);
 });
 
@@ -95,6 +95,23 @@ async function createFixtureProject(): Promise<string> {
   const target = await mkdtemp(join(process.cwd(), '.tmp-structure-'));
   createdDirectories.push(target);
   await mkdir(join(target, 'src'), { recursive: true });
+  await mkdir(join(target, 'node_modules/@example/owner'), { recursive: true });
+  await writeFile(
+    join(target, 'node_modules/@example/owner/package.json'),
+    JSON.stringify(
+      {
+        name: '@example/owner',
+        version: '1.0.0',
+        types: './index.d.ts',
+      },
+      null,
+      2,
+    ),
+  );
+  await writeFile(
+    join(target, 'node_modules/@example/owner/index.d.ts'),
+    'export interface ExternalConfig { readonly enabled: boolean; }\n',
+  );
   await writePackageJson(target, 'src/public.ts');
   await writeFile(
     join(target, 'tsconfig.json'),
@@ -144,9 +161,9 @@ const FIXTURE_SOURCE = `
 import type {
   EntityRegistry,
   SerializableSet,
-  StructureDescriptorDocument,
   ValueMap,
 } from '@ankhorage/contracts/structure';
+import type { ExternalConfig } from '@example/owner';
 
 export type Mode = 'light' | 'dark';
 
@@ -184,6 +201,6 @@ export interface AppRoot {
   readonly ordered: readonly Item[];
   readonly tree?: Tree;
   readonly source: Source;
-  readonly externalStructure?: StructureDescriptorDocument;
+  readonly externalConfig?: ExternalConfig;
 }
 `;
