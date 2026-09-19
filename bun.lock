@@ -25,20 +25,17 @@
         "eslint-plugin-unused-imports": "^4.4.1",
         "knip": "^6.34.0",
         "prettier": "^3.9.6",
+        "typescript": "~6.0.3",
         "typescript-eslint": "^8.69.0",
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.8.11",
-        "@ankhorage/doctor": "0.10.14",
+        "@ankhorage/doctor": "0.10.26",
         "@ankhorage/paradox": "^0.1.26",
         "@techstark/opencv-js": "^5.0.0-release.1",
         "@types/bun": "^1.4.1",
         "@types/node": "^26.4.1",
         "sharp": "^0.35.4",
-        "typescript": "~6.0.3",
-      },
-      "peerDependencies": {
-        "typescript": ">=5.9.3 <7",
       },
     },
   },
@@ -53,13 +50,13 @@
 
     "@ankhorage/devtools": ["@ankhorage/devtools@1.11.0", "", { "dependencies": { "@ankhorage/utility": "^0.3.0", "@changesets/cli": "^3.0.2", "@eslint/compat": "^2.1.1", "@eslint/js": "^10.0.1", "eslint": "^10.10.0", "eslint-config-prettier": "^10.1.8", "eslint-plugin-import": "^2.32.0", "eslint-plugin-prettier": "^5.5.6", "eslint-plugin-react": "^7.37.5", "eslint-plugin-react-hooks": "^7.1.1", "eslint-plugin-react-native": "^5.0.0", "eslint-plugin-security": "^4.0.1", "eslint-plugin-simple-import-sort": "^14.0.0", "eslint-plugin-unused-imports": "^4.4.1", "knip": "^6.34.0", "prettier": "^3.9.6", "typescript-eslint": "^8.69.0" }, "bin": { "ankhorage-changeset": "dist/cli/bin/changeset.js", "ankhorage-eslint": "dist/cli/bin/eslint.js", "ankhorage-knip": "dist/cli/bin/knip.js", "ankhorage-prettier": "dist/cli/bin/prettier.js" } }, "sha512-/9azy4bPaAOAXTW7LbLflwv17lCP0qR2O0EA4tUpekqEMoBqNYUTycKlwbhm2TWlgJYWl1+UmRfv3UiDhHde7g=="],
 
-    "@ankhorage/doctor": ["@ankhorage/doctor@0.10.14", "", { "dependencies": { "@ankhorage/contracts": "^19.1.0", "@ankhorage/supabase-auth": "^1.2.11" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-/KCCVidl5fjKBBWzXDbQ+Yrkk/TxExdMHr9Q5gitVRHiszx7Ygn+gZOVSmDEebb6cqiebHJJSpFLIKCRhUCpUg=="],
+    "@ankhorage/doctor": ["@ankhorage/doctor@0.10.26", "", { "dependencies": { "@ankhorage/contracts": "^22.1.1", "@ankhorage/supabase-auth": "^1.2.19" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-cVVfVlG81GPHaLw1NDFhTZiAv1pm5IOUyothpXkDYJKmrJDiEQvJGlHA6gQqAKW90OYVZX87QK94F5Qc3e2skw=="],
 
     "@ankhorage/paradox": ["@ankhorage/paradox@0.1.26", "", { "dependencies": { "ts-morph": "^28.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-6m+GVcA58LOgiZp9PZZERvd2vL9vus+Ab1fM+ZehS+b6MuSH/RAUvGZ5ifOpgVuCczLAMzi5mxKNrRlShm0zHw=="],
 
     "@ankhorage/project-detector": ["@ankhorage/project-detector@0.1.0", "", { "dependencies": { "@ankhorage/utility": "^0.8.0", "minimatch": "^10.2.6", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.8.13" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "project-detector": "dist/cli/runAsync.js" } }, "sha512-tyGTtHlLM3txELF0ZWylt59Dy6bw/PLHuUCkiybA4vEblDAYTrthJPCx/P1Q5NoJTwaIlHaq4YzSvdmIwnvpSQ=="],
 
-    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.11", "", { "dependencies": { "@ankhorage/contracts": "^11.0.0", "@noble/hashes": "2.3.0" } }, "sha512-M22zu9ZW7HgBDvBZWZc2P/zgTxyUCRubDS5oajCSgV8FSk5YaKjpJSruSWRcO3sRPhvUlBSsbCSg6bXUmBboXg=="],
+    "@ankhorage/supabase-auth": ["@ankhorage/supabase-auth@1.2.19", "", { "dependencies": { "@ankhorage/contracts": "^22.1.1", "@noble/hashes": "2.3.0" } }, "sha512-ssbTAZ/inkrctyvGbwHukux7bqdoyfZynLt1aswKsWX1V2m9ZG0M8vyi/x1NJSs23Sx83NtksydW2lmvUQY64w=="],
 
     "@ankhorage/utility": ["@ankhorage/utility@0.5.1", "", { "dependencies": { "@ankhorage/contracts": "^12.0.1" }, "peerDependencies": { "@techstark/opencv-js": "^5.0.0-release.1", "pixelmatch": "^7.2.0", "sharp": "^0.35.4", "tesseract.js": "^7.0.0" }, "optionalPeers": ["@techstark/opencv-js", "pixelmatch", "sharp", "tesseract.js"] }, "sha512-xoGz492BBFGx943NhDBTdHdJxisMuN9xiOZasPeQpXkjPz1YrvFwWUa+wcrNPZAmuecfmGRmh1chvtzVeZ5FiQ=="],
 

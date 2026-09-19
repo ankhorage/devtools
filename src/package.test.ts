@@ -119,6 +119,20 @@ describe('package release contract', () => {
     expect(packageJson.devDependencies).not.toHaveProperty('@changesets/cli');
   });
 
+  it('ships the structure compiler as a provider runtime dependency', () => {
+    const packageJson = JSON.parse(
+      readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
+    ) as {
+      readonly dependencies?: Readonly<Record<string, unknown>>;
+      readonly devDependencies?: Readonly<Record<string, unknown>>;
+      readonly peerDependencies?: Readonly<Record<string, unknown>>;
+    };
+
+    expect(packageJson.dependencies?.typescript).toMatch(/^~\d+\.\d+\.\d+$/u);
+    expect(packageJson.devDependencies?.typescript).toBeUndefined();
+    expect(packageJson.peerDependencies?.typescript).toBeUndefined();
+  });
+
   it('ships every canonical managed asset in the source tree', () => {
     expect(existsSync(new URL('./tools/workflows/files/ci.yml', import.meta.url))).toBe(true);
     expect(existsSync(new URL('./tools/workflows/files/release.yml', import.meta.url))).toBe(true);
