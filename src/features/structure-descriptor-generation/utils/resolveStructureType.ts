@@ -64,7 +64,7 @@ function resolveTypeBody(type: ts.Type, context: StructureCompilerContext): Stru
   const primitive = resolvePrimitive(type);
   if (primitive) return primitive;
 
-  const literal = resolveLiteral(type);
+  const literal = resolveLiteral(type, context.checker);
   if (literal !== undefined) return { kind: 'enum', values: [literal] };
 
   if (type.isUnion()) return resolveUnion(type, context);
@@ -90,11 +90,14 @@ function resolvePrimitive(type: ts.Type): StructureDescriptor | null {
 }
 
 /*** Resolve one scalar literal while leaving non-literal types untouched. */
-function resolveLiteral(type: ts.Type): StructureLiteralValue | undefined {
+function resolveLiteral(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): StructureLiteralValue | undefined {
   if (type.isStringLiteral()) return type.value;
   if (type.isNumberLiteral()) return type.value;
   if ((type.flags & ts.TypeFlags.BooleanLiteral) !== 0) {
-    return (type as ts.IntrinsicType).intrinsicName === 'true';
+    return checker.typeToString(type) === 'true';
   }
   if ((type.flags & ts.TypeFlags.Null) !== 0) return null;
   return undefined;
@@ -106,7 +109,7 @@ function resolveUnion(type: ts.UnionType, context: StructureCompilerContext): St
   if (effective.length === 0) throw unsupportedType(type, context, 'undefined-only union');
   if (effective.length === 1) return resolveStructureType(effective[0]!, context);
 
-  const literals = effective.map(resolveLiteral);
+  const literals = effective.map((entry) => resolveLiteral(entry, context.checker));
   if (literals.every((value) => value !== undefined)) {
     return { kind: 'enum', values: sortLiterals(literals as StructureLiteralValue[]) };
   }
@@ -122,7 +125,7 @@ function resolveArrayItem(type: ts.Type, checker: ts.TypeChecker): ts.Type | nul
   if (checker.isTupleType(type)) {
     throw new Error('Tuple types are not supported by structural descriptor generation.');
   }
-  if (checker.isArrayType(type)) return checker.getElementTypeOfArrayType(type) ?? null;
+  if (checker.isArrayType(type)) return checker.getTypeArguments(type as ts.TypeReference).at(0) ?? null;
   if ((type.flags & ts.TypeFlags.Object) === 0) return null;
 
   const reference = type as ts.TypeReference;
