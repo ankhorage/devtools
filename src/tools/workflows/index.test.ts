@@ -102,18 +102,21 @@ test('diagnoses npm scope authorization when an initial package publish fails', 
   expect(release).toContain('https://github.com/ankhorage/devtools/issues/225');
 });
 
-test('generates documentation after versioning and before the release commit', async () => {
+test('regenerates structure evidence and docs after versioning before the release commit', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
   const versionIndex = release.indexOf(changesetsPolicy.workflowCommands.version);
+  const structureIndex = release.indexOf('node ./dist/cli/bin/structure.js build .');
   const docsIndex = release.indexOf('bun run docs');
   const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');
 
   expect(release).toContain('if [ "$before_version" != "$after_version" ]; then');
+  expect(release).toContain('process.exit(p.ankh?.structure === undefined ? 1 : 0)');
   expect(release).toContain('process.exit(p.scripts?.docs ? 0 : 1)');
   expect(versionIndex).toBeGreaterThanOrEqual(0);
-  expect(docsIndex).toBeGreaterThan(versionIndex);
+  expect(structureIndex).toBeGreaterThan(versionIndex);
+  expect(docsIndex).toBeGreaterThan(structureIndex);
   expect(commitIndex).toBeGreaterThan(docsIndex);
 });
 
