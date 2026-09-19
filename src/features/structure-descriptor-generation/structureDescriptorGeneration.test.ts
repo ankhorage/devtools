@@ -146,7 +146,7 @@ import type {
   SerializableSet,
   ThemeConfig,
   ValueMap,
-} from '@ankhorage/contracts';
+} from '@ankhorage/contracts/structure';
 
 export type Mode = 'light' | 'dark';
 
