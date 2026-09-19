@@ -5,10 +5,10 @@ import type { StructureCompilerContext } from '../../../types/structure-generati
 import { resolveSemanticStructureWrapper } from './resolveSemanticStructureWrapper.js';
 import { resolveStructureSymbolPackage } from './resolveStructureSymbolPackage.js';
 
-type StructureObjectField = {
+interface StructureObjectField {
   readonly value: StructureDescriptor;
   readonly optional?: boolean;
-};
+}
 
 /*** Resolve one TypeScript type into the canonical structural descriptor graph. */
 export function resolveStructureType(
@@ -88,10 +88,7 @@ function resolvePrimitive(type: ts.Type): StructureDescriptor | null {
 }
 
 /*** Resolve one scalar literal while leaving non-literal types untouched. */
-function resolveLiteral(
-  type: ts.Type,
-  checker: ts.TypeChecker,
-): StructureLiteralValue | undefined {
+function resolveLiteral(type: ts.Type, checker: ts.TypeChecker): StructureLiteralValue | undefined {
   if (type.isStringLiteral()) return type.value;
   if (type.isNumberLiteral()) return type.value;
   if ((type.flags & ts.TypeFlags.BooleanLiteral) !== 0) {
@@ -106,8 +103,7 @@ function resolveUnion(type: ts.UnionType, context: StructureCompilerContext): St
   const effective = type.types.filter((entry) => (entry.flags & ts.TypeFlags.Undefined) === 0);
   if (effective.length === 0) throw unsupportedType(type, context, 'undefined-only union');
 
-  const [only] = effective;
-  if (effective.length === 1 && only) return resolveStructureType(only, context);
+  if (effective.length === 1) return resolveStructureType(effective[0], context);
 
   const literals = effective.map((entry) => resolveLiteral(entry, context.checker));
   if (literals.every(isDefinedLiteral)) {
@@ -186,17 +182,14 @@ function resolveUnionDiscriminator(
   variants: readonly ts.Type[],
   checker: ts.TypeChecker,
 ): string | null {
-  const [first] = variants;
-  if (!first) return null;
+  const first = variants[0];
   const candidates = first
     .getProperties()
     .map((property) => property.getName())
     .sort();
 
   for (const name of candidates) {
-    const values = variants.map((variant) =>
-      resolveDiscriminatorValue(variant, name, checker),
-    );
+    const values = variants.map((variant) => resolveDiscriminatorValue(variant, name, checker));
     if (values.every((value) => value !== null) && new Set(values).size === values.length) {
       return name;
     }
