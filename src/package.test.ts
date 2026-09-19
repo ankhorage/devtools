@@ -6,6 +6,8 @@ const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 const capabilities = [
   'devtools.apm.sync',
   'devtools.apm.validate',
+  'devtools.structure.build',
+  'devtools.structure.check',
   'devtools.changeset',
   'devtools.lint',
   'devtools.format',
@@ -16,8 +18,6 @@ const capabilities = [
   'devtools.agents.status',
   'devtools.skills.sync',
   'devtools.skills.status',
-  'devtools.structure.build',
-  'devtools.structure.check',
   'devtools.eslint.sync',
   'devtools.eslint.status',
   'devtools.prettier.sync',
