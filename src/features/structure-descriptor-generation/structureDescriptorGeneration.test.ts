@@ -141,10 +141,10 @@ async function writePackageJson(target: string, source: string): Promise<void> {
 }
 
 const FIXTURE_SOURCE = `
+import type { ThemeConfig } from '@ankhorage/contracts';
 import type {
   EntityRegistry,
   SerializableSet,
-  ThemeConfig,
   ValueMap,
 } from '@ankhorage/contracts/structure';
 
