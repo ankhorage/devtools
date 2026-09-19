@@ -7,6 +7,7 @@ export interface WorkflowPolicy {
   readonly doctorVersion: string;
   readonly nodeVersion: string;
   readonly apmReleaseCommand?: string;
+  readonly structureReleaseCommand?: string;
 }
 
 /*** Renders one workflow template with the canonical runtime, Doctor, and Changesets policy. */
@@ -21,6 +22,10 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
     .replaceAll(
       '__ANKH_APM_RELEASE_COMMAND__',
       policy.apmReleaseCommand ?? './node_modules/.bin/ankhorage-apm-release',
+    )
+    .replaceAll(
+      '__ANKH_STRUCTURE_RELEASE_COMMAND__',
+      policy.structureReleaseCommand ?? './node_modules/.bin/ankhorage-structure',
     )
     .replaceAll(NODE_VERSION_TOKEN, policy.nodeVersion);
 }
