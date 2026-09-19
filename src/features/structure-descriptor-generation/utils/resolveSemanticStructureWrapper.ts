@@ -1,4 +1,4 @@
-import type { StructureDescriptor } from '@ankhorage/contracts';
+import type { StructureDescriptor } from '@ankhorage/contracts/structure';
 import ts from 'typescript';
 
 import type { StructureCompilerContext } from '../../../types/structure-generation.js';
@@ -35,7 +35,7 @@ export function resolveSemanticStructureWrapper(
     (rawSymbol.flags & ts.SymbolFlags.Alias) !== 0
       ? context.checker.getAliasedSymbol(rawSymbol)
       : rawSymbol;
-  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
+  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts/structure') return null;
 
   const name = symbol.getName();
   if (!WRAPPER_NAMES.has(name)) return null;
@@ -52,7 +52,7 @@ function resolveDirectWrapper(
   const symbol = type.aliasSymbol;
   if (
     !symbol ||
-    resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts'
+    resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts/structure'
   ) {
     return null;
   }
