@@ -21,30 +21,69 @@ export function resolveSemanticStructureWrapper(
   context: StructureCompilerContext,
   resolveType: ResolveType,
 ): StructureDescriptor | null {
+  const match = resolveWrapperMatch(type, context, new Set());
+  return match
+    ? buildWrapperDescriptor(match.name, match.arguments, context, resolveType)
+    : null;
+}
+
+/*** Follow source alias declarations until the exact canonical Contracts wrapper is reached. */
+function resolveWrapperMatch(
+  type: ts.Type,
+  context: StructureCompilerContext,
+  visited: Set<ts.Symbol>,
+): WrapperMatch | null {
   const direct = resolveDirectWrapper(type, context);
-  if (direct) {
-    return buildWrapperDescriptor(direct.name, direct.arguments, context, resolveType);
-  }
+  if (direct) return direct;
 
-  const alias = type.aliasSymbol?.declarations?.find(ts.isTypeAliasDeclaration);
-  if (!alias || !ts.isTypeReferenceNode(alias.type)) return null;
+  const aliasSymbol = type.aliasSymbol;
+  if (!aliasSymbol || visited.has(aliasSymbol)) return null;
+  visited.add(aliasSymbol);
 
-  const rawSymbol = context.checker.getSymbolAtLocation(alias.type.typeName);
+  const declaration = aliasSymbol.declarations?.find(ts.isTypeAliasDeclaration);
+  if (!declaration) return null;
+
+  const targetType = context.checker.getTypeFromTypeNode(declaration.type);
+  const nested = targetType === type ? null : resolveWrapperMatch(targetType, context, visited);
+  if (nested) return nested;
+
+  if (!ts.isTypeReferenceNode(declaration.type)) return null;
+  return resolveWrapperFromReferenceNode(declaration.type, context);
+}
+
+/*** Resolve one source-level type reference against its final imported/re-exported symbol. */
+function resolveWrapperFromReferenceNode(
+  reference: ts.TypeReferenceNode,
+  context: StructureCompilerContext,
+): WrapperMatch | null {
+  const rawSymbol = context.checker.getSymbolAtLocation(reference.typeName);
   if (!rawSymbol) return null;
-  const symbol =
-    (rawSymbol.flags & ts.SymbolFlags.Alias) !== 0
-      ? context.checker.getAliasedSymbol(rawSymbol)
-      : rawSymbol;
-  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') {
-    return null;
-  }
+
+  const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
+  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
 
   const name = symbol.getName();
   if (!WRAPPER_NAMES.has(name)) return null;
-  const arguments_ =
-    alias.type.typeArguments?.map((argument) => context.checker.getTypeFromTypeNode(argument)) ??
-    [];
-  return buildWrapperDescriptor(name, arguments_, context, resolveType);
+  return {
+    name,
+    arguments: reference.typeArguments?.map((argument) =>
+      context.checker.getTypeFromTypeNode(argument),
+    ) ?? [],
+  };
+}
+
+/*** Resolve TypeScript import/re-export alias chains to their final declaration symbol. */
+function resolveAliasedSymbol(symbol: ts.Symbol, checker: ts.TypeChecker): ts.Symbol {
+  const visited = new Set<ts.Symbol>();
+  let current = symbol;
+
+  while ((current.flags & ts.SymbolFlags.Alias) !== 0 && !visited.has(current)) {
+    visited.add(current);
+    const next = checker.getAliasedSymbol(current);
+    if (next === current) break;
+    current = next;
+  }
+  return current;
 }
 
 /*** Match a direct instantiation of one canonical collection wrapper. */
@@ -52,10 +91,11 @@ function resolveDirectWrapper(
   type: ts.Type,
   context: StructureCompilerContext,
 ): WrapperMatch | null {
-  const symbol = type.aliasSymbol;
-  if (!symbol || resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') {
-    return null;
-  }
+  const rawSymbol = type.aliasSymbol;
+  if (!rawSymbol) return null;
+
+  const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
+  if (resolveStructureSymbolPackage(symbol, context) !== '@ankhorage/contracts') return null;
 
   const name = symbol.getName();
   if (!WRAPPER_NAMES.has(name)) return null;
