@@ -42,7 +42,9 @@
       "devtools.workflows.sync",
       "devtools.workflows.status",
       "devtools.vscode.sync",
-      "devtools.vscode.status"
+      "devtools.vscode.status",
+      "devtools.structure.build",
+      "devtools.structure.check"
     ]
   },
   "ankhorage": {
@@ -140,7 +142,9 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "knip": "^6.34.0",
     "prettier": "^3.9.6",
-    "typescript-eslint": "^8.69.0"
+    "typescript-eslint": "^8.69.0",
+    "@ankhorage/contracts": "^22.1.0",
+    "typescript": "~6.0.3"
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.1.26",
@@ -149,8 +153,7 @@
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.1",
     "@types/node": "^26.4.1",
-    "sharp": "^0.35.4",
-    "typescript": "~6.0.3"
+    "sharp": "^0.35.4"
   },
   "packageManager": "bun@1.4.2"
 }
