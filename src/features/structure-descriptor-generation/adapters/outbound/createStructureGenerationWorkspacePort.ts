@@ -17,8 +17,8 @@ export function createStructureGenerationWorkspacePort(
 ): StructureGenerationWorkspacePort {
   return {
     readPackageAsync: async () => readStructurePackageAsync(targetDirectory),
-    generateArtifactAsync: async (packageConfig) =>
-      generateStructureArtifactFromTypescriptAsync(targetDirectory, packageConfig),
+    generateArtifactAsync: (packageConfig) =>
+      Promise.resolve(generateStructureArtifactFromTypescriptAsync(targetDirectory, packageConfig)),
     readOutputAsync: async (relativePath) => readOptionalFileAsync(targetDirectory, relativePath),
     writeOutputAsync: async (relativePath, source) =>
       writeGeneratedFileAsync(targetDirectory, relativePath, source),
