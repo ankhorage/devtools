@@ -27,7 +27,6 @@ export function resolveStructureSymbolPackage(
   return null;
 }
 
-
 /*** Resolve npm package ownership before classifying source paths as local project files. */
 function resolveNodeModulePackage(fileName: string): string | null {
   const normalized = fileName.replaceAll('\\', '/');
