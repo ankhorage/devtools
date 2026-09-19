@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.18.3
+
+### Patch Changes
+
+- 168c83c: Regenerate opted-in structural descriptor evidence after Changesets versioning and before the canonical release commit.
+
 ## 1.18.2
 
 ### Patch Changes
