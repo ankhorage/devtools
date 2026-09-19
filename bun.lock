@@ -25,7 +25,6 @@
         "eslint-plugin-unused-imports": "^4.4.1",
         "knip": "^6.34.0",
         "prettier": "^3.9.6",
-        "typescript": "~6.0.3",
         "typescript-eslint": "^8.69.0",
       },
       "devDependencies": {
@@ -36,6 +35,10 @@
         "@types/bun": "^1.4.1",
         "@types/node": "^26.4.1",
         "sharp": "^0.35.4",
+        "typescript": "~6.0.3",
+      },
+      "peerDependencies": {
+        "typescript": ">=5.9.3 <7",
       },
     },
   },
