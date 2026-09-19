@@ -171,12 +171,11 @@ function resolveObjectField(
   }
 
   const propertyType = context.checker.getTypeOfSymbolAtLocation(property, declaration);
-  const declaredType =
-    hasDeclaredTypeNode(declaration)
-      ? resolveSemanticStructureWrapperNode(declaration.type, context, (value) =>
-          resolveStructureType(value, context),
-        )
-      : null;
+  const declaredType = hasDeclaredTypeNode(declaration)
+    ? resolveSemanticStructureWrapperNode(declaration.type, context, (value) =>
+        resolveStructureType(value, context),
+      )
+    : null;
   return [
     property.getName(),
     {
