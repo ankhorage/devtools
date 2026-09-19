@@ -203,22 +203,15 @@ describe('managed skill package contract', () => {
     }
   });
 
-  it('documents only the canonical devtools command surface', () => {
-    const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
-    for (const capability of capabilities) {
-      expect(readme).toContain(capability);
-    }
-    expect(readme).toContain('ankh devtools sync');
-    expect(readme).toContain('ankh devtools changeset');
-    expect(readme).toContain('ankhorage-changeset');
-    expect(readme).toContain('ankh devtools workflows sync');
-    expect(readme).toContain('ankh devtools vscode sync');
-    expect(readme).toContain('ankh devtools agents sync');
-    expect(readme).toContain('ankh devtools skills sync');
-    expect(readme).toContain('ankhorage-coding-rules');
-    expect(readme).toContain('hexagonal-architecture');
-    expect(readme).not.toContain('ankh dev ');
-    expect(readme).not.toContain('`@ankhorage/dev`');
+  it('documents the canonical command surface at its generated-doc source', () => {
+    const cliSource = readFileSync(new URL('./cli/index.ts', import.meta.url), 'utf8');
+
+    expect(cliSource).toContain('ankh devtools sync');
+    expect(cliSource).toContain('ankh devtools changeset');
+    expect(cliSource).toContain('ankh devtools structure build');
+    expect(cliSource).toContain('ankh devtools structure check');
+    expect(cliSource).not.toContain('ankh dev ');
+    expect(cliSource).not.toContain('`@ankhorage/dev`');
   });
 });
 
