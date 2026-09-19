@@ -2,7 +2,10 @@ import type { StructureDescriptor, StructureLiteralValue } from '@ankhorage/cont
 import ts from 'typescript';
 
 import type { StructureCompilerContext } from '../../../types/structure-generation.js';
-import { resolveSemanticStructureWrapper } from './resolveSemanticStructureWrapper.js';
+import {
+  resolveSemanticStructureWrapper,
+  resolveSemanticStructureWrapperNode,
+} from './resolveSemanticStructureWrapper.js';
 import { resolveStructureSymbolPackage } from './resolveStructureSymbolPackage.js';
 
 interface StructureObjectField {
@@ -168,13 +171,26 @@ function resolveObjectField(
   }
 
   const propertyType = context.checker.getTypeOfSymbolAtLocation(property, declaration);
+  const declaredType =
+    hasDeclaredTypeNode(declaration)
+      ? resolveSemanticStructureWrapperNode(declaration.type, context, (value) =>
+          resolveStructureType(value, context),
+        )
+      : null;
   return [
     property.getName(),
     {
-      value: resolveStructureType(propertyType, context),
+      value: declaredType ?? resolveStructureType(propertyType, context),
       ...((property.flags & ts.SymbolFlags.Optional) !== 0 ? { optional: true } : {}),
     },
   ];
+}
+
+/*** Narrow property declarations that carry a source-level type node. */
+function hasDeclaredTypeNode(
+  declaration: ts.Declaration,
+): declaration is ts.PropertyDeclaration | ts.PropertySignature {
+  return ts.isPropertyDeclaration(declaration) || ts.isPropertySignature(declaration);
 }
 
 /*** Resolve a stable discriminator shared by every object-like union variant. */
