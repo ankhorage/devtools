@@ -52,6 +52,7 @@ describe('package metadata', () => {
       'ankhorage-eslint': './dist/cli/bin/eslint.js',
       'ankhorage-knip': './dist/cli/bin/knip.js',
       'ankhorage-prettier': './dist/cli/bin/prettier.js',
+      'ankhorage-structure': './dist/cli/bin/structure.js',
     });
     expect(packageJson.exports).toEqual({
       './apm-release': {
