@@ -1,6 +1,6 @@
 import ts from 'typescript';
 
-import type { StructureDescriptor, StructureLiteralValue } from '@ankhorage/contracts/structure';
+import type { StructureDescriptor, StructureLiteralValue } from '@ankhorage/contracts';
 
 import type { StructureCompilerContext } from '../../../types/structure-generation.js';
 import { resolveSemanticStructureWrapper } from './resolveSemanticStructureWrapper.js';
