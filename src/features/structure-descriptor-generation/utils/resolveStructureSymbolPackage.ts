@@ -13,6 +13,9 @@ export function resolveStructureSymbolPackage(
   if (!declaration) return null;
 
   const { fileName } = declaration.getSourceFile();
+  const nodeModulePackage = resolveNodeModulePackage(fileName);
+  if (nodeModulePackage) return nodeModulePackage;
+
   const relativePath = relative(context.targetDirectory, fileName);
   if (
     relativePath !== '..' &&
@@ -21,15 +24,19 @@ export function resolveStructureSymbolPackage(
   ) {
     return context.packageName;
   }
+  return null;
+}
 
+
+/*** Resolve npm package ownership before classifying source paths as local project files. */
+function resolveNodeModulePackage(fileName: string): string | null {
   const normalized = fileName.replaceAll('\\', '/');
   const marker = '/node_modules/';
   const markerIndex = normalized.lastIndexOf(marker);
   if (markerIndex < 0) return null;
 
   const packagePath = normalized.slice(markerIndex + marker.length);
-  const segments = packagePath.split('/');
-  const [first, second] = segments;
+  const [first, second] = packagePath.split('/');
   if (!first) return null;
   if (!first.startsWith('@')) return first;
   return second ? `${first}/${second}` : null;
