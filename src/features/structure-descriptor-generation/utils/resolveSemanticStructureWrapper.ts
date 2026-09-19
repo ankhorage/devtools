@@ -25,6 +25,49 @@ export function resolveSemanticStructureWrapper(
   return match ? buildWrapperDescriptor(match.name, match.arguments, context, resolveType) : null;
 }
 
+
+/*** Resolve canonical collection semantics from a declared TypeScript type node before normalization. */
+export function resolveSemanticStructureWrapperNode(
+  node: ts.TypeNode,
+  context: StructureCompilerContext,
+  resolveType: ResolveType,
+): StructureDescriptor | null {
+  const match = resolveWrapperNodeMatch(node, context, new Set());
+  return match ? buildWrapperDescriptor(match.name, match.arguments, context, resolveType) : null;
+}
+
+/*** Follow declared type-reference aliases until a canonical Contracts wrapper symbol is reached. */
+function resolveWrapperNodeMatch(
+  node: ts.TypeNode,
+  context: StructureCompilerContext,
+  visited: ReadonlySet<ts.Symbol>,
+): WrapperMatch | null {
+  if (!ts.isTypeReferenceNode(node)) return null;
+
+  const rawSymbol = context.checker.getSymbolAtLocation(node.typeName);
+  if (!rawSymbol) return null;
+  const symbol = resolveAliasedSymbol(rawSymbol, context.checker);
+
+  if (resolveStructureSymbolPackage(symbol, context) === '@ankhorage/contracts') {
+    const name = symbol.getName();
+    if (!WRAPPER_NAMES.has(name)) return null;
+    return {
+      name,
+      arguments: node.typeArguments?.map((argument) =>
+        context.checker.getTypeFromTypeNode(argument),
+      ) ?? [],
+    };
+  }
+
+  if (visited.has(symbol)) return null;
+  const declaration = symbol.declarations?.find(ts.isTypeAliasDeclaration);
+  if (!declaration) return null;
+
+  const nextVisited = new Set(visited);
+  nextVisited.add(symbol);
+  return resolveWrapperNodeMatch(declaration.type, context, nextVisited);
+}
+
 /*** Follow source alias declarations until the exact canonical Contracts wrapper is reached. */
 function resolveWrapperMatch(
   type: ts.Type,
