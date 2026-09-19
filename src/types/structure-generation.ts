@@ -1,4 +1,5 @@
-import type { StructureDescriptorDocument } from '@ankhorage/contracts/structure';
+import type { StructureDescriptor, StructureDescriptorDefinition, StructureDescriptorDocument } from '@ankhorage/contracts/structure';
+import type ts from 'typescript';
 
 export interface StructureGenerationRoot {
   readonly source: string;
@@ -37,4 +38,18 @@ export interface StructureGenerationWorkspacePort {
   ) => Promise<StructureGenerationArtifact>;
   readonly readOutputAsync: (relativePath: string) => Promise<string | null>;
   readonly writeOutputAsync: (relativePath: string, source: string) => Promise<void>;
+}
+
+export interface StructureCompilerContext {
+  readonly checker: ts.TypeChecker;
+  readonly program: ts.Program;
+  readonly targetDirectory: string;
+  readonly packageName: string;
+  readonly definitions: Map<string, StructureDescriptorDefinition>;
+  readonly resolving: Set<string>;
+}
+
+export interface StructureResolvedType {
+  readonly descriptor: StructureDescriptor;
+  readonly symbolName?: string;
 }
