@@ -1,6 +1,6 @@
 import ts from 'typescript';
 
-import type { StructureDescriptor } from '@ankhorage/contracts/structure';
+import type { StructureDescriptor } from '@ankhorage/contracts';
 
 import type { StructureCompilerContext } from '../../../types/structure-generation.js';
 import { resolveStructureSymbolPackage } from './resolveStructureSymbolPackage.js';
