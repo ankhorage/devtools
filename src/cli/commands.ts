@@ -24,6 +24,8 @@ type DevtoolsCapability =
   | 'devtools.prettier.sync'
   | 'devtools.skills.status'
   | 'devtools.skills.sync'
+  | 'devtools.structure.build'
+  | 'devtools.structure.check'
   | 'devtools.vscode.status'
   | 'devtools.vscode.sync'
   | 'devtools.workflows.status'
@@ -53,10 +55,16 @@ interface DevtoolsApmReleaseCommandDefinition extends DevtoolsCommandBase {
   readonly operation: 'sync' | 'validate';
 }
 
+interface DevtoolsStructureCommandDefinition extends DevtoolsCommandBase {
+  readonly kind: 'structure';
+  readonly operation: 'build' | 'check';
+}
+
 export type DevtoolsCommandDefinition =
   | DevtoolsExternalCommandDefinition
   | DevtoolsRepositoryCommandDefinition
-  | DevtoolsApmReleaseCommandDefinition;
+  | DevtoolsApmReleaseCommandDefinition
+  | DevtoolsStructureCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
   {
@@ -72,6 +80,20 @@ const DEVTOOLS_COMMANDS = [
     path: ['apm', 'validate'],
     capability: 'devtools.apm.validate',
     summary: 'Validate the exact packed APM release artifact.',
+  },
+  {
+    kind: 'structure',
+    operation: 'build',
+    path: ['structure', 'build'],
+    capability: 'devtools.structure.build',
+    summary: 'Generate deterministic structural descriptor evidence.',
+  },
+  {
+    kind: 'structure',
+    operation: 'check',
+    path: ['structure', 'check'],
+    capability: 'devtools.structure.check',
+    summary: 'Verify structural descriptor evidence is current.',
   },
   externalCommand(
     'changeset',
