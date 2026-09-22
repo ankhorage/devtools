@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.11
+
+### Patch Changes
+
+- dae6463: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@next/eslint-plugin-next`.
+
 ## 1.19.10
 
 ### Patch Changes
