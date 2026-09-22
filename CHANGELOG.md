@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.0
+
+### Minor Changes
+
+- d7101f5: Add a centrally managed PKGViz cyclic-dependency CI audit for repositories with source trees, including a pinned tool invocation and diagnostic audit artifact upload.
+
 ## 1.18.5
 
 ### Patch Changes

@@ -297,6 +297,11 @@
       <small>2 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/policy/resolvePkgvizAuditPolicyAsync.ts">
+      src/policy/resolvePkgvizAuditPolicyAsync.ts
+      <small>3 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/tools/agents/index.ts">
       src/tools/agents/index.ts
       <small>11 functions</small>
@@ -399,7 +404,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/workflows/renderWorkflowAsync.ts">
       src/tools/workflows/renderWorkflowAsync.ts
-      <small>1 function</small>
+      <small>2 functions</small>
     </button>
   </li>
           </ul>
@@ -413,7 +418,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>71</strong><span class="muted">modules</span></div>
+        <div><strong>72</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -675,6 +680,11 @@ bunx @ankhorage/devtools ankhorage-structure</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/types/bunPolicy.ts</code></p>
     <p><strong>Exports:</strong> <code>renderBunPolicyDocumentation</code></p>
+  </article><article class="item" data-search="src/policy/resolvePkgvizAuditPolicyAsync.ts resolvePkgvizAuditPolicyAsync">
+    <h3>src/policy/resolvePkgvizAuditPolicyAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>resolvePkgvizAuditPolicyAsync</code></p>
   </article><article class="item" data-search="src/tools/agents/index.ts src/tools/shared/managedFiles.ts agentsManagedFiles">
     <h3>src/tools/agents/index.ts</h3>
     <p class="muted">Referenced module</p>
@@ -775,10 +785,10 @@ bunx @ankhorage/devtools ankhorage-structure</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/tools/shared/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>vscodeManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/bunRuntimePolicy.ts src/tools/shared/managedFiles.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
+  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/bunRuntimePolicy.ts src/policy/resolvePkgvizAuditPolicyAsync.ts src/tools/shared/managedFiles.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
     <h3>src/tools/workflows/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/bunRuntimePolicy.ts</code>, <code>src/tools/shared/managedFiles.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/bunRuntimePolicy.ts</code>, <code>src/policy/resolvePkgvizAuditPolicyAsync.ts</code>, <code>src/tools/shared/managedFiles.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>workflowManagedFiles</code></p>
   </article><article class="item" data-search="src/tools/workflows/readCurrentDoctorVersion.ts readCurrentDoctorVersion">
     <h3>src/tools/workflows/readCurrentDoctorVersion.ts</h3>
@@ -1630,6 +1640,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_policy_renderBunPolicyDocumentation_ts
   module_src_policy_renderBunPolicyDocumentation_ts --&gt; module_src_types_bunPolicy_ts
+  module_src_policy_resolvePkgvizAuditPolicyAsync_ts[&quot;src/policy/resolvePkgvizAuditPolicyAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_agents_index_ts
   module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
@@ -1694,6 +1706,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
@@ -1895,6 +1908,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_policy_renderBunPolicyDocumentation_ts
   module_src_policy_renderBunPolicyDocumentation_ts --&gt; module_src_types_bunPolicy_ts
+  module_src_policy_resolvePkgvizAuditPolicyAsync_ts[&quot;src/policy/resolvePkgvizAuditPolicyAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_agents_index_ts
   module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
@@ -1959,6 +1974,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
@@ -2027,6 +2043,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
+  module_src_policy_resolvePkgvizAuditPolicyAsync_ts[&quot;src/policy/resolvePkgvizAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -2162,6 +2179,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
@@ -2215,6 +2233,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
+  module_src_policy_resolvePkgvizAuditPolicyAsync_ts[&quot;src/policy/resolvePkgvizAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -2350,6 +2369,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
@@ -2405,6 +2425,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
+  module_src_policy_resolvePkgvizAuditPolicyAsync_ts[&quot;src/policy/resolvePkgvizAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -2533,6 +2554,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_bunRuntimePolicy_ts[&quot;src/policy/bunRuntimePolicy.ts&quot;]
   module_src_policy_changesetsPolicy_ts[&quot;src/policy/changesetsPolicy.ts&quot;]
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
+  module_src_policy_resolvePkgvizAuditPolicyAsync_ts[&quot;src/policy/resolvePkgvizAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
@@ -3320,6 +3342,23 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p>Format canonical runtime and type-package versions for the guide.</p>
   </article>
     </section>
+  </section><section id="view-src-policy-resolvepkgvizauditpolicyasync-ts" class="view" data-view="src/policy/resolvePkgvizAuditPolicyAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/policy/resolvePkgvizAuditPolicyAsync.ts</h2>
+      <article class="item" data-search="resolvePkgvizAuditPolicyAsync src/policy/resolvePkgvizAuditPolicyAsync.ts Resolve the centrally pinned PKGViz CI audit for repositories with analyzable source.">
+    <h3>resolvePkgvizAuditPolicyAsync</h3>
+    <p class="muted"><code>src/policy/resolvePkgvizAuditPolicyAsync.ts:5:1</code></p>
+    <p>Resolve the centrally pinned PKGViz CI audit for repositories with analyzable source.</p>
+  </article><article class="item" data-search="hasSourceDirectoryAsync src/policy/resolvePkgvizAuditPolicyAsync.ts Detect whether the managed repository has a source tree that PKGViz can inspect.">
+    <h3>hasSourceDirectoryAsync</h3>
+    <p class="muted"><code>src/policy/resolvePkgvizAuditPolicyAsync.ts:24:1</code></p>
+    <p>Detect whether the managed repository has a source tree that PKGViz can inspect.</p>
+  </article><article class="item" data-search="isNodeError src/policy/resolvePkgvizAuditPolicyAsync.ts Narrow filesystem failures to Node errors with stable error codes.">
+    <h3>isNodeError</h3>
+    <p class="muted"><code>src/policy/resolvePkgvizAuditPolicyAsync.ts:34:1</code></p>
+    <p>Narrow filesystem failures to Node errors with stable error codes.</p>
+  </article>
+    </section>
   </section><section id="view-src-tools-agents-index-ts" class="view" data-view="src/tools/agents/index.ts" hidden>
     <section class="panel">
       <h2>src/tools/agents/index.ts</h2>
@@ -3850,11 +3889,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/workflows/index.ts</h2>
       <article class="item" data-search="createWorkflowDefinition src/tools/workflows/index.ts Create a managed workflow definition rendered from current shared runtime policies.">
     <h3>createWorkflowDefinition</h3>
-    <p class="muted"><code>src/tools/workflows/index.ts:35:1</code></p>
+    <p class="muted"><code>src/tools/workflows/index.ts:36:1</code></p>
     <p>Create a managed workflow definition rendered from current shared runtime policies.</p>
   </article><article class="item" data-search="createRenovateWorkflowDefinition src/tools/workflows/index.ts Creates the managed workflow whose immutable digest remains Renovate-owned.">
     <h3>createRenovateWorkflowDefinition</h3>
-    <p class="muted"><code>src/tools/workflows/index.ts:51:1</code></p>
+    <p class="muted"><code>src/tools/workflows/index.ts:53:1</code></p>
     <p>Creates the managed workflow whose immutable digest remains Renovate-owned.</p>
   </article>
     </section>
@@ -3893,8 +3932,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/workflows/renderWorkflowAsync.ts</h2>
       <article class="item" data-search="renderWorkflowAsync src/tools/workflows/renderWorkflowAsync.ts Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.">
     <h3>renderWorkflowAsync</h3>
-    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:14:1</code></p>
+    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:19:1</code></p>
     <p>Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.</p>
+  </article><article class="item" data-search="renderPkgvizAuditSteps src/tools/workflows/renderWorkflowAsync.ts Render the centrally managed PKGViz audit steps only for applicable repositories.">
+    <h3>renderPkgvizAuditSteps</h3>
+    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:47:1</code></p>
+    <p>Render the centrally managed PKGViz audit steps only for applicable repositories.</p>
   </article>
     </section>
   </section>

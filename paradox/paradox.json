@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.18.5",
+      "value": "v1.19.0",
       "color": "cb3837"
     },
     {
@@ -575,6 +575,14 @@
       ]
     },
     {
+      "path": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "resolvePkgvizAuditPolicyAsync"
+      ]
+    },
+    {
       "path": "src/tools/agents/index.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -821,6 +829,7 @@
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/bunRuntimePolicy.ts",
+        "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
@@ -2883,6 +2892,33 @@
       }
     },
     {
+      "name": "resolvePkgvizAuditPolicyAsync",
+      "description": "Resolve the centrally pinned PKGViz CI audit for repositories with analyzable source.",
+      "sourceLocation": {
+        "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasSourceDirectoryAsync",
+      "description": "Detect whether the managed repository has a source tree that PKGViz can inspect.",
+      "sourceLocation": {
+        "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "line": 24,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": "Narrow filesystem failures to Node errors with stable error codes.",
+      "sourceLocation": {
+        "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
       "name": "renderAgentsFile",
       "description": "Render mandatory repository instructions from the target package identity.",
       "sourceLocation": {
@@ -3877,7 +3913,7 @@
       "description": "Create a managed workflow definition rendered from current shared runtime policies.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 35,
+        "line": 36,
         "column": 1
       }
     },
@@ -3886,7 +3922,7 @@
       "description": "Creates the managed workflow whose immutable digest remains Renovate-owned.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 51,
+        "line": 53,
         "column": 1
       }
     },
@@ -3940,7 +3976,16 @@
       "description": "Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 14,
+        "line": 19,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderPkgvizAuditSteps",
+      "description": "Render the centrally managed PKGViz audit steps only for applicable repositories.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "line": 47,
         "column": 1
       }
     }
@@ -4335,6 +4380,11 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -5176,6 +5226,30 @@
         "toSymbol": "renderReadmePolicy",
         "callExpression": "renderReadmePolicy",
         "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
+      },
+      {
+        "fromSymbol": "resolvePkgvizAuditPolicyAsync",
+        "toSymbol": "hasSourceDirectoryAsync",
+        "callExpression": "hasSourceDirectoryAsync",
+        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+      },
+      {
+        "fromSymbol": "hasSourceDirectoryAsync",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+      },
+      {
+        "fromSymbol": "hasSourceDirectoryAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+      },
+      {
+        "fromSymbol": "hasSourceDirectoryAsync",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
       },
       {
         "fromSymbol": "src/cli/bin/apm-release.ts",
@@ -6469,6 +6543,12 @@
       },
       {
         "fromSymbol": "render",
+        "toSymbol": "resolvePkgvizAuditPolicyAsync",
+        "callExpression": "resolvePkgvizAuditPolicyAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
         "toSymbol": "renderRenovateWorkflowAsync",
         "callExpression": "renderRenovateWorkflowAsync",
         "sourcePath": "src/tools/workflows/index.ts"
@@ -6525,6 +6605,12 @@
         "fromSymbol": "renderWorkflowAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "renderWorkflowAsync",
+        "toSymbol": "renderPkgvizAuditSteps",
+        "callExpression": "renderPkgvizAuditSteps",
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
       },
       {
