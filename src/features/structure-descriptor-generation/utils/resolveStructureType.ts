@@ -99,10 +99,8 @@ function isOpenStringIntersection(type: ts.Type, checker: ts.TypeChecker): boole
   if (stringMembers.length !== 1) return false;
 
   const objectMembers = type.types.filter((member) => (member.flags & ts.TypeFlags.String) === 0);
-  return (
-    objectMembers.length > 0 &&
-    objectMembers.every((member) => isEmptyObjectType(member, checker))
-  );
+  const allEmptyObjects = objectMembers.every((member) => isEmptyObjectType(member, checker));
+  return objectMembers.length > 0 && allEmptyObjects;
 }
 
 /*** Accept only structurally empty object members when recognizing an open-string intersection. */
