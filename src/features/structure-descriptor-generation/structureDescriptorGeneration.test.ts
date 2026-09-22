@@ -57,12 +57,14 @@ test('treats open string autocomplete unions as scalar strings', async () => {
 
   expect(generated).toContain('"openLabel"');
   expect(generated).toContain('"openLabels"');
-  expect(generated).not.toContain('"id": "OpenLabel"');
   expect(generated).toMatch(
-    /"openLabel":\s*\{\s*"value":\s*\{\s*"kind": "scalar",\s*"type": "string"/u,
+    /"openLabel":\s*\{\s*"value":\s*\{\s*"kind": "ref",\s*"id": "OpenLabel"/u,
   );
   expect(generated).toMatch(
-    /"openLabels":\s*\{\s*"value":\s*\{\s*"kind": "ordered-list",\s*"item":\s*\{\s*"kind": "scalar",\s*"type": "string"/u,
+    /"openLabels":\s*\{\s*"value":\s*\{\s*"kind": "ordered-list",\s*"item":\s*\{\s*"kind": "ref",\s*"id": "OpenLabel"/u,
+  );
+  expect(generated).toMatch(
+    /"OpenLabel":\s*\{\s*"id": "OpenLabel",\s*"descriptor":\s*\{\s*"kind": "scalar",\s*"type": "string"/u,
   );
 });
 
