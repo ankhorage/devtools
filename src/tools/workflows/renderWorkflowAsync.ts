@@ -43,7 +43,6 @@ const CHANGESETS_VERSION_COMMAND_TOKEN = '__ANKH_CHANGESETS_VERSION_COMMAND__';
 const DOCTOR_VERSION_TOKEN = '__ANKH_DOCTOR_VERSION__';
 const NODE_VERSION_TOKEN = '__ANKH_NODE_VERSION__';
 
-
 /*** Render the centrally managed PKGViz audit steps only for applicable repositories. */
 function renderPkgvizAuditSteps(policy: WorkflowPolicy): string {
   if (policy.pkgvizAudit === undefined) return '';
