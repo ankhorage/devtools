@@ -2,12 +2,17 @@ import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
+import { resolveApmReleaseCommandAsync } from '../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
+import { resolveStructureReleaseCommandAsync } from '../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
 import { nodeRuntimePolicy } from '../policy/bunRuntimePolicy.js';
 import { renderBunPolicyDocumentation } from '../policy/renderBunPolicyDocumentation.js';
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
-import { renderWorkflowAsync } from '../tools/workflows/renderWorkflowAsync.js';
+import {
+  renderWorkflowAsync,
+  type WorkflowPolicy,
+} from '../tools/workflows/renderWorkflowAsync.js';
 import type { BunPolicy } from '../types/bunPolicy.js';
 
 /*** Synchronize or validate Renovate-owned Devtools policy artifacts. */
@@ -73,11 +78,7 @@ async function createManagedDefinitionsAsync(
   }
 
   const readme = await readFile(resolve(targetDirectory, 'README.md'), 'utf8');
-  const workflowPolicy = {
-    bunVersion: policy.version,
-    doctorVersion: readCurrentDoctorVersion(),
-    nodeVersion: nodeRuntimePolicy.setupVersion,
-  };
+  const workflowPolicy = await createWorkflowPolicyAsync(targetDirectory, policy);
 
   return [
     {
@@ -111,6 +112,20 @@ async function createManagedDefinitionsAsync(
       contents: renderBunPolicyDocumentation(readme, policy),
     },
   ];
+}
+
+/*** Build the self-hosted workflow policy used by Devtools owner synchronization. */
+async function createWorkflowPolicyAsync(
+  targetDirectory: string,
+  policy: BunPolicy,
+): Promise<WorkflowPolicy> {
+  return {
+    apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
+    structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
+    bunVersion: policy.version,
+    doctorVersion: readCurrentDoctorVersion(),
+    nodeVersion: nodeRuntimePolicy.setupVersion,
+  };
 }
 
 /*** Return owner-managed artifact paths whose current bytes differ from policy output. */

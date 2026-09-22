@@ -170,6 +170,8 @@ describe('managed PKGViz audit', () => {
 
     expect(ci).not.toContain('Enforce PKGViz cyclic-dependencies rule');
     expect(ci).not.toContain('pkgviz-audit.json');
+    expect(ci?.endsWith('\n')).toBe(true);
+    expect(ci?.endsWith('\n\n')).toBe(false);
   });
 });
 

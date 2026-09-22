@@ -38,7 +38,10 @@ describe('Devtools Renovate owner synchronization', () => {
     expect(first.readme).toContain('Bun runtime       1.4.2');
     expect(first.readme).toContain('@types/bun        ^1.4.1');
     expect(first.ci).toContain("bun-version: '1.4.2'");
+    expect(first.ci).toContain('node ./dist/cli/bin/apm-release.js validate . --allow-owner-code');
     expect(first.release).toContain("bun-version: '1.4.2'");
+    expect(first.release).toContain('node ./dist/cli/bin/apm-release.js sync .');
+    expect(first.release).toContain('node ./dist/cli/bin/structure.js build .');
     expect(first.renovate).toMatch(/changeset\.yml@[0-9a-f]{40}/u);
     expect(await readFile(unrelatedPath, 'utf8')).toBe('leave me alone\n');
 
