@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.3
+
+### Patch Changes
+
+- 2557580: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/apm`, `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/project-detector`, `@changesets/cli`, `@types/node`, `eslint-plugin-react-hooks`, `eslint`, `knip`, `prettier`, `typescript-eslint`.
+
 ## 1.19.2
 
 ### Patch Changes
