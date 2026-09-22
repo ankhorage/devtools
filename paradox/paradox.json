@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.19.9",
+      "value": "v1.19.10",
       "color": "cb3837"
     },
     {
@@ -2633,11 +2633,29 @@
       }
     },
     {
+      "name": "isOpenStringIntersection",
+      "description": "Recognize TypeScript's autocomplete-friendly `string & {}` pattern as scalar string semantics.",
+      "sourceLocation": {
+        "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "isEmptyObjectType",
+      "description": "Accept only structurally empty object members when recognizing an open-string intersection.",
+      "sourceLocation": {
+        "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
+        "line": 107,
+        "column": 1
+      }
+    },
+    {
       "name": "resolveLiteral",
       "description": "Resolve one scalar literal while leaving non-literal types untouched.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 94,
+        "line": 119,
         "column": 1
       }
     },
@@ -2646,7 +2664,7 @@
       "description": "Resolve finite literal unions or a deterministic general union descriptor.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 105,
+        "line": 130,
         "column": 1
       }
     },
@@ -2655,7 +2673,7 @@
       "description": "Narrow an optional scalar literal after union projection.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 123,
+        "line": 157,
         "column": 1
       }
     },
@@ -2664,7 +2682,7 @@
       "description": "Resolve a homogeneous Array/ReadonlyArray element type while rejecting tuples.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 130,
+        "line": 164,
         "column": 1
       }
     },
@@ -2673,7 +2691,7 @@
       "description": "Resolve a fixed object shape and reject unmarked records or executable objects.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 145,
+        "line": 179,
         "column": 1
       }
     },
@@ -2682,7 +2700,7 @@
       "description": "Resolve one object property including optionality while rejecting methods.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 163,
+        "line": 197,
         "column": 1
       }
     },
@@ -2691,7 +2709,7 @@
       "description": "Narrow property declarations that carry a source-level type node.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 196,
+        "line": 230,
         "column": 1
       }
     },
@@ -2700,7 +2718,7 @@
       "description": "Resolve a stable discriminator shared by every object-like union variant.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 206,
+        "line": 240,
         "column": 1
       }
     },
@@ -2709,7 +2727,7 @@
       "description": "Resolve one string/number literal discriminator value from an object variant.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 226,
+        "line": 260,
         "column": 1
       }
     },
@@ -2718,7 +2736,7 @@
       "description": "Return the meaningful alias/interface symbol for reference identity.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 242,
+        "line": 276,
         "column": 1
       }
     },
@@ -2727,7 +2745,7 @@
       "description": "Require one stable source-level symbol name independent of declaration file paths.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 251,
+        "line": 285,
         "column": 1
       }
     },
@@ -2736,7 +2754,7 @@
       "description": "Sort finite scalar values deterministically without changing scalar identity.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 258,
+        "line": 292,
         "column": 1
       }
     },
@@ -2745,7 +2763,7 @@
       "description": "Create one actionable unsupported-type error without exposing source paths.",
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
-        "line": 265,
+        "line": 299,
         "column": 1
       }
     },
@@ -7055,6 +7073,18 @@
         "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
       },
       {
+        "fromSymbol": "resolvePrimitive",
+        "toSymbol": "isOpenStringIntersection",
+        "callExpression": "isOpenStringIntersection",
+        "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
+      },
+      {
+        "fromSymbol": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
+        "toSymbol": "isEmptyObjectType",
+        "callExpression": "isEmptyObjectType",
+        "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
+      },
+      {
         "fromSymbol": "resolveUnion",
         "toSymbol": "unsupportedType",
         "callExpression": "unsupportedType",
@@ -7076,6 +7106,12 @@
         "fromSymbol": "resolveUnion",
         "toSymbol": "sortLiterals",
         "callExpression": "sortLiterals",
+        "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
+      },
+      {
+        "fromSymbol": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
+        "toSymbol": "isOpenStringIntersection",
+        "callExpression": "isOpenStringIntersection",
         "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
       },
       {

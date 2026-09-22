@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.10
+
+### Patch Changes
+
+- b35fb34: Generate scalar string descriptors for TypeScript open-string autocomplete unions such as `Known | (string & {})`, while keeping non-empty intersections unsupported.
+
 ## 1.19.9
 
 ### Patch Changes
