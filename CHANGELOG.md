@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.4
+
+### Patch Changes
+
+- 58bbdee: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/utility`.
+
 ## 1.19.3
 
 ### Patch Changes
