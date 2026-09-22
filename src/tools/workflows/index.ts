@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
+import { resolvePkgvizAuditPolicyAsync } from '../../policy/resolvePkgvizAuditPolicyAsync.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
@@ -43,6 +44,7 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
         bunVersion: bunRuntimePolicy.version,
         doctorVersion: readCurrentDoctorVersion(),
         nodeVersion: nodeRuntimePolicy.setupVersion,
+        pkgvizAudit: await resolvePkgvizAuditPolicyAsync(targetDirectory),
       }),
   };
 }
