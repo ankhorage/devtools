@@ -18,7 +18,7 @@ export interface WorkflowPolicy {
 /*** Renders one workflow template with the canonical runtime, Doctor, and Changesets policy. */
 export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy): Promise<string> {
   const template = await readFile(sourceUrl, 'utf8');
-  return template
+  const rendered = template
     .replaceAll(BUN_VERSION_TOKEN, policy.bunVersion)
     .replaceAll(PKGVIZ_AUDIT_STEPS_TOKEN, renderPkgvizAuditSteps(policy))
     .replaceAll(CHANGESETS_PUBLISH_COMMAND_TOKEN, changesetsPolicy.workflowCommands.publish)
@@ -34,6 +34,7 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
       policy.structureReleaseCommand ?? './node_modules/.bin/ankhorage-structure',
     )
     .replaceAll(NODE_VERSION_TOKEN, policy.nodeVersion);
+  return `${rendered.trimEnd()}\n`;
 }
 
 const BUN_VERSION_TOKEN = '__ANKH_BUN_VERSION__';
