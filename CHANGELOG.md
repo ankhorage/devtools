@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.1
+
+### Patch Changes
+
+- 283f7f8: Require Contracts 22.1.2 so structural descriptor generation always uses the Node ESM-safe structure runtime.
+
 ## 1.19.0
 
 ### Minor Changes
