@@ -10,8 +10,7 @@ export async function resolvePkgvizAuditPolicyAsync(
   return {
     artifactName: 'pkgviz-audit',
     artifactPath: 'pkgviz-audit.json',
-    command:
-      'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
+    command: 'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
   };
 }
 
