@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.2
+
+### Patch Changes
+
+- bd77e33: Keep Devtools owner-generated workflows self-hosted and normalize rendered workflow files to one terminal newline.
+
 ## 1.19.1
 
 ### Patch Changes

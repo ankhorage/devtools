@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.19.1",
+      "value": "v1.19.2",
       "color": "cb3837"
     },
     {
@@ -527,6 +527,8 @@
       "path": "src/owner/synchronizeRenovateOwnerAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/applyBunRuntimePolicy.ts",
         "src/policy/bunRuntimePolicy.ts",
         "src/policy/renderBunPolicyDocumentation.ts",
@@ -2761,7 +2763,7 @@
       "description": "Synchronize or validate Renovate-owned Devtools policy artifacts.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 14,
+        "line": 19,
         "column": 1
       }
     },
@@ -2770,7 +2772,7 @@
       "description": "Assert that Renovate owner synchronization targets the Devtools repository.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 54,
+        "line": 59,
         "column": 1
       }
     },
@@ -2779,7 +2781,16 @@
       "description": "Build the canonical owner-managed artifact definitions for the target repository.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 64,
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "createWorkflowPolicyAsync",
+      "description": "Build the self-hosted workflow policy used by Devtools owner synchronization.",
+      "sourceLocation": {
+        "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "line": 118,
         "column": 1
       }
     },
@@ -2788,7 +2799,7 @@
       "description": "Return owner-managed artifact paths whose current bytes differ from policy output.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 117,
+        "line": 132,
         "column": 1
       }
     },
@@ -2797,7 +2808,7 @@
       "description": "Narrow an unknown error to a Node error carrying an error code.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 136,
+        "line": 151,
         "column": 1
       }
     },
@@ -2806,7 +2817,7 @@
       "description": "Narrow an unknown JSON-like value to a non-array record.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 141,
+        "line": 156,
         "column": 1
       }
     },
@@ -2815,7 +2826,7 @@
       "description": "Read the target repository's canonical Bun policy literals.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 146,
+        "line": 161,
         "column": 1
       }
     },
@@ -2824,7 +2835,7 @@
       "description": "Synchronize or validate the target Bun lockfile through Bun itself.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 172,
+        "line": 187,
         "column": 1
       }
     },
@@ -2833,7 +2844,7 @@
       "description": "Serialize a package manifest using repository formatting.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 197,
+        "line": 212,
         "column": 1
       }
     },
@@ -2842,7 +2853,7 @@
       "description": "Write changed owner-managed artifacts while preserving byte-identical files.",
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 202,
+        "line": 217,
         "column": 1
       }
     },
@@ -3985,7 +3996,7 @@
       "description": "Render the centrally managed PKGViz audit steps only for applicable repositories.",
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 47,
+        "line": 48,
         "column": 1
       }
     }
@@ -4186,6 +4197,16 @@
         "fromPath": "src/internal/readmeDocs.ts",
         "toPath": "src/policy/bunRuntimePolicy.ts",
         "sourcePath": "src/internal/readmeDocs.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
@@ -5097,8 +5118,8 @@
       },
       {
         "fromSymbol": "createManagedDefinitionsAsync",
-        "toSymbol": "readCurrentDoctorVersion",
-        "callExpression": "readCurrentDoctorVersion",
+        "toSymbol": "createWorkflowPolicyAsync",
+        "callExpression": "createWorkflowPolicyAsync",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
@@ -5129,6 +5150,24 @@
         "fromSymbol": "createManagedDefinitionsAsync",
         "toSymbol": "renderBunPolicyDocumentation",
         "callExpression": "renderBunPolicyDocumentation",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createWorkflowPolicyAsync",
+        "toSymbol": "resolveApmReleaseCommandAsync",
+        "callExpression": "resolveApmReleaseCommandAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createWorkflowPolicyAsync",
+        "toSymbol": "resolveStructureReleaseCommandAsync",
+        "callExpression": "resolveStructureReleaseCommandAsync",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromSymbol": "createWorkflowPolicyAsync",
+        "toSymbol": "readCurrentDoctorVersion",
+        "callExpression": "readCurrentDoctorVersion",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
