@@ -20,6 +20,11 @@
   ],
   packageRules: [
     {
+      description: 'Keep Utility image consumer on 0.5 until devtools#260 migrates its owner',
+      matchDepNames: ['@ankhorage/utility'],
+      allowedVersions: '<0.6.0',
+    },
+    {
       description: 'Defer TypeScript 7 until the Devtools ESLint parser supports its compiler API',
       matchDepNames: ['typescript'],
       allowedVersions: '<7.0.0',
