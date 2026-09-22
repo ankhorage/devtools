@@ -35,6 +35,54 @@ test('generates deterministic structural semantics from explicit public type roo
   expect(generated).not.toContain(target);
 });
 
+test('treats open string autocomplete unions as scalar strings', async () => {
+  const target = await createFixtureProject();
+  const sourcePath = join(target, 'src/public.ts');
+  const source = await readFile(sourcePath, 'utf8');
+  await writeFile(
+    sourcePath,
+    source.replace(
+      'export interface AppRoot {',
+      `export type OpenLabel = 'known' | (string & {});\n\nexport interface AppRoot {`,
+    ).replace(
+      '  readonly mode: Mode;',
+      '  readonly mode: Mode;\n  readonly openLabel: OpenLabel;\n  readonly openLabels: readonly OpenLabel[];',
+    ),
+  );
+
+  await synchronizeStructureArtifactForDirectoryAsync('build', target);
+  const generated = await readFile(join(target, 'src/generated/structure.ts'), 'utf8');
+
+  expect(generated).toContain('"openLabel"');
+  expect(generated).toContain('"openLabels"');
+  expect(generated).not.toContain('"id": "OpenLabel"');
+  expect(generated).toMatch(
+    /"openLabel":\s*\{\s*"value":\s*\{\s*"kind": "scalar",\s*"type": "string"/u,
+  );
+  expect(generated).toMatch(
+    /"openLabels":\s*\{\s*"value":\s*\{\s*"kind": "ordered-list",\s*"item":\s*\{\s*"kind": "scalar",\s*"type": "string"/u,
+  );
+});
+
+test('keeps non-empty string intersections unsupported', async () => {
+  const target = await createFixtureProject();
+  const sourcePath = join(target, 'src/public.ts');
+  await writeFile(
+    sourcePath,
+    `export type BrandedString = string & { readonly brand: 'x' };\nexport interface AppRoot { readonly value: BrandedString; }\n`,
+    'utf8',
+  );
+
+  let failure = '';
+  try {
+    await synchronizeStructureArtifactForDirectoryAsync('build', target);
+  } catch (error) {
+    failure = error instanceof Error ? error.message : String(error);
+  }
+
+  expect(failure).toMatch(/Cannot generate field "value"/u);
+});
+
 test('source file relocation does not perturb semantic output', async () => {
   const target = await createFixtureProject();
   await synchronizeStructureArtifactForDirectoryAsync('build', target);
