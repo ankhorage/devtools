@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.7
+
+### Patch Changes
+
+- f53e324: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/project-detector`.
+
 ## 1.19.6
 
 ### Patch Changes
