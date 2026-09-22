@@ -6,6 +6,7 @@ export default createKnipConfig({
     'src/tools/skills/assets/**/scripts/**/*.ts',
     'paradox.config.ts',
   ],
+  ignoreDependencies: ['@techstark/opencv-js'],
   ignoreFiles: [
     'examples/monorepo/eslint.config.mjs',
     'examples/package/eslint.config.mjs',
