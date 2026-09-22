@@ -65,7 +65,7 @@ function ensureStructureDefinition(
 
 /*** Resolve primitives, literals, arrays, unions, and fixed object shapes. */
 function resolveTypeBody(type: ts.Type, context: StructureCompilerContext): StructureDescriptor {
-  const primitive = resolvePrimitive(type);
+  const primitive = resolvePrimitive(type, context.checker);
   if (primitive) return primitive;
 
   const literal = resolveLiteral(type, context.checker);
@@ -82,12 +82,39 @@ function resolveTypeBody(type: ts.Type, context: StructureCompilerContext): Stru
 }
 
 /*** Resolve JSON-safe scalar primitives. */
-function resolvePrimitive(type: ts.Type): StructureDescriptor | null {
+function resolvePrimitive(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): StructureDescriptor | null {
   if ((type.flags & ts.TypeFlags.String) !== 0) return { kind: 'scalar', type: 'string' };
+  if (isOpenStringIntersection(type, checker)) return { kind: 'scalar', type: 'string' };
   if ((type.flags & ts.TypeFlags.Number) !== 0) return { kind: 'scalar', type: 'number' };
   if ((type.flags & ts.TypeFlags.Boolean) !== 0) return { kind: 'scalar', type: 'boolean' };
   if ((type.flags & ts.TypeFlags.Null) !== 0) return { kind: 'scalar', type: 'null' };
   return null;
+}
+
+/*** Recognize TypeScript's autocomplete-friendly `string & {}` pattern as scalar string semantics. */
+function isOpenStringIntersection(type: ts.Type, checker: ts.TypeChecker): boolean {
+  if (!type.isIntersection()) return false;
+
+  const stringMembers = type.types.filter((member) => (member.flags & ts.TypeFlags.String) !== 0);
+  if (stringMembers.length !== 1) return false;
+
+  const objectMembers = type.types.filter((member) => (member.flags & ts.TypeFlags.String) === 0);
+  return objectMembers.length > 0 && objectMembers.every((member) => isEmptyObjectType(member, checker));
+}
+
+/*** Accept only structurally empty object members when recognizing an open-string intersection. */
+function isEmptyObjectType(type: ts.Type, checker: ts.TypeChecker): boolean {
+  return (
+    (type.flags & ts.TypeFlags.Object) !== 0 &&
+    type.getProperties().length === 0 &&
+    type.getCallSignatures().length === 0 &&
+    type.getConstructSignatures().length === 0 &&
+    checker.getIndexTypeOfType(type, ts.IndexKind.String) === undefined &&
+    checker.getIndexTypeOfType(type, ts.IndexKind.Number) === undefined
+  );
 }
 
 /*** Resolve one scalar literal while leaving non-literal types untouched. */
@@ -111,6 +138,15 @@ function resolveUnion(type: ts.UnionType, context: StructureCompilerContext): St
   const literals = effective.map((entry) => resolveLiteral(entry, context.checker));
   if (literals.every(isDefinedLiteral)) {
     return { kind: 'enum', values: sortLiterals(literals) };
+  }
+
+  if (
+    effective.some((entry) => isOpenStringIntersection(entry, context.checker)) &&
+    effective.every(
+      (entry) => entry.isStringLiteral() || isOpenStringIntersection(entry, context.checker),
+    )
+  ) {
+    return { kind: 'scalar', type: 'string' };
   }
 
   const variants = effective.map((entry) => resolveStructureType(entry, context));
