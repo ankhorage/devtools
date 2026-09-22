@@ -148,6 +148,31 @@ test('managed release synchronizes main before build and recovers a matching his
   expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
 });
 
+describe('managed PKGViz audit', () => {
+  test('renders the pinned blocking audit and diagnostic artifact for source repositories', async () => {
+    const target = await createWorkflowTarget();
+    await mkdir(join(target, 'src'));
+
+    const ci = await workflowManagedFiles[0].render?.(target);
+
+    expect(ci).toContain(
+      'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
+    );
+    expect(ci).toContain("if: always() && hashFiles('pkgviz-audit.json') != ''");
+    expect(ci).toContain('name: pkgviz-audit');
+    expect(ci).toContain('path: pkgviz-audit.json');
+  });
+
+  test('omits the audit from repositories without analyzable source', async () => {
+    const target = await createWorkflowTarget();
+
+    const ci = await workflowManagedFiles[0].render?.(target);
+
+    expect(ci).not.toContain('Enforce PKGViz cyclic-dependencies rule');
+    expect(ci).not.toContain('pkgviz-audit.json');
+  });
+});
+
 describe('managed CI Changesets contract', () => {
   test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
     const ci = await workflowManagedFiles[0].render?.('.');
