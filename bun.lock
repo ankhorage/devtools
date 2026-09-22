@@ -30,10 +30,10 @@
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.10.4",
-        "@ankhorage/doctor": "0.10.34",
+        "@ankhorage/doctor": "0.10.35",
         "@ankhorage/paradox": "^0.1.26",
         "@techstark/opencv-js": "^5.0.0-release.1",
-        "@types/bun": "^1.4.1",
+        "@types/bun": "^1.4.2",
         "@types/node": "^26.6.2",
         "sharp": "^0.35.4",
       },
@@ -48,7 +48,7 @@
 
     "@ankhorage/contracts": ["@ankhorage/contracts@22.7.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.1", "@ankhorage/utility": "^1.5.0" } }, "sha512-5p5XOE0VhsYqpmOjsM/f02ARhFs5zV+Xb+rqmlhRB+0Qa5fy6V6Ednxl5w3AxqRvwixDeInGL05ElbL49pgRqg=="],
 
-    "@ankhorage/doctor": ["@ankhorage/doctor@0.10.34", "", { "dependencies": { "@ankhorage/contracts": "^22.5.0", "@ankhorage/supabase-auth": "^1.2.23" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-+trV1p9rdM4DE6S8UFfqvCvBAnbi/cPxSPOXadzJsvW9tuUe9b7dOv9SPtspUaNvkFVEnkiv/NuLMovhaHb52Q=="],
+    "@ankhorage/doctor": ["@ankhorage/doctor@0.10.35", "", { "dependencies": { "@ankhorage/contracts": "^22.7.0", "@ankhorage/supabase-auth": "^1.2.23" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-NRSBq6Syf7VttRhrD58DCVISmIjuGrueLNGZrcCBM8CEAeY+wTUZFbhg+veZNMDMob0STLdgBXq80B7fPjbExw=="],
 
     "@ankhorage/paradox": ["@ankhorage/paradox@0.1.26", "", { "dependencies": { "ts-morph": "^28.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-6m+GVcA58LOgiZp9PZZERvd2vL9vus+Ab1fM+ZehS+b6MuSH/RAUvGZ5ifOpgVuCczLAMzi5mxKNrRlShm0zHw=="],
 
