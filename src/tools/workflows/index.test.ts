@@ -158,7 +158,7 @@ describe('managed PKGViz audit', () => {
     expect(ci).toContain(
       'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
     );
-    expect(ci).toContain('if: always() && hashFiles(\'pkgviz-audit.json\') != \'\'');
+    expect(ci).toContain("if: always() && hashFiles('pkgviz-audit.json') != ''");
     expect(ci).toContain('name: pkgviz-audit');
     expect(ci).toContain('path: pkgviz-audit.json');
   });
