@@ -41,13 +41,15 @@ test('treats open string autocomplete unions as scalar strings', async () => {
   const source = await readFile(sourcePath, 'utf8');
   await writeFile(
     sourcePath,
-    source.replace(
-      'export interface AppRoot {',
-      `export type OpenLabel = 'known' | (string & {});\n\nexport interface AppRoot {`,
-    ).replace(
-      '  readonly mode: Mode;',
-      '  readonly mode: Mode;\n  readonly openLabel: OpenLabel;\n  readonly openLabels: readonly OpenLabel[];',
-    ),
+    source
+      .replace(
+        'export interface AppRoot {',
+        `export type OpenLabel = 'known' | (string & {});\n\nexport interface AppRoot {`,
+      )
+      .replace(
+        '  readonly mode: Mode;',
+        '  readonly mode: Mode;\n  readonly openLabel: OpenLabel;\n  readonly openLabels: readonly OpenLabel[];',
+      ),
   );
 
   await synchronizeStructureArtifactForDirectoryAsync('build', target);
