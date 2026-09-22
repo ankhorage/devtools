@@ -18,7 +18,9 @@ describe('PKGViz audit policy', () => {
     const target = await createTarget();
     await mkdir(join(target, 'src'));
 
-    await expect(resolvePkgvizAuditPolicyAsync(target)).resolves.toEqual({
+    const policy = await resolvePkgvizAuditPolicyAsync(target);
+
+    expect(policy).toEqual({
       artifactName: 'pkgviz-audit',
       artifactPath: 'pkgviz-audit.json',
       command: 'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
@@ -28,7 +30,9 @@ describe('PKGViz audit policy', () => {
   test('does not enable PKGViz for repositories without a source tree', async () => {
     const target = await createTarget();
 
-    await expect(resolvePkgvizAuditPolicyAsync(target)).resolves.toBeUndefined();
+    const policy = await resolvePkgvizAuditPolicyAsync(target);
+
+    expect(policy).toBeUndefined();
   });
 });
 
