@@ -59,4 +59,4 @@ function renderPkgvizAuditSteps(policy: WorkflowPolicy): string {
 `;
 }
 
-const PKGVIZ_AUDIT_STEPS_TOKEN = '__ANKH_PKGVIZ_AUDIT_STEPS__';
+const PKGVIZ_AUDIT_STEPS_TOKEN = '      # __ANKH_PKGVIZ_AUDIT_STEPS__';
