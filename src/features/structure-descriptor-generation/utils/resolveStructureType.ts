@@ -82,10 +82,7 @@ function resolveTypeBody(type: ts.Type, context: StructureCompilerContext): Stru
 }
 
 /*** Resolve JSON-safe scalar primitives. */
-function resolvePrimitive(
-  type: ts.Type,
-  checker: ts.TypeChecker,
-): StructureDescriptor | null {
+function resolvePrimitive(type: ts.Type, checker: ts.TypeChecker): StructureDescriptor | null {
   if ((type.flags & ts.TypeFlags.String) !== 0) return { kind: 'scalar', type: 'string' };
   if (isOpenStringIntersection(type, checker)) return { kind: 'scalar', type: 'string' };
   if ((type.flags & ts.TypeFlags.Number) !== 0) return { kind: 'scalar', type: 'number' };
@@ -102,7 +99,10 @@ function isOpenStringIntersection(type: ts.Type, checker: ts.TypeChecker): boole
   if (stringMembers.length !== 1) return false;
 
   const objectMembers = type.types.filter((member) => (member.flags & ts.TypeFlags.String) === 0);
-  return objectMembers.length > 0 && objectMembers.every((member) => isEmptyObjectType(member, checker));
+  return (
+    objectMembers.length > 0 &&
+    objectMembers.every((member) => isEmptyObjectType(member, checker))
+  );
 }
 
 /*** Accept only structurally empty object members when recognizing an open-string intersection. */
