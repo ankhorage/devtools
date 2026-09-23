@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.19
+
+### Patch Changes
+
+- f85ea42: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
 ## 1.19.18
 
 ### Patch Changes
