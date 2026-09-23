@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.14
+
+### Patch Changes
+
+- e6a2a4f: Update Devtools-owned dependencies: `knip`, `prettier`.
+
 ## 1.19.13
 
 ### Patch Changes
