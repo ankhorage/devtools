@@ -144,7 +144,7 @@
     "knip": "^6.38.0",
     "prettier": "^3.9.9",
     "typescript-eslint": "^8.70.1",
-    "@ankhorage/contracts": "^22.7.0",
+    "@ankhorage/contracts": "^22.8.0",
     "typescript": "~6.0.3"
   },
   "devDependencies": {
@@ -152,7 +152,7 @@
     "@ankhorage/ankh": "^0.10.4",
     "@ankhorage/doctor": "0.10.36",
     "@techstark/opencv-js": "^5.0.0-release.1",
-    "@types/bun": "^1.4.1",
+    "@types/bun": "^1.4.2",
     "@types/node": "^26.6.2",
     "sharp": "^0.35.4"
   },
