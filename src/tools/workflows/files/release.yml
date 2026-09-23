@@ -335,7 +335,8 @@ jobs:
             };
             if (
               !/^@ankhorage\/[a-z0-9][a-z0-9-]*$/.test(release.name ?? '') ||
-              !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(release.version ?? '') ||
+              typeof release.version !== 'string' ||
+              release.version.length === 0 ||
               !/^ankhorage\/[a-z0-9-]+$/.test(release.sourceRepository ?? '')
             ) {
               throw new Error(

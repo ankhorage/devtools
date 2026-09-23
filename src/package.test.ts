@@ -1,8 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
+import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { describe, expect, it } from 'bun:test';
-
-const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
 const capabilities = [
   'devtools.apm.sync',
   'devtools.apm.validate',
@@ -115,7 +114,7 @@ describe('package release contract', () => {
     });
     const changesetsRange = packageJson.dependencies['@changesets/cli'];
     expect(changesetsRange).toBeString();
-    expect(changesetsRange).toMatch(CARET_SEMVER_RANGE);
+    expect(changesetsRange).toMatch(SEMVER_PATTERNS.caret);
     expect(packageJson.devDependencies).not.toHaveProperty('@changesets/cli');
   });
 
@@ -128,7 +127,7 @@ describe('package release contract', () => {
       readonly peerDependencies?: Readonly<Record<string, unknown>>;
     };
 
-    expect(packageJson.dependencies?.typescript).toMatch(/^~\d+\.\d+\.\d+$/u);
+    expect(packageJson.dependencies?.typescript).toMatch(SEMVER_PATTERNS.tilde);
     expect(packageJson.devDependencies?.typescript).toBeUndefined();
     expect(packageJson.peerDependencies?.typescript).toBeUndefined();
   });
