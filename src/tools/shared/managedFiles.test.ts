@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, mkdtemp, readFile, readlink, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -71,6 +71,43 @@ describe('managed file synchronization', () => {
     }
     expect(thrownError.message).toContain('Target directory does not exist');
   });
+});
+
+
+test('managed symbolic links are created, inspected, and repaired deterministically', async () => {
+  const fixture = await createFixture();
+  const definitions: readonly ManagedFileDefinition[] = [
+    {
+      relativePath: 'AGENT-ALIAS.md',
+      symlinkTarget: 'AGENTS.md',
+    },
+  ];
+  await writeFile(join(fixture.target, 'AGENTS.md'), 'canonical agent instructions\n');
+
+  expect(await inspectManagedFiles(fixture.target, definitions)).toEqual([
+    { relativePath: 'AGENT-ALIAS.md', state: 'missing' },
+  ]);
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: false })).toEqual([
+    { relativePath: 'AGENT-ALIAS.md', action: 'created' },
+  ]);
+  expect((await lstat(join(fixture.target, 'AGENT-ALIAS.md'))).isSymbolicLink()).toBe(true);
+  expect(await readlink(join(fixture.target, 'AGENT-ALIAS.md'))).toBe('AGENTS.md');
+
+  await rm(join(fixture.target, 'AGENT-ALIAS.md'));
+  await writeFile(join(fixture.target, 'AGENT-ALIAS.md'), 'copied instead of linked\n');
+  expect(await inspectManagedFiles(fixture.target, definitions)).toEqual([
+    { relativePath: 'AGENT-ALIAS.md', state: 'outdated' },
+  ]);
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: true })).toEqual([
+    { relativePath: 'AGENT-ALIAS.md', action: 'would-update' },
+  ]);
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: false })).toEqual([
+    { relativePath: 'AGENT-ALIAS.md', action: 'updated' },
+  ]);
+  expect(await readlink(join(fixture.target, 'AGENT-ALIAS.md'))).toBe('AGENTS.md');
+  expect(await syncManagedFiles(fixture.target, definitions, { dryRun: false })).toEqual([
+    { relativePath: 'AGENT-ALIAS.md', action: 'unchanged' },
+  ]);
 });
 
 test('create-only managed files preserve repository-owned edits', async () => {
