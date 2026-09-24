@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { lstat, mkdtemp, readFile, readlink, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
@@ -22,13 +22,22 @@ test('managed AGENTS.md renders package identity and current architecture policy
 
   expect(await syncManagedFiles(target, agentsManagedFiles, { dryRun: false })).toEqual([
     { relativePath: 'AGENTS.md', action: 'created' },
+    { relativePath: 'CLAUDE.md', action: 'created' },
+    { relativePath: 'GEMINI.md', action: 'created' },
   ]);
   const contents = await readFile(join(target, 'AGENTS.md'), 'utf8');
   expect(contents).toContain('Package: `@ankhorage/example`');
   expect(contents).toContain('Example package.');
   expect(contents).toContain('Only the current Ankhorage architecture is valid.');
   expect(contents).toContain('Do not add or retain deprecated APIs');
+  expect(contents).toContain('Every repository managed by `@ankhorage/devtools` is standalone.');
+  expect(contents).toContain('consumer-agnostic and reusable outside Ankhorage');
+  expect(contents).toContain('architecture debt to remove, not');
   expect(contents).not.toContain('AGENTS.override.md');
+  expect((await lstat(join(target, 'CLAUDE.md'))).isSymbolicLink()).toBe(true);
+  expect((await lstat(join(target, 'GEMINI.md'))).isSymbolicLink()).toBe(true);
+  expect(await readlink(join(target, 'CLAUDE.md'))).toBe('AGENTS.md');
+  expect(await readlink(join(target, 'GEMINI.md'))).toBe('AGENTS.md');
 });
 
 test('managed AGENTS.md renders contextual skill, documentation, and delivery instructions', async () => {
@@ -83,6 +92,8 @@ test('managed AGENTS.md updates package identity and handles missing identity tr
   );
   expect(await syncManagedFiles(target, agentsManagedFiles, { dryRun: true })).toEqual([
     { relativePath: 'AGENTS.md', action: 'would-update' },
+    { relativePath: 'CLAUDE.md', action: 'unchanged' },
+    { relativePath: 'GEMINI.md', action: 'unchanged' },
   ]);
 });
 
