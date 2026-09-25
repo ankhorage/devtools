@@ -3,9 +3,9 @@
 
 # @ankhorage/devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v1.21.3](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
-Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects
+Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects
 
 ## Usage
 
@@ -13,7 +13,7 @@ Shared development tools and repository standards for Ankhorage TypeScript proje
 
 ## What it owns
 
-`@ankhorage/devtools` is the single source of truth for these separate concerns:
+`@ankhorage/policy` is the source of truth for canonical Ankhorage policy. `@ankhorage/devtools` is the execution and synchronization layer for these repository concerns:
 
 ```text
 src/
@@ -30,8 +30,8 @@ src/
     └── vscode/
 ```
 
-- `policy`: shared repository runtime policy, including the canonical Bun version
-- `changesets`: package-resolved Changesets execution and release command policy
+- `policy`: policy application/rendering adapters that consume `@ankhorage/policy`
+- `changesets`: package-resolved Changesets execution using centrally defined commands
 - `agents`: canonical repository `AGENTS.md` rendered from stable package identity
 - `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`
 - `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner
@@ -41,7 +41,7 @@ src/
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
 - `vscode`: canonical `.vscode/settings.json` and `extensions.json`
 
-The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.
+The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/PKGViz policy values are owned by `@ankhorage/policy` and rendered by Devtools.
 
 ## Bootstrap
 
@@ -316,7 +316,7 @@ export default createKnipConfig();
 
 ## Managed Bun runtime policy
 
-The canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:
+The canonical Bun policy is defined by `@ankhorage/policy` and consumed by Devtools package and workflow synchronization. The current released policy is:
 
 <!-- devtools-bun-policy:start -->
 
@@ -328,7 +328,7 @@ packageManager    bun@1.4.2
 
 <!-- devtools-bun-policy:end -->
 
-Renovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.ts`. Its trusted base-branch workflow invokes `bun scripts/sync-renovate-owner.ts sync repository` to regenerate `packageManager`, `@types/bun`, the Bun workflow setup versions, this documentation block, and `bun.lock`, then runs `bun scripts/sync-renovate-owner.ts status repository` to reject stale generated artifacts. Do not synchronize those values manually in a Renovate branch.
+`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. The trusted owner workflow uses `bun scripts/sync-renovate-owner.ts sync repository` to regenerate those artifacts and `bun scripts/sync-renovate-owner.ts status repository` to reject stale rendered state. Do not duplicate runtime policy literals in Devtools.
 
 ## Managed package contract
 
@@ -363,7 +363,7 @@ A repository participates in Changesets synchronization when `.changeset/config.
 .github/workflows/release.yml
 ```
 
-CI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. They also render Changesets status, version, and publish commands from the same policy that owns the synchronized package scripts. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.
+CI and Release render their `bun-version` from `@ankhorage/policy/repository`, the same policy used for `package.json`. They also render Changesets status, version, and publish commands from that central policy. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.
 
 For the **first npm publication** of a new `@ankhorage/*` package, the organization publishing credential must be able to create/publish packages in the `@ankhorage` scope. With a granular npm token, grant package permission **Read and write (publish and stage)** to the `@ankhorage` scope or **All Packages**. If initial publication fails after Changesets has already pushed the release commit, correct the npm credential and rerun Release; the current unpublished version is reused and must not be bumped again. The managed workflow diagnoses this first-publish state separately from registry/network failures.
 

@@ -39,8 +39,6 @@ graph LR
   module_src_internal_readmeDocs_ts["src/internal/readmeDocs.ts"]
   module_src_owner_synchronizeRenovateOwnerAsync_ts["src/owner/synchronizeRenovateOwnerAsync.ts"]
   module_src_policy_applyBunRuntimePolicy_ts["src/policy/applyBunRuntimePolicy.ts"]
-  module_src_policy_bunRuntimePolicy_ts["src/policy/bunRuntimePolicy.ts"]
-  module_src_policy_changesetsPolicy_ts["src/policy/changesetsPolicy.ts"]
   module_src_policy_renderBunPolicyDocumentation_ts["src/policy/renderBunPolicyDocumentation.ts"]
   module_src_policy_resolvePkgvizAuditPolicyAsync_ts["src/policy/resolvePkgvizAuditPolicyAsync.ts"]
   module_src_tools_agents_index_ts["src/tools/agents/index.ts"]
@@ -69,7 +67,6 @@ graph LR
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts["src/tools/workflows/renderRenovateWorkflowAsync.ts"]
   module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
   module_src_types_apm_release_validation_ts["src/types/apm-release-validation.ts"]
-  module_src_types_bunPolicy_ts["src/types/bunPolicy.ts"]
   module_src_types_public_ts["src/types/public.ts"]
   module_src_types_structure_generation_ts["src/types/structure-generation.ts"]
   module_src_cli_bin_apm_release_ts --> module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
@@ -146,17 +143,13 @@ graph LR
   module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --> module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
   module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --> module_src_features_structure_descriptor_generation_utils_resolveStructureSymbolPackage_ts
   module_src_features_structure_descriptor_generation_utils_resolveStructureType_ts --> module_src_types_structure_generation_ts
-  module_src_internal_readmeDocs_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_applyBunRuntimePolicy_ts
-  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_renderBunPolicyDocumentation_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
-  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_types_bunPolicy_ts
-  module_src_policy_renderBunPolicyDocumentation_ts --> module_src_types_bunPolicy_ts
   module_src_tools_agents_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_types_ts
@@ -169,8 +162,6 @@ graph LR
   module_src_tools_gitignore_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_knip_managed_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
-  module_src_tools_package_index_ts --> module_src_policy_bunRuntimePolicy_ts
-  module_src_tools_package_index_ts --> module_src_policy_changesetsPolicy_ts
   module_src_tools_package_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_prettier_managed_ts --> module_src_tools_shared_managedFiles_ts
@@ -180,7 +171,6 @@ graph LR
   module_src_tools_vscode_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
-  module_src_tools_workflows_index_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --> module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts
@@ -188,4 +178,3 @@ graph LR
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
-  module_src_tools_workflows_renderWorkflowAsync_ts --> module_src_policy_changesetsPolicy_ts

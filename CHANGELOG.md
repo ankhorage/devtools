@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0
+
+### Major Changes
+
+- ff54ec2: Move canonical repository runtime and tooling policy ownership to @ankhorage/policy and remove the
+  legacy @ankhorage/devtools/policy public export.
+
 ## 1.21.3
 
 ### Patch Changes
