@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.20.0
+
+### Minor Changes
+
+- 4decaec: Define flexible, machine-verifiable architecture profiles and dependency-direction invariants for Devtools-managed repositories without imposing one universal directory tree.
+
 ## 1.19.19
 
 ### Patch Changes
