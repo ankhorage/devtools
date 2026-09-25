@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 
 export interface WorkflowPolicy {
   readonly bunVersion: string;
@@ -21,9 +21,9 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
   const rendered = template
     .replaceAll(BUN_VERSION_TOKEN, policy.bunVersion)
     .replaceAll(PKGVIZ_AUDIT_STEPS_TOKEN, renderPkgvizAuditSteps(policy))
-    .replaceAll(CHANGESETS_PUBLISH_COMMAND_TOKEN, changesetsPolicy.workflowCommands.publish)
-    .replaceAll(CHANGESETS_STATUS_COMMAND_TOKEN, changesetsPolicy.workflowCommands.status)
-    .replaceAll(CHANGESETS_VERSION_COMMAND_TOKEN, changesetsPolicy.workflowCommands.version)
+    .replaceAll(CHANGESETS_PUBLISH_COMMAND_TOKEN, REPOSITORY_POLICY.changesets.workflowCommands.publish)
+    .replaceAll(CHANGESETS_STATUS_COMMAND_TOKEN, REPOSITORY_POLICY.changesets.workflowCommands.status)
+    .replaceAll(CHANGESETS_VERSION_COMMAND_TOKEN, REPOSITORY_POLICY.changesets.workflowCommands.version)
     .replaceAll(DOCTOR_VERSION_TOKEN, policy.doctorVersion)
     .replaceAll(
       '__ANKH_APM_RELEASE_COMMAND__',
