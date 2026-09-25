@@ -305,7 +305,7 @@ export default createKnipConfig();
 
 ## Managed Bun runtime policy
 
-The canonical Bun policy is defined once in devtools and consumed by both package and workflow synchronization. The current policy is:
+The canonical Bun policy is defined by `@ankhorage/policy` and consumed by Devtools package and workflow synchronization. The current released policy is:
 
 <!-- devtools-bun-policy:start -->
 
@@ -317,7 +317,7 @@ packageManager    bun@1.4.2
 
 <!-- devtools-bun-policy:end -->
 
-Renovate owns the single `BUN_VERSION` literal in `src/policy/bunRuntimePolicy.ts`. Its trusted base-branch workflow invokes `bun scripts/sync-renovate-owner.ts sync repository` to regenerate `packageManager`, `@types/bun`, the Bun workflow setup versions, this documentation block, and `bun.lock`, then runs `bun scripts/sync-renovate-owner.ts status repository` to reject stale generated artifacts. Do not synchronize those values manually in a Renovate branch.
+`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. `bun scripts/sync-renovate-owner.ts status repository` rejects stale rendered artifacts. Do not duplicate runtime policy literals in Devtools.
 
 ## Managed package contract
 
@@ -352,7 +352,7 @@ A repository participates in Changesets synchronization when `.changeset/config.
 .github/workflows/release.yml
 ```
 
-CI and Release render their `bun-version` from the same managed Bun runtime policy used for `package.json`. They also render Changesets status, version, and publish commands from the same policy that owns the synchronized package scripts. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.
+CI and Release render their `bun-version` from `@ankhorage/policy/repository`, the same policy used for `package.json`. They also render Changesets status, version, and publish commands from that central policy. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.
 
 For the **first npm publication** of a new `@ankhorage/*` package, the organization publishing credential must be able to create/publish packages in the `@ankhorage` scope. With a granular npm token, grant package permission **Read and write (publish and stage)** to the `@ankhorage` scope or **All Packages**. If initial publication fails after Changesets has already pushed the release commit, correct the npm credential and rerun Release; the current unpublished version is reused and must not be bumped again. The managed workflow diagnoses this first-publish state separately from registry/network failures.
 
