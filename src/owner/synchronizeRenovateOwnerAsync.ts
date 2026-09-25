@@ -2,10 +2,11 @@ import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+
 import { resolveApmReleaseCommandAsync } from '../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
-import { nodeRuntimePolicy } from '../policy/bunRuntimePolicy.js';
 import { renderBunPolicyDocumentation } from '../policy/renderBunPolicyDocumentation.js';
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
@@ -13,17 +14,15 @@ import {
   renderWorkflowAsync,
   type WorkflowPolicy,
 } from '../tools/workflows/renderWorkflowAsync.js';
-import type { BunPolicy } from '../types/bunPolicy.js';
 
-/*** Synchronize or validate Renovate-owned Devtools policy artifacts. */
+/*** Synchronize or validate Renovate-owned Devtools artifacts from central repository policy. */
 export async function synchronizeRenovateOwnerAsync(
   operation: OwnerSyncOperation,
   targetDirectory: string,
   options: OwnerSyncOptions = {},
 ): Promise<void> {
   const target = resolve(targetDirectory);
-  const policy = await readTargetBunPolicyAsync(target);
-  const definitions = await createManagedDefinitionsAsync(target, policy);
+  const definitions = await createManagedDefinitionsAsync(target);
   await assertDevtoolsTargetAsync(target);
 
   if (operation === 'sync') {
@@ -65,10 +64,9 @@ async function assertDevtoolsTargetAsync(targetDirectory: string): Promise<void>
   }
 }
 
-/*** Build the canonical owner-managed artifact definitions for the target repository. */
+/*** Build the owner-managed artifact definitions from released central policy. */
 async function createManagedDefinitionsAsync(
   targetDirectory: string,
-  policy: BunPolicy,
 ): Promise<readonly ManagedDefinition[]> {
   const manifest = JSON.parse(
     await readFile(resolve(targetDirectory, 'package.json'), 'utf8'),
@@ -78,12 +76,12 @@ async function createManagedDefinitionsAsync(
   }
 
   const readme = await readFile(resolve(targetDirectory, 'README.md'), 'utf8');
-  const workflowPolicy = await createWorkflowPolicyAsync(targetDirectory, policy);
+  const workflowPolicy = await createWorkflowPolicyAsync(targetDirectory);
 
   return [
     {
       relativePath: 'package.json',
-      contents: serializePackageManifest(applyBunRuntimePolicy(manifest, policy)),
+      contents: serializePackageManifest(applyBunRuntimePolicy(manifest)),
     },
     {
       relativePath: '.github/workflows/ci.yml',
@@ -109,22 +107,19 @@ async function createManagedDefinitionsAsync(
     },
     {
       relativePath: 'README.md',
-      contents: renderBunPolicyDocumentation(readme, policy),
+      contents: renderBunPolicyDocumentation(readme),
     },
   ];
 }
 
 /*** Build the self-hosted workflow policy used by Devtools owner synchronization. */
-async function createWorkflowPolicyAsync(
-  targetDirectory: string,
-  policy: BunPolicy,
-): Promise<WorkflowPolicy> {
+async function createWorkflowPolicyAsync(targetDirectory: string): Promise<WorkflowPolicy> {
   return {
     apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
     structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-    bunVersion: policy.version,
+    bunVersion: REPOSITORY_POLICY.runtime.bun.version,
     doctorVersion: readCurrentDoctorVersion(),
-    nodeVersion: nodeRuntimePolicy.setupVersion,
+    nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
   };
 }
 
@@ -155,32 +150,6 @@ function isNodeError(error: unknown): error is NodeJS.ErrnoException {
 /*** Narrow an unknown JSON-like value to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/*** Read the target repository's canonical Bun policy literals. */
-async function readTargetBunPolicyAsync(targetDirectory: string): Promise<BunPolicy> {
-  const contents = await readFile(
-    resolve(targetDirectory, 'src/policy/bunRuntimePolicy.ts'),
-    'utf8',
-  );
-  const matches = [...contents.matchAll(BUN_VERSION_PATTERN)];
-  const version = matches.length === 1 ? matches[0]?.[1] : undefined;
-  if (version === undefined) {
-    throw new Error('Expected exactly one canonical BUN_VERSION literal in the target policy.');
-  }
-  const typesMatches = [...contents.matchAll(BUN_TYPES_VERSION_PATTERN)];
-  const typesVersion = typesMatches.length === 1 ? typesMatches[0]?.[1] : undefined;
-  if (typesVersion === undefined) {
-    throw new Error(
-      'Expected exactly one canonical BUN_TYPES_VERSION literal in the target policy.',
-    );
-  }
-
-  return {
-    packageManager: `bun@${version}`,
-    typesRange: `^${typesVersion}`,
-    version,
-  };
 }
 
 /*** Synchronize or validate the target Bun lockfile through Bun itself. */
@@ -229,7 +198,3 @@ async function syncDefinitionsAsync(
     await writeFile(targetPath, contents, 'utf8');
   }
 }
-
-const BUN_VERSION_PATTERN = /const BUN_VERSION = '(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)';/gu;
-const BUN_TYPES_VERSION_PATTERN =
-  /const BUN_TYPES_VERSION = '(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)';/gu;
