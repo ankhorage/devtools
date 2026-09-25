@@ -1,6 +1,6 @@
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { expect, test } from 'bun:test';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { applyManagedPackageContract, isManagedPackageContractCurrent } from './index.js';
 
 test('merges standard scripts and the shared devtools dependency', () => {
