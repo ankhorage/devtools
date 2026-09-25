@@ -20,9 +20,9 @@ import { existsSync, readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
-import { bunRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
-import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managedFiles.js';
 
 const PACKAGE_PATH = 'package.json';
@@ -139,12 +139,12 @@ export function applyManagedPackageContract(
   delete scripts.knip;
   Object.assign(scripts, STANDARD_SCRIPTS);
   if (changesetsEnabled) {
-    Object.assign(scripts, changesetsPolicy.packageScripts);
+    Object.assign(scripts, REPOSITORY_POLICY.changesets.packageScripts);
   }
   const devDependencies = removeOwnedDependencies(toRecord(manifest.devDependencies));
   const dependencies = toRecord(manifest.dependencies);
-  delete dependencies[changesetsPolicy.packageName];
-  delete devDependencies[changesetsPolicy.packageName];
+  delete dependencies[REPOSITORY_POLICY.changesets.packageName];
+  delete devDependencies[REPOSITORY_POLICY.changesets.packageName];
 
   applyDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion);
 
@@ -180,8 +180,8 @@ export function isManagedPackageContractCurrent(
   return (
     hasStandardScripts(scripts) &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
-    dependencies[changesetsPolicy.packageName] === undefined &&
-    devDependencies[changesetsPolicy.packageName] === undefined &&
+    dependencies[REPOSITORY_POLICY.changesets.packageName] === undefined &&
+    devDependencies[REPOSITORY_POLICY.changesets.packageName] === undefined &&
     hasCurrentChangesetsScripts(scripts, changesetsEnabled) &&
     hasCurrentDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion)
   );
@@ -220,8 +220,8 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
 function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean {
   const devDependencies = toRecord(manifest.devDependencies);
   return (
-    manifest.packageManager === bunRuntimePolicy.packageManager &&
-    devDependencies[BUN_TYPES_PACKAGE_NAME] === bunRuntimePolicy.typesRange
+    manifest.packageManager === REPOSITORY_POLICY.runtime.bun.packageManager &&
+    devDependencies[BUN_TYPES_PACKAGE_NAME] === REPOSITORY_POLICY.runtime.bun.typesRange
   );
 }
 
@@ -282,7 +282,7 @@ function hasCurrentChangesetsScripts(
 ): boolean {
   return (
     !changesetsEnabled ||
-    Object.entries(changesetsPolicy.packageScripts).every(
+    Object.entries(REPOSITORY_POLICY.changesets.packageScripts).every(
       ([name, command]) => scripts[name] === command,
     )
   );
@@ -295,7 +295,7 @@ function isChangesetsEnabled(
 ): boolean {
   return (
     changesetsConfigExists ||
-    Object.keys(changesetsPolicy.packageScripts).some(
+    Object.keys(REPOSITORY_POLICY.changesets.packageScripts).some(
       (scriptName) => scripts[scriptName] !== undefined,
     )
   );
