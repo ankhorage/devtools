@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -60,8 +60,6 @@ describe('Devtools Renovate owner synchronization', () => {
       'Stale Devtools owner policy artifacts: package.json',
     );
   });
-
-
 });
 
 test('preserves the Renovate-managed digest during owner synchronization', async () => {
