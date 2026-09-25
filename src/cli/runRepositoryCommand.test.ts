@@ -83,7 +83,9 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe(
     REPOSITORY_POLICY.runtime.bun.typesRange,
   );
-  expect(readProperty(packageJson, 'packageManager')).toBe(REPOSITORY_POLICY.runtime.bun.packageManager);
+  expect(readProperty(packageJson, 'packageManager')).toBe(
+    REPOSITORY_POLICY.runtime.bun.packageManager,
+  );
   expect(readNestedValue(packageJson, 'scripts', 'changeset')).toBeUndefined();
   expect(context.dependencySyncs).toBe(1);
   expect(context.dependencySyncObservedManagedFiles).toBe(true);
