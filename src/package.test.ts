@@ -255,7 +255,18 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).toContain('anticipated reuse alone is not sufficient');
   expect(contents).toContain('Keep non-serializable API types with their implementation-owning');
   expect(contents).toContain('stop before the remaining source-layout');
-  expect(contents).toContain('src/features/');
+  expect(contents).toContain('## Architecture profiles and source layout');
+  expect(contents).toContain('Do not impose one folder tree on every repository');
+  expect(contents).toContain('simple/value/contracts library');
+  expect(contents).toContain('reusable UI or design-system library');
+  expect(contents).toContain('application, engine, or hybrid package');
+  expect(contents).toContain('provider or platform adapter package');
+  expect(contents).toContain('generated standalone application');
+  expect(contents).toContain('`domain/` may stand alone');
+  expect(contents).toContain('`adapters/` translate or implement');
+  expect(contents).toContain('`features/` is feature-first organization');
+  expect(contents).toContain('`core/` is allowed only');
+  expect(contents).toContain('Dependency direction is the invariant');
   expect(contents).toContain('src/cli/');
   expect(contents).toContain('other/');
   expect(contents).toContain('exactly one exported runtime declaration');
@@ -267,6 +278,12 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).toContain('you MUST first inspect the');
   expect(contents).toContain('`isRecord` from `@ankhorage/utility/object`');
   expect(contents).not.toContain(obsoleteSkillName);
+  const profiles = readFileSync(new URL('references/architecture-profiles.md', skillRoot), 'utf8');
+  const invariants = readFileSync(new URL('references/hexagonal-invariants.md', skillRoot), 'utf8');
+  expect(profiles).toContain('## Combination rules');
+  expect(profiles).toContain('Doctor should validate these combinations');
+  expect(invariants).toContain('The canonical rule is isolation of inner policy');
+  expect(invariants).toContain('Dependency Rule');
 }
 
 function expectCodingRulesSkillContents(skillRoot: URL): void {
