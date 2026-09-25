@@ -2,7 +2,7 @@ Shared development tools and repository standards for Ankhorage TypeScript proje
 
 ## What it owns
 
-`@ankhorage/devtools` is the single source of truth for these separate concerns:
+`@ankhorage/policy` is the source of truth for canonical Ankhorage policy. `@ankhorage/devtools` is the execution and synchronization layer for these repository concerns:
 
 ```text
 src/
@@ -19,8 +19,8 @@ src/
     └── vscode/
 ```
 
-- `policy`: shared repository runtime policy, including the canonical Bun version
-- `changesets`: package-resolved Changesets execution and release command policy
+- `policy`: policy application/rendering adapters that consume `@ankhorage/policy`
+- `changesets`: package-resolved Changesets execution using centrally defined commands
 - `agents`: canonical repository `AGENTS.md` rendered from stable package identity
 - `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`
 - `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner
@@ -30,7 +30,7 @@ src/
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
 - `vscode`: canonical `.vscode/settings.json` and `extensions.json`
 
-The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. It also owns the Bun runtime version used by Ankhorage repository metadata and managed workflows.
+The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/PKGViz policy values are owned by `@ankhorage/policy` and rendered by Devtools.
 
 ## Bootstrap
 
@@ -317,7 +317,7 @@ packageManager    bun@1.4.2
 
 <!-- devtools-bun-policy:end -->
 
-`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. `bun scripts/sync-renovate-owner.ts status repository` rejects stale rendered artifacts. Do not duplicate runtime policy literals in Devtools.
+`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. The trusted owner workflow uses `bun scripts/sync-renovate-owner.ts sync repository` to regenerate those artifacts and `bun scripts/sync-renovate-owner.ts status repository` to reject stale rendered state. Do not duplicate runtime policy literals in Devtools.
 
 ## Managed package contract
 
