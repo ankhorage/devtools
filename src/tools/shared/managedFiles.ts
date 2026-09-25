@@ -186,27 +186,47 @@ async function syncManagedFileAsync(
 
   const targetPath = resolve(targetDirectory, definition.relativePath);
   await mkdir(dirname(targetPath), { recursive: true });
-  if (status.state === 'outdated') {
-    await rm(targetPath, { force: true, recursive: true });
-  }
-  await writeManagedArtifactAsync(targetPath, definition, targetDirectory);
+  const canonicalContents =
+    definition.symlinkTarget === undefined
+      ? await readCanonicalContents(definition, targetDirectory)
+      : undefined;
+  await prepareManagedTargetAsync(targetPath, definition);
+  await writeManagedArtifactAsync(targetPath, definition, canonicalContents);
   return {
     relativePath: status.relativePath,
     action: status.state === 'missing' ? 'created' : 'updated',
   };
 }
 
+/*** Remove an existing artifact only when writing through it would violate the target type. */
+async function prepareManagedTargetAsync(
+  targetPath: string,
+  definition: ManagedFileDefinition,
+): Promise<void> {
+  try {
+    const targetStats = await lstat(targetPath);
+    if (definition.symlinkTarget !== undefined || targetStats.isSymbolicLink()) {
+      await rm(targetPath, { force: true, recursive: true });
+    }
+  } catch (error) {
+    if (!isMissingFileError(error)) throw error;
+  }
+}
+
 /*** Write either a canonical regular file or a canonical symbolic link. */
 async function writeManagedArtifactAsync(
   targetPath: string,
   definition: ManagedFileDefinition,
-  targetDirectory: string,
+  canonicalContents: string | undefined,
 ): Promise<void> {
   if (definition.symlinkTarget !== undefined) {
     await symlink(definition.symlinkTarget, targetPath);
     return;
   }
-  await writeFile(targetPath, await readCanonicalContents(definition, targetDirectory), 'utf8');
+  if (canonicalContents === undefined) {
+    throw new Error(`Missing canonical file contents for ${definition.relativePath}.`);
+  }
+  await writeFile(targetPath, canonicalContents, 'utf8');
 }
 
 /*** Resolve canonical contents for one regular managed file definition. */
