@@ -2,7 +2,6 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
-import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 import { afterEach, expect, test } from 'bun:test';
 
 import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
@@ -79,7 +78,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
     'ankhorage-eslint . --max-warnings=0',
   );
   expect(readNestedValue(packageJson, 'devDependencies', '@ankhorage/devtools')).toMatch(
-    SEMVER_PATTERNS.caret,
+    /^\^\d+\.\d+\.\d+$/u,
   );
   expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe(
     bunRuntimePolicy.typesRange,

@@ -2,4 +2,4 @@
 '@ankhorage/devtools': patch
 ---
 
-Consume canonical SemVer patterns from @ankhorage/utility and remove redundant SemVer validation from the managed release rollout.
+Codify the second-copy shared-utility threshold and remove redundant SemVer syntax validation from managed release rollout dispatch.

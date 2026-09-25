@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/devtools",
-  "version": "1.19.17",
+  "version": "1.21.1",
   "description": "Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/devtools#readme",
@@ -121,12 +121,13 @@
     "changeset": "bun src/cli/bin/changeset.ts",
     "changeset:status": "bun src/cli/bin/changeset.ts status --since=origin/main",
     "version-packages": "bun src/cli/bin/changeset.ts version",
-    "check-types": "bun x tsc --noEmit -p tsconfig.test.json"
+    "check-types": "bun x tsc --noEmit -p tsconfig.test.json",
+    "test:standalone": "bun test src/tools/agents/index.test.ts src/tools/shared/managedFiles.test.ts"
   },
   "dependencies": {
     "@ankhorage/apm": "^0.8.10",
     "@ankhorage/project-detector": "^0.3.1",
-    "@ankhorage/utility": "^1.6.0",
+    "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
     "@eslint/compat": "^2.1.1",
     "@eslint/js": "^10.0.1",
@@ -144,13 +145,13 @@
     "knip": "^6.38.0",
     "prettier": "^3.9.9",
     "typescript-eslint": "^8.70.1",
-    "@ankhorage/contracts": "^22.8.0",
+    "@ankhorage/contracts": "^22.8.1",
     "typescript": "~6.0.3"
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.1.26",
     "@ankhorage/ankh": "^0.10.4",
-    "@ankhorage/doctor": "0.10.38",
+    "@ankhorage/doctor": "0.11.0",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.1",
     "@types/node": "^26.6.2",

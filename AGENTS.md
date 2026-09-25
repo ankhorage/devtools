@@ -21,6 +21,22 @@ published public APIs and declared dependencies, never sibling source files.
 Current-runtime error handling and canonical database or infrastructure migrations remain valid
 when they support states that the current architecture can intentionally produce.
 
+## Standalone contract
+
+Every repository managed by `@ankhorage/devtools` is standalone. It must be independently
+installable, buildable, testable, and usable from its own checkout using only declared dependencies
+and explicit configuration. It must not require sibling repositories, sibling source imports,
+`workspace:`, `file:`, or `link:` dependencies to unpublished packages, hidden
+organization-local state, or assumptions about a specific consuming application, infrastructure,
+hosting provider, web server, container runtime, or deployment topology.
+
+Published packages are additionally consumer-agnostic and reusable outside Ankhorage.
+Environment- or provider-specific behavior belongs behind explicit configuration and adapters,
+never in the package core.
+
+If an existing repository violates this contract, treat that as architecture debt to remove, not
+as an exception to preserve.
+
 ## Required repository instructions
 
 Before changing any file, read this `AGENTS.md` completely and inspect `.agents/skills/`.

@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.21.1
+
+### Patch Changes
+
+- b6f609b: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
+## 1.21.0
+
+### Minor Changes
+
+- 155201b: Define the mandatory standalone repository contract and manage `CLAUDE.md` and `GEMINI.md` as symbolic links to the canonical `AGENTS.md` instructions.
+
+## 1.20.0
+
+### Minor Changes
+
+- 4decaec: Define flexible, machine-verifiable architecture profiles and dependency-direction invariants for Devtools-managed repositories without imposing one universal directory tree.
+
+## 1.19.19
+
+### Patch Changes
+
+- f85ea42: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
+## 1.19.18
+
+### Patch Changes
+
+- 43ef857: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/doctor`.
+
 ## 1.19.17
 
 ### Patch Changes

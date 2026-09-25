@@ -3,7 +3,7 @@
 
 # @ankhorage/devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v1.19.17](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v1.21.1](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
 
 Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects
 
@@ -199,9 +199,11 @@ The canonical workflow, VS Code, and skill files are packaged with `@ankhorage/d
 
 ## Managed agent instructions
 
-`ankh devtools agents sync` owns the repository-root `AGENTS.md`. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.
+`ankh devtools agents sync` owns the repository-root `AGENTS.md` plus `CLAUDE.md` and `GEMINI.md` as symbolic links to that canonical file. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.
 
 Only the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.
+
+Every Devtools-managed repository is standalone: its own checkout must be sufficient to install, build, test, and use it with declared dependencies and explicit configuration. Published packages are additionally consumer-agnostic and reusable outside Ankhorage. Sibling repositories/source imports, unpublished workspace/file/link coupling, hidden organization-local state, and hard assumptions about a consuming app, infrastructure, hosting provider, web server, container runtime, or deployment topology are architecture debt rather than supported exceptions.
 
 ## Managed repository skills
 

@@ -1,7 +1,6 @@
 import { readFileSync } from 'node:fs';
 
 import { isRecord } from '@ankhorage/utility/object';
-import { SEMVER_PATTERNS } from '@ankhorage/utility/semver';
 
 const DOCTOR_PACKAGE_NAME = '@ankhorage/doctor';
 
@@ -15,7 +14,7 @@ export function readCurrentDoctorVersion(): string {
   }
 
   const version = parsed.devDependencies[DOCTOR_PACKAGE_NAME];
-  if (typeof version !== 'string' || !SEMVER_PATTERNS.exactWithPrerelease.test(version)) {
+  if (typeof version !== 'string' || !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u.test(version)) {
     throw new Error(`Devtools must pin ${DOCTOR_PACKAGE_NAME} to one exact version.`);
   }
   return version;
