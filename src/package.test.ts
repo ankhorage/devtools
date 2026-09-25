@@ -275,6 +275,8 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).toContain('ankhorage/navigator/src/constants/navigator.ts');
   expect(contents).toContain('`utils/` is the only utility directory name');
   expect(contents).toContain('**reuse before implementation** and **shared by default**');
+  expect(contents).toContain('second equivalent generic implementation');
+  expect(contents).toContain('Do not wait for a third copy');
   expect(contents).toContain('you MUST first inspect the');
   expect(contents).toContain('`isRecord` from `@ankhorage/utility/object`');
   expect(contents).not.toContain(obsoleteSkillName);
