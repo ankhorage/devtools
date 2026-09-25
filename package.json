@@ -153,7 +153,7 @@
     "@ankhorage/ankh": "^0.10.4",
     "@ankhorage/doctor": "0.11.0",
     "@techstark/opencv-js": "^5.0.0-release.1",
-    "@types/bun": "^1.4.2",
+    "@types/bun": "^1.4.1",
     "@types/node": "^26.6.2",
     "sharp": "^0.35.4"
   },
