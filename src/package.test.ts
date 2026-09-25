@@ -93,7 +93,7 @@ describe('package metadata', () => {
     expect(build).toContain('dist/tools/prettier/index.cjs');
     expect(packageJson.scripts).toMatchObject({ 'knip:check': 'knip' });
     expect(packageJson.scripts).not.toHaveProperty('knip');
-    const dependencies = packageJson.dependencies;
+    const { dependencies } = packageJson;
     if (!isRecord(dependencies)) throw new Error('package.json dependencies must be an object.');
     const policyRange = dependencies['@ankhorage/policy'];
     expect(policyRange).toBeString();
@@ -314,7 +314,6 @@ function collectManagedSkillScripts(root: URL, directory = root): string[] {
   }
   return scripts.sort();
 }
-
 
 /*** Narrow unknown JSON data to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
