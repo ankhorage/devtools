@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.21.2
+
+### Patch Changes
+
+- 055a026: Codify the second-copy shared-utility threshold and remove redundant SemVer syntax validation from managed release rollout dispatch.
+
 ## 1.21.1
 
 ### Patch Changes
