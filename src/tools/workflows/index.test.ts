@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { afterEach, describe, expect, test } from 'bun:test';
+
 import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
 import { workflowManagedFiles } from './index.js';
 
@@ -153,10 +154,10 @@ describe('managed PKGViz audit', () => {
 
     const ci = await workflowManagedFiles[0].render?.(target);
 
+    expect(ci).toContain(REPOSITORY_POLICY.pkgvizAudit.command);
     expect(ci).toContain(
-      REPOSITORY_POLICY.pkgvizAudit.command,
+      `if: always() && hashFiles('${REPOSITORY_POLICY.pkgvizAudit.artifactPath}') != ''`,
     );
-    expect(ci).toContain(`if: always() && hashFiles('${REPOSITORY_POLICY.pkgvizAudit.artifactPath}') != ''`);
     expect(ci).toContain(`name: ${REPOSITORY_POLICY.pkgvizAudit.artifactName}`);
     expect(ci).toContain(`path: ${REPOSITORY_POLICY.pkgvizAudit.artifactPath}`);
   });
@@ -187,7 +188,9 @@ describe('managed CI Changesets contract', () => {
             echo "No changeset:status script found; skipping."
           fi`,
     );
-    expect(REPOSITORY_POLICY.changesets.packageScripts['changeset:status']).toContain('--since=origin/main');
+    expect(REPOSITORY_POLICY.changesets.packageScripts['changeset:status']).toContain(
+      '--since=origin/main',
+    );
   });
 });
 
