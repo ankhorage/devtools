@@ -2,19 +2,11 @@
  * Repository configuration
  *
  * Loads the canonical Ankhorage Devtools-owner dependency-update policy from its default branch.
+ * Canonical runtime policy literals are updated in ankhorage/policy.
  */
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: ['github>ankhorage/renovate:devtools-owner'],
-  customManagers: [
-    {
-      customType: 'regex',
-      managerFilePatterns: ['/^src\\/policy\\/bunRuntimePolicy\\.ts$/'],
-      matchStrings: ["const BUN_VERSION = '(?<currentValue>[^']+)';"],
-      depNameTemplate: 'bun',
-      datasourceTemplate: 'npm',
-    },
-  ],
   packageRules: [
     {
       description: 'Keep Utility image consumer on 0.5 until devtools#260 migrates its owner',
@@ -25,26 +17,6 @@
       description: 'Defer TypeScript 7 until the Devtools ESLint parser supports its compiler API',
       matchDepNames: ['typescript'],
       allowedVersions: '<7.0.0',
-    },
-    {
-      description: 'Update the single Devtools-owned Bun policy authority',
-      matchDatasources: ['npm'],
-      matchDepNames: ['bun'],
-      matchFileNames: ['src/policy/bunRuntimePolicy.ts'],
-      matchManagers: ['custom.regex'],
-      enabled: true,
-      groupName: 'Devtools-owned toolchain',
-      rangeStrategy: 'replace',
-      automerge: false,
-      platformAutomerge: false,
-    },
-    {
-      description: 'Require review for major Devtools-owned toolchain updates',
-      matchDepNames: ['bun'],
-      matchManagers: ['custom.regex'],
-      matchUpdateTypes: ['major'],
-      automerge: false,
-      platformAutomerge: false,
     },
   ],
 }
