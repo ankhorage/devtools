@@ -75,10 +75,6 @@ describe('package metadata', () => {
         types: './dist/tools/knip/index.d.ts',
         import: './dist/tools/knip/index.js',
       },
-      './policy': {
-        types: './dist/policy/bunRuntimePolicy.d.ts',
-        import: './dist/policy/bunRuntimePolicy.js',
-      },
       './prettier': {
         import: './dist/tools/prettier/index.cjs',
         require: './dist/tools/prettier/index.cjs',
@@ -97,6 +93,9 @@ describe('package metadata', () => {
     expect(build).toContain('dist/tools/prettier/index.cjs');
     expect(packageJson.scripts).toMatchObject({ 'knip:check': 'knip' });
     expect(packageJson.scripts).not.toHaveProperty('knip');
+    expect(packageJson.dependencies).toMatchObject({
+      '@ankhorage/policy': expect.stringMatching(CARET_SEMVER_RANGE),
+    });
     expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
     expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
   });
