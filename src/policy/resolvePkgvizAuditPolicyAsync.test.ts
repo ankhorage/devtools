@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
 import { resolvePkgvizAuditPolicyAsync } from './resolvePkgvizAuditPolicyAsync.js';
@@ -21,9 +22,9 @@ describe('PKGViz audit policy', () => {
     const policy = await resolvePkgvizAuditPolicyAsync(target);
 
     expect(policy).toEqual({
-      artifactName: 'pkgviz-audit',
-      artifactPath: 'pkgviz-audit.json',
-      command: 'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
+      artifactName: REPOSITORY_POLICY.pkgvizAudit.artifactName,
+      artifactPath: REPOSITORY_POLICY.pkgvizAudit.artifactPath,
+      command: REPOSITORY_POLICY.pkgvizAudit.command,
     });
   });
 

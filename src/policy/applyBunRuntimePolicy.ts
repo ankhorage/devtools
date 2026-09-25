@@ -1,13 +1,13 @@
-export function applyBunRuntimePolicy(
-  manifest: Record<string, unknown>,
-  policy: { readonly packageManager: string; readonly typesRange: string },
-): Record<string, unknown> {
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+
+/*** Apply the canonical Bun runtime policy to one package manifest. */
+export function applyBunRuntimePolicy(manifest: Record<string, unknown>): Record<string, unknown> {
   const devDependencies = toRecord(manifest.devDependencies);
-  devDependencies['@types/bun'] = policy.typesRange;
+  devDependencies['@types/bun'] = REPOSITORY_POLICY.runtime.bun.typesRange;
 
   return {
     ...manifest,
-    packageManager: policy.packageManager,
+    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
     devDependencies,
   };
 }

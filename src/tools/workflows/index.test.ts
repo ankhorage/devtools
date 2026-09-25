@@ -1,10 +1,9 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
-import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
-import { changesetsPolicy } from '../../policy/changesetsPolicy.js';
 import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
 import { workflowManagedFiles } from './index.js';
 
@@ -21,8 +20,8 @@ describe('managed workflows', () => {
     for (const definition of workflowManagedFiles.slice(0, 2)) {
       expect(definition.render).toBeDefined();
       const rendered = await definition.render?.('.');
-      expect(rendered).toContain(`bun-version: '${bunRuntimePolicy.version}'`);
-      expect(rendered).toContain(`node-version: '${nodeRuntimePolicy.setupVersion}'`);
+      expect(rendered).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
+      expect(rendered).toContain(`node-version: '${REPOSITORY_POLICY.runtime.node.setupVersion}'`);
       expect(rendered).not.toContain('__ANKH_BUN_VERSION__');
       expect(rendered).not.toContain('__ANKH_NODE_VERSION__');
       expect(rendered).not.toContain('__ANKH_CHANGESETS_');
@@ -33,9 +32,9 @@ describe('managed workflows', () => {
     const ci = await workflowManagedFiles[0].render?.('.');
     const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(ci).toContain(changesetsPolicy.workflowCommands.status);
-    expect(release).toContain(changesetsPolicy.workflowCommands.version);
-    expect(release).toContain(changesetsPolicy.workflowCommands.publish);
+    expect(ci).toContain(REPOSITORY_POLICY.changesets.workflowCommands.status);
+    expect(release).toContain(REPOSITORY_POLICY.changesets.workflowCommands.version);
+    expect(release).toContain(REPOSITORY_POLICY.changesets.workflowCommands.publish);
     expect(release).toContain('id: release');
     expect(release).toContain('git checkout -B main origin/main');
     expect(release).toContain('git rebase origin/main');
@@ -94,7 +93,7 @@ test('diagnoses npm scope authorization when an initial package publish fails', 
   expect(release).toContain('package_absent=false');
   expect(release).toContain('npm view "$package_name" version --json > "$registry_evidence"');
   expect(release).toContain("p.error?.code !== 'E404'");
-  expect(release).toContain(`if ! ${changesetsPolicy.workflowCommands.publish}; then`);
+  expect(release).toContain(`if ! ${REPOSITORY_POLICY.changesets.workflowCommands.publish}; then`);
   expect(release).toContain('npm scope publish access required');
   expect(release).toContain('Read and write (publish and stage) access to the @ankhorage scope');
   expect(release).toContain('The already-versioned release commit on main is reusable');
@@ -106,7 +105,7 @@ test('regenerates structure evidence and docs after versioning before the releas
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
-  const versionIndex = release.indexOf(changesetsPolicy.workflowCommands.version);
+  const versionIndex = release.indexOf(REPOSITORY_POLICY.changesets.workflowCommands.version);
   const structureIndex = release.indexOf('node ./dist/cli/bin/structure.js build .');
   const docsIndex = release.indexOf('bun run docs');
   const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');
@@ -155,12 +154,12 @@ describe('managed PKGViz audit', () => {
 
     const ci = await workflowManagedFiles[0].render?.(target);
 
+    expect(ci).toContain(REPOSITORY_POLICY.pkgvizAudit.command);
     expect(ci).toContain(
-      'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
+      `if: always() && hashFiles('${REPOSITORY_POLICY.pkgvizAudit.artifactPath}') != ''`,
     );
-    expect(ci).toContain("if: always() && hashFiles('pkgviz-audit.json') != ''");
-    expect(ci).toContain('name: pkgviz-audit');
-    expect(ci).toContain('path: pkgviz-audit.json');
+    expect(ci).toContain(`name: ${REPOSITORY_POLICY.pkgvizAudit.artifactName}`);
+    expect(ci).toContain(`path: ${REPOSITORY_POLICY.pkgvizAudit.artifactPath}`);
   });
 
   test('omits the audit from repositories without analyzable source', async () => {
@@ -184,12 +183,14 @@ describe('managed CI Changesets contract', () => {
         if: github.event_name == 'pull_request'
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.scripts?.['changeset:status'] ? 0 : 1)"; then
-            ${changesetsPolicy.workflowCommands.status}
+            ${REPOSITORY_POLICY.changesets.workflowCommands.status}
           else
             echo "No changeset:status script found; skipping."
           fi`,
     );
-    expect(changesetsPolicy.packageScripts['changeset:status']).toContain('--since=origin/main');
+    expect(REPOSITORY_POLICY.changesets.packageScripts['changeset:status']).toContain(
+      '--since=origin/main',
+    );
   });
 });
 

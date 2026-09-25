@@ -1,7 +1,7 @@
 {
   "name": "@ankhorage/devtools",
   "version": "1.21.3",
-  "description": "Shared tooling, repository automation, runtime policies, and agent standards for Ankhorage TypeScript projects",
+  "description": "Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/devtools#readme",
   "bugs": {
@@ -82,10 +82,6 @@
       "types": "./dist/tools/knip/index.d.ts",
       "import": "./dist/tools/knip/index.js"
     },
-    "./policy": {
-      "types": "./dist/policy/bunRuntimePolicy.d.ts",
-      "import": "./dist/policy/bunRuntimePolicy.js"
-    },
     "./prettier": {
       "import": "./dist/tools/prettier/index.cjs",
       "require": "./dist/tools/prettier/index.cjs",
@@ -146,12 +142,13 @@
     "prettier": "^3.9.9",
     "typescript-eslint": "^8.70.1",
     "@ankhorage/contracts": "^22.8.1",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "@ankhorage/policy": "^0.3.1"
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.1.26",
     "@ankhorage/ankh": "^0.10.4",
-    "@ankhorage/doctor": "0.11.0",
+    "@ankhorage/doctor": "0.11.3",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.1",
     "@types/node": "^26.6.2",

@@ -75,10 +75,6 @@ describe('package metadata', () => {
         types: './dist/tools/knip/index.d.ts',
         import: './dist/tools/knip/index.js',
       },
-      './policy': {
-        types: './dist/policy/bunRuntimePolicy.d.ts',
-        import: './dist/policy/bunRuntimePolicy.js',
-      },
       './prettier': {
         import: './dist/tools/prettier/index.cjs',
         require: './dist/tools/prettier/index.cjs',
@@ -97,6 +93,11 @@ describe('package metadata', () => {
     expect(build).toContain('dist/tools/prettier/index.cjs');
     expect(packageJson.scripts).toMatchObject({ 'knip:check': 'knip' });
     expect(packageJson.scripts).not.toHaveProperty('knip');
+    const { dependencies } = packageJson;
+    if (!isRecord(dependencies)) throw new Error('package.json dependencies must be an object.');
+    const policyRange = dependencies['@ankhorage/policy'];
+    expect(policyRange).toBeString();
+    expect(policyRange).toMatch(CARET_SEMVER_RANGE);
     expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
     expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
   });
@@ -312,4 +313,9 @@ function collectManagedSkillScripts(root: URL, directory = root): string[] {
     }
   }
   return scripts.sort();
+}
+
+/*** Narrow unknown JSON data to a non-array record. */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

@@ -1,6 +1,6 @@
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { expect, test } from 'bun:test';
 
-import { bunRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import { applyManagedPackageContract, isManagedPackageContractCurrent } from './index.js';
 
 test('merges standard scripts and the shared devtools dependency', () => {
@@ -14,7 +14,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
   );
 
   expect(updated).toMatchObject({
-    packageManager: bunRuntimePolicy.packageManager,
+    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
     scripts: {
       test: 'bun test',
       lint: 'ankhorage-eslint . --max-warnings=0',
@@ -23,7 +23,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
     devDependencies: {
       typescript: '^5.9.3',
       '@ankhorage/devtools': '^2.3.4',
-      '@types/bun': bunRuntimePolicy.typesRange,
+      '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
     },
   });
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
@@ -135,14 +135,14 @@ test('moves devtools to devDependencies for ankh', () => {
   );
 
   expect(updated).toMatchObject({
-    packageManager: bunRuntimePolicy.packageManager,
+    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
     dependencies: {
       yaml: '^2.8.1',
     },
     devDependencies: {
       typescript: '^5.9.3',
       '@ankhorage/devtools': '^2.3.4',
-      '@types/bun': bunRuntimePolicy.typesRange,
+      '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
     },
   });
   expect(readNestedValue(updated, 'dependencies', '@ankhorage/devtools')).toBeUndefined();
@@ -198,10 +198,10 @@ test('applies only the Bun policy to devtools itself', () => {
 
   expect(updated).toMatchObject({
     name: '@ankhorage/devtools',
-    packageManager: bunRuntimePolicy.packageManager,
+    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
     dependencies: { eslint: '^10.2.0' },
     scripts: { lint: 'eslint .' },
-    devDependencies: { '@types/bun': bunRuntimePolicy.typesRange },
+    devDependencies: { '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange },
   });
   expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });

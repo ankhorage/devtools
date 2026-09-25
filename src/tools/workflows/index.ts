@@ -1,9 +1,10 @@
 import { access } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
-import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePolicy.js';
 import { resolvePkgvizAuditPolicyAsync } from '../../policy/resolvePkgvizAuditPolicyAsync.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
@@ -41,9 +42,9 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
       await renderWorkflowAsync(sourceUrl, {
         apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-        bunVersion: bunRuntimePolicy.version,
+        bunVersion: REPOSITORY_POLICY.runtime.bun.version,
         doctorVersion: readCurrentDoctorVersion(),
-        nodeVersion: nodeRuntimePolicy.setupVersion,
+        nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
         pkgvizAudit: await resolvePkgvizAuditPolicyAsync(targetDirectory),
       }),
   };
@@ -58,9 +59,9 @@ function createRenovateWorkflowDefinition(): ManagedFileDefinition {
       await renderRenovateWorkflowAsync(sourceUrl, targetDirectory, {
         apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-        bunVersion: bunRuntimePolicy.version,
+        bunVersion: REPOSITORY_POLICY.runtime.bun.version,
         doctorVersion: readCurrentDoctorVersion(),
-        nodeVersion: nodeRuntimePolicy.setupVersion,
+        nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
       }),
   };
 }

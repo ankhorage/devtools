@@ -2,7 +2,6 @@ import { readFileSync } from 'node:fs';
 
 import { defineParadoxConfig } from '@ankhorage/paradox';
 
-import { bunRuntimePolicy } from './src/policy/bunRuntimePolicy.js';
 import { renderBunPolicyDocumentation } from './src/policy/renderBunPolicyDocumentation.js';
 
 export default defineParadoxConfig({
@@ -11,7 +10,6 @@ export default defineParadoxConfig({
     usage: {
       description: renderBunPolicyDocumentation(
         readFileSync(new URL('./src/cli/usage.md', import.meta.url), 'utf8'),
-        bunRuntimePolicy,
       ),
     },
   },

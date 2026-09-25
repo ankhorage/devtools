@@ -1,7 +1,8 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
 import { synchronizeRenovateOwnerAsync } from './synchronizeRenovateOwnerAsync.js';
@@ -24,7 +25,7 @@ afterEach(async () => {
 
 describe('Devtools Renovate owner synchronization', () => {
   test('regenerates every Bun artifact and is byte-stable', async () => {
-    const target = await createTarget('1.4.2', '1.4.1');
+    const target = await createTarget();
     const unrelatedPath = join(target, 'notes.txt');
     await writeFile(unrelatedPath, 'leave me alone\n');
 
@@ -32,14 +33,17 @@ describe('Devtools Renovate owner synchronization', () => {
     const first = await readManagedContents(target);
 
     expect(JSON.parse(first.packageJson)).toMatchObject({
-      packageManager: 'bun@1.4.2',
-      devDependencies: { '@types/bun': '^1.4.1', typescript: '^5.9.3' },
+      packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
+      devDependencies: {
+        '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
+        typescript: '^5.9.3',
+      },
     });
-    expect(first.readme).toContain('Bun runtime       1.4.2');
-    expect(first.readme).toContain('@types/bun        ^1.4.1');
-    expect(first.ci).toContain("bun-version: '1.4.2'");
+    expect(first.readme).toContain(`Bun runtime       ${REPOSITORY_POLICY.runtime.bun.version}`);
+    expect(first.readme).toContain(`@types/bun        ${REPOSITORY_POLICY.runtime.bun.typesRange}`);
+    expect(first.ci).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
     expect(first.ci).toContain('node ./dist/cli/bin/apm-release.js validate . --allow-owner-code');
-    expect(first.release).toContain("bun-version: '1.4.2'");
+    expect(first.release).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
     expect(first.release).toContain('node ./dist/cli/bin/apm-release.js sync .');
     expect(first.release).toContain('node ./dist/cli/bin/structure.js build .');
     expect(first.renovate).toMatch(/changeset\.yml@[0-9a-f]{40}/u);
@@ -51,7 +55,7 @@ describe('Devtools Renovate owner synchronization', () => {
   });
 
   test('status rejects stale owner artifacts', async () => {
-    const target = await createTarget('1.4.0');
+    const target = await createTarget();
     await synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync });
     await writeFile(join(target, 'package.json'), '{"name":"@ankhorage/devtools"}\n');
 
@@ -59,22 +63,10 @@ describe('Devtools Renovate owner synchronization', () => {
       'Stale Devtools owner policy artifacts: package.json',
     );
   });
-
-  test('rejects an ambiguous Bun authority', async () => {
-    const target = await createTarget('1.4.0');
-    await writeFile(
-      join(target, 'src/policy/bunRuntimePolicy.ts'),
-      "const BUN_VERSION = '1.4.0';\nconst BUN_VERSION = '1.5.0';\n",
-    );
-
-    expect(synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync })).rejects.toThrow(
-      'Expected exactly one canonical BUN_VERSION literal',
-    );
-  });
 });
 
 test('preserves the Renovate-managed digest during owner synchronization', async () => {
-  const target = await createTarget('1.4.0');
+  const target = await createTarget();
   await synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync });
   const workflowPath = join(target, '.github/workflows/renovate.yml');
   const workflow = await readFile(workflowPath, 'utf8');
@@ -89,10 +81,9 @@ test('preserves the Renovate-managed digest during owner synchronization', async
   expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
 });
 
-async function createTarget(version: string, typesVersion = version): Promise<string> {
+async function createTarget(): Promise<string> {
   const target = await mkdtemp(join(tmpdir(), 'devtools-owner-'));
   temporaryDirectories.push(target);
-  await mkdir(join(target, 'src/policy'), { recursive: true });
   await writeFile(
     join(target, 'package.json'),
     `${JSON.stringify(
@@ -108,10 +99,6 @@ async function createTarget(version: string, typesVersion = version): Promise<st
   await writeFile(
     join(target, 'README.md'),
     `Before\n<!-- devtools-bun-policy:start -->\nstale\n<!-- devtools-bun-policy:end -->\nAfter\n`,
-  );
-  await writeFile(
-    join(target, 'src/policy/bunRuntimePolicy.ts'),
-    `const BUN_VERSION = '${version}';\nconst BUN_TYPES_VERSION = '${typesVersion}';\n`,
   );
   return target;
 }
