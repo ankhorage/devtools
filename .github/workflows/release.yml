@@ -76,6 +76,18 @@ jobs:
             echo "No build script found; skipping."
           fi
 
+      - name: Validate standalone release contract
+        run: |
+          BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@0.10.40 validate .
+          if node -e "const p=require('./package.json'); const required=p.private!==true&&p.publishConfig?.access==='public'; process.exit(required||p.scripts?.['test:standalone']?0:1)"; then
+            if node -e "const p=require('./package.json'); process.exit(p.scripts?.['test:standalone']?0:1)"; then
+              bun run test:standalone
+            else
+              echo "::error title=Standalone contract test required::Public packages must define test:standalone."
+              exit 1
+            fi
+          fi
+
       - name: Version packages directly on main
         id: release
         if: hashFiles('.changeset/config.json') != ''
