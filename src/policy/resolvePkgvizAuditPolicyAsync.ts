@@ -1,17 +1,16 @@
 import { stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
-/*** Resolve the centrally pinned PKGViz CI audit for repositories with analyzable source. */
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+
+/*** Resolve the central PKGViz CI audit for repositories with analyzable source. */
 export async function resolvePkgvizAuditPolicyAsync(
   targetDirectory: string,
 ): Promise<PkgvizAuditPolicy | undefined> {
   if (!(await hasSourceDirectoryAsync(targetDirectory))) return undefined;
 
-  return {
-    artifactName: 'pkgviz-audit',
-    artifactPath: 'pkgviz-audit.json',
-    command: 'bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block',
-  };
+  const { artifactName, artifactPath, command } = REPOSITORY_POLICY.pkgvizAudit;
+  return { artifactName, artifactPath, command };
 }
 
 interface PkgvizAuditPolicy {
