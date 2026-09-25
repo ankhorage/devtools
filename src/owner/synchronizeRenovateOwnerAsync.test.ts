@@ -34,7 +34,10 @@ describe('Devtools Renovate owner synchronization', () => {
 
     expect(JSON.parse(first.packageJson)).toMatchObject({
       packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
-      devDependencies: { '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange, typescript: '^5.9.3' },
+      devDependencies: {
+        '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
+        typescript: '^5.9.3',
+      },
     });
     expect(first.readme).toContain(`Bun runtime       ${REPOSITORY_POLICY.runtime.bun.version}`);
     expect(first.readme).toContain(`@types/bun        ${REPOSITORY_POLICY.runtime.bun.typesRange}`);
