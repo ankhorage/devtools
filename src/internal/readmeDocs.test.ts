@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
-import { bunRuntimePolicy } from '../policy/bunRuntimePolicy.js';
+import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { getReadmeDocumentationErrors } from './readmeDocs.js';
 
 describe('README documentation validation', () => {
@@ -41,9 +41,10 @@ describe('README documentation validation', () => {
       '<!-- devtools-bun-policy:end -->',
       'bun scripts/sync-renovate-owner.ts sync repository',
       'bun scripts/sync-renovate-owner.ts status',
-      bunRuntimePolicy.version,
-      bunRuntimePolicy.packageManager,
-      bunRuntimePolicy.typesRange,
+      '@ankhorage/policy',
+      REPOSITORY_POLICY.runtime.bun.version,
+      REPOSITORY_POLICY.runtime.bun.packageManager,
+      REPOSITORY_POLICY.runtime.bun.typesRange,
     ].join('\n');
 
     expect(getReadmeDocumentationErrors(readme)).toEqual([]);
