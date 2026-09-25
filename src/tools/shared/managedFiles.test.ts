@@ -73,7 +73,6 @@ describe('managed file synchronization', () => {
   });
 });
 
-
 test('managed symbolic links are created, inspected, and repaired deterministically', async () => {
   const fixture = await createFixture();
   const definitions: readonly ManagedFileDefinition[] = [
