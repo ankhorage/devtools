@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.21.0
+
+### Minor Changes
+
+- 155201b: Define the mandatory standalone repository contract and manage `CLAUDE.md` and `GEMINI.md` as symbolic links to the canonical `AGENTS.md` instructions.
+
 ## 1.20.0
 
 ### Minor Changes

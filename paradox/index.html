@@ -304,7 +304,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/agents/index.ts">
       src/tools/agents/index.ts
-      <small>11 functions</small>
+      <small>12 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/eslint/index.ts">
@@ -359,7 +359,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/shared/managedFiles.ts">
       src/tools/shared/managedFiles.ts
-      <small>8 functions</small>
+      <small>13 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/skills/assetTestFixture.ts">
@@ -3384,47 +3384,51 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/agents/index.ts</h2>
       <article class="item" data-search="renderAgentsFile src/tools/agents/index.ts Render mandatory repository instructions from the target package identity.">
     <h3>renderAgentsFile</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:14:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:22:1</code></p>
     <p>Render mandatory repository instructions from the target package identity.</p>
   </article><article class="item" data-search="renderCurrentArchitectureInstructions src/tools/agents/index.ts Render the current-architecture policy shared by every managed repository.">
     <h3>renderCurrentArchitectureInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:41:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:50:1</code></p>
     <p>Render the current-architecture policy shared by every managed repository.</p>
+  </article><article class="item" data-search="renderStandaloneRepositoryInstructions src/tools/agents/index.ts Render the mandatory standalone repository and package contract.">
+    <h3>renderStandaloneRepositoryInstructions</h3>
+    <p class="muted"><code>src/tools/agents/index.ts:68:1</code></p>
+    <p>Render the mandatory standalone repository and package contract.</p>
   </article><article class="item" data-search="renderRequiredRepositoryInstructions src/tools/agents/index.ts Render contextual repository skill-selection requirements.">
     <h3>renderRequiredRepositoryInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:59:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:89:1</code></p>
     <p>Render contextual repository skill-selection requirements.</p>
   </article><article class="item" data-search="renderDocumentationInstructions src/tools/agents/index.ts Render the release-owned generated documentation policy.">
     <h3>renderDocumentationInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:83:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:113:1</code></p>
     <p>Render the release-owned generated documentation policy.</p>
   </article><article class="item" data-search="renderPullRequestInstructions src/tools/agents/index.ts Render canonical pull-request validation commands.">
     <h3>renderPullRequestInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:97:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:127:1</code></p>
     <p>Render canonical pull-request validation commands.</p>
   </article><article class="item" data-search="renderSkillScriptInstructions src/tools/agents/index.ts Render the repository rule for executable Agent Skill scripts.">
     <h3>renderSkillScriptInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:115:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:145:1</code></p>
     <p>Render the repository rule for executable Agent Skill scripts.</p>
   </article><article class="item" data-search="readPackageManifest src/tools/agents/index.ts Read the target package manifest used to personalize managed repository instructions.">
     <h3>readPackageManifest</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:125:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:155:1</code></p>
     <p>Read the target package manifest used to personalize managed repository instructions.</p>
   </article><article class="item" data-search="escapeInlineCode src/tools/agents/index.ts Escape inline-code delimiters before interpolating repository metadata into Markdown.">
     <h3>escapeInlineCode</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:142:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:172:1</code></p>
     <p>Escape inline-code delimiters before interpolating repository metadata into Markdown.</p>
   </article><article class="item" data-search="isNodeError src/tools/agents/index.ts Check whether an unknown failure carries a Node.js error code.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:147:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:177:1</code></p>
     <p>Check whether an unknown failure carries a Node.js error code.</p>
   </article><article class="item" data-search="isRecord src/tools/agents/index.ts Check whether an unknown value is a plain record-shaped object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:152:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:182:1</code></p>
     <p>Check whether an unknown value is a plain record-shaped object.</p>
   </article><article class="item" data-search="readNonEmptyString src/tools/agents/index.ts Read and trim a non-empty string value from package metadata.">
     <h3>readNonEmptyString</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:157:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:187:1</code></p>
     <p>Read and trim a non-empty string value from package metadata.</p>
   </article>
     </section>
@@ -3705,38 +3709,58 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </section><section id="view-src-tools-shared-managedfiles-ts" class="view" data-view="src/tools/shared/managedFiles.ts" hidden>
     <section class="panel">
       <h2>src/tools/shared/managedFiles.ts</h2>
-      <article class="item" data-search="resolveManagedTargetDirectory src/tools/shared/managedFiles.ts ">
+      <article class="item" data-search="resolveManagedTargetDirectory src/tools/shared/managedFiles.ts Resolve and validate the repository directory targeted by a managed-files operation.">
     <h3>resolveManagedTargetDirectory</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:36:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="inspectManagedFiles src/tools/shared/managedFiles.ts ">
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:38:1</code></p>
+    <p>Resolve and validate the repository directory targeted by a managed-files operation.</p>
+  </article><article class="item" data-search="inspectManagedFiles src/tools/shared/managedFiles.ts Inspect managed files and symbolic links without mutating repository state.">
     <h3>inspectManagedFiles</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:56:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="syncManagedFiles src/tools/shared/managedFiles.ts ">
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:59:1</code></p>
+    <p>Inspect managed files and symbolic links without mutating repository state.</p>
+  </article><article class="item" data-search="syncManagedFiles src/tools/shared/managedFiles.ts Synchronize managed files and symbolic links to their canonical definitions.">
     <h3>syncManagedFiles</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:92:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="syncManagedFile src/tools/shared/managedFiles.ts ">
-    <h3>syncManagedFile</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:111:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="readCanonicalContents src/tools/shared/managedFiles.ts ">
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:70:1</code></p>
+    <p>Synchronize managed files and symbolic links to their canonical definitions.</p>
+  </article><article class="item" data-search="inspectManagedFileAsync src/tools/shared/managedFiles.ts Inspect one managed artifact against its file or symbolic-link definition.">
+    <h3>inspectManagedFileAsync</h3>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:89:1</code></p>
+    <p>Inspect one managed artifact against its file or symbolic-link definition.</p>
+  </article><article class="item" data-search="isCurrentFileAsync src/tools/shared/managedFiles.ts Compare one regular managed file with its canonical rendered contents.">
+    <h3>isCurrentFileAsync</h3>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:132:1</code></p>
+    <p>Compare one regular managed file with its canonical rendered contents.</p>
+  </article><article class="item" data-search="isCurrentSymlinkAsync src/tools/shared/managedFiles.ts Compare one managed symbolic link with its canonical relative target.">
+    <h3>isCurrentSymlinkAsync</h3>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:146:1</code></p>
+    <p>Compare one managed symbolic link with its canonical relative target.</p>
+  </article><article class="item" data-search="syncManagedFileAsync src/tools/shared/managedFiles.ts Apply one managed artifact status to the target repository.">
+    <h3>syncManagedFileAsync</h3>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:155:1</code></p>
+    <p>Apply one managed artifact status to the target repository.</p>
+  </article><article class="item" data-search="prepareManagedTargetAsync src/tools/shared/managedFiles.ts Remove an existing artifact only when writing through it would violate the target type.">
+    <h3>prepareManagedTargetAsync</h3>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:202:1</code></p>
+    <p>Remove an existing artifact only when writing through it would violate the target type.</p>
+  </article><article class="item" data-search="writeManagedArtifactAsync src/tools/shared/managedFiles.ts Write either a canonical regular file or a canonical symbolic link.">
+    <h3>writeManagedArtifactAsync</h3>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:217:1</code></p>
+    <p>Write either a canonical regular file or a canonical symbolic link.</p>
+  </article><article class="item" data-search="readCanonicalContents src/tools/shared/managedFiles.ts Resolve canonical contents for one regular managed file definition.">
     <h3>readCanonicalContents</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:152:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="assertSingleContentSource src/tools/shared/managedFiles.ts ">
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:233:1</code></p>
+    <p>Resolve canonical contents for one regular managed file definition.</p>
+  </article><article class="item" data-search="assertSingleContentSource src/tools/shared/managedFiles.ts Require every managed artifact to define exactly one canonical source.">
     <h3>assertSingleContentSource</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:171:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="isMissingFileError src/tools/shared/managedFiles.ts ">
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:253:1</code></p>
+    <p>Require every managed artifact to define exactly one canonical source.</p>
+  </article><article class="item" data-search="isMissingFileError src/tools/shared/managedFiles.ts Check whether an unknown failure means the target path does not exist.">
     <h3>isMissingFileError</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:182:1</code></p>
-    <p class="empty">No description available.</p>
-  </article><article class="item" data-search="isNodeError src/tools/shared/managedFiles.ts ">
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:268:1</code></p>
+    <p>Check whether an unknown failure means the target path does not exist.</p>
+  </article><article class="item" data-search="isNodeError src/tools/shared/managedFiles.ts Check whether an unknown failure carries a Node.js error code.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/shared/managedFiles.ts:186:1</code></p>
-    <p class="empty">No description available.</p>
+    <p class="muted"><code>src/tools/shared/managedFiles.ts:273:1</code></p>
+    <p>Check whether an unknown failure carries a Node.js error code.</p>
   </article>
     </section>
   </section><section id="view-src-tools-skills-assettestfixture-ts" class="view" data-view="src/tools/skills/assetTestFixture.ts" hidden>
