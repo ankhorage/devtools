@@ -1,5 +1,5 @@
-import { runStructureGenerationCommandAsync } from '../../runStructureGenerationCommandAsync.js';
 import type { DevtoolsProviderCommandContext } from '../../runProviderCommand.js';
+import { runStructureGenerationCommandAsync } from '../../runStructureGenerationCommandAsync.js';
 
 /*** Adapt the public structure check command to deterministic owner artifact verification. */
 export async function check(
