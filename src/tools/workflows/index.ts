@@ -7,6 +7,7 @@ import { bunRuntimePolicy, nodeRuntimePolicy } from '../../policy/bunRuntimePoli
 import { resolvePkgvizAuditPolicyAsync } from '../../policy/resolvePkgvizAuditPolicyAsync.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
+import { renderRenovateConfigAsync } from './renderRenovateConfigAsync.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
@@ -27,8 +28,7 @@ export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
   createRenovateWorkflowDefinition(),
   {
     relativePath: 'renovate.json5',
-    sourceUrl: new URL('./files/renovate.json5', import.meta.url),
-    mode: 'create-only',
+    render: renderRenovateConfigAsync,
   },
 ];
 

@@ -29,13 +29,36 @@ test('bootstraps app repository dependency automation without package release wo
     "extends: ['github>ankhorage/renovate']",
   );
 
-  const localRenovateConfig = `{
+  const localRenovateConfig = `/***
+ * Repository configuration
+ *
+ * Loads the canonical Ankhorage dependency-update policy from its default branch.
+ *
+ * @usage
+ * @readme
+ */
+{
+  extends: ['github>ankhorage/renovate'],
+  ignoreDeps: ['app-owned-example'],
+}\n`;
+  const migratedRenovateConfig = `/**
+ * Repository configuration
+ *
+ * Loads the canonical Ankhorage dependency-update policy from its default branch.
+ *
+ */
+{
   extends: ['github>ankhorage/renovate'],
   ignoreDeps: ['app-owned-example'],
 }\n`;
   await writeFile(join(target, 'renovate.json5'), localRenovateConfig);
-  await syncManagedFiles(target, workflowManagedFiles, { dryRun: false });
-  expect(await readFile(join(target, 'renovate.json5'), 'utf8')).toBe(localRenovateConfig);
+
+  const migration = await syncManagedFiles(target, workflowManagedFiles, { dryRun: false });
+  expect(migration).toContainEqual({ relativePath: 'renovate.json5', action: 'updated' });
+  expect(await readFile(join(target, 'renovate.json5'), 'utf8')).toBe(migratedRenovateConfig);
+
+  const secondSync = await syncManagedFiles(target, workflowManagedFiles, { dryRun: false });
+  expect(secondSync).toContainEqual({ relativePath: 'renovate.json5', action: 'unchanged' });
 });
 
 test('manages the package release workflow only for Changesets repositories', async () => {
