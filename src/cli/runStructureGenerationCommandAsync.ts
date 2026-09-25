@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 
-import { synchronizeStructureArtifactForDirectoryAsync } from '../../composition/synchronizeStructureArtifactForDirectoryAsync.js';
+import { synchronizeStructureArtifactForDirectoryAsync } from '../features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.js';
 
 /*** Parse structure build/check CLI input and emit one machine-readable result. */
 export async function runStructureGenerationCommandAsync(

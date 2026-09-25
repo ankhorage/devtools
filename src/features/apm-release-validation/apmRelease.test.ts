@@ -10,7 +10,7 @@ import {
   synchronizeApmReleaseDescriptorAsync,
   validatePackedApmReleaseAsync,
 } from '../../apmRelease.js';
-import { runApmReleaseCommandAsync } from './adapters/inbound/runApmReleaseCommandAsync.js';
+import { runApmReleaseCommandAsync } from '../../cli/runApmReleaseCommandAsync.js';
 import { descriptor, manifest, projectionDescriptor } from './apmRelease.fixtures.test.js';
 
 const roots: string[] = [];

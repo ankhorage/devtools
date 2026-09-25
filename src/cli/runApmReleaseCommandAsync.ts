@@ -1,8 +1,8 @@
 import { resolve } from 'node:path';
 
-import type { ApmReleaseValidationOptions } from '../../../../types/apm-release-validation.js';
-import { synchronizeApmReleaseDescriptorAsync } from '../../composition/synchronizeApmReleaseDescriptorAsync.js';
-import { validatePackedApmReleaseAsync } from '../../composition/validatePackedApmReleaseAsync.js';
+import { synchronizeApmReleaseDescriptorAsync } from '../features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.js';
+import { validatePackedApmReleaseAsync } from '../features/apm-release-validation/composition/validatePackedApmReleaseAsync.js';
+import type { ApmReleaseValidationOptions } from '../types/apm-release-validation.js';
 
 /*** Parse release CLI input and report the same structured validation result on every entrypoint. */
 export async function runApmReleaseCommandAsync(
