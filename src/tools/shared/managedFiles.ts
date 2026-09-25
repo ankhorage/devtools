@@ -103,18 +103,26 @@ async function inspectManagedFileAsync(
       return { relativePath: definition.relativePath, state: 'current' };
     }
 
-    const current = definition.symlinkTarget === undefined
-      ? await isCurrentFileAsync(targetPath, targetStats.isSymbolicLink(), definition, targetDirectory)
-      : await isCurrentSymlinkAsync(targetPath, targetStats.isSymbolicLink(), definition.symlinkTarget);
+    const current =
+      definition.symlinkTarget === undefined
+        ? await isCurrentFileAsync(
+            targetPath,
+            targetStats.isSymbolicLink(),
+            definition,
+            targetDirectory,
+          )
+        : await isCurrentSymlinkAsync(
+            targetPath,
+            targetStats.isSymbolicLink(),
+            definition.symlinkTarget,
+          );
     return {
       relativePath: definition.relativePath,
       state: current ? 'current' : 'outdated',
     };
   } catch (error) {
     if (isMissingFileError(error)) {
-      return isApplicable
-        ? { relativePath: definition.relativePath, state: 'missing' }
-        : undefined;
+      return isApplicable ? { relativePath: definition.relativePath, state: 'missing' } : undefined;
     }
     throw new Error(`Failed to inspect managed file: ${targetPath}`, { cause: error });
   }
@@ -128,7 +136,10 @@ async function isCurrentFileAsync(
   targetDirectory: string,
 ): Promise<boolean> {
   if (isSymbolicLink) return false;
-  return (await readFile(targetPath, 'utf8')) === await readCanonicalContents(definition, targetDirectory);
+  return (
+    (await readFile(targetPath, 'utf8')) ===
+    (await readCanonicalContents(definition, targetDirectory))
+  );
 }
 
 /*** Compare one managed symbolic link with its canonical relative target. */
