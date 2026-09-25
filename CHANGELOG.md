@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.21.3
+
+### Patch Changes
+
+- fe97509: Migrate legacy Paradox metadata out of repository-owned Renovate configuration without overwriting custom Renovate rules.
+
 ## 1.21.2
 
 ### Patch Changes

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v1.21.2",
+      "value": "v1.21.3",
       "color": "cb3837"
     },
     {
@@ -834,6 +834,7 @@
         "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
+        "src/tools/workflows/renderRenovateConfigAsync.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
       ],
@@ -847,6 +848,14 @@
       "dependencies": [],
       "exports": [
         "readCurrentDoctorVersion"
+      ]
+    },
+    {
+      "path": "src/tools/workflows/renderRenovateConfigAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "renderRenovateConfigAsync"
       ]
     },
     {
@@ -4019,6 +4028,24 @@
       }
     },
     {
+      "name": "renderRenovateConfigAsync",
+      "description": "Render Renovate config while preserving repository-owned rules and removing obsolete Paradox metadata.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderRenovateConfigAsync.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "migrateLegacyRenovateHeader",
+      "description": "Convert the historical managed Paradox header to an ordinary comment without changing config data.",
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/renderRenovateConfigAsync.ts",
+        "line": 25,
+        "column": 1
+      }
+    },
+    {
       "name": "renderRenovateWorkflowAsync",
       "description": "Renders the canonical workflow while retaining Renovate's exact trusted digest.",
       "sourceLocation": {
@@ -4488,6 +4515,11 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/workflows/renderRenovateConfigAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -6753,6 +6785,24 @@
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/tools/workflows/readCurrentDoctorVersion.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateConfigAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/workflows/renderRenovateConfigAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateConfigAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/renderRenovateConfigAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRenovateConfigAsync",
+        "toSymbol": "migrateLegacyRenovateHeader",
+        "callExpression": "migrateLegacyRenovateHeader",
+        "sourcePath": "src/tools/workflows/renderRenovateConfigAsync.ts"
       },
       {
         "fromSymbol": "renderRenovateWorkflowAsync",

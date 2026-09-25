@@ -397,6 +397,11 @@
       <small>1 function</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/workflows/renderRenovateConfigAsync.ts">
+      src/tools/workflows/renderRenovateConfigAsync.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/tools/workflows/renderRenovateWorkflowAsync.ts">
       src/tools/workflows/renderRenovateWorkflowAsync.ts
       <small>4 functions</small>
@@ -418,7 +423,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>72</strong><span class="muted">modules</span></div>
+        <div><strong>73</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -785,16 +790,21 @@ bunx @ankhorage/devtools ankhorage-structure</pre>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/tools/shared/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>vscodeManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/bunRuntimePolicy.ts src/policy/resolvePkgvizAuditPolicyAsync.ts src/tools/shared/managedFiles.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
+  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/bunRuntimePolicy.ts src/policy/resolvePkgvizAuditPolicyAsync.ts src/tools/shared/managedFiles.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateConfigAsync.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
     <h3>src/tools/workflows/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/bunRuntimePolicy.ts</code>, <code>src/policy/resolvePkgvizAuditPolicyAsync.ts</code>, <code>src/tools/shared/managedFiles.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/bunRuntimePolicy.ts</code>, <code>src/policy/resolvePkgvizAuditPolicyAsync.ts</code>, <code>src/tools/shared/managedFiles.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateConfigAsync.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>workflowManagedFiles</code></p>
   </article><article class="item" data-search="src/tools/workflows/readCurrentDoctorVersion.ts readCurrentDoctorVersion">
     <h3>src/tools/workflows/readCurrentDoctorVersion.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>readCurrentDoctorVersion</code></p>
+  </article><article class="item" data-search="src/tools/workflows/renderRenovateConfigAsync.ts renderRenovateConfigAsync">
+    <h3>src/tools/workflows/renderRenovateConfigAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>renderRenovateConfigAsync</code></p>
   </article><article class="item" data-search="src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts renderRenovateWorkflowAsync">
     <h3>src/tools/workflows/renderRenovateWorkflowAsync.ts</h3>
     <p class="muted">Referenced module</p>
@@ -1711,10 +1721,13 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -1981,10 +1994,13 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2070,6 +2086,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_vscode_index_ts[&quot;src/tools/vscode/index.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
@@ -2188,6 +2205,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2262,6 +2280,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_vscode_index_ts[&quot;src/tools/vscode/index.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
@@ -2380,6 +2399,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2456,6 +2476,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_vscode_index_ts[&quot;src/tools/vscode/index.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
@@ -2585,6 +2606,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_vscode_index_ts[&quot;src/tools/vscode/index.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
@@ -3948,6 +3970,19 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>readCurrentDoctorVersion</h3>
     <p class="muted"><code>src/tools/workflows/readCurrentDoctorVersion.ts:8:1</code></p>
     <p>Read the exact Doctor version owned by the current Devtools package release.</p>
+  </article>
+    </section>
+  </section><section id="view-src-tools-workflows-renderrenovateconfigasync-ts" class="view" data-view="src/tools/workflows/renderRenovateConfigAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/workflows/renderRenovateConfigAsync.ts</h2>
+      <article class="item" data-search="renderRenovateConfigAsync src/tools/workflows/renderRenovateConfigAsync.ts Render Renovate config while preserving repository-owned rules and removing obsolete Paradox metadata.">
+    <h3>renderRenovateConfigAsync</h3>
+    <p class="muted"><code>src/tools/workflows/renderRenovateConfigAsync.ts:8:1</code></p>
+    <p>Render Renovate config while preserving repository-owned rules and removing obsolete Paradox metadata.</p>
+  </article><article class="item" data-search="migrateLegacyRenovateHeader src/tools/workflows/renderRenovateConfigAsync.ts Convert the historical managed Paradox header to an ordinary comment without changing config data.">
+    <h3>migrateLegacyRenovateHeader</h3>
+    <p class="muted"><code>src/tools/workflows/renderRenovateConfigAsync.ts:25:1</code></p>
+    <p>Convert the historical managed Paradox header to an ordinary comment without changing config data.</p>
   </article>
     </section>
   </section><section id="view-src-tools-workflows-renderrenovateworkflowasync-ts" class="view" data-view="src/tools/workflows/renderRenovateWorkflowAsync.ts" hidden>
