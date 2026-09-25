@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { runApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.js';
+import { runApmReleaseCommandAsync } from '../runApmReleaseCommandAsync.js';
 
 const [operation, ...argv] = process.argv.slice(2);
 if (operation !== 'sync' && operation !== 'validate') {
