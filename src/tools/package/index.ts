@@ -7,7 +7,7 @@
  * `lint:fix`, `format`, `format:check`, and `knip:check` scripts are written.
  * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
  *
- * The Bun runtime policy is shared by every repository, including devtools itself. Devtools skips
+ * The Bun runtime policy comes from @ankhorage/policy for every repository, including devtools itself. Devtools skips
  * only its consumer dependency/script normalization so it never attempts to install itself.
  *
  * Status compares only the fields owned by this contract, so unrelated repository customization
@@ -131,7 +131,7 @@ export function applyManagedPackageContract(
   changesetsConfigExists = false,
 ): Record<string, unknown> {
   if (manifest.name === DEVTOOLS_PACKAGE_NAME) {
-    return applyBunRuntimePolicy(manifest, bunRuntimePolicy);
+    return applyBunRuntimePolicy(manifest);
   }
 
   const scripts = { ...toRecord(manifest.scripts) };
@@ -148,15 +148,12 @@ export function applyManagedPackageContract(
 
   applyDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion);
 
-  return applyBunRuntimePolicy(
-    {
-      ...manifest,
-      ...normalizedDependencies(manifest, dependencies),
-      scripts,
-      devDependencies,
-    },
-    bunRuntimePolicy,
-  );
+  return applyBunRuntimePolicy({
+    ...manifest,
+    ...normalizedDependencies(manifest, dependencies),
+    scripts,
+    devDependencies,
+  });
 }
 
 /*** Check whether the Devtools-owned package manifest fields match current policy. */
