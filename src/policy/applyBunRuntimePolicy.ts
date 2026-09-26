@@ -1,13 +1,13 @@
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { DEVTOOLS_BUN_RUNTIME_POLICY } from './bunRuntimePolicy.js';
 
-/*** Apply the canonical Bun runtime policy to one package manifest. */
+/*** Apply the Devtools-owned Bun runtime policy to one package manifest. */
 export function applyBunRuntimePolicy(manifest: Record<string, unknown>): Record<string, unknown> {
   const devDependencies = toRecord(manifest.devDependencies);
-  devDependencies['@types/bun'] = REPOSITORY_POLICY.runtime.bun.typesRange;
+  devDependencies['@types/bun'] = DEVTOOLS_BUN_RUNTIME_POLICY.typesRange;
 
   return {
     ...manifest,
-    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
+    packageManager: DEVTOOLS_BUN_RUNTIME_POLICY.packageManager,
     devDependencies,
   };
 }
