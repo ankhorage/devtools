@@ -5,6 +5,7 @@ import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
+import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../../policy/bunRuntimePolicy.js';
 import { resolvePkgvizAuditPolicyAsync } from '../../policy/resolvePkgvizAuditPolicyAsync.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
@@ -42,7 +43,7 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
       await renderWorkflowAsync(sourceUrl, {
         apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-        bunVersion: REPOSITORY_POLICY.runtime.bun.version,
+        bunVersion: DEVTOOLS_BUN_RUNTIME_POLICY.version,
         doctorVersion: readCurrentDoctorVersion(),
         nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
         pkgvizAudit: await resolvePkgvizAuditPolicyAsync(targetDirectory),
@@ -59,7 +60,7 @@ function createRenovateWorkflowDefinition(): ManagedFileDefinition {
       await renderRenovateWorkflowAsync(sourceUrl, targetDirectory, {
         apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
         structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-        bunVersion: REPOSITORY_POLICY.runtime.bun.version,
+        bunVersion: DEVTOOLS_BUN_RUNTIME_POLICY.version,
         doctorVersion: readCurrentDoctorVersion(),
         nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
       }),
