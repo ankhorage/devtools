@@ -1,4 +1,4 @@
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { DEVTOOLS_BUN_RUNTIME_POLICY } from './bunRuntimePolicy.js';
 
 /*** Render the managed Bun policy section while preserving the surrounding guide. */
 export function renderBunPolicyDocumentation(readme: string): string {
@@ -22,11 +22,10 @@ export function renderBunPolicyDocumentation(readme: string): string {
 
 /*** Format canonical runtime and type-package versions for the guide. */
 function renderReadmePolicy(): string {
-  const policy = REPOSITORY_POLICY.runtime.bun;
   return `\`\`\`text
-Bun runtime       ${policy.version}
-packageManager    ${policy.packageManager}
-@types/bun        ${policy.typesRange}
+Bun runtime       ${DEVTOOLS_BUN_RUNTIME_POLICY.version}
+packageManager    ${DEVTOOLS_BUN_RUNTIME_POLICY.packageManager}
+@types/bun        ${DEVTOOLS_BUN_RUNTIME_POLICY.typesRange}
 \`\`\``;
 }
 
