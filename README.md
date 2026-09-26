@@ -323,7 +323,7 @@ The canonical Bun policy is defined by `@ankhorage/policy` and consumed by Devto
 ```text
 Bun runtime       1.4.2
 packageManager    bun@1.4.2
-@types/bun        ^1.4.1
+@types/bun        ^1.4.2
 ```
 
 <!-- devtools-bun-policy:end -->
