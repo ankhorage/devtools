@@ -7,6 +7,7 @@ import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 import { resolveApmReleaseCommandAsync } from '../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
+import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../policy/bunRuntimePolicy.js';
 import { renderBunPolicyDocumentation } from '../policy/renderBunPolicyDocumentation.js';
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
@@ -15,7 +16,7 @@ import {
   type WorkflowPolicy,
 } from '../tools/workflows/renderWorkflowAsync.js';
 
-/*** Synchronize or validate Renovate-owned Devtools artifacts from central repository policy. */
+/*** Synchronize or validate Renovate-owned Devtools artifacts from Devtools-owned policy. */
 export async function synchronizeRenovateOwnerAsync(
   operation: OwnerSyncOperation,
   targetDirectory: string,
@@ -117,7 +118,7 @@ async function createWorkflowPolicyAsync(targetDirectory: string): Promise<Workf
   return {
     apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
     structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-    bunVersion: REPOSITORY_POLICY.runtime.bun.version,
+    bunVersion: DEVTOOLS_BUN_RUNTIME_POLICY.version,
     doctorVersion: readCurrentDoctorVersion(),
     nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
   };
