@@ -7,7 +7,7 @@
       "dependencies": {
         "@ankhorage/apm": "^0.8.10",
         "@ankhorage/contracts": "^22.8.2",
-        "@ankhorage/policy": "^0.5.0",
+        "@ankhorage/policy": "^0.5.1",
         "@ankhorage/project-detector": "^0.3.1",
         "@ankhorage/utility": "^0.5.5",
         "@changesets/cli": "^3.0.3",
@@ -31,11 +31,11 @@
       },
       "devDependencies": {
         "@ankhorage/ankh": "^0.10.4",
-        "@ankhorage/doctor": "0.11.5",
-        "@ankhorage/paradox": "^0.2.5",
+        "@ankhorage/doctor": "0.11.8",
+        "@ankhorage/paradox": "^0.2.6",
         "@techstark/opencv-js": "^5.0.0-release.1",
-        "@types/bun": "^1.4.1",
-        "@types/node": "^26.6.2",
+        "@types/bun": "^1.4.2",
+        "@types/node": "^26.6.3",
         "sharp": "^0.35.4",
       },
     },
@@ -49,11 +49,11 @@
 
     "@ankhorage/contracts": ["@ankhorage/contracts@22.8.2", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.1", "@ankhorage/utility": "^1.8.0" } }, "sha512-KxBYDXLIzF6YMjeQpX1YdQLc7AysATm0vZZa1Ah4oA4oPRWGkvJN9Wda4GLOsMV9Poh7Pc1ME9uJw5w+qla1Dg=="],
 
-    "@ankhorage/doctor": ["@ankhorage/doctor@0.11.5", "", { "dependencies": { "@ankhorage/contracts": "^22.8.2", "@ankhorage/policy": "^0.5.0", "@ankhorage/supabase-auth": "^1.2.27", "@ankhorage/utility": "^1.8.1" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-eHZiosaZY0iss4cRJXNvyrYwYr+UBdRYUqGngx2I3fMwXPpsFREookR/DUIfm952PivNE9hszOjLEx7uHGKnjg=="],
+    "@ankhorage/doctor": ["@ankhorage/doctor@0.11.8", "", { "dependencies": { "@ankhorage/contracts": "^22.8.2", "@ankhorage/policy": "^0.5.1", "@ankhorage/supabase-auth": "^1.2.27", "@ankhorage/utility": "^1.8.1" }, "bin": { "ankhorage-doctor": "dist/cli/standalone.js" } }, "sha512-521MYXWPZiWKtn8SkYUSb4o56+wx6pUyc1ZncHl74nK5LE0VIvQqHu33TLWq58VQtc40JqHSYEIJtv6NXKnH8g=="],
 
-    "@ankhorage/paradox": ["@ankhorage/paradox@0.2.5", "", { "dependencies": { "@ankhorage/policy": "^0.5.0", "@ankhorage/utility": "^1.8.1", "ts-morph": "^28.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-8xxhiqcflKzTgAMxc98mgP5l0ZYY0Ct7YuNF8yVObNuo7FQjze4Z6ShGDaH0Ka+kMYZVDQWarS6whE2d9Dt9Jg=="],
+    "@ankhorage/paradox": ["@ankhorage/paradox@0.2.6", "", { "dependencies": { "@ankhorage/policy": "^0.5.1", "@ankhorage/utility": "^1.8.1", "ts-morph": "^28.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-9x8BHN0qodoSlR/YRQNS5zzvZ5IAii7b7V7EBp0cZL6SrbRQp2PsQWOGnvM/qvv5AqPJH1JtbG9yHLLddXPdtQ=="],
 
-    "@ankhorage/policy": ["@ankhorage/policy@0.5.0", "", {}, "sha512-ZKsrIQxpFPRMW2YoPS8Iut1Pgbip+XzalfiBoGQWpNvZbOjJFw4rQBSCULmSkBARSnFZnn9b3qGLO3J60sLt1w=="],
+    "@ankhorage/policy": ["@ankhorage/policy@0.5.1", "", {}, "sha512-+J/SfR+hBLkkZqmPR+dcSODCWmuEf+MXsTJCTXRUqkxFonZroGgOOstHZyyatz58chWO2wlTuYl01TJsXpLLpA=="],
 
     "@ankhorage/project-detector": ["@ankhorage/project-detector@0.3.1", "", { "dependencies": { "@ankhorage/utility": "^0.8.0", "minimatch": "^10.2.6", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.8.13" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "project-detector": "dist/cli/runAsync.js" } }, "sha512-jU6Kb0l2TQru0cAi/Q2hFuksurkWMH4ZOhaxEhgJsK6NnlyvkJuctyjRpxtIpqU47mxiIFt4+iJ35EsvldNUVQ=="],
 
@@ -349,7 +349,7 @@
 
     "@types/json5": ["@types/json5@0.0.29", "", {}, ""],
 
-    "@types/node": ["@types/node@26.6.2", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-X1P21scMv4zGKLYqjdGjaKa7COa0RKVYYZZN/NfvLQ1JegxFhdhpZG/Lyn8AXx6CDUavKAd11v6BvfpkDByK8g=="],
+    "@types/node": ["@types/node@26.6.3", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg=="],
 
     "@typescript-eslint/eslint-plugin": ["@typescript-eslint/eslint-plugin@8.70.1", "", { "dependencies": { "@eslint-community/regexpp": "^4.12.2", "@typescript-eslint/scope-manager": "8.70.1", "@typescript-eslint/type-utils": "8.70.1", "@typescript-eslint/utils": "8.70.1", "@typescript-eslint/visitor-keys": "8.70.1", "ignore": "^7.0.5", "natural-compare": "^1.4.0", "ts-api-utils": "^2.5.0" }, "peerDependencies": { "@typescript-eslint/parser": "^8.70.1", "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0", "typescript": ">=4.8.4 <6.1.0" } }, "sha512-nDNrUQ/4ruSNYbu749TRY7cfrzPtoLHEXSNBI8aaNY32LlZCajixqRf3FqcKC4p5Cam4VOHYx/t+i5+nKXvrqA=="],
 
