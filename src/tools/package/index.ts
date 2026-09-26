@@ -7,8 +7,9 @@
  * `lint:fix`, `format`, `format:check`, and `knip:check` scripts are written.
  * Unrelated manifest fields, scripts, dependencies, and metadata are preserved.
  *
- * The Bun runtime policy comes from @ankhorage/policy for every repository, including devtools itself. Devtools skips
- * only its consumer dependency/script normalization so it never attempts to install itself.
+ * The Bun runtime synchronization contract is Devtools-owned for every repository, including
+ * Devtools itself. Devtools skips only its consumer dependency/script normalization so it never
+ * attempts to install itself.
  *
  * Status compares only the fields owned by this contract, so unrelated repository customization
  * does not count as drift. `--dry-run` reports whether `package.json` would be created or updated
@@ -23,6 +24,7 @@ import { resolve } from 'node:path';
 import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
 
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
+import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managedFiles.js';
 
 const PACKAGE_PATH = 'package.json';
@@ -217,8 +219,8 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
 function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean {
   const devDependencies = toRecord(manifest.devDependencies);
   return (
-    manifest.packageManager === REPOSITORY_POLICY.runtime.bun.packageManager &&
-    devDependencies[BUN_TYPES_PACKAGE_NAME] === REPOSITORY_POLICY.runtime.bun.typesRange
+    manifest.packageManager === DEVTOOLS_BUN_RUNTIME_POLICY.packageManager &&
+    devDependencies[BUN_TYPES_PACKAGE_NAME] === DEVTOOLS_BUN_RUNTIME_POLICY.typesRange
   );
 }
 
