@@ -3,25 +3,28 @@
 Choose the profile from actual ownership and consumers. Profiles define allowed vocabulary and
 dependency direction; they are not templates that require every listed directory.
 
-## Simple, value, or contracts library
+## Simple or value library
 
-Use for portable types, deterministic values, parsers, constants, algorithms, and small libraries
-without application orchestration.
+Use for deterministic values, parsers, constants, algorithms, and small runtime libraries without
+application orchestration. Runtime-owning libraries are still feature-first: each coherent package
+capability belongs below `src/features/<feature>/`, but a simple feature does not need hexagonal
+role directories when it has no orchestration or external edge.
 
-Typical forms:
+Typical form:
 
 ```text
 src/
   index.ts
-  <domain-or-topic>/
+  features/
+    <feature>/
   types/
   constants/
   utils/
 ```
 
 Do not invent ports, adapters, application, or composition layers when there is no external edge to
-abstract. Contracts packages additionally keep public declarations serializable and free of runtime
-implementation.
+abstract. Contracts-only repositories follow the dedicated Contracts repository profile from the
+main project-structure skill instead of this runtime-library profile.
 
 ## Reusable UI or design-system library
 
