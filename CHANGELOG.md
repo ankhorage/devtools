@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3
+
+### Patch Changes
+
+- b69ea8a: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@ankhorage/policy`, `@ankhorage/project-detector`, `eslint-plugin-security`, `sharp`.
+
 ## 2.0.2
 
 ### Patch Changes
