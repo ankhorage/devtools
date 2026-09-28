@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.15
+
+### Patch Changes
+
+- f0dd892: Update Devtools-owned dependencies: `@ankhorage/apm`.
+
 ## 2.0.14
 
 ### Patch Changes
