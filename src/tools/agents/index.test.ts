@@ -74,6 +74,8 @@ bun run changeset
 bun run format
 \`\`\``,
   );
+  expect(contents).toContain('No Changeset means no release is requested.');
+  expect(contents).toContain('Never add an empty Changeset to satisfy CI');
   expect(contents).not.toContain('bun run knip:test');
   expect(contents).toContain('Scripts inside an Agent Skill must always be TypeScript files');
   expect(contents).toContain('`.js`, `.mjs`, or `.cjs` are not allowed');
