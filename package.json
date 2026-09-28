@@ -121,7 +121,7 @@
     "test:standalone": "bun test src/tools/agents/index.test.ts src/tools/shared/managedFiles.test.ts"
   },
   "dependencies": {
-    "@ankhorage/apm": "^0.8.11",
+    "@ankhorage/apm": "^0.8.12",
     "@ankhorage/project-detector": "^0.3.3",
     "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
