@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.6
+
+### Patch Changes
+
+- 3b7e138: Stop requiring managed public-package workflows to define or run a dedicated `test:standalone` script.
+
 ## 2.0.5
 
 ### Patch Changes
