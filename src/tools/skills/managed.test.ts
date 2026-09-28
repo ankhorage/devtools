@@ -57,9 +57,18 @@ describe('managed repository skill synchronization', () => {
     expect(await readFile(join(codingRulesSkill, 'agents/openai.yaml'), 'utf8')).toContain(
       'allow_implicit_invocation: true',
     );
-    expect(await readFile(join(projectStructureSkill, 'SKILL.md'), 'utf8')).toContain(
-      'name: ankhorage-project-structure',
+    const projectStructureContents = await readFile(
+      join(projectStructureSkill, 'SKILL.md'),
+      'utf8',
     );
+    expect(projectStructureContents).toContain('name: ankhorage-project-structure');
+    expect(projectStructureContents).toContain(
+      'Implementation-owning Ankhorage packages are feature-first',
+    );
+    expect(projectStructureContents).toContain('src/features/<feature>/');
+    expect(projectStructureContents).toContain('Every public Ankh command');
+    expect(projectStructureContents).toContain('src/cli/commands/config/validate.ts');
+    expect(projectStructureContents).not.toContain('A package may start flat.');
     expect(await readFile(join(hexagonalArchitectureSkill, 'SKILL.md'), 'utf8')).toContain(
       'name: hexagonal-architecture',
     );
@@ -67,6 +76,26 @@ describe('managed repository skill synchronization', () => {
 });
 
 describe('managed repository skill ownership', () => {
+  it('encodes feature-first implementation ownership and command-path ownership', async () => {
+    const canonicalRoot = join(import.meta.dir, 'assets/ankhorage-project-structure');
+    const skill = await readFile(join(canonicalRoot, 'SKILL.md'), 'utf8');
+    const profiles = await readFile(
+      join(canonicalRoot, 'references/architecture-profiles.md'),
+      'utf8',
+    );
+
+    expect(skill).toContain('Implementation-owning Ankhorage packages are feature-first');
+    expect(skill).toContain('src/features/<feature>/');
+    expect(skill).toContain('src/cli/commands/config/validate.ts');
+    expect(skill).not.toContain('A package may start flat.');
+    expect(profiles).toContain('Runtime-owning libraries are still feature-first');
+    expect(profiles).toContain('src/features/<feature>/');
+    expect(profiles).not.toContain('<domain-or-topic>/');
+    expect(profiles).toContain('These packages are feature-first');
+    expect(profiles).not.toContain('Domain-first and feature-first organization are both valid');
+    expect(profiles).toContain('Command-centric tooling remains feature-first');
+  });
+
   it('distributes every canonical structure-skill file byte-for-byte', async () => {
     const target = await createTarget();
     const canonicalRoot = join(import.meta.dir, 'assets/ankhorage-project-structure');
