@@ -138,6 +138,10 @@ bun run changeset
 bun run format
 \`\`\`
 
+For repositories that use Changesets, run \`bun run changeset\` only for release-impacting work.
+No Changeset means no release is requested. Never add an empty Changeset to satisfy CI; remove it
+for a no-release pull request, or add explicit release intent before validation.
+
 `;
 }
 

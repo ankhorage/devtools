@@ -175,19 +175,19 @@ describe('managed PKGViz audit', () => {
 });
 
 describe('managed CI Changesets contract', () => {
-  test('keeps the missing-Changeset guard strict for every ordinary pull request', async () => {
+  test('treats no pull-request-owned Changeset as intentional no-release work', async () => {
     const ci = await workflowManagedFiles[0].render?.('.');
 
     expect(ci).toContain(
       `      - name: Check changesets
         if: github.event_name == 'pull_request'
         run: |
-          if node -e "const p=require('./package.json'); process.exit(p.scripts?.['changeset:status'] ? 0 : 1)"; then
-            ${REPOSITORY_POLICY.changesets.workflowCommands.status}
-          else
-            echo "No changeset:status script found; skipping."
-          fi`,
+          base_sha='\${{ github.event.pull_request.base.sha }}'
+          head_sha='\${{ github.event.pull_request.head.sha }}'`,
     );
+    expect(ci).toContain('No pull-request-owned Changeset files; no release requested.');
+    expect(ci).toContain('Empty Changesets are not supported. Remove ');
+    expect(ci).toContain(REPOSITORY_POLICY.changesets.workflowCommands.status);
     expect(REPOSITORY_POLICY.changesets.packageScripts['changeset:status']).toContain(
       '--since=origin/main',
     );
@@ -213,7 +213,7 @@ describe('managed Renovate workflow', () => {
     expect(rendered).toContain('cancel-in-progress: true');
     const template = await readFile(new URL('./files/renovate.yml', import.meta.url), 'utf8');
     expect(template).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@db48610ed5bc6a1191798b123ce86419571d7bc6',
+      'ankhorage/renovate/.github/workflows/changeset.yml@60f0b8c853ecc2c3601d947e8c9414c8a89bd481',
     );
     expect(rendered).toContain('contents: read');
     expect(rendered).toContain('checks: read');
