@@ -1,4 +1,4 @@
-import { readFile, stat } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
@@ -22,6 +22,17 @@ const EMPTY_LOCAL_CONFIG = `export default [];
 `;
 
 const EXAMPLES_OWNERSHIP_MARKER = '// This file is managed by @ankhorage/devtools.\n';
+const IGNORED_EXAMPLE_DIRECTORY_NAMES = new Set([
+  '.expo',
+  '.next',
+  'android',
+  'build',
+  'dist',
+  'files',
+  'ios',
+  'node_modules',
+  'templates',
+]);
 
 const ESLINT_EXAMPLES_CONFIG = `${EXAMPLES_OWNERSHIP_MARKER}import { existsSync } from 'node:fs';
 
@@ -57,7 +68,7 @@ export const eslintManagedFiles = [
   {
     relativePath: 'eslint.examples.config.mjs',
     contents: ESLINT_EXAMPLES_CONFIG,
-    isApplicable: hasExamplesDirectory,
+    isApplicable: hasTypeScriptExamples,
   },
 ] as const satisfies readonly ManagedFileDefinition[];
 
@@ -77,17 +88,36 @@ function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }
 
-/*** Report whether the target repository owns public examples at its root. */
-async function hasExamplesDirectory(targetDirectory: string): Promise<boolean> {
+/*** Report whether the target repository owns TypeScript source examples at its root. */
+async function hasTypeScriptExamples(targetDirectory: string): Promise<boolean> {
   await assertExamplesConfigOwnershipAsync(targetDirectory);
+  return await containsTypeScriptExampleAsync(resolve(targetDirectory, 'examples'));
+}
+
+/*** Report whether a directory tree contains a TypeScript or TSX source example. */
+async function containsTypeScriptExampleAsync(directory: string): Promise<boolean> {
   try {
-    return (await stat(resolve(targetDirectory, 'examples'))).isDirectory();
+    const entries = await readdir(directory, { withFileTypes: true });
+    return (
+      await Promise.all(
+        entries.map(async (entry) =>
+          entry.isDirectory() && !IGNORED_EXAMPLE_DIRECTORY_NAMES.has(entry.name)
+            ? await containsTypeScriptExampleAsync(resolve(directory, entry.name))
+            : entry.isFile() && isTypeScriptExampleSource(entry.name),
+        ),
+      )
+    ).some(Boolean);
   } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') {
       return false;
     }
     throw error;
   }
+}
+
+/*** Report whether a file is lintable TypeScript example source rather than a declaration. */
+function isTypeScriptExampleSource(fileName: string): boolean {
+  return /\.tsx?$/u.test(fileName) && !fileName.endsWith('.d.ts');
 }
 
 /*** Require explicit adoption of consumer overrides before managing an existing examples config. */
