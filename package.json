@@ -121,7 +121,7 @@
     "test:standalone": "bun test src/tools/agents/index.test.ts src/tools/shared/managedFiles.test.ts"
   },
   "dependencies": {
-    "@ankhorage/apm": "^0.8.12",
+    "@ankhorage/apm": "^0.8.13",
     "@ankhorage/project-detector": "^0.3.3",
     "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
@@ -141,7 +141,7 @@
     "knip": "^6.38.0",
     "prettier": "^3.9.9",
     "typescript-eslint": "^8.70.1",
-    "@ankhorage/contracts": "^22.8.2",
+    "@ankhorage/contracts": "^22.8.3",
     "typescript": "~6.0.3",
     "@ankhorage/policy": "^0.6.0"
   },
