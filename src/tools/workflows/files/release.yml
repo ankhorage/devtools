@@ -108,7 +108,20 @@ jobs:
             done
 
             if [ -n "$release_sha" ]; then
+              release_tag="v$current_version"
+              finalized_sha="$(git rev-parse -q --verify "refs/tags/${release_tag}^{commit}" 2>/dev/null || true)"
+              if [ -n "$finalized_sha" ]; then
+                if [ "$finalized_sha" != "$release_sha" ]; then
+                  echo "::error title=Release tag mismatch::${release_tag} points to ${finalized_sha}, expected ${release_sha}."
+                  exit 1
+                fi
+                echo "Release ${release_tag} is already finalized at ${release_sha}; no release requested."
+                echo "versioned=false" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+
               echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
+              git checkout --detach "$release_sha"
               echo "versioned=true" >> "$GITHUB_OUTPUT"
               echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
               echo "package_version=$current_version" >> "$GITHUB_OUTPUT"
