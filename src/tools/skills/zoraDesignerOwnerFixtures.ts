@@ -135,31 +135,27 @@ export const ZORA_COMPONENT_META = {
       evidenceId: { type: 'string' },
     },
   },
-};
-export const ZORA_CORE_PLUGIN_METADATA = {
-  packageName: '@ankhorage/zora',
-  componentMeta: ZORA_COMPONENT_META,
-  extensionHosts: ['Screen', 'View', 'Box'],
-};
-export const composeZoraPluginMetadata = (plugins) => {
-  const componentMeta = {};
-  const extensionHosts = new Set();
-  for (const plugin of [...plugins].sort((left, right) => left.packageName.localeCompare(right.packageName))) {
-    Object.assign(componentMeta, plugin.componentMeta);
-    for (const host of plugin.extensionHosts ?? []) extensionHosts.add(host);
-  }
-  for (const plugin of plugins) {
-    for (const placement of plugin.placements ?? []) {
-      for (const parent of placement.parents) {
-        if (!extensionHosts.has(parent)) throw new Error('Invalid extension host');
-        componentMeta[parent] = {
-          ...componentMeta[parent],
-          allowedChildren: [...componentMeta[parent].allowedChildren, placement.child],
-        };
-      }
-    }
-  }
-  return { componentMeta };
+  ChessBoard: {
+    name: 'ChessBoard',
+    category: 'component',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
+  },
+  GameField: {
+    name: 'GameField',
+    category: 'component',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
+  },
+  TabletopTable: {
+    name: 'TabletopTable',
+    category: 'component',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
+  },
 };
 export const ZORA_THEME_RECIPE_META = {
   Card: {
