@@ -8,7 +8,6 @@ import { resolveApmReleaseCommandAsync } from '../features/apm-release-validatio
 import { resolveStructureReleaseCommandAsync } from '../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
 import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../policy/bunRuntimePolicy.js';
-import { renderBunPolicyDocumentation } from '../policy/renderBunPolicyDocumentation.js';
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
 import {
@@ -76,7 +75,6 @@ async function createManagedDefinitionsAsync(
     throw new Error('Devtools package.json must contain a JSON object.');
   }
 
-  const readme = await readFile(resolve(targetDirectory, 'README.md'), 'utf8');
   const workflowPolicy = await createWorkflowPolicyAsync(targetDirectory);
 
   return [
@@ -105,10 +103,6 @@ async function createManagedDefinitionsAsync(
         targetDirectory,
         workflowPolicy,
       ),
-    },
-    {
-      relativePath: 'README.md',
-      contents: renderBunPolicyDocumentation(readme),
     },
   ];
 }
