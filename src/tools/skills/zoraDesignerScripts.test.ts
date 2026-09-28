@@ -114,7 +114,7 @@ describe('zora-designer owner repository discovery', () => {
     await writeJson(join(target, 'package.json'), {
       name: 'fixture',
       type: 'module',
-      dependencies: { '@ankhorage/zora-tabletop': '^0.1.0' },
+      dependencies: { '@ankhorage/zora-legacy-fixture': '^0.1.0' },
     });
 
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
