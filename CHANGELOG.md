@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.7
+
+### Patch Changes
+
+- 3061534: Update Devtools-owned dependencies: `@ankhorage/policy`.
+
 ## 2.0.6
 
 ### Patch Changes
