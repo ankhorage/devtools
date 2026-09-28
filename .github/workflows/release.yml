@@ -168,9 +168,66 @@ jobs:
             exit 1
           fi
           printf '{"name":"standalone-consumer","private":true,"version":"0.0.0"}\n' > "$install_dir/package.json"
+          package_name="$(node -p "require('./package.json').name")"
           (
             cd "$install_dir"
             bun add "$artifact" --ignore-scripts
+
+            PACKAGE_NAME="$package_name" node - <<'NODE' > import-specifiers.txt
+          const { readFileSync } = require('node:fs');
+          const { join } = require('node:path');
+          const name = process.env.PACKAGE_NAME;
+          const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
+          const pkg = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+          const specifiers = new Set([name]);
+          const exportsMap = pkg.exports;
+          if (exportsMap && typeof exportsMap === 'object' && !Array.isArray(exportsMap)) {
+            for (const [key, target] of Object.entries(exportsMap)) {
+              if (key === './package.json' || key.includes('*')) continue;
+              const runtimeTarget =
+                typeof target === 'string' ||
+                (target &&
+                  typeof target === 'object' &&
+                  ['import', 'default', 'bun', 'node', 'require'].some((condition) => condition in target));
+              if (!runtimeTarget) continue;
+              specifiers.add(key === '.' ? name : `${name}/${key.slice(2)}`);
+            }
+          }
+          process.stdout.write([...specifiers].sort().join('\n'));
+          NODE
+
+            while IFS= read -r specifier; do
+              if [ -n "$specifier" ]; then
+                PACKAGE_SPECIFIER="$specifier" bun -e 'await import(process.env.PACKAGE_SPECIFIER)'
+              fi
+            done < import-specifiers.txt
+
+            PACKAGE_NAME="$package_name" node - <<'NODE' > binary-paths.txt
+          const { readFileSync } = require('node:fs');
+          const { join, resolve } = require('node:path');
+          const name = process.env.PACKAGE_NAME;
+          const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
+          const pkg = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
+          const binaries =
+            typeof pkg.bin === 'string'
+              ? [pkg.bin]
+              : pkg.bin && typeof pkg.bin === 'object'
+                ? Object.values(pkg.bin)
+                : [];
+          process.stdout.write(
+            binaries
+              .filter((value) => typeof value === 'string')
+              .map((value) => resolve(packageDir, value))
+              .sort()
+              .join('\n'),
+          );
+          NODE
+
+            while IFS= read -r binary_path; do
+              if [ -n "$binary_path" ]; then
+                timeout 15s bun "$binary_path" --help >/dev/null
+              fi
+            done < binary-paths.txt
           )
 
       - name: Publish unpublished packages
