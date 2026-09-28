@@ -118,9 +118,9 @@ describe('zora-designer owner repository discovery', () => {
       components: string[];
       versions: Record<string, string>;
     };
-    expect(output.components).toEqual(
-      expect.arrayContaining(['ChessBoard', 'GameField', 'TabletopTable']),
-    );
+    expect(output.components).toContain('ChessBoard');
+    expect(output.components).toContain('GameField');
+    expect(output.components).toContain('TabletopTable');
     expect(Object.hasOwn(output.versions, 'plugins')).toBe(false);
   });
 
@@ -191,9 +191,9 @@ describe('zora-designer core ZORA ownership', () => {
       components: string[];
       versions: Record<string, string>;
     };
-    expect(output.components).toEqual(
-      expect.arrayContaining(['ChessBoard', 'GameField', 'TabletopTable']),
-    );
+    expect(output.components).toContain('ChessBoard');
+    expect(output.components).toContain('GameField');
+    expect(output.components).toContain('TabletopTable');
     expect(Object.hasOwn(output.versions, 'plugins')).toBe(false);
   });
 });
