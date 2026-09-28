@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.14
+
+### Patch Changes
+
+- 168b11d: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@ankhorage/paradox`, `@ankhorage/project-detector`.
+
 ## 2.0.13
 
 ### Patch Changes
