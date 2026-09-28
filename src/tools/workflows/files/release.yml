@@ -179,17 +179,31 @@ jobs:
           const name = process.env.PACKAGE_NAME;
           const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
           const pkg = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
-          const specifiers = new Set([name]);
+          const runtimeConditions = new Set(['bun', 'default', 'import', 'node', 'require']);
+          const isRuntimeTarget = (target) => {
+            if (typeof target === 'string') return true;
+            if (Array.isArray(target)) return target.some(isRuntimeTarget);
+            if (!target || typeof target !== 'object') return false;
+            return Object.entries(target).some(
+              ([condition, value]) => runtimeConditions.has(condition) && isRuntimeTarget(value),
+            );
+          };
+          const specifiers = new Set();
           const exportsMap = pkg.exports;
-          if (exportsMap && typeof exportsMap === 'object' && !Array.isArray(exportsMap)) {
+          if (exportsMap === undefined) {
+            if (typeof pkg.main === 'string' || typeof pkg.module === 'string') specifiers.add(name);
+          } else if (
+            typeof exportsMap === 'string' ||
+            Array.isArray(exportsMap) ||
+            (exportsMap &&
+              typeof exportsMap === 'object' &&
+              !Object.keys(exportsMap).some((key) => key.startsWith('.')))
+          ) {
+            if (isRuntimeTarget(exportsMap)) specifiers.add(name);
+          } else if (exportsMap && typeof exportsMap === 'object') {
             for (const [key, target] of Object.entries(exportsMap)) {
-              if (key === './package.json' || key.includes('*')) continue;
-              const runtimeTarget =
-                typeof target === 'string' ||
-                (target &&
-                  typeof target === 'object' &&
-                  ['import', 'default', 'bun', 'node', 'require'].some((condition) => condition in target));
-              if (!runtimeTarget) continue;
+              if (!key.startsWith('.') || key === './package.json' || key.includes('*')) continue;
+              if (!isRuntimeTarget(target)) continue;
               specifiers.add(key === '.' ? name : `${name}/${key.slice(2)}`);
             }
           }
@@ -225,7 +239,7 @@ jobs:
 
             while IFS= read -r binary_path; do
               if [ -n "$binary_path" ]; then
-                timeout 15s bun "$binary_path" --help >/dev/null
+                BINARY_PATH="$binary_path" bun -e "import { pathToFileURL } from 'node:url'; await import(pathToFileURL(process.env.BINARY_PATH).href)"
               fi
             done < binary-paths.txt
           )
