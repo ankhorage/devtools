@@ -46,8 +46,9 @@ types, ZORA elements, events, recipes, and version provenance. Never copy owner 
 schemas, token inventories, color algorithms, action types, or manifest implementations into this
 skill.
 
-The inspection composes metadata-only descriptors from every installed `@ankhorage/zora-*` plugin;
-use those plugin elements exactly like ZORA core elements and keep their package provenance.
+The inspection consumes the canonical component and event metadata exported directly by core
+`@ankhorage/zora`. Chess, Game, Tabletop, and other current ZORA capabilities are ordinary core
+features; do not discover or compose standalone `@ankhorage/zora-*` packages.
 
 For supplied-screen reconstruction, continue through `recognize` and treat the local analyzer's
 `ScreenSpec`, visual graph, confidence, alternatives, and unresolved diagnostics as the structural
