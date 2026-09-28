@@ -91,14 +91,14 @@ export const ZORA_COMPONENT_META = {
     category: 'layout',
     description: 'Screen layout root',
     directManifestNode: true,
-    allowedChildren: ['View', 'Box', 'Text', 'MissingElement'],
+    allowedChildren: ['View', 'Box', 'Text', 'MissingElement', 'TabletopTable'],
     props: {},
   },
   View: {
     name: 'View',
     category: 'layout',
     directManifestNode: true,
-    allowedChildren: ['Text', 'Box'],
+    allowedChildren: ['Text', 'Box', 'TabletopTable'],
     props: {},
   },
   Box: {
@@ -122,6 +122,13 @@ export const ZORA_COMPONENT_META = {
       },
     },
   },
+  TabletopTable: {
+    name: 'TabletopTable',
+    category: 'pattern',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
+  },
   MissingElement: {
     name: 'MissingElement',
     category: 'pattern',
@@ -135,31 +142,6 @@ export const ZORA_COMPONENT_META = {
       evidenceId: { type: 'string' },
     },
   },
-};
-export const ZORA_CORE_PLUGIN_METADATA = {
-  packageName: '@ankhorage/zora',
-  componentMeta: ZORA_COMPONENT_META,
-  extensionHosts: ['Screen', 'View', 'Box'],
-};
-export const composeZoraPluginMetadata = (plugins) => {
-  const componentMeta = {};
-  const extensionHosts = new Set();
-  for (const plugin of [...plugins].sort((left, right) => left.packageName.localeCompare(right.packageName))) {
-    Object.assign(componentMeta, plugin.componentMeta);
-    for (const host of plugin.extensionHosts ?? []) extensionHosts.add(host);
-  }
-  for (const plugin of plugins) {
-    for (const placement of plugin.placements ?? []) {
-      for (const parent of placement.parents) {
-        if (!extensionHosts.has(parent)) throw new Error('Invalid extension host');
-        componentMeta[parent] = {
-          ...componentMeta[parent],
-          allowedChildren: [...componentMeta[parent].allowedChildren, placement.child],
-        };
-      }
-    }
-  }
-  return { componentMeta };
 };
 export const ZORA_THEME_RECIPE_META = {
   Card: {
