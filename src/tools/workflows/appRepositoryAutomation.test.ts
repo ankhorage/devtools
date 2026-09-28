@@ -7,6 +7,8 @@ import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js
 import { workflowManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
+const legacyUsageTag = '@usage';
+const legacyReadmeTag = '@readme';
 
 afterEach(async () => {
   await Promise.all(
@@ -34,8 +36,8 @@ test('bootstraps app repository dependency automation without package release wo
  *
  * Loads the canonical Ankhorage dependency-update policy from its default branch.
  *
- * @usage
- * @readme
+ * ${legacyUsageTag}
+ * ${legacyReadmeTag}
  */
 {
   extends: ['github>ankhorage/renovate'],
