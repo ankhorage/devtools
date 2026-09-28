@@ -88,6 +88,9 @@ describe('managed repository skill ownership', () => {
     expect(skill).toContain('src/features/<feature>/');
     expect(skill).toContain('src/cli/commands/config/validate.ts');
     expect(skill).not.toContain('A package may start flat.');
+    expect(profiles).toContain('Runtime-owning libraries are still feature-first');
+    expect(profiles).toContain('src/features/<feature>/');
+    expect(profiles).not.toContain('<domain-or-topic>/');
     expect(profiles).toContain('These packages are feature-first');
     expect(profiles).not.toContain('Domain-first and feature-first organization are both valid');
     expect(profiles).toContain('Command-centric tooling remains feature-first');
