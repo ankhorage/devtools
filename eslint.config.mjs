@@ -9,6 +9,7 @@ export default createConfig({
   tsconfigRootDir: __dirname,
   project: ['./tsconfig.test.json'],
   files: ['src/**/*.ts'],
+  additionalIgnores: ['examples/package/**'],
   overrides: [
     {
       files: [
