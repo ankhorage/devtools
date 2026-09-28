@@ -44,28 +44,13 @@ components or registries. Provider execution belongs outside reusable presentati
 ## Application, engine, or hybrid package
 
 Use when the package owns use cases, state transitions, external systems, or several delivery edges.
-Domain-first and feature-first organization are both valid when coherent.
-
-Domain-first example:
-
-```text
-src/
-  <domain>/
-    domain/
-    application/
-    ports/
-    adapters/
-    composition/
-  cli/
-  host/
-  app/
-  platform/
-```
-
-Feature-first example:
+These packages are feature-first: every product/domain/package capability is owned below
+`src/features/<feature>/`. Do not use top-level domain folders or flat `src/*.ts` implementation
+modules as an alternative ownership model.
 
 ```text
 src/
+  index.ts
   features/
     <feature>/
       domain/
@@ -74,6 +59,10 @@ src/
       adapters/
       composition/
   cli/
+    commands/
+  types/
+  constants/
+  utils/
 ```
 
 Only create the role directories that the capability actually needs. A pure domain feature can stop
@@ -81,35 +70,45 @@ at `domain/`; an in-memory use case need not invent an outbound adapter.
 
 ## Provider or platform adapter package
 
-Use when the package deliberately implements an external technology boundary:
+Use when the package deliberately implements an external technology boundary. Provider capabilities
+are still feature-owned; concrete technology remains at the feature's outer adapter boundary:
 
 ```text
 src/
-  contracts/
-  planning/
-  adapters/
-  composition/
+  features/
+    <capability>/
+      domain/
+      application/
+      ports/
+      adapters/
+      composition/
   cli/
+    commands/
 ```
 
 Portable configuration and planning stay independent from SDK/runtime values. Concrete provider code
-stays in adapters.
+stays in adapters, and package-level delivery edges remain outside the feature.
 
 ## Tooling package
 
-Command-centric tooling may use:
+Command-centric tooling remains feature-first for owned capabilities while the CLI stays an outer
+delivery edge:
 
 ```text
 src/
+  features/
+    <capability>/
+      domain/
+      application/
+      ports/
+      adapters/
+      composition/
   cli/
-  policy/
-  application/
-  adapters/
-  composition/
+    commands/
 ```
 
 Policy remains deterministic. Filesystem, process, registry, network, and GitHub behavior stay at
-the edge.
+the feature edge or package delivery edge rather than leaking into inner policy.
 
 ## Generated standalone application
 
