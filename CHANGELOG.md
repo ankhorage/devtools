@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.12
+
+### Patch Changes
+
+- a17bc0a: refactor: make the managed ZORA Designer consume canonical core ZORA metadata only and stop discovering standalone ZORA plugin packages
+
 ## 2.0.11
 
 ### Patch Changes
