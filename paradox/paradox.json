@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.0",
+      "value": "v2.0.1",
       "color": "cb3837"
     },
     {
@@ -55,47 +55,43 @@
     },
     {
       "id": "docs",
-      "label": "docs",
-      "value": "paradox",
-      "color": "0f766e"
+      "label": "paradox",
+      "value": "warnings",
+      "color": "ca8a04"
     }
   ],
   "usage": {
     "packageName": "@ankhorage/devtools",
-    "commands": [
-      {
-        "name": "ankhorage-apm-release",
-        "command": "bunx @ankhorage/devtools ankhorage-apm-release"
-      },
-      {
-        "name": "ankhorage-changeset",
-        "command": "bunx @ankhorage/devtools ankhorage-changeset"
-      },
-      {
-        "name": "ankhorage-eslint",
-        "command": "bunx @ankhorage/devtools ankhorage-eslint"
-      },
-      {
-        "name": "ankhorage-knip",
-        "command": "bunx @ankhorage/devtools ankhorage-knip"
-      },
-      {
-        "name": "ankhorage-prettier",
-        "command": "bunx @ankhorage/devtools ankhorage-prettier"
-      },
-      {
-        "name": "ankhorage-structure",
-        "command": "bunx @ankhorage/devtools ankhorage-structure"
-      }
-    ]
+    "command": "ankh devtools --help"
   },
-  "readmeUsageDescription": "Shared development tools and repository standards for Ankhorage TypeScript projects.\n\n## What it owns\n\n`@ankhorage/policy` is the source of truth for canonical Ankhorage policy. `@ankhorage/devtools` is the execution and synchronization layer for these repository concerns:\n\n```text\nsrc/\n├── cli/\n├── policy/\n└── tools/\n    ├── agents/\n    ├── skills/\n    ├── eslint/\n    ├── prettier/\n    ├── knip/\n    ├── package/\n    ├── workflows/\n    └── vscode/\n```\n\n- `policy`: policy application/rendering adapters that consume `@ankhorage/policy`\n- `changesets`: package-resolved Changesets execution using centrally defined commands\n- `agents`: canonical repository `AGENTS.md` rendered from stable package identity\n- `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`\n- `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner\n- `prettier`: shared Prettier configuration and the bundled Prettier runner\n- `knip`: shared Knip configuration helpers and the bundled Knip runner\n- `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract\n- `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`\n- `vscode`: canonical `.vscode/settings.json` and `extensions.json`\n\nThe package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/PKGViz policy values are owned by `@ankhorage/policy` and rendered by Devtools.\n\n## Bootstrap\n\nFor a repository that does not yet depend on the shared toolchain:\n\n```bash\nbun add -D @ankhorage/devtools\nbunx @ankhorage/ankh devtools sync .\n```\n\nAfter the first install, the normal workflow is:\n\n```bash\nankh devtools sync\n```\n\nThe target path is optional and defaults to the current working directory.\n\nSynchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, applies the managed Bun runtime policy, and removes direct devDependencies for tools/plugins owned by devtools. When package metadata changes, sync runs `bun install` so installed dependencies and `bun.lock` match the synchronized manifest. Unrelated package metadata, dependencies, and scripts are preserved.\n\n`devtools sync` does not upgrade the globally installed Bun executable. The managed version applies to repository metadata, Bun types, and GitHub workflows.\n\n## Ankh provider\n\nThe package is discovered under the `devtools` category and exposes these capabilities:\n\n- `devtools.apm.sync`\n- `devtools.apm.validate`\n- `devtools.lint`\n- `devtools.changeset`\n- `devtools.format`\n- `devtools.knip`\n- `devtools.sync`\n- `devtools.status`\n- `devtools.agents.sync`\n- `devtools.agents.status`\n- `devtools.skills.sync`\n- `devtools.skills.status`\n- `devtools.eslint.sync`\n- `devtools.eslint.status`\n- `devtools.prettier.sync`\n- `devtools.prettier.status`\n- `devtools.knip.sync`\n- `devtools.knip.status`\n- `devtools.package.sync`\n- `devtools.package.status`\n- `devtools.workflows.sync`\n- `devtools.workflows.status`\n- `devtools.vscode.sync`\n- `devtools.vscode.status`\n\nThe canonical command prefix is always:\n\n```bash\nankh devtools ...\n```\n\n## Tool commands\n\n```bash\nankh devtools changeset -- status --since=origin/main\nankh devtools lint -- --max-warnings=0 .\nankh devtools format -- --check .\nankh devtools knip -- --production\n```\n\nThese delegate to the same bundled tools as the package binaries:\n\n- `ankh devtools changeset` → `ankhorage-changeset`\n- `ankh devtools lint` → `ankhorage-eslint`\n- `ankh devtools format` → `ankhorage-prettier`\n- `ankh devtools knip` → `ankhorage-knip`\n\nThe synchronized package scripts are:\n\n```json\n{\n  \"scripts\": {\n    \"changeset\": \"ankhorage-changeset\",\n    \"changeset:status\": \"ankhorage-changeset status --since=origin/main\",\n    \"lint\": \"ankhorage-eslint . --max-warnings=0\",\n    \"lint:fix\": \"ankhorage-eslint . --fix --max-warnings=0\",\n    \"format\": \"ankhorage-prettier --write .\",\n    \"format:check\": \"ankhorage-prettier --check .\",\n    \"knip:check\": \"ankhorage-knip\",\n    \"version-packages\": \"ankhorage-changeset version\"\n  }\n}\n```\n\n## Repository synchronization\n\nSynchronize or inspect every managed concern:\n\n```bash\nankh devtools sync .\nankh devtools status .\n```\n\nSynchronize one concern:\n\n```bash\nankh devtools agents sync .\nankh devtools skills sync .\nankh devtools eslint sync .\nankh devtools prettier sync .\nankh devtools knip sync .\nankh devtools package sync .\nankh devtools workflows sync .\nankh devtools vscode sync .\n```\n\nReport one concern:\n\n```bash\nankh devtools agents status .\nankh devtools skills status .\nankh devtools eslint status .\nankh devtools prettier status .\nankh devtools knip status .\nankh devtools package status .\nankh devtools workflows status .\nankh devtools vscode status .\n```\n\nPreview synchronization without writing:\n\n```bash\nankh devtools sync . --dry-run\nankh devtools agents sync . --dry-run\nankh devtools skills sync . --dry-run\nankh devtools eslint sync . --dry-run\nankh devtools package sync . --dry-run\n```\n\nA dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.\n\n## Synchronization guarantees\n\nSynchronization is deterministic and idempotent:\n\n- missing managed artifacts are created\n- outdated centrally owned artifacts are updated\n- stale files in Devtools-owned skill trees are removed\n- the managed Bun runtime version is applied consistently to package metadata and workflows\n- Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration\n- package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync\n- current artifacts are left untouched\n- unrelated files and package fields are preserved\n- repeated sync produces only `unchanged` results\n- invalid target paths and write failures return a non-zero exit code\n- create-only repository extension files are never overwritten after creation\n\nThe canonical workflow, VS Code, and skill files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.\n\n## Managed agent instructions\n\n`ankh devtools agents sync` owns the repository-root `AGENTS.md` plus `CLAUDE.md` and `GEMINI.md` as symbolic links to that canonical file. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.\n\nOnly the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.\n\nEvery Devtools-managed repository is standalone: its own checkout must be sufficient to install, build, test, and use it with declared dependencies and explicit configuration. Published packages are additionally consumer-agnostic and reusable outside Ankhorage. Sibling repositories/source imports, unpublished workspace/file/link coupling, hidden organization-local state, and hard assumptions about a consuming app, infrastructure, hosting provider, web server, container runtime, or deployment topology are architecture debt rather than supported exceptions.\n\n## Managed repository skills\n\n`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.\n\n`.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.\n\nAgent Skill scripts are always TypeScript files with a `.ts` extension and run with Bun. JavaScript skill scripts using `.js`, `.mjs`, or `.cjs` are not supported.\n\n## ESLint profiles\n\n`createConfig()` defaults to `profile: 'auto'`.\n\nAutomatic detection reads the consuming repository's `package.json` and delegates project trait detection to `@ankhorage/project-detector`. Dependency signals are considered across `dependencies`, `devDependencies`, and `peerDependencies`.\n\nProfile precedence is:\n\n```text\nReact Native / Expo\n        ↓\nreact-native\n        ↓ includes\nreact\n        ↓ includes\nbase\n```\n\nA React or Next.js project selects `react`. A React Native or Expo project selects `react-native`. Everything else selects `base`.\n\nAn unusual repository can opt out of automatic selection:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\n\nexport default createConfig({\n  files: ['src/**/*.ts'],\n  profile: 'base',\n  project: ['./tsconfig.json'],\n  tsconfigRootDir: import.meta.dirname,\n});\n```\n\nThe base profile enforces the shared TypeScript policy plus:\n\n- maximum 50 effective lines per function\n- maximum 300 effective lines per file\n- modified cyclomatic complexity maximum 15\n- security review for dynamic object access\n- rejection of non-literal `require()` calls\n\nThe React profile adds React and React Hooks correctness rules. The React Native profile composes the React profile and adds the selected React Native style rules.\n\n### Managed ESLint setup and local overrides\n\n`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.\n\nThe canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:\n\n```js\nimport { createConfig } from '@ankhorage/devtools/eslint';\nimport localConfig from './eslint.local.config.mjs';\n\nconst localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];\n\nexport default [\n  ...createConfig({\n    files: ['src/**/*.{ts,tsx}'],\n    project: ['./tsconfig.json'],\n    tsconfigRootDir: import.meta.dirname,\n  }),\n  ...localEntries,\n];\n```\n\nUse `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.\n\nEach public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.\n\nAn existing consumer-owned `eslint.examples.config.mjs` requires explicit adoption before synchronization can replace it. Status, dry-run, and sync report an actionable error instead of overwriting or deleting it. Move its repository-specific overrides into `eslint.local.config.mjs`, preserving existing entries and the examples-only file scope; retain custom parser options there when needed. Remove the old examples config only after that transfer, then rerun sync and the examples lint. The generated wrapper carries a Devtools ownership marker and subsequent synchronization updates it normally. Do not mark an old consumer config as managed to bypass this transfer.\n\nRepositories can lint their independently runnable examples explicitly:\n\n```bash\nankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0\n```\n\n## Prettier\n\n`ankh devtools prettier sync` owns `.prettierrc.js`, emits the correct ESM or CommonJS wrapper based on the repository's `package.json` module type, and creates `prettier.local.config.js` once for narrow repository-specific options.\n\nThe consumer delegates formatting policy to:\n\n```text\n@ankhorage/devtools/prettier\n```\n\nThe wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.\n\n## Knip\n\n`ankh devtools knip sync` bootstraps `knip.config.ts` with:\n\n```ts\nimport { createKnipConfig } from '@ankhorage/devtools/knip';\n\nexport default createKnipConfig();\n```\n\n`knip.config.ts` is create-only after bootstrap so repositories can retain narrow local entries, projects, ignores, binaries, dependencies, or switch to `createKnipMonorepoConfig()` without synchronization overwriting those extensions.\n\n## Managed Bun runtime policy\n\nThe canonical Bun policy is defined by `@ankhorage/policy` and consumed by Devtools package and workflow synchronization. The current released policy is:\n\n<!-- devtools-bun-policy:start -->\n\n```text\nBun runtime       1.4.2\npackageManager    bun@1.4.2\n@types/bun        ^1.4.1\n```\n\n<!-- devtools-bun-policy:end -->\n\n`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. The trusted owner workflow uses `bun scripts/sync-renovate-owner.ts sync repository` to regenerate those artifacts and `bun scripts/sync-renovate-owner.ts status repository` to reject stale rendered state. Do not duplicate runtime policy literals in Devtools.\n\n## Managed package contract\n\n`ankh devtools package sync` merge-updates `package.json` rather than replacing it.\n\nIt owns:\n\n- the `@ankhorage/devtools` dependency version range\n- removal of direct consumer `@changesets/cli` dependencies\n- `packageManager` according to the managed Bun runtime policy\n- the `@types/bun` development dependency according to the managed Bun runtime policy\n- `lint`\n- `lint:fix`\n- `format`\n- `format:check`\n- `knip:check`\n- `changeset`, `changeset:status`, and `version-packages` for Changesets-enabled repositories\n\nFor normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.\n\nWhen this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct dependencies for Changesets and direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.\n\nA repository participates in Changesets synchronization when `.changeset/config.json` exists or any of the canonical `changeset`, `changeset:status`, or `version-packages` script keys is present. This explicit rule migrates partially configured repositories while ensuring repositories without Changesets do not acquire release tooling. The repository continues to own `.changeset/config.json`, pending `.changeset/*.md` files, and its package release semantics. Direct `@changesets/cli` declarations, ambient `changeset` scripts, and `bunx changeset` workflow commands are not supported consumer forms.\n\n## Managed GitHub Actions workflows\n\n`workflows` owns exactly:\n\n```text\n.github/workflows/ci.yml\n.github/workflows/renovate.yml\n.github/workflows/release.yml\n```\n\nCI and Release render their `bun-version` from `@ankhorage/policy/repository`, the same policy used for `package.json`. They also render Changesets status, version, and publish commands from that central policy. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.\n\nFor the **first npm publication** of a new `@ankhorage/*` package, the organization publishing credential must be able to create/publish packages in the `@ankhorage` scope. With a granular npm token, grant package permission **Read and write (publish and stage)** to the `@ankhorage` scope or **All Packages**. If initial publication fails after Changesets has already pushed the release commit, correct the npm credential and rerun Release; the current unpublished version is reused and must not be bumped again. The managed workflow diagnoses this first-publish state separately from registry/network failures.\n\nThe Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates. The trusted workflow scopes the Ankhorage Renovate Sync GitHub App token to the current repository and uses it only for the validated commit, allowing every normal pull-request CI workflow to start without manual approval. It never checks out or executes pull-request code in the privileged `pull_request_target` context.\n\n## Managed VS Code configuration\n\n`vscode` owns exactly:\n\n```text\n.vscode/settings.json\n.vscode/extensions.json\n```\n\nUnknown workflow and VS Code files are never deleted.\n\n## Adding another managed concern\n\nA new concern should:\n\n1. live in its own sibling directory under `src/tools`\n2. define only the files and behavior it owns\n3. expose deterministic status and synchronization\n4. add provider commands under `ankh devtools`\n5. include dry-run, status, and idempotence coverage\n6. document its central ownership and repository-owned extension points\n\n## Package-owned APM release gates\n\nA package opts in through `ankh.apm` in its `package.json`:\n\n```json\n{\n  \"ankh\": {\n    \"apm\": { \"protocolVersion\": 1, \"descriptor\": \"./apm/update.json\" }\n  }\n}\n```\n\nInclude the descriptor in `files` and expose any executable extension with an explicit public\n`exports` subpath. Use the released APM descriptor and extension types from `@ankhorage/apm/types`;\nDevtools does not own or duplicate the protocol. Add `test:apm` to run the owner's deterministic\nsource-to-target fixtures, including skipped versions, unsupported old states, idempotency and\ninterruption recovery. A no-migration release still declares supported history explicitly and\ncan pass without an extension. Absence of metadata is reported as inapplicable, not migration-safe.\n\n```sh\nankh devtools apm sync .\nankh devtools apm validate . --allow-owner-code --artifact /tmp/reviewed-owner.tgz\n```\n\nThe standalone `ankhorage-apm-release sync|validate` binary runs the same operations. The public\n`@ankhorage/devtools/apm-release` entrypoint exports `synchronizeApmReleaseDescriptorAsync`,\n`validatePackedApmReleaseAsync` and `validateApmReleaseCandidate`; types are available from\n`@ankhorage/devtools/types`. Programmatic callers can supply `previousDescriptors` to enforce\nunchanged migration checksums and `relatedDescriptors` for cross-owner prerequisites. Owners\nmust include historical descriptors in their `test:apm` fixtures where their migrations require them.\n\nValidation packs with lifecycle scripts disabled, reads only the packed descriptor, checks owner\nidentity, protocol/schema, migration/projection IDs, prerequisite graphs and public extension\ncapabilities using APM's canonical validators. Invalid metadata is a failure, not an opt-out.\n`--allow-owner-code` is explicit permission to import the packed extension in a bounded child\nprocess. The child is **not a security sandbox**; run only trusted owner code. Registry metadata\nalone never grants this permission. Installed dependency resolution uses the repository's\nfrozen dependency graph; the package's own code is loaded through native public export resolution\nfrom the extracted archive, never from the source checkout.\n\n`--artifact` creates a new file containing exactly the validated bytes and refuses an existing\noutput. The JSON result includes SHA-512 integrity; `--expected-integrity` refuses a different\narchive. Keep the retained archive immutable. The managed release workflow versions with\nChangesets, synchronizes descriptor identity, rebuilds, runs `test:apm`, validates a fresh archive,\nand publishes that same archive using `npm publish --ignore-scripts`, without repacking.\nAuthentication and network errors are not treated as an unpublished version. Packages without\nAPM metadata retain their existing Changesets publication path.\n\nProducer order is: released APM protocol, validated owner package release, then consumer rollout.\nNever declare an unpublished owner version. Project migration recovery is owned by APM and the\npackage's declared handlers; passing this release gate does not execute migrations against user\nprojects, deploy production services, or prove compatibility with shipped native binaries.\n",
-  "readmeUsage": [],
-  "readmeCli": {
-    "description": "Run and synchronize the shared development toolchain through the Ankh CLI.\n\n`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and\n`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.\nRepository synchronization is available through\n`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,\n`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.\nOwner packages can opt into deterministic structural metadata with\n`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.\n\nSync commands accept an optional target directory and `--dry-run`. Aggregate sync is\ndeterministic and idempotent: canonical managed files and skill trees are created or updated,\nunrelated repository-local skills and create-only local extension files remain repository-owned,\nand package metadata is merge-updated without replacing unrelated fields.\n\nFresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding\n`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a\nlocal extension before the canonical auto-detecting wrapper is installed.\n\nAPM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid\ndescriptor to the selected Changesets version. `ankh devtools apm validate .` checks a\nscript-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.\n`--artifact <path>` retains the exact accepted tarball and `--expected-integrity <SRI>`\nrejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.\nCI runs that owner suite and the packed check. Release rebuilds after versioning, validates,\nthen publishes the retained archive with scripts disabled through the existing release job.\nPackages without metadata keep their existing Changesets publish path unchanged.",
-    "sourcePath": "src/cli/index.ts"
+  "usageEntries": [
+    {
+      "area": "examples",
+      "title": "Standalone package ESLint configuration",
+      "description": "Configure ESLint for a standalone TypeScript package with the Devtools shared policy.",
+      "language": "js",
+      "code": "export default createConfig({\n  tsconfigRootDir: __dirname,\n  project: ['./tsconfig.json'],\n  files: ['src/**/*.{ts,tsx}'],\n});",
+      "sourcePath": "examples/package/eslint.config.mjs",
+      "isReadme": true,
+      "see": [],
+      "security": []
+    }
+  ],
+  "exampleCount": 2,
+  "findings": [
+    {
+      "ruleId": "documentation.public-function.description",
+      "severity": "warning",
+      "message": "Public function createConfig has no Paradox description.",
+      "sourcePath": "src/tools/eslint/index.ts",
+      "line": 77
+    }
+  ],
+  "readmeConfig": {
+    "language": "ts",
+    "code": "import { readFileSync } from 'node:fs';\n\nimport { defineParadoxConfig } from '@ankhorage/paradox';\n\nimport { renderBunPolicyDocumentation } from './src/policy/renderBunPolicyDocumentation.js';\n\nexport default defineParadoxConfig({\n  mode: 'write',\n  docs: {\n    usage: {\n      description: renderBunPolicyDocumentation(\n        readFileSync(new URL('./src/cli/usage.md', import.meta.url), 'utf8'),\n      ),\n    },\n  },\n  package: {\n    root: '.',\n    entrypoints: [\n      'src/cli/index.ts',\n      'src/tools/eslint/index.ts',\n      'src/tools/knip/index.ts',\n      'src/apmRelease.ts',\n      'src/types/public.ts',\n    ],\n  },\n  output: { dir: './paradox' },\n});",
+    "sourcePath": "paradox.config.ts"
   },
-  "readmeConfig": null,
   "config": null,
   "entrypoints": [
     "src/apmRelease.ts",
@@ -122,7 +118,7 @@
       "path": "src/cli/bin/apm-release.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+        "src/cli/runApmReleaseCommandAsync.ts"
       ],
       "exports": []
     },
@@ -162,7 +158,7 @@
       "path": "src/cli/bin/structure.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
+        "src/cli/runStructureGenerationCommandAsync.ts"
       ],
       "exports": []
     },
@@ -184,8 +180,8 @@
       "path": "src/cli/commands/apm/sync.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runProviderCommand.ts",
-        "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+        "src/cli/runApmReleaseCommandAsync.ts",
+        "src/cli/runProviderCommand.ts"
       ],
       "exports": [
         "sync"
@@ -195,8 +191,8 @@
       "path": "src/cli/commands/apm/validate.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runProviderCommand.ts",
-        "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
+        "src/cli/runApmReleaseCommandAsync.ts",
+        "src/cli/runProviderCommand.ts"
       ],
       "exports": [
         "validate"
@@ -207,7 +203,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/runProviderCommand.ts",
-        "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
+        "src/cli/runStructureGenerationCommandAsync.ts"
       ],
       "exports": [
         "build"
@@ -218,7 +214,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/runProviderCommand.ts",
-        "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
+        "src/cli/runStructureGenerationCommandAsync.ts"
       ],
       "exports": [
         "check"
@@ -233,6 +229,18 @@
       ],
       "exports": [
         "default"
+      ]
+    },
+    {
+      "path": "src/cli/runApmReleaseCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": [
+        "runApmReleaseCommandAsync"
       ]
     },
     {
@@ -300,15 +308,13 @@
       ]
     },
     {
-      "path": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+      "path": "src/cli/runStructureGenerationCommandAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
-        "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
-        "src/types/apm-release-validation.ts"
+        "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts"
       ],
       "exports": [
-        "runApmReleaseCommandAsync"
+        "runStructureGenerationCommandAsync"
       ]
     },
     {
@@ -417,16 +423,6 @@
       ]
     },
     {
-      "path": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts"
-      ],
-      "exports": [
-        "runStructureGenerationCommandAsync"
-      ]
-    },
-    {
       "path": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -528,6 +524,7 @@
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/applyBunRuntimePolicy.ts",
+        "src/policy/bunRuntimePolicy.ts",
         "src/policy/renderBunPolicyDocumentation.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
@@ -540,15 +537,27 @@
     {
       "path": "src/policy/applyBunRuntimePolicy.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/policy/bunRuntimePolicy.ts"
+      ],
       "exports": [
         "applyBunRuntimePolicy"
       ]
     },
     {
-      "path": "src/policy/renderBunPolicyDocumentation.ts",
+      "path": "src/policy/bunRuntimePolicy.ts",
       "isEntrypoint": false,
       "dependencies": [],
+      "exports": [
+        "DEVTOOLS_BUN_RUNTIME_POLICY"
+      ]
+    },
+    {
+      "path": "src/policy/renderBunPolicyDocumentation.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/policy/bunRuntimePolicy.ts"
+      ],
       "exports": [
         "renderBunPolicyDocumentation"
       ]
@@ -680,6 +689,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/policy/applyBunRuntimePolicy.ts",
+        "src/policy/bunRuntimePolicy.ts",
         "src/tools/shared/managedFiles.ts"
       ],
       "exports": [
@@ -805,6 +815,7 @@
       "dependencies": [
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
+        "src/policy/bunRuntimePolicy.ts",
         "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
@@ -890,9 +901,11 @@
   "exports": [
     {
       "name": "ApmPackedReleaseCandidate",
+      "title": null,
       "description": "Packed bytes and loaded owner evidence supplied to the canonical APM validators.",
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/types/apm-release-validation.ts",
       "sourceLocation": {
@@ -947,9 +960,11 @@
     },
     {
       "name": "ApmReleaseValidationOptions",
+      "title": null,
       "description": "Explicit release-validation inputs; owner code is never trusted by default.",
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/types/apm-release-validation.ts",
       "sourceLocation": {
@@ -1004,9 +1019,11 @@
     },
     {
       "name": "ApmReleaseValidationResult",
+      "title": null,
       "description": "Evidence for one exact packed release; inapplicable never means migration-safe.",
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/types/apm-release-validation.ts",
       "sourceLocation": {
@@ -1075,9 +1092,11 @@
     },
     {
       "name": "createConfig",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "function",
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
@@ -1111,9 +1130,11 @@
     },
     {
       "name": "createKnipConfig",
+      "title": null,
       "description": "Build shared Knip configuration while preserving repository-specific discovery.",
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "function",
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
@@ -1147,9 +1168,11 @@
     },
     {
       "name": "createKnipMonorepoConfig",
+      "title": null,
       "description": "Build shared monorepo Knip configuration.",
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "function",
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
@@ -1183,9 +1206,11 @@
     },
     {
       "name": "defaultIgnores",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "value",
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
@@ -1203,9 +1228,11 @@
     },
     {
       "name": "defaultRestrictedImports",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "value",
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
@@ -1223,9 +1250,11 @@
     },
     {
       "name": "DevtoolsConfigOptions",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/tools/eslint/types.ts",
       "sourceLocation": {
@@ -1318,9 +1347,11 @@
     },
     {
       "name": "DevtoolsEslintProfile",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "unknown",
       "modulePath": "src/tools/eslint/types.ts",
       "sourceLocation": {
@@ -1338,9 +1369,11 @@
     },
     {
       "name": "DevtoolsKnipConfigOptions",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
@@ -1410,9 +1443,11 @@
     },
     {
       "name": "DevtoolsKnipMonorepoConfigOptions",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
@@ -1461,9 +1496,11 @@
     },
     {
       "name": "DevtoolsKnipWorkspaceConfigOptions",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
@@ -1524,9 +1561,11 @@
     },
     {
       "name": "FlatConfigItem",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "unknown",
       "modulePath": "src/tools/eslint/types.ts",
       "sourceLocation": {
@@ -1544,9 +1583,11 @@
     },
     {
       "name": "provider",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "value",
       "modulePath": "src/cli/index.ts",
       "sourceLocation": {
@@ -1564,9 +1605,11 @@
     },
     {
       "name": "ResolvedDevtoolsEslintProfile",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "unknown",
       "modulePath": "src/tools/eslint/types.ts",
       "sourceLocation": {
@@ -1584,9 +1627,11 @@
     },
     {
       "name": "RestrictedImport",
+      "title": null,
       "description": null,
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "type",
       "modulePath": "src/tools/eslint/types.ts",
       "sourceLocation": {
@@ -1619,9 +1664,11 @@
     },
     {
       "name": "synchronizeApmReleaseDescriptorAsync",
+      "title": null,
       "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
       "isReadme": false,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "function",
       "modulePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
       "sourceLocation": {
@@ -1653,9 +1700,11 @@
     },
     {
       "name": "validateApmReleaseCandidate",
+      "title": null,
       "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
       "isReadme": true,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "function",
       "modulePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
       "sourceLocation": {
@@ -1697,9 +1746,11 @@
     },
     {
       "name": "validatePackedApmReleaseAsync",
+      "title": null,
       "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
       "isReadme": true,
-      "examples": [],
+      "see": [],
+      "security": [],
       "kind": "function",
       "modulePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
       "sourceLocation": {
@@ -1744,6 +1795,8 @@
     {
       "name": "getDevtoolsCommands",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
         "line": 242,
@@ -1753,6 +1806,8 @@
     {
       "name": "findDevtoolsCommandByPath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
         "line": 246,
@@ -1762,6 +1817,8 @@
     {
       "name": "getDevtoolsToolCommand",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
         "line": 258,
@@ -1771,6 +1828,8 @@
     {
       "name": "externalCommand",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
         "line": 270,
@@ -1780,6 +1839,8 @@
     {
       "name": "repositoryCommand",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
         "line": 291,
@@ -1789,6 +1850,8 @@
     {
       "name": "sync",
       "description": "Adapt the public APM release sync command to the shared release boundary.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands/apm/sync.ts",
         "line": 5,
@@ -1798,6 +1861,8 @@
     {
       "name": "validate",
       "description": "Adapt the public APM release validate command to the shared release boundary.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands/apm/validate.ts",
         "line": 5,
@@ -1807,6 +1872,8 @@
     {
       "name": "build",
       "description": "Adapt the public structure build command to deterministic owner artifact generation.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands/structure/build.ts",
         "line": 5,
@@ -1816,6 +1883,8 @@
     {
       "name": "check",
       "description": "Adapt the public structure check command to deterministic owner artifact verification.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands/structure/check.ts",
         "line": 5,
@@ -1825,6 +1894,8 @@
     {
       "name": "readPackageVersion",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
         "line": 62,
@@ -1834,6 +1905,8 @@
     {
       "name": "isNonEmptyString",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
         "line": 74,
@@ -1843,6 +1916,8 @@
     {
       "name": "isRecord",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
         "line": 78,
@@ -1850,8 +1925,43 @@
       }
     },
     {
+      "name": "runApmReleaseCommandAsync",
+      "description": "Parse release CLI input and report the same structured validation result on every entrypoint.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runApmReleaseCommandAsync.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseArguments",
+      "description": "Separate release argument validation from execution; reject duplicates and incomplete flags.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runApmReleaseCommandAsync.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionIndex",
+      "description": "Require a single option occurrence followed by a value.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runApmReleaseCommandAsync.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
       "name": "runExternalTool",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 61,
@@ -1861,6 +1971,8 @@
     {
       "name": "runExternalToolWithDependencies",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 69,
@@ -1870,6 +1982,8 @@
     {
       "name": "settle",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 90,
@@ -1879,6 +1993,8 @@
     {
       "name": "resolveExecutionTarget",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 127,
@@ -1888,6 +2004,8 @@
     {
       "name": "findPackageJsonPath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 146,
@@ -1897,6 +2015,8 @@
     {
       "name": "readPackageBinPath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 162,
@@ -1906,6 +2026,8 @@
     {
       "name": "shouldExecuteWithNode",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 189,
@@ -1915,6 +2037,8 @@
     {
       "name": "getErrorMessage",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 199,
@@ -1924,6 +2048,8 @@
     {
       "name": "isRecord",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runExternalTool.ts",
         "line": 203,
@@ -1933,6 +2059,8 @@
     {
       "name": "runProviderCommand",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runProviderCommand.ts",
         "line": 16,
@@ -1942,6 +2070,8 @@
     {
       "name": "runRepositoryCommand",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 44,
@@ -1951,6 +2081,8 @@
     {
       "name": "parseRepositoryArguments",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 63,
@@ -1960,6 +2092,8 @@
     {
       "name": "runStatus",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 91,
@@ -1969,6 +2103,8 @@
     {
       "name": "runSync",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 110,
@@ -1978,6 +2114,8 @@
     {
       "name": "getManagedFiles",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 141,
@@ -1987,6 +2125,8 @@
     {
       "name": "writeStatusOutput",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 163,
@@ -1996,6 +2136,8 @@
     {
       "name": "writeSyncOutput",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 180,
@@ -2005,6 +2147,8 @@
     {
       "name": "getActionPrefix",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 190,
@@ -2014,6 +2158,8 @@
     {
       "name": "formatAction",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 203,
@@ -2023,6 +2169,8 @@
     {
       "name": "getErrorMessage",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
         "line": 222,
@@ -2032,6 +2180,8 @@
     {
       "name": "runStandaloneTool",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runStandaloneTool.ts",
         "line": 4,
@@ -2039,35 +2189,32 @@
       }
     },
     {
-      "name": "runApmReleaseCommandAsync",
-      "description": "Parse release CLI input and report the same structured validation result on every entrypoint.",
+      "name": "runStructureGenerationCommandAsync",
+      "description": "Parse structure build/check CLI input and emit one machine-readable result.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
-        "filePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
-        "line": 8,
+        "filePath": "src/cli/runStructureGenerationCommandAsync.ts",
+        "line": 6,
         "column": 1
       }
     },
     {
-      "name": "parseArguments",
-      "description": "Separate release argument validation from execution; reject duplicates and incomplete flags.",
+      "name": "parseTarget",
+      "description": "Resolve the optional target directory and reject unsupported flags/extra operands.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
-        "filePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
-        "line": 39,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionIndex",
-      "description": "Require a single option occurrence followed by a value.",
-      "sourceLocation": {
-        "filePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
-        "line": 69,
+        "filePath": "src/cli/runStructureGenerationCommandAsync.ts",
+        "line": 31,
         "column": 1
       }
     },
     {
       "name": "createApmReleaseDescriptorPort",
       "description": "Supply bounded owner-document reads and idempotent writes for release synchronization.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
         "line": 11,
@@ -2077,6 +2224,8 @@
     {
       "name": "descriptorPathAsync",
       "description": "Prevent descriptor reads and writes from following paths or symlinks outside the owner root.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
         "line": 32,
@@ -2086,6 +2235,8 @@
     {
       "name": "inspectPackedApmReleaseCandidateAsync",
       "description": "Validate the actual script-free packed candidate outside the checkout, retaining only accepted bytes.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "line": 23,
@@ -2095,6 +2246,8 @@
     {
       "name": "packCandidateAsync",
       "description": "Build and extract only a script-free local package archive under a separate temporary root.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "line": 48,
@@ -2104,6 +2257,8 @@
     {
       "name": "readPackedCandidateAsync",
       "description": "Read owner metadata strictly from the archive, not the source-tree descriptor.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "line": 71,
@@ -2113,6 +2268,8 @@
     {
       "name": "validatePackedCandidateAsync",
       "description": "Require valid static evidence before optionally loading the exact packed owner extension.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "line": 93,
@@ -2122,6 +2279,8 @@
     {
       "name": "probePackedApmExtensionAsync",
       "description": "Load the native public ESM export in a bounded child process only after explicit owner-code consent.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
         "line": 15,
@@ -2131,6 +2290,8 @@
     {
       "name": "prepareProbeAsync",
       "description": "Materialize a probe that uses native self-reference export resolution in the extracted package.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
         "line": 55,
@@ -2140,6 +2301,8 @@
     {
       "name": "readProbeResultAsync",
       "description": "Validate child-process response data before exposing a structured report.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts",
         "line": 84,
@@ -2149,6 +2312,8 @@
     {
       "name": "readApmReleaseManifestAsync",
       "description": "Read a release-owned JSON object while rejecting malformed documents.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
         "line": 6,
@@ -2158,6 +2323,8 @@
     {
       "name": "resolveApmReleaseCommandAsync",
       "description": "Use Devtools' own built CLI for self-validation and the installed dependency binary in consumers.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "line": 6,
@@ -2167,6 +2334,8 @@
     {
       "name": "synchronizeApmReleaseMetadataAsync",
       "description": "Bind valid owner metadata to the selected candidate version; never silently skip malformed opt-in.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
         "line": 8,
@@ -2176,6 +2345,8 @@
     {
       "name": "validateApmReleaseCandidate",
       "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
         "line": 31,
@@ -2185,6 +2356,8 @@
     {
       "name": "extensionBlockers",
       "description": "Validate executable binding and required handlers after static metadata has passed.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
         "line": 73,
@@ -2194,6 +2367,8 @@
     {
       "name": "isBoundExtension",
       "description": "Narrow unknown executable evidence only after the canonical runtime validator accepts it.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
         "line": 92,
@@ -2203,6 +2378,8 @@
     {
       "name": "result",
       "description": "Preserve structured candidate identity and canonical blocker reasons.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
         "line": 100,
@@ -2212,6 +2389,8 @@
     {
       "name": "messages",
       "description": "Render the protocol's own diagnostics without reinterpreting their semantics.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
         "line": 108,
@@ -2221,6 +2400,8 @@
     {
       "name": "synchronizeApmReleaseDescriptorAsync",
       "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
         "line": 5,
@@ -2230,6 +2411,8 @@
     {
       "name": "validatePackedApmReleaseAsync",
       "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
         "line": 17,
@@ -2239,6 +2422,8 @@
     {
       "name": "readApmReleaseMetadata",
       "description": "Read opt-in owner metadata without copying the APM discovery schema.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
         "line": 4,
@@ -2246,26 +2431,10 @@
       }
     },
     {
-      "name": "runStructureGenerationCommandAsync",
-      "description": "Parse structure build/check CLI input and emit one machine-readable result.",
-      "sourceLocation": {
-        "filePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
-        "line": 6,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseTarget",
-      "description": "Resolve the optional target directory and reject unsupported flags/extra operands.",
-      "sourceLocation": {
-        "filePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
-        "line": 31,
-        "column": 1
-      }
-    },
-    {
       "name": "createStructureGenerationWorkspacePort",
       "description": "Create the bounded filesystem/compiler adapter used by structure build and check commands.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 15,
@@ -2275,6 +2444,8 @@
     {
       "name": "readStructurePackageAsync",
       "description": "Read and validate the package-owned structure generation declaration.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 29,
@@ -2284,6 +2455,8 @@
     {
       "name": "parseStructureConfig",
       "description": "Parse explicit structure roots and one generated output path without accepting path escapes.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 48,
@@ -2293,6 +2466,8 @@
     {
       "name": "parseRoot",
       "description": "Parse one explicit root source/export declaration.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 66,
@@ -2302,6 +2477,8 @@
     {
       "name": "validateRelativePath",
       "description": "Require repository-relative paths that resolve inside the selected package root.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 84,
@@ -2311,6 +2488,8 @@
     {
       "name": "readOptionalFileAsync",
       "description": "Read an optional generated artifact without treating absence as a filesystem error.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 95,
@@ -2320,6 +2499,8 @@
     {
       "name": "writeGeneratedFileAsync",
       "description": "Write one generated artifact after ensuring its owning directory exists.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 108,
@@ -2329,6 +2510,8 @@
     {
       "name": "isNodeError",
       "description": "Narrow Node filesystem failures without unsafe error casts.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
         "line": 119,
@@ -2338,6 +2521,8 @@
     {
       "name": "generateStructureArtifactFromTypescriptAsync",
       "description": "Generate one deterministic structural descriptor artifact from explicit public type roots.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 16,
@@ -2347,6 +2532,8 @@
     {
       "name": "createCompiler",
       "description": "Build a TypeScript program containing the target project plus every explicit structure root source.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 62,
@@ -2356,6 +2543,8 @@
     {
       "name": "assertProgramDiagnostics",
       "description": "Fail closed when target compilation contains an error diagnostic.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 86,
@@ -2365,6 +2554,8 @@
     {
       "name": "resolveRoots",
       "description": "Resolve every opted-in export to a stable local descriptor definition.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 101,
@@ -2374,6 +2565,8 @@
     {
       "name": "resolveRoot",
       "description": "Resolve one configured public export and materialize its root definition.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 113,
@@ -2383,6 +2576,8 @@
     {
       "name": "materializeRootDefinition",
       "description": "Materialize a configured root inline while nested named types remain references.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 145,
@@ -2392,6 +2587,8 @@
     {
       "name": "renderArtifactSource",
       "description": "Render a generated source module containing the canonical document and its content fingerprint.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 174,
@@ -2401,6 +2598,8 @@
     {
       "name": "formatDiagnostic",
       "description": "Render one compiler diagnostic without leaking absolute source paths.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts",
         "line": 194,
@@ -2410,6 +2609,8 @@
     {
       "name": "resolveStructureReleaseCommandAsync",
       "description": "Use Devtools' built structure CLI for self-release and the installed binary in consumers.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "line": 5,
@@ -2419,6 +2620,8 @@
     {
       "name": "isPackageNamed",
       "description": "Narrow a package manifest by its canonical package name.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "line": 22,
@@ -2428,6 +2631,8 @@
     {
       "name": "synchronizeStructureArtifactAsync",
       "description": "Build or check the deterministic structural descriptor artifact for one opted-in owner package.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/application/use-cases/synchronizeStructureArtifactAsync.ts",
         "line": 7,
@@ -2437,6 +2642,8 @@
     {
       "name": "synchronizeStructureArtifactForDirectoryAsync",
       "description": "Compose structure artifact generation with the Node workspace adapter for one package root.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts",
         "line": 6,
@@ -2446,6 +2653,8 @@
     {
       "name": "resolveSemanticStructureWrapper",
       "description": "Resolve canonical Contracts collection wrappers before generic TypeScript object expansion.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 19,
@@ -2455,6 +2664,8 @@
     {
       "name": "resolveSemanticStructureWrapperNode",
       "description": "Resolve canonical collection semantics from a declared TypeScript type node before normalization.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 29,
@@ -2464,6 +2675,8 @@
     {
       "name": "resolveWrapperNodeMatch",
       "description": "Follow declared type-reference aliases until a canonical Contracts wrapper symbol is reached.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 39,
@@ -2473,6 +2686,8 @@
     {
       "name": "resolveWrapperMatch",
       "description": "Follow source alias declarations until the exact canonical Contracts wrapper is reached.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 69,
@@ -2482,6 +2697,8 @@
     {
       "name": "resolveWrapperFromReferenceNode",
       "description": "Resolve one source-level type reference against the canonical owner API identity.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 95,
@@ -2491,6 +2708,8 @@
     {
       "name": "resolveCanonicalWrapperName",
       "description": "Resolve an exact canonical wrapper through package ownership or its public structure import.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 113,
@@ -2500,6 +2719,8 @@
     {
       "name": "resolveStructureImportName",
       "description": "Recognize a named type imported from the exact Contracts structure owner subpath.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 128,
@@ -2509,6 +2730,8 @@
     {
       "name": "resolveAliasedSymbol",
       "description": "Resolve TypeScript import/re-export alias chains to their final declaration symbol.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 145,
@@ -2518,6 +2741,8 @@
     {
       "name": "resolveDirectWrapper",
       "description": "Match a direct instantiation of one canonical collection wrapper.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 161,
@@ -2527,6 +2752,8 @@
     {
       "name": "buildWrapperDescriptor",
       "description": "Convert one canonical wrapper instantiation to its portable descriptor kind.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 173,
@@ -2536,6 +2763,8 @@
     {
       "name": "resolveIdentityField",
       "description": "Resolve an EntityRegistry identity-field marker from a string literal type argument.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveSemanticStructureWrapper.ts",
         "line": 208,
@@ -2545,6 +2774,8 @@
     {
       "name": "resolveStructureSymbolPackage",
       "description": "Resolve the owning npm package for a TypeScript symbol without exposing source paths in artifacts.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts",
         "line": 8,
@@ -2554,6 +2785,8 @@
     {
       "name": "resolveNodeModulePackage",
       "description": "Resolve npm package ownership before classifying source paths as local project files.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts",
         "line": 31,
@@ -2563,6 +2796,8 @@
     {
       "name": "resolveStructureType",
       "description": "Resolve one TypeScript type into the canonical structural descriptor graph.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 17,
@@ -2572,6 +2807,8 @@
     {
       "name": "resolveNamedType",
       "description": "Resolve a named local type by reference or preserve an external owner reference.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 33,
@@ -2581,6 +2818,8 @@
     {
       "name": "ensureStructureDefinition",
       "description": "Materialize one local named descriptor exactly once while supporting recursive references.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 47,
@@ -2590,6 +2829,8 @@
     {
       "name": "resolveTypeBody",
       "description": "Resolve primitives, literals, arrays, unions, and fixed object shapes.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 67,
@@ -2599,6 +2840,8 @@
     {
       "name": "resolvePrimitive",
       "description": "Resolve JSON-safe scalar primitives.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 85,
@@ -2608,6 +2851,8 @@
     {
       "name": "isOpenStringIntersection",
       "description": "Recognize TypeScript's autocomplete-friendly `string & {}` pattern as scalar string semantics.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 95,
@@ -2617,6 +2862,8 @@
     {
       "name": "isEmptyObjectType",
       "description": "Accept only structurally empty object members when recognizing an open-string intersection.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 107,
@@ -2626,6 +2873,8 @@
     {
       "name": "resolveLiteral",
       "description": "Resolve one scalar literal while leaving non-literal types untouched.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 119,
@@ -2635,6 +2884,8 @@
     {
       "name": "resolveUnion",
       "description": "Resolve finite literal unions or a deterministic general union descriptor.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 130,
@@ -2644,6 +2895,8 @@
     {
       "name": "isDefinedLiteral",
       "description": "Narrow an optional scalar literal after union projection.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 157,
@@ -2653,6 +2906,8 @@
     {
       "name": "resolveArrayItem",
       "description": "Resolve a homogeneous Array/ReadonlyArray element type while rejecting tuples.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 164,
@@ -2662,6 +2917,8 @@
     {
       "name": "resolveObject",
       "description": "Resolve a fixed object shape and reject unmarked records or executable objects.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 179,
@@ -2671,6 +2928,8 @@
     {
       "name": "resolveObjectField",
       "description": "Resolve one object property including optionality while rejecting methods.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 197,
@@ -2680,6 +2939,8 @@
     {
       "name": "hasDeclaredTypeNode",
       "description": "Narrow property declarations that carry a source-level type node.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 230,
@@ -2689,6 +2950,8 @@
     {
       "name": "resolveUnionDiscriminator",
       "description": "Resolve a stable discriminator shared by every object-like union variant.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 240,
@@ -2698,6 +2961,8 @@
     {
       "name": "resolveDiscriminatorValue",
       "description": "Resolve one string/number literal discriminator value from an object variant.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 260,
@@ -2707,6 +2972,8 @@
     {
       "name": "resolveNamedSymbol",
       "description": "Return the meaningful alias/interface symbol for reference identity.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 276,
@@ -2716,6 +2983,8 @@
     {
       "name": "stableSymbolName",
       "description": "Require one stable source-level symbol name independent of declaration file paths.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 285,
@@ -2725,6 +2994,8 @@
     {
       "name": "sortLiterals",
       "description": "Sort finite scalar values deterministically without changing scalar identity.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 292,
@@ -2734,6 +3005,8 @@
     {
       "name": "unsupportedType",
       "description": "Create one actionable unsupported-type error without exposing source paths.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "line": 299,
@@ -2743,105 +3016,129 @@
     {
       "name": "getReadmeDocumentationErrors",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/internal/readmeDocs.ts",
-        "line": 45,
+        "line": 12,
         "column": 1
       }
     },
     {
       "name": "synchronizeRenovateOwnerAsync",
-      "description": "Synchronize or validate Renovate-owned Devtools artifacts from central repository policy.",
+      "description": "Synchronize or validate Renovate-owned Devtools artifacts from Devtools-owned policy.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 19,
+        "line": 20,
         "column": 1
       }
     },
     {
       "name": "assertDevtoolsTargetAsync",
       "description": "Assert that Renovate owner synchronization targets the Devtools repository.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 58,
+        "line": 59,
         "column": 1
       }
     },
     {
       "name": "createManagedDefinitionsAsync",
       "description": "Build the owner-managed artifact definitions from released central policy.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 68,
+        "line": 69,
         "column": 1
       }
     },
     {
       "name": "createWorkflowPolicyAsync",
       "description": "Build the self-hosted workflow policy used by Devtools owner synchronization.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 116,
+        "line": 117,
         "column": 1
       }
     },
     {
       "name": "getOutdatedPathsAsync",
       "description": "Return owner-managed artifact paths whose current bytes differ from policy output.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 127,
+        "line": 128,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
       "description": "Narrow an unknown error to a Node error carrying an error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 146,
+        "line": 147,
         "column": 1
       }
     },
     {
       "name": "isRecord",
       "description": "Narrow an unknown JSON-like value to a non-array record.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 151,
+        "line": 152,
         "column": 1
       }
     },
     {
       "name": "runBunLockfileAsync",
       "description": "Synchronize or validate the target Bun lockfile through Bun itself.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 156,
+        "line": 157,
         "column": 1
       }
     },
     {
       "name": "serializePackageManifest",
       "description": "Serialize a package manifest using repository formatting.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 181,
+        "line": 182,
         "column": 1
       }
     },
     {
       "name": "syncDefinitionsAsync",
       "description": "Write changed owner-managed artifacts while preserving byte-identical files.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 186,
+        "line": 187,
         "column": 1
       }
     },
     {
       "name": "applyBunRuntimePolicy",
-      "description": "Apply the canonical Bun runtime policy to one package manifest.",
+      "description": "Apply the Devtools-owned Bun runtime policy to one package manifest.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/applyBunRuntimePolicy.ts",
         "line": 4,
@@ -2851,6 +3148,8 @@
     {
       "name": "isRecord",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/applyBunRuntimePolicy.ts",
         "line": 15,
@@ -2860,6 +3159,8 @@
     {
       "name": "toRecord",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/applyBunRuntimePolicy.ts",
         "line": 19,
@@ -2869,6 +3170,8 @@
     {
       "name": "renderBunPolicyDocumentation",
       "description": "Render the managed Bun policy section while preserving the surrounding guide.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/renderBunPolicyDocumentation.ts",
         "line": 4,
@@ -2878,6 +3181,8 @@
     {
       "name": "renderReadmePolicy",
       "description": "Format canonical runtime and type-package versions for the guide.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/renderBunPolicyDocumentation.ts",
         "line": 24,
@@ -2887,6 +3192,8 @@
     {
       "name": "resolvePkgvizAuditPolicyAsync",
       "description": "Resolve the central PKGViz CI audit for repositories with analyzable source.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "line": 7,
@@ -2896,6 +3203,8 @@
     {
       "name": "hasSourceDirectoryAsync",
       "description": "Detect whether the managed repository has a source tree that PKGViz can inspect.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "line": 23,
@@ -2905,6 +3214,8 @@
     {
       "name": "isNodeError",
       "description": "Narrow filesystem failures to Node errors with stable error codes.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "line": 33,
@@ -2914,6 +3225,8 @@
     {
       "name": "renderAgentsFile",
       "description": "Render mandatory repository instructions from the target package identity.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
         "line": 22,
@@ -2923,6 +3236,8 @@
     {
       "name": "renderCurrentArchitectureInstructions",
       "description": "Render the current-architecture policy shared by every managed repository.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
         "line": 50,
@@ -2932,6 +3247,8 @@
     {
       "name": "renderStandaloneRepositoryInstructions",
       "description": "Render the mandatory standalone repository and package contract.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
         "line": 68,
@@ -2941,6 +3258,8 @@
     {
       "name": "renderRequiredRepositoryInstructions",
       "description": "Render contextual repository skill-selection requirements.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
         "line": 89,
@@ -2950,6 +3269,8 @@
     {
       "name": "renderDocumentationInstructions",
       "description": "Render the release-owned generated documentation policy.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
         "line": 113,
@@ -2959,6 +3280,8 @@
     {
       "name": "renderPullRequestInstructions",
       "description": "Render canonical pull-request validation commands.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
         "line": 127,
@@ -2968,60 +3291,74 @@
     {
       "name": "renderSkillScriptInstructions",
       "description": "Render the repository rule for executable Agent Skill scripts.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 145,
+        "line": 149,
         "column": 1
       }
     },
     {
       "name": "readPackageManifest",
       "description": "Read the target package manifest used to personalize managed repository instructions.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 155,
+        "line": 159,
         "column": 1
       }
     },
     {
       "name": "escapeInlineCode",
       "description": "Escape inline-code delimiters before interpolating repository metadata into Markdown.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 172,
+        "line": 176,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
       "description": "Check whether an unknown failure carries a Node.js error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 177,
+        "line": 181,
         "column": 1
       }
     },
     {
       "name": "isRecord",
       "description": "Check whether an unknown value is a plain record-shaped object.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 182,
+        "line": 186,
         "column": 1
       }
     },
     {
       "name": "readNonEmptyString",
       "description": "Read and trim a non-empty string value from package metadata.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 187,
+        "line": 191,
         "column": 1
       }
     },
     {
       "name": "createConfig",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 77,
@@ -3031,6 +3368,8 @@
     {
       "name": "normalizeOptions",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 92,
@@ -3040,6 +3379,8 @@
     {
       "name": "createTypeCheckedConfigs",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 105,
@@ -3049,6 +3390,8 @@
     {
       "name": "createBaseConfig",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 113,
@@ -3058,6 +3401,8 @@
     {
       "name": "createTypeScriptRules",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 141,
@@ -3067,6 +3412,8 @@
     {
       "name": "createImportRules",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 160,
@@ -3076,6 +3423,8 @@
     {
       "name": "createQualityRules",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 180,
@@ -3085,6 +3434,8 @@
     {
       "name": "createSecurityRules",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 188,
@@ -3094,6 +3445,8 @@
     {
       "name": "createProfileConfigs",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 195,
@@ -3103,6 +3456,8 @@
     {
       "name": "createReactConfig",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 207,
@@ -3112,6 +3467,8 @@
     {
       "name": "createNextConfig",
       "description": "Add Next.js rules without re-registering React, Hooks, TypeScript, or import plugins.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 230,
@@ -3121,6 +3478,8 @@
     {
       "name": "createReactNativeConfig",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
         "line": 241,
@@ -3130,6 +3489,8 @@
     {
       "name": "renderInitialLocalConfig",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
         "line": 64,
@@ -3139,6 +3500,8 @@
     {
       "name": "isNodeError",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
         "line": 76,
@@ -3148,6 +3511,8 @@
     {
       "name": "hasExamplesDirectory",
       "description": "Report whether the target repository owns public examples at its root.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
         "line": 81,
@@ -3157,6 +3522,8 @@
     {
       "name": "assertExamplesConfigOwnershipAsync",
       "description": "Require explicit adoption of consumer overrides before managing an existing examples config.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
         "line": 94,
@@ -3166,6 +3533,8 @@
     {
       "name": "resolveProjectPackageJsonPath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/packageJsonPath.ts",
         "line": 6,
@@ -3175,6 +3544,8 @@
     {
       "name": "resolveEslintProfile",
       "description": "Read the consuming package metadata and resolve its requested ESLint profile.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfile.ts",
         "line": 14,
@@ -3184,6 +3555,8 @@
     {
       "name": "readDetectionInput",
       "description": "Normalize relevant manifest fields without evaluating project configuration.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfile.ts",
         "line": 26,
@@ -3193,6 +3566,8 @@
     {
       "name": "optionalDependencyMap",
       "description": "Include one dependency section only when it contains a record.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfile.ts",
         "line": 42,
@@ -3202,6 +3577,8 @@
     {
       "name": "toDependencyMap",
       "description": "Retain string package ranges from one manifest dependency section.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfile.ts",
         "line": 51,
@@ -3211,6 +3588,8 @@
     {
       "name": "optionalEngines",
       "description": "Retain runtime engine signals used by the canonical detector.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfile.ts",
         "line": 62,
@@ -3220,6 +3599,8 @@
     {
       "name": "resolveEslintProfileFromDetectionInput",
       "description": "Apply Devtools profile precedence to traits from the canonical project detector.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/resolveEslintProfileFromDetectionInput.ts",
         "line": 7,
@@ -3229,6 +3610,8 @@
     {
       "name": "renderGitignore",
       "description": "Preserve repository-owned ignore rules while keeping documentation directories trackable.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/gitignore/index.ts",
         "line": 26,
@@ -3238,6 +3621,8 @@
     {
       "name": "isGitignorePresent",
       "description": "Report whether a repository already owns a `.gitignore` file that can be normalized.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/gitignore/index.ts",
         "line": 35,
@@ -3247,6 +3632,8 @@
     {
       "name": "isNodeError",
       "description": "Check whether an unknown failure carries a Node.js error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/gitignore/index.ts",
         "line": 46,
@@ -3256,6 +3643,8 @@
     {
       "name": "createKnipConfig",
       "description": "Build shared Knip configuration while preserving repository-specific discovery.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
         "line": 38,
@@ -3265,6 +3654,8 @@
     {
       "name": "createKnipMonorepoConfig",
       "description": "Build shared monorepo Knip configuration.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
         "line": 53,
@@ -3274,168 +3665,206 @@
     {
       "name": "inspectPackageManifest",
       "description": "Inspect whether the Devtools-owned package manifest contract is current.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 65,
+        "line": 67,
         "column": 1
       }
     },
     {
       "name": "syncPackageManifest",
       "description": "Synchronize the Devtools-owned package manifest fields.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 87,
+        "line": 89,
         "column": 1
       }
     },
     {
       "name": "applyManagedPackageContract",
       "description": "Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 128,
+        "line": 130,
         "column": 1
       }
     },
     {
       "name": "isManagedPackageContractCurrent",
       "description": "Check whether the Devtools-owned package manifest fields match current policy.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 160,
+        "line": 162,
         "column": 1
       }
     },
     {
       "name": "readCurrentDevtoolsVersion",
       "description": "Read the current Devtools package version used for consumer synchronization.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 188,
+        "line": 190,
         "column": 1
       }
     },
     {
       "name": "readPackageManifest",
       "description": "Read one package manifest snapshot and Changesets applicability state.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 199,
+        "line": 201,
         "column": 1
       }
     },
     {
       "name": "hasCurrentBunRuntimePolicy",
       "description": "Check the Bun package manager and Bun type dependency contract.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 217,
+        "line": 219,
         "column": 1
       }
     },
     {
       "name": "applyDevtoolsDependencyPlacement",
       "description": "Place Devtools in development dependencies for every consuming repository.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 226,
+        "line": 228,
         "column": 1
       }
     },
     {
       "name": "hasCurrentDevtoolsDependencyPlacement",
       "description": "Check that Devtools is development-only at the current synchronized version.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 236,
+        "line": 238,
         "column": 1
       }
     },
     {
       "name": "removeOwnedDependencies",
       "description": "Remove direct development dependencies owned by the Devtools package.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 248,
+        "line": 250,
         "column": 1
       }
     },
     {
       "name": "normalizedDependencies",
       "description": "Preserve an existing dependencies object or omit a newly empty one.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 258,
+        "line": 260,
         "column": 1
       }
     },
     {
       "name": "hasStandardScripts",
       "description": "Check the canonical development-tool scripts.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 268,
+        "line": 270,
         "column": 1
       }
     },
     {
       "name": "hasCurrentChangesetsScripts",
       "description": "Check Changesets scripts when the repository participates in Changesets.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 276,
+        "line": 278,
         "column": 1
       }
     },
     {
       "name": "isChangesetsEnabled",
       "description": "Determine whether the repository participates in Changesets synchronization.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 289,
+        "line": 291,
         "column": 1
       }
     },
     {
       "name": "serializePackageManifest",
       "description": "Serialize a package manifest using the repository formatting contract.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 302,
+        "line": 304,
         "column": 1
       }
     },
     {
       "name": "toRecord",
       "description": "Copy a JSON-like value to a mutable record or return an empty record.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 307,
+        "line": 309,
         "column": 1
       }
     },
     {
       "name": "isRecord",
       "description": "Narrow an unknown JSON-like value to a non-array record.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 312,
+        "line": 314,
         "column": 1
       }
     },
     {
       "name": "isNodeError",
       "description": "Narrow an unknown error to a Node error carrying an error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 317,
+        "line": 319,
         "column": 1
       }
     },
     {
       "name": "planBunDependencySync",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
         "line": 7,
@@ -3445,6 +3874,8 @@
     {
       "name": "syncBunDependencies",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
         "line": 14,
@@ -3454,6 +3885,8 @@
     {
       "name": "runBunInstall",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
         "line": 24,
@@ -3463,6 +3896,8 @@
     {
       "name": "renderPrettierConfig",
       "description": "Renders the shared Prettier wrapper for the target package module type.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 52,
@@ -3472,6 +3907,8 @@
     {
       "name": "renderInitialLocalConfig",
       "description": "Preserves an existing repository Prettier config as its initial local extension.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 57,
@@ -3481,6 +3918,8 @@
     {
       "name": "renderPrettierIgnore",
       "description": "Preserves repository-owned ignore entries while appending required generated-artifact ignores.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 69,
@@ -3490,6 +3929,8 @@
     {
       "name": "readPackageType",
       "description": "Reads whether the target package uses ESM or CommonJS package semantics.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 94,
@@ -3499,6 +3940,8 @@
     {
       "name": "isRecord",
       "description": "Narrows an unknown JSON value to a non-array record.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 108,
@@ -3508,6 +3951,8 @@
     {
       "name": "isSharedOnlyConfig",
       "description": "Identifies Prettier wrappers that contain no repository-owned configuration.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 113,
@@ -3517,6 +3962,8 @@
     {
       "name": "isNodeError",
       "description": "Narrows an unknown error to a Node error carrying an error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 118,
@@ -3526,6 +3973,8 @@
     {
       "name": "resolveManagedTargetDirectory",
       "description": "Resolve and validate the repository directory targeted by a managed-files operation.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 38,
@@ -3535,6 +3984,8 @@
     {
       "name": "inspectManagedFiles",
       "description": "Inspect managed files and symbolic links without mutating repository state.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 59,
@@ -3544,6 +3995,8 @@
     {
       "name": "syncManagedFiles",
       "description": "Synchronize managed files and symbolic links to their canonical definitions.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 70,
@@ -3553,6 +4006,8 @@
     {
       "name": "inspectManagedFileAsync",
       "description": "Inspect one managed artifact against its file or symbolic-link definition.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 89,
@@ -3562,6 +4017,8 @@
     {
       "name": "isCurrentFileAsync",
       "description": "Compare one regular managed file with its canonical rendered contents.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 132,
@@ -3571,6 +4028,8 @@
     {
       "name": "isCurrentSymlinkAsync",
       "description": "Compare one managed symbolic link with its canonical relative target.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 146,
@@ -3580,6 +4039,8 @@
     {
       "name": "syncManagedFileAsync",
       "description": "Apply one managed artifact status to the target repository.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 155,
@@ -3589,6 +4050,8 @@
     {
       "name": "prepareManagedTargetAsync",
       "description": "Remove an existing artifact only when writing through it would violate the target type.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 202,
@@ -3598,6 +4061,8 @@
     {
       "name": "writeManagedArtifactAsync",
       "description": "Write either a canonical regular file or a canonical symbolic link.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 217,
@@ -3607,6 +4072,8 @@
     {
       "name": "readCanonicalContents",
       "description": "Resolve canonical contents for one regular managed file definition.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 233,
@@ -3616,6 +4083,8 @@
     {
       "name": "assertSingleContentSource",
       "description": "Require every managed artifact to define exactly one canonical source.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 253,
@@ -3625,6 +4094,8 @@
     {
       "name": "isMissingFileError",
       "description": "Check whether an unknown failure means the target path does not exist.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 268,
@@ -3634,6 +4105,8 @@
     {
       "name": "isNodeError",
       "description": "Check whether an unknown failure carries a Node.js error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/shared/managedFiles.ts",
         "line": 273,
@@ -3643,6 +4116,8 @@
     {
       "name": "createFixtureManifest",
       "description": "Create manifest configuration shared by the asset scaffolding fixture.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/assetTestFixture.ts",
         "line": 12,
@@ -3652,6 +4127,8 @@
     {
       "name": "createAssetFixture",
       "description": "Create separate screen evidence, image content and SVG with runtime references.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/assetTestFixture.ts",
         "line": 29,
@@ -3661,6 +4138,8 @@
     {
       "name": "createAssetEntries",
       "description": "Describe the reusable icon and image inputs independently of filesystem setup.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/assetTestFixture.ts",
         "line": 72,
@@ -3670,6 +4149,8 @@
     {
       "name": "inspectManagedSkills",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 28,
@@ -3679,6 +4160,8 @@
     {
       "name": "syncManagedSkills",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 35,
@@ -3688,6 +4171,8 @@
     {
       "name": "applySkillAction",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 54,
@@ -3697,6 +4182,8 @@
     {
       "name": "assertNoSymlinkSegments",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 84,
@@ -3706,6 +4193,8 @@
     {
       "name": "collectCanonicalSkillFiles",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 105,
@@ -3715,6 +4204,8 @@
     {
       "name": "collectObsoletePaths",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 122,
@@ -3724,6 +4215,8 @@
     {
       "name": "createManagedSkillPlan",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 155,
@@ -3733,6 +4226,8 @@
     {
       "name": "getSyncAction",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 184,
@@ -3742,6 +4237,8 @@
     {
       "name": "inspectDesiredFile",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 197,
@@ -3751,6 +4248,8 @@
     {
       "name": "isRegularManagedFile",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 217,
@@ -3760,6 +4259,8 @@
     {
       "name": "readDirectoryFiles",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 233,
@@ -3769,6 +4270,8 @@
     {
       "name": "readTargetDirectoryFiles",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 261,
@@ -3778,6 +4281,8 @@
     {
       "name": "removeEmptyParentDirectories",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 291,
@@ -3787,6 +4292,8 @@
     {
       "name": "assertSkillName",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/managed.ts",
         "line": 311,
@@ -3796,6 +4303,8 @@
     {
       "name": "createManifestContents",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 20,
@@ -3805,6 +4314,8 @@
     {
       "name": "readManagedSkillsManifest",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 46,
@@ -3814,6 +4325,8 @@
     {
       "name": "assertManagedSkillPath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 60,
@@ -3823,6 +4336,8 @@
     {
       "name": "resolveManagedPath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 67,
@@ -3832,6 +4347,8 @@
     {
       "name": "isNodeError",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 77,
@@ -3841,6 +4358,8 @@
     {
       "name": "parseManagedSkillsManifest",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 81,
@@ -3850,6 +4369,8 @@
     {
       "name": "assertSafeRelativePath",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 114,
@@ -3859,6 +4380,8 @@
     {
       "name": "isRecord",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 125,
@@ -3868,6 +4391,8 @@
     {
       "name": "isSafeName",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 129,
@@ -3877,6 +4402,8 @@
     {
       "name": "sha256",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/manifest.ts",
         "line": 133,
@@ -3886,6 +4413,8 @@
     {
       "name": "selectManagedSkillNames",
       "description": "Select baseline and profile-specific managed skills from current repository traits.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 29,
@@ -3895,6 +4424,8 @@
     {
       "name": "isZoraDesignerContext",
       "description": "Identify ZORA owners and generated-app authoring repositories without explicit skill lists.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 39,
@@ -3904,6 +4435,8 @@
     {
       "name": "readPackageManifest",
       "description": "Read package metadata used for profile selection, treating a missing manifest as an empty one.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 53,
@@ -3913,6 +4446,8 @@
     {
       "name": "collectDependencyNames",
       "description": "Combine all dependency sections that describe the repository's current package context.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 70,
@@ -3922,6 +4457,8 @@
     {
       "name": "isNodeError",
       "description": "Narrow filesystem errors that expose a Node error code.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 89,
@@ -3931,6 +4468,8 @@
     {
       "name": "isRecord",
       "description": "Narrow unknown package metadata to a record.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 94,
@@ -3940,6 +4479,8 @@
     {
       "name": "readNonEmptyString",
       "description": "Return a trimmed package name when one is declared.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
         "line": 99,
@@ -3949,6 +4490,8 @@
     {
       "name": "createThemeConfig",
       "description": null,
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/zoraDesignerOwnerFixtures.ts",
         "line": 1,
@@ -3958,24 +4501,30 @@
     {
       "name": "createWorkflowDefinition",
       "description": "Create a managed workflow definition rendered from current shared runtime policies.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 37,
+        "line": 38,
         "column": 1
       }
     },
     {
       "name": "createRenovateWorkflowDefinition",
       "description": "Creates the managed workflow whose immutable digest remains Renovate-owned.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 54,
+        "line": 55,
         "column": 1
       }
     },
     {
       "name": "readCurrentDoctorVersion",
       "description": "Read the exact Doctor version owned by the current Devtools package release.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/readCurrentDoctorVersion.ts",
         "line": 8,
@@ -3984,25 +4533,20 @@
     },
     {
       "name": "renderRenovateConfigAsync",
-      "description": "Render Renovate config while preserving repository-owned rules and removing obsolete Paradox metadata.",
+      "description": "Render the current Renovate config while preserving supported repository-owned rules.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderRenovateConfigAsync.ts",
-        "line": 8,
-        "column": 1
-      }
-    },
-    {
-      "name": "migrateLegacyRenovateHeader",
-      "description": "Convert the historical managed Paradox header to an ordinary comment without changing config data.",
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/renderRenovateConfigAsync.ts",
-        "line": 25,
+        "line": 7,
         "column": 1
       }
     },
     {
       "name": "renderRenovateWorkflowAsync",
       "description": "Renders the canonical workflow while retaining Renovate's exact trusted digest.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "line": 7,
@@ -4012,6 +4556,8 @@
     {
       "name": "readSingleRenovateWorkflowDigest",
       "description": "Reads one exact immutable digest from the canonical Renovate workflow reference.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "line": 28,
@@ -4021,6 +4567,8 @@
     {
       "name": "readOptionalWorkflowAsync",
       "description": "Reads an existing managed workflow without treating first-time creation as an error.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "line": 38,
@@ -4030,6 +4578,8 @@
     {
       "name": "isNodeError",
       "description": "Narrows filesystem failures to Node errors with stable codes.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "line": 48,
@@ -4039,6 +4589,8 @@
     {
       "name": "renderWorkflowAsync",
       "description": "Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
         "line": 19,
@@ -4048,6 +4600,8 @@
     {
       "name": "renderPkgvizAuditSteps",
       "description": "Render the centrally managed PKGViz audit steps only for applicable repositories.",
+      "see": [],
+      "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
         "line": 57,
@@ -4136,6 +4690,21 @@
         "fromPath": "src/cli/index.ts",
         "toPath": "src/cli/runProviderCommand.ts",
         "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromPath": "src/cli/runApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/runApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/runApmReleaseCommandAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
       },
       {
         "fromPath": "src/cli/runExternalTool.ts",
@@ -4248,6 +4817,11 @@
         "sourcePath": "src/cli/runStandaloneTool.ts"
       },
       {
+        "fromPath": "src/cli/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts",
+        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
+      },
+      {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
@@ -4260,6 +4834,11 @@
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/policy/applyBunRuntimePolicy.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
@@ -4283,13 +4862,23 @@
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
+        "fromPath": "src/policy/applyBunRuntimePolicy.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/policy/applyBunRuntimePolicy.ts"
+      },
+      {
+        "fromPath": "src/policy/renderBunPolicyDocumentation.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
+      },
+      {
         "fromPath": "src/types/public.ts",
         "toPath": "src/types/apm-release-validation.ts",
         "sourcePath": "src/types/public.ts"
       },
       {
         "fromPath": "src/cli/bin/apm-release.ts",
-        "toPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "toPath": "src/cli/runApmReleaseCommandAsync.ts",
         "sourcePath": "src/cli/bin/apm-release.ts"
       },
       {
@@ -4314,7 +4903,7 @@
       },
       {
         "fromPath": "src/cli/bin/structure.ts",
-        "toPath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/cli/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/bin/structure.ts"
       },
       {
@@ -4379,6 +4968,11 @@
       },
       {
         "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
         "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/tools/package/index.ts"
       },
@@ -4424,6 +5018,11 @@
       },
       {
         "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/policy/bunRuntimePolicy.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
@@ -4459,7 +5058,7 @@
       },
       {
         "fromPath": "src/cli/commands/apm/sync.ts",
-        "toPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "toPath": "src/cli/runApmReleaseCommandAsync.ts",
         "sourcePath": "src/cli/commands/apm/sync.ts"
       },
       {
@@ -4469,7 +5068,7 @@
       },
       {
         "fromPath": "src/cli/commands/apm/validate.ts",
-        "toPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
+        "toPath": "src/cli/runApmReleaseCommandAsync.ts",
         "sourcePath": "src/cli/commands/apm/validate.ts"
       },
       {
@@ -4479,22 +5078,22 @@
       },
       {
         "fromPath": "src/cli/commands/structure/build.ts",
-        "toPath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/cli/runProviderCommand.ts",
         "sourcePath": "src/cli/commands/structure/build.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/build.ts",
-        "toPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/commands/structure/build.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/check.ts",
-        "toPath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/cli/runProviderCommand.ts",
         "sourcePath": "src/cli/commands/structure/check.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/check.ts",
-        "toPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/commands/structure/check.ts"
       },
       {
@@ -4583,21 +5182,6 @@
         "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
       },
       {
-        "fromPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
-        "toPath": "src/types/apm-release-validation.ts",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
-        "toPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromPath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts",
-        "toPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
         "fromPath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
         "toPath": "src/types/apm-release-validation.ts",
         "sourcePath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"
@@ -4641,11 +5225,6 @@
         "fromPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts",
         "sourcePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromPath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts",
-        "toPath": "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts",
-        "sourcePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromPath": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
@@ -4726,6 +5305,48 @@
         "toSymbol": "isNonEmptyString",
         "callExpression": "isNonEmptyString",
         "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "parseArguments",
+        "callExpression": "parseArguments",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "synchronizeApmReleaseDescriptorAsync",
+        "callExpression": "synchronizeApmReleaseDescriptorAsync",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "validatePackedApmReleaseAsync",
+        "callExpression": "validatePackedApmReleaseAsync",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseArguments",
+        "toSymbol": "optionIndex",
+        "callExpression": "optionIndex",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseArguments",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
       },
       {
         "fromSymbol": "src/cli/runExternalTool.ts",
@@ -5056,6 +5677,36 @@
         "toSymbol": "getDevtoolsToolCommand",
         "callExpression": "getDevtoolsToolCommand",
         "sourcePath": "src/cli/runStandaloneTool.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "parseTarget",
+        "callExpression": "parseTarget",
+        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "synchronizeStructureArtifactForDirectoryAsync",
+        "callExpression": "synchronizeStructureArtifactForDirectoryAsync",
+        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseTarget",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromSymbol": "synchronizeRenovateOwnerAsync",
@@ -6696,12 +7347,6 @@
         "sourcePath": "src/tools/workflows/renderRenovateConfigAsync.ts"
       },
       {
-        "fromSymbol": "renderRenovateConfigAsync",
-        "toSymbol": "migrateLegacyRenovateHeader",
-        "callExpression": "migrateLegacyRenovateHeader",
-        "sourcePath": "src/tools/workflows/renderRenovateConfigAsync.ts"
-      },
-      {
         "fromSymbol": "renderRenovateWorkflowAsync",
         "toSymbol": "renderWorkflowAsync",
         "callExpression": "renderWorkflowAsync",
@@ -7236,48 +7881,6 @@
         "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
       },
       {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "parseArguments",
-        "callExpression": "parseArguments",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "writeStdout",
-        "callExpression": "context.writeStdout",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "synchronizeApmReleaseDescriptorAsync",
-        "callExpression": "synchronizeApmReleaseDescriptorAsync",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "validatePackedApmReleaseAsync",
-        "callExpression": "validatePackedApmReleaseAsync",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "writeStderr",
-        "callExpression": "context.writeStderr",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseArguments",
-        "toSymbol": "optionIndex",
-        "callExpression": "optionIndex",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseArguments",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"
-      },
-      {
         "fromSymbol": "readPackageAsync",
         "toSymbol": "readApmReleaseManifestAsync",
         "callExpression": "readApmReleaseManifestAsync",
@@ -7576,36 +8179,6 @@
         "toSymbol": "resolve",
         "callExpression": "resolve",
         "sourcePath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "parseTarget",
-        "callExpression": "parseTarget",
-        "sourcePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "synchronizeStructureArtifactForDirectoryAsync",
-        "callExpression": "synchronizeStructureArtifactForDirectoryAsync",
-        "sourcePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "writeStdout",
-        "callExpression": "context.writeStdout",
-        "sourcePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "writeStderr",
-        "callExpression": "context.writeStderr",
-        "sourcePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseTarget",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromSymbol": "readPackageAsync",

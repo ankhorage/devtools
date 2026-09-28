@@ -13,7 +13,7 @@ graph TD
   module_src_apmRelease_ts["src/apmRelease.ts"]
   module_src_cli_bin_apm_release_ts["src/cli/bin/apm-release.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_apm_release_ts
-  module_src_cli_bin_apm_release_ts --> module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
+  module_src_cli_bin_apm_release_ts --> module_src_cli_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts["src/cli/bin/changeset.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_changeset_ts
   module_src_cli_bin_changeset_ts --> module_src_cli_runStandaloneTool_ts
@@ -28,28 +28,33 @@ graph TD
   module_src_cli_bin_prettier_ts --> module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_structure_ts["src/cli/bin/structure.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_structure_ts
-  module_src_cli_bin_structure_ts --> module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_bin_structure_ts --> module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_ts["src/cli/commands.ts"]
   package__ankhorage_devtools -.-> module_src_cli_commands_ts
   module_src_cli_commands_apm_sync_ts["src/cli/commands/apm/sync.ts"]
   package__ankhorage_devtools -.-> module_src_cli_commands_apm_sync_ts
+  module_src_cli_commands_apm_sync_ts --> module_src_cli_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --> module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_apm_sync_ts --> module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts["src/cli/commands/apm/validate.ts"]
   package__ankhorage_devtools -.-> module_src_cli_commands_apm_validate_ts
+  module_src_cli_commands_apm_validate_ts --> module_src_cli_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --> module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_apm_validate_ts --> module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
   module_src_cli_commands_structure_build_ts["src/cli/commands/structure/build.ts"]
   package__ankhorage_devtools -.-> module_src_cli_commands_structure_build_ts
   module_src_cli_commands_structure_build_ts --> module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --> module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --> module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_structure_check_ts["src/cli/commands/structure/check.ts"]
   package__ankhorage_devtools -.-> module_src_cli_commands_structure_check_ts
   module_src_cli_commands_structure_check_ts --> module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_check_ts --> module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --> module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts["src/cli/index.ts"]
   module_src_cli_index_ts --> module_src_cli_commands_ts
   module_src_cli_index_ts --> module_src_cli_runProviderCommand_ts
+  module_src_cli_runApmReleaseCommandAsync_ts["src/cli/runApmReleaseCommandAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_runApmReleaseCommandAsync_ts
+  module_src_cli_runApmReleaseCommandAsync_ts --> module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
+  module_src_cli_runApmReleaseCommandAsync_ts --> module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
+  module_src_cli_runApmReleaseCommandAsync_ts --> module_src_types_apm_release_validation_ts
   module_src_cli_runExternalTool_ts["src/cli/runExternalTool.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runExternalTool_ts
   module_src_cli_runExternalTool_ts --> module_src_cli_commands_ts
@@ -80,11 +85,9 @@ graph TD
   package__ankhorage_devtools -.-> module_src_cli_runStandaloneTool_ts
   module_src_cli_runStandaloneTool_ts --> module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --> module_src_cli_runExternalTool_ts
-  module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts["src/features/apm-release-validation/adapters/inbound/runApmReleaseCommandAsync.ts"]
-  package__ankhorage_devtools -.-> module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts
-  module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts --> module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
-  module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts --> module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
-  module_src_features_apm_release_validation_adapters_inbound_runApmReleaseCommandAsync_ts --> module_src_types_apm_release_validation_ts
+  module_src_cli_runStructureGenerationCommandAsync_ts["src/cli/runStructureGenerationCommandAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_runStructureGenerationCommandAsync_ts --> module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts["src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"]
   package__ankhorage_devtools -.-> module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --> module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts
@@ -122,9 +125,6 @@ graph TD
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --> module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts["src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"]
   package__ankhorage_devtools -.-> module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
-  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts["src/features/structure-descriptor-generation/adapters/inbound/runStructureGenerationCommandAsync.ts"]
-  package__ankhorage_devtools -.-> module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts
-  module_src_features_structure_descriptor_generation_adapters_inbound_runStructureGenerationCommandAsync_ts --> module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts["src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts"]
   package__ankhorage_devtools -.-> module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
@@ -163,14 +163,19 @@ graph TD
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_policy_renderBunPolicyDocumentation_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_policy_applyBunRuntimePolicy_ts["src/policy/applyBunRuntimePolicy.ts"]
   package__ankhorage_devtools -.-> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_policy_applyBunRuntimePolicy_ts --> module_src_policy_bunRuntimePolicy_ts
+  module_src_policy_bunRuntimePolicy_ts["src/policy/bunRuntimePolicy.ts"]
+  package__ankhorage_devtools -.-> module_src_policy_bunRuntimePolicy_ts
   module_src_policy_renderBunPolicyDocumentation_ts["src/policy/renderBunPolicyDocumentation.ts"]
   package__ankhorage_devtools -.-> module_src_policy_renderBunPolicyDocumentation_ts
+  module_src_policy_renderBunPolicyDocumentation_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_policy_resolvePkgvizAuditPolicyAsync_ts["src/policy/resolvePkgvizAuditPolicyAsync.ts"]
   package__ankhorage_devtools -.-> module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_agents_index_ts["src/tools/agents/index.ts"]
@@ -205,6 +210,7 @@ graph TD
   module_src_tools_package_index_ts["src/tools/package/index.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_index_ts
   module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_tools_package_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts["src/tools/package/syncBunDependencies.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_syncBunDependencies_ts
@@ -234,6 +240,7 @@ graph TD
   package__ankhorage_devtools -.-> module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
+  module_src_tools_workflows_index_ts --> module_src_policy_bunRuntimePolicy_ts
   module_src_tools_workflows_index_ts --> module_src_policy_resolvePkgvizAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts

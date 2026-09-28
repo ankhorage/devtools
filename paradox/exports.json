@@ -1,9 +1,11 @@
 [
   {
     "name": "ApmPackedReleaseCandidate",
+    "title": null,
     "description": "Packed bytes and loaded owner evidence supplied to the canonical APM validators.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/types/apm-release-validation.ts",
     "sourceLocation": {
@@ -58,9 +60,11 @@
   },
   {
     "name": "ApmReleaseValidationOptions",
+    "title": null,
     "description": "Explicit release-validation inputs; owner code is never trusted by default.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/types/apm-release-validation.ts",
     "sourceLocation": {
@@ -115,9 +119,11 @@
   },
   {
     "name": "ApmReleaseValidationResult",
+    "title": null,
     "description": "Evidence for one exact packed release; inapplicable never means migration-safe.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/types/apm-release-validation.ts",
     "sourceLocation": {
@@ -186,9 +192,11 @@
   },
   {
     "name": "createConfig",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/tools/eslint/index.ts",
     "sourceLocation": {
@@ -222,9 +230,11 @@
   },
   {
     "name": "createKnipConfig",
+    "title": null,
     "description": "Build shared Knip configuration while preserving repository-specific discovery.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
@@ -258,9 +268,11 @@
   },
   {
     "name": "createKnipMonorepoConfig",
+    "title": null,
     "description": "Build shared monorepo Knip configuration.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
@@ -294,9 +306,11 @@
   },
   {
     "name": "defaultIgnores",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/tools/eslint/index.ts",
     "sourceLocation": {
@@ -314,9 +328,11 @@
   },
   {
     "name": "defaultRestrictedImports",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/tools/eslint/index.ts",
     "sourceLocation": {
@@ -334,9 +350,11 @@
   },
   {
     "name": "DevtoolsConfigOptions",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/tools/eslint/types.ts",
     "sourceLocation": {
@@ -429,9 +447,11 @@
   },
   {
     "name": "DevtoolsEslintProfile",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/tools/eslint/types.ts",
     "sourceLocation": {
@@ -449,9 +469,11 @@
   },
   {
     "name": "DevtoolsKnipConfigOptions",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
@@ -521,9 +543,11 @@
   },
   {
     "name": "DevtoolsKnipMonorepoConfigOptions",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
@@ -572,9 +596,11 @@
   },
   {
     "name": "DevtoolsKnipWorkspaceConfigOptions",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
@@ -635,9 +661,11 @@
   },
   {
     "name": "FlatConfigItem",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/tools/eslint/types.ts",
     "sourceLocation": {
@@ -655,9 +683,11 @@
   },
   {
     "name": "provider",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "value",
     "modulePath": "src/cli/index.ts",
     "sourceLocation": {
@@ -675,9 +705,11 @@
   },
   {
     "name": "ResolvedDevtoolsEslintProfile",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "unknown",
     "modulePath": "src/tools/eslint/types.ts",
     "sourceLocation": {
@@ -695,9 +727,11 @@
   },
   {
     "name": "RestrictedImport",
+    "title": null,
     "description": null,
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "type",
     "modulePath": "src/tools/eslint/types.ts",
     "sourceLocation": {
@@ -730,9 +764,11 @@
   },
   {
     "name": "synchronizeApmReleaseDescriptorAsync",
+    "title": null,
     "description": "Compose descriptor version synchronization with the bounded Node filesystem adapter.",
     "isReadme": false,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
     "sourceLocation": {
@@ -764,9 +800,11 @@
   },
   {
     "name": "validateApmReleaseCandidate",
+    "title": null,
     "description": "Validate packed owner evidence using the released APM protocol, never a copied schema.\nOpt-in packages declare ankh.apm with protocolVersion and a package-relative descriptor.\nNo metadata means not applicable, not a claim that no migration is needed. The descriptor\ndeclares supported no-migration, required migration, or unsupported/manual history explicitly.\nPrevious descriptors enforce immutable migration checksums and related descriptors validate\ncross-owner prerequisites. Package-owned source-to-target tests must also cover skipped versions,\nidempotency, interruption/recovery, and unsupported historical states.",
     "isReadme": true,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/features/apm-release-validation/application/validateApmReleaseCandidate.ts",
     "sourceLocation": {
@@ -808,9 +846,11 @@
   },
   {
     "name": "validatePackedApmReleaseAsync",
+    "title": null,
     "description": "Validate script-free publish bytes and optionally retain that exact accepted archive.\nRelease order is APM protocol, package-owner metadata/code, then consuming applications.\nBuild after Changesets versioning and descriptor synchronization. Execute package-owned\nacceptance tests, then validate with explicit owner-code consent. The child probe uses the\npacked package's native public export resolution and installed dependencies, not omitted source.\nConsent permits trusted executable code; a child process is not a security sandbox.\nAn artifactPath retains accepted bytes exclusively, so publication need not repack or rerun\nlifecycle scripts. expectedIntegrity rejects a stale candidate before any owner code loads.",
     "isReadme": true,
-    "examples": [],
+    "see": [],
+    "security": [],
     "kind": "function",
     "modulePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
     "sourceLocation": {

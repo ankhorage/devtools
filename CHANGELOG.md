@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.1
+
+### Patch Changes
+
+- 7f6d155: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+- be6186c: Restore the canonical runnable documentation example for managed repository tooling.
+- 043fe3b: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@ankhorage/paradox`, `@ankhorage/policy`, `@types/node`.
+- e70b37b: Update Devtools-owned dependencies: `@ankhorage/paradox`, `@ankhorage/policy`.
+- 99d639a: Restore Devtools-owned Bun runtime synchronization so package and workflow sync render the Bun runtime and `@types/bun` contract without relying on repository policy literals.
+- 24fbbcf: Allow no-release pull requests without placeholder Changesets and reject empty Changesets.
+- 17abbba: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/paradox`, `@ankhorage/policy`.
+
 ## 2.0.0
 
 ### Major Changes

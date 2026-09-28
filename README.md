@@ -3,485 +3,70 @@
 
 # @ankhorage/devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.0](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![docs: paradox](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.1](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: warnings](././paradox/badges/docs.svg)
 
 Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects
 
 ## Usage
 
-Shared development tools and repository standards for Ankhorage TypeScript projects.
+### CLI
 
-## What it owns
+Ankhorage packages expose their command-line interface through `ankh`. Use `ankh --help` to discover available package commands, or run a package command with `--help` for package-specific usage.
 
-`@ankhorage/policy` is the source of truth for canonical Ankhorage policy. `@ankhorage/devtools` is the execution and synchronization layer for these repository concerns:
+```zsh
+# Install the Ankhorage CLI
+bun add --global @ankhorage/ankh
 
-```text
-src/
-├── cli/
-├── policy/
-└── tools/
-    ├── agents/
-    ├── skills/
-    ├── eslint/
-    ├── prettier/
-    ├── knip/
-    ├── package/
-    ├── workflows/
-    └── vscode/
+# Show usage information for devtools
+ankh devtools --help
 ```
 
-- `policy`: policy application/rendering adapters that consume `@ankhorage/policy`
-- `changesets`: package-resolved Changesets execution using centrally defined commands
-- `agents`: canonical repository `AGENTS.md` rendered from stable package identity
-- `skills`: immutable Ankhorage-owned repository skills under `.agents/skills/`
-- `eslint`: shared flat ESLint configuration, automatic project profiles, and the bundled ESLint runner
-- `prettier`: shared Prettier configuration and the bundled Prettier runner
-- `knip`: shared Knip configuration helpers and the bundled Knip runner
-- `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract
-- `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
-- `vscode`: canonical `.vscode/settings.json` and `extensions.json`
+### Standalone package ESLint configuration
 
-The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/PKGViz policy values are owned by `@ankhorage/policy` and rendered by Devtools.
-
-## Bootstrap
-
-For a repository that does not yet depend on the shared toolchain:
-
-```bash
-bun add -D @ankhorage/devtools
-bunx @ankhorage/ankh devtools sync .
-```
-
-After the first install, the normal workflow is:
-
-```bash
-ankh devtools sync
-```
-
-The target path is optional and defaults to the current working directory.
-
-Synchronization ensures `@ankhorage/devtools` is declared using the version of the provider performing the sync, installs the standard package scripts, applies the managed Bun runtime policy, and removes direct devDependencies for tools/plugins owned by devtools. When package metadata changes, sync runs `bun install` so installed dependencies and `bun.lock` match the synchronized manifest. Unrelated package metadata, dependencies, and scripts are preserved.
-
-`devtools sync` does not upgrade the globally installed Bun executable. The managed version applies to repository metadata, Bun types, and GitHub workflows.
-
-## Ankh provider
-
-The package is discovered under the `devtools` category and exposes these capabilities:
-
-- `devtools.apm.sync`
-- `devtools.apm.validate`
-- `devtools.lint`
-- `devtools.changeset`
-- `devtools.format`
-- `devtools.knip`
-- `devtools.sync`
-- `devtools.status`
-- `devtools.agents.sync`
-- `devtools.agents.status`
-- `devtools.skills.sync`
-- `devtools.skills.status`
-- `devtools.eslint.sync`
-- `devtools.eslint.status`
-- `devtools.prettier.sync`
-- `devtools.prettier.status`
-- `devtools.knip.sync`
-- `devtools.knip.status`
-- `devtools.package.sync`
-- `devtools.package.status`
-- `devtools.workflows.sync`
-- `devtools.workflows.status`
-- `devtools.vscode.sync`
-- `devtools.vscode.status`
-
-The canonical command prefix is always:
-
-```bash
-ankh devtools ...
-```
-
-## Tool commands
-
-```bash
-ankh devtools changeset -- status --since=origin/main
-ankh devtools lint -- --max-warnings=0 .
-ankh devtools format -- --check .
-ankh devtools knip -- --production
-```
-
-These delegate to the same bundled tools as the package binaries:
-
-- `ankh devtools changeset` → `ankhorage-changeset`
-- `ankh devtools lint` → `ankhorage-eslint`
-- `ankh devtools format` → `ankhorage-prettier`
-- `ankh devtools knip` → `ankhorage-knip`
-
-The synchronized package scripts are:
-
-```json
-{
-  "scripts": {
-    "changeset": "ankhorage-changeset",
-    "changeset:status": "ankhorage-changeset status --since=origin/main",
-    "lint": "ankhorage-eslint . --max-warnings=0",
-    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
-    "format": "ankhorage-prettier --write .",
-    "format:check": "ankhorage-prettier --check .",
-    "knip:check": "ankhorage-knip",
-    "version-packages": "ankhorage-changeset version"
-  }
-}
-```
-
-## Repository synchronization
-
-Synchronize or inspect every managed concern:
-
-```bash
-ankh devtools sync .
-ankh devtools status .
-```
-
-Synchronize one concern:
-
-```bash
-ankh devtools agents sync .
-ankh devtools skills sync .
-ankh devtools eslint sync .
-ankh devtools prettier sync .
-ankh devtools knip sync .
-ankh devtools package sync .
-ankh devtools workflows sync .
-ankh devtools vscode sync .
-```
-
-Report one concern:
-
-```bash
-ankh devtools agents status .
-ankh devtools skills status .
-ankh devtools eslint status .
-ankh devtools prettier status .
-ankh devtools knip status .
-ankh devtools package status .
-ankh devtools workflows status .
-ankh devtools vscode status .
-```
-
-Preview synchronization without writing:
-
-```bash
-ankh devtools sync . --dry-run
-ankh devtools agents sync . --dry-run
-ankh devtools skills sync . --dry-run
-ankh devtools eslint sync . --dry-run
-ankh devtools package sync . --dry-run
-```
-
-A dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.
-
-## Synchronization guarantees
-
-Synchronization is deterministic and idempotent:
-
-- missing managed artifacts are created
-- outdated centrally owned artifacts are updated
-- stale files in Devtools-owned skill trees are removed
-- the managed Bun runtime version is applied consistently to package metadata and workflows
-- Changesets-enabled repositories use the Devtools-owned runner without a direct `@changesets/cli` declaration
-- package changes are followed by `bun install` after all managed files have been written, keeping installed dependencies and `bun.lock` synchronized without invalidating the running sync
-- current artifacts are left untouched
-- unrelated files and package fields are preserved
-- repeated sync produces only `unchanged` results
-- invalid target paths and write failures return a non-zero exit code
-- create-only repository extension files are never overwritten after creation
-
-The canonical workflow, VS Code, and skill files are packaged with `@ankhorage/devtools`; synchronization does not fetch mutable files from GitHub at runtime.
-
-## Managed agent instructions
-
-`ankh devtools agents sync` owns the repository-root `AGENTS.md` plus `CLAUDE.md` and `GEMINI.md` as symbolic links to that canonical file. The shared instructions are intentionally small and stable. The target repository's package name and description are rendered from `package.json`; the remaining content defines the unconditional current-architecture policy, directs structural work to the managed project-structure skill, and requires the canonical build, type, lint, Knip, Changeset, and formatting commands before pull request creation.
-
-Only the current Ankhorage architecture is supported. Managed instructions reject deprecated APIs, compatibility aliases, shims, dual old/new paths, historical-state fallbacks, and migrations whose sole purpose is obsolete state. A canonical cross-package change requires affected repositories to update to the latest released public API.
-
-Every Devtools-managed repository is standalone: its own checkout must be sufficient to install, build, test, and use it with declared dependencies and explicit configuration. Published packages are additionally consumer-agnostic and reusable outside Ankhorage. Sibling repositories/source imports, unpublished workspace/file/link coupling, hidden organization-local state, and hard assumptions about a consuming app, infrastructure, hosting provider, web server, container runtime, or deployment topology are architecture debt rather than supported exceptions.
-
-## Managed repository skills
-
-`ankh devtools skills sync` owns the complete `.agents/skills/ankhorage-coding-rules/`, `.agents/skills/hexagonal-architecture/`, and `.agents/skills/ankhorage-project-structure/` trees from the immutable copies shipped in the Devtools release. It creates `.agents/` when missing, replaces stale files in those managed skills, and preserves every unrelated skill directory. The project-structure skill requires both the coding-rules and hexagonal-architecture skills before structural work can continue.
-
-`.agents/.devtools-manifest.json` records the source Devtools version and SHA-256 hashes for every managed skill file. That ownership record allows status and dry-run to report drift and lets later releases remove stale owned files without deleting repository-owned skills.
-
-Agent Skill scripts are always TypeScript files with a `.ts` extension and run with Bun. JavaScript skill scripts using `.js`, `.mjs`, or `.cjs` are not supported.
-
-## ESLint profiles
-
-`createConfig()` defaults to `profile: 'auto'`.
-
-Automatic detection reads the consuming repository's `package.json` and delegates project trait detection to `@ankhorage/project-detector`. Dependency signals are considered across `dependencies`, `devDependencies`, and `peerDependencies`.
-
-Profile precedence is:
-
-```text
-React Native / Expo
-        ↓
-react-native
-        ↓ includes
-react
-        ↓ includes
-base
-```
-
-A React or Next.js project selects `react`. A React Native or Expo project selects `react-native`. Everything else selects `base`.
-
-An unusual repository can opt out of automatic selection:
+Configure ESLint for a standalone TypeScript package with the Devtools shared policy.
 
 ```js
-import { createConfig } from '@ankhorage/devtools/eslint';
-
 export default createConfig({
-  files: ['src/**/*.ts'],
-  profile: 'base',
+  tsconfigRootDir: __dirname,
   project: ['./tsconfig.json'],
-  tsconfigRootDir: import.meta.dirname,
+  files: ['src/**/*.{ts,tsx}'],
 });
 ```
 
-The base profile enforces the shared TypeScript policy plus:
+This package contains 1 additional example. See the generated documentation for the complete set.
 
-- maximum 50 effective lines per function
-- maximum 300 effective lines per file
-- modified cyclomatic complexity maximum 15
-- security review for dynamic object access
-- rejection of non-literal `require()` calls
+## Configuration
 
-The React profile adds React and React Hooks correctness rules. The React Native profile composes the React profile and adds the selected React Native style rules.
-
-### Managed ESLint setup and local overrides
-
-`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.
-
-The canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:
-
-```js
-import { createConfig } from '@ankhorage/devtools/eslint';
-import localConfig from './eslint.local.config.mjs';
-
-const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
-
-export default [
-  ...createConfig({
-    files: ['src/**/*.{ts,tsx}'],
-    project: ['./tsconfig.json'],
-    tsconfigRootDir: import.meta.dirname,
-  }),
-  ...localEntries,
-];
-```
-
-Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.
-
-Each public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.
-
-An existing consumer-owned `eslint.examples.config.mjs` requires explicit adoption before synchronization can replace it. Status, dry-run, and sync report an actionable error instead of overwriting or deleting it. Move its repository-specific overrides into `eslint.local.config.mjs`, preserving existing entries and the examples-only file scope; retain custom parser options there when needed. Remove the old examples config only after that transfer, then rerun sync and the examples lint. The generated wrapper carries a Devtools ownership marker and subsequent synchronization updates it normally. Do not mark an old consumer config as managed to bypass this transfer.
-
-Repositories can lint their independently runnable examples explicitly:
-
-```bash
-ankhorage-eslint examples --config eslint.examples.config.mjs --max-warnings=0
-```
-
-## Prettier
-
-`ankh devtools prettier sync` owns `.prettierrc.js`, emits the correct ESM or CommonJS wrapper based on the repository's `package.json` module type, and creates `prettier.local.config.js` once for narrow repository-specific options.
-
-The consumer delegates formatting policy to:
-
-```text
-@ankhorage/devtools/prettier
-```
-
-The wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.
-
-## Knip
-
-`ankh devtools knip sync` bootstraps `knip.config.ts` with:
+### Example
 
 ```ts
-import { createKnipConfig } from '@ankhorage/devtools/knip';
+import { readFileSync } from 'node:fs';
 
-export default createKnipConfig();
-```
+import { defineParadoxConfig } from '@ankhorage/paradox';
 
-`knip.config.ts` is create-only after bootstrap so repositories can retain narrow local entries, projects, ignores, binaries, dependencies, or switch to `createKnipMonorepoConfig()` without synchronization overwriting those extensions.
+import { renderBunPolicyDocumentation } from './src/policy/renderBunPolicyDocumentation.js';
 
-## Managed Bun runtime policy
-
-The canonical Bun policy is defined by `@ankhorage/policy` and consumed by Devtools package and workflow synchronization. The current released policy is:
-
-<!-- devtools-bun-policy:start -->
-
-```text
-Bun runtime       1.4.2
-packageManager    bun@1.4.2
-@types/bun        ^1.4.2
-```
-
-<!-- devtools-bun-policy:end -->
-
-`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. The trusted owner workflow uses `bun scripts/sync-renovate-owner.ts sync repository` to regenerate those artifacts and `bun scripts/sync-renovate-owner.ts status repository` to reject stale rendered state. Do not duplicate runtime policy literals in Devtools.
-
-## Managed package contract
-
-`ankh devtools package sync` merge-updates `package.json` rather than replacing it.
-
-It owns:
-
-- the `@ankhorage/devtools` dependency version range
-- removal of direct consumer `@changesets/cli` dependencies
-- `packageManager` according to the managed Bun runtime policy
-- the `@types/bun` development dependency according to the managed Bun runtime policy
-- `lint`
-- `lint:fix`
-- `format`
-- `format:check`
-- `knip:check`
-- `changeset`, `changeset:status`, and `version-packages` for Changesets-enabled repositories
-
-For normal consumers, `@ankhorage/devtools` is a devDependency. `@ankhorage/ankh` keeps devtools as a runtime dependency because it loads the provider. Devtools itself participates in the Bun runtime policy without attempting to install itself as a consumer dependency.
-
-When this managed package contract changes, synchronization runs `bun install`. This updates installed dependencies and `bun.lock` before sync completes. It also removes direct dependencies for Changesets and direct devDependencies for tools and ESLint plugins already provided by `@ankhorage/devtools`. Unrelated scripts, dependencies, metadata, and repository-specific configuration remain unchanged.
-
-A repository participates in Changesets synchronization when `.changeset/config.json` exists or any of the canonical `changeset`, `changeset:status`, or `version-packages` script keys is present. This explicit rule migrates partially configured repositories while ensuring repositories without Changesets do not acquire release tooling. The repository continues to own `.changeset/config.json`, pending `.changeset/*.md` files, and its package release semantics. Direct `@changesets/cli` declarations, ambient `changeset` scripts, and `bunx changeset` workflow commands are not supported consumer forms.
-
-## Managed GitHub Actions workflows
-
-`workflows` owns exactly:
-
-```text
-.github/workflows/ci.yml
-.github/workflows/renovate.yml
-.github/workflows/release.yml
-```
-
-CI and Release render their `bun-version` from `@ankhorage/policy/repository`, the same policy used for `package.json`. They also render Changesets status, version, and publish commands from that central policy. The CI workflow installs that Bun version with the frozen lockfile, builds before repository-provider validation, runs `bunx @ankhorage/ankh doctor validate .`, and conditionally runs lint, formatting, Knip, tests, typecheck, and the strict `changeset:status --since=origin/main` guard for pull requests. After a green change reaches `main`, Release uses the scoped Ankhorage Renovate Sync App token to apply Changesets versioning directly to `main` in a `chore(release)` `[skip ci]` commit and publishes without creating a second Version Packages pull request. Release publishing calls the Devtools-owned runner through the synchronized package script; it never resolves an ambient or mutable Changesets executable. Changesets v3 creates the local release tags; the managed workflow pushes those exact tags and creates any missing GitHub Releases directly, without parsing Changesets’ human-readable publish output.
-
-For the **first npm publication** of a new `@ankhorage/*` package, the organization publishing credential must be able to create/publish packages in the `@ankhorage` scope. With a granular npm token, grant package permission **Read and write (publish and stage)** to the `@ankhorage` scope or **All Packages**. If initial publication fails after Changesets has already pushed the release commit, correct the npm credential and rerun Release; the current unpublished version is reused and must not be bumped again. The managed workflow diagnoses this first-publish state separately from registry/network failures.
-
-The Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates. The trusted workflow scopes the Ankhorage Renovate Sync GitHub App token to the current repository and uses it only for the validated commit, allowing every normal pull-request CI workflow to start without manual approval. It never checks out or executes pull-request code in the privileged `pull_request_target` context.
-
-## Managed VS Code configuration
-
-`vscode` owns exactly:
-
-```text
-.vscode/settings.json
-.vscode/extensions.json
-```
-
-Unknown workflow and VS Code files are never deleted.
-
-## Adding another managed concern
-
-A new concern should:
-
-1. live in its own sibling directory under `src/tools`
-2. define only the files and behavior it owns
-3. expose deterministic status and synchronization
-4. add provider commands under `ankh devtools`
-5. include dry-run, status, and idempotence coverage
-6. document its central ownership and repository-owned extension points
-
-## Package-owned APM release gates
-
-A package opts in through `ankh.apm` in its `package.json`:
-
-```json
-{
-  "ankh": {
-    "apm": { "protocolVersion": 1, "descriptor": "./apm/update.json" }
-  }
-}
-```
-
-Include the descriptor in `files` and expose any executable extension with an explicit public
-`exports` subpath. Use the released APM descriptor and extension types from `@ankhorage/apm/types`;
-Devtools does not own or duplicate the protocol. Add `test:apm` to run the owner's deterministic
-source-to-target fixtures, including skipped versions, unsupported old states, idempotency and
-interruption recovery. A no-migration release still declares supported history explicitly and
-can pass without an extension. Absence of metadata is reported as inapplicable, not migration-safe.
-
-```sh
-ankh devtools apm sync .
-ankh devtools apm validate . --allow-owner-code --artifact /tmp/reviewed-owner.tgz
-```
-
-The standalone `ankhorage-apm-release sync|validate` binary runs the same operations. The public
-`@ankhorage/devtools/apm-release` entrypoint exports `synchronizeApmReleaseDescriptorAsync`,
-`validatePackedApmReleaseAsync` and `validateApmReleaseCandidate`; types are available from
-`@ankhorage/devtools/types`. Programmatic callers can supply `previousDescriptors` to enforce
-unchanged migration checksums and `relatedDescriptors` for cross-owner prerequisites. Owners
-must include historical descriptors in their `test:apm` fixtures where their migrations require them.
-
-Validation packs with lifecycle scripts disabled, reads only the packed descriptor, checks owner
-identity, protocol/schema, migration/projection IDs, prerequisite graphs and public extension
-capabilities using APM's canonical validators. Invalid metadata is a failure, not an opt-out.
-`--allow-owner-code` is explicit permission to import the packed extension in a bounded child
-process. The child is **not a security sandbox**; run only trusted owner code. Registry metadata
-alone never grants this permission. Installed dependency resolution uses the repository's
-frozen dependency graph; the package's own code is loaded through native public export resolution
-from the extracted archive, never from the source checkout.
-
-`--artifact` creates a new file containing exactly the validated bytes and refuses an existing
-output. The JSON result includes SHA-512 integrity; `--expected-integrity` refuses a different
-archive. Keep the retained archive immutable. The managed release workflow versions with
-Changesets, synchronizes descriptor identity, rebuilds, runs `test:apm`, validates a fresh archive,
-and publishes that same archive using `npm publish --ignore-scripts`, without repacking.
-Authentication and network errors are not treated as an unpublished version. Packages without
-APM metadata retain their existing Changesets publication path.
-
-Producer order is: released APM protocol, validated owner package release, then consumer rollout.
-Never declare an unpublished owner version. Project migration recovery is owned by APM and the
-package's declared handlers; passing this release gate does not execute migrations against user
-projects, deploy production services, or prove compatibility with shipped native binaries.
-
-
-## CLI
-
-Run and synchronize the shared development toolchain through the Ankh CLI.
-
-`ankh devtools changeset`, `ankh devtools lint`, `ankh devtools format`, and
-`ankh devtools knip` execute the bundled Changesets, ESLint, Prettier, and Knip versions.
-Repository synchronization is available through
-`ankh devtools sync` and `ankh devtools status`, with focused `agents`, `skills`, `eslint`,
-`prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.
-Owner packages can opt into deterministic structural metadata with
-`ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.
-
-Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is
-deterministic and idempotent: canonical managed files and skill trees are created or updated,
-unrelated repository-local skills and create-only local extension files remain repository-owned,
-and package metadata is merge-updated without replacing unrelated fields.
-
-Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding
-`@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a
-local extension before the canonical auto-detecting wrapper is installed.
-
-APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid
-descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a
-script-free tarball; `--allow-owner-code` explicitly permits the isolated executable probe.
-`--artifact <path>` retains the exact accepted tarball and `--expected-integrity <SRI>`
-rejects changed bytes. Owners provide `test:apm` for source-to-target and recovery fixtures.
-CI runs that owner suite and the packed check. Release rebuilds after versioning, validates,
-then publishes the retained archive with scripts disabled through the existing release job.
-Packages without metadata keep their existing Changesets publish path unchanged.
-
-```bash
-bunx @ankhorage/devtools ankhorage-apm-release
-bunx @ankhorage/devtools ankhorage-changeset
-bunx @ankhorage/devtools ankhorage-eslint
-bunx @ankhorage/devtools ankhorage-knip
-bunx @ankhorage/devtools ankhorage-prettier
-bunx @ankhorage/devtools ankhorage-structure
+export default defineParadoxConfig({
+  mode: 'write',
+  docs: {
+    usage: {
+      description: renderBunPolicyDocumentation(
+        readFileSync(new URL('./src/cli/usage.md', import.meta.url), 'utf8'),
+      ),
+    },
+  },
+  package: {
+    root: '.',
+    entrypoints: [
+      'src/cli/index.ts',
+      'src/tools/eslint/index.ts',
+      'src/tools/knip/index.ts',
+      'src/apmRelease.ts',
+      'src/types/public.ts',
+    ],
+  },
+  output: { dir: './paradox' },
+});
 ```
 
 ## Generated documentation
