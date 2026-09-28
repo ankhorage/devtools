@@ -10,6 +10,8 @@
  *
  * @readme
  */
+import { existsSync } from 'node:fs';
+
 import type { KnipConfig } from 'knip';
 
 export interface DevtoolsKnipWorkspaceConfigOptions {
@@ -33,9 +35,14 @@ export interface DevtoolsKnipMonorepoConfigOptions {
 }
 
 const DEFAULT_MONOREPO_WORKSPACE_GLOBS = ['packages/*', 'apps/*'] as const;
+const MANAGED_EXAMPLES_ESLINT_CONFIG = 'eslint.examples.config.mjs';
 
 /*** Build shared Knip configuration while preserving repository-specific discovery. */
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
+  const ignoredFiles = [
+    ...(options.ignoreFiles ?? []),
+    ...(existsSync(MANAGED_EXAMPLES_ESLINT_CONFIG) ? [MANAGED_EXAMPLES_ESLINT_CONFIG] : []),
+  ];
   return {
     ...(options.entry === undefined ? {} : { entry: options.entry }),
     ...(options.project === undefined ? {} : { project: options.project }),
@@ -44,7 +51,7 @@ export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipC
     ...(options.ignoreDependencies === undefined
       ? {}
       : { ignoreDependencies: options.ignoreDependencies }),
-    ...(options.ignoreFiles === undefined ? {} : { ignoreFiles: options.ignoreFiles }),
+    ...(ignoredFiles.length === 0 ? {} : { ignoreFiles: [...new Set(ignoredFiles)] }),
     ...(options.workspaces === undefined ? {} : { workspaces: options.workspaces }),
   } satisfies KnipConfig;
 }

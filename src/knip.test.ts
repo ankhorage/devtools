@@ -1,3 +1,7 @@
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'bun:test';
 
 import { createKnipConfig, createKnipMonorepoConfig } from './tools/knip/index.js';
@@ -25,6 +29,22 @@ describe('createKnipConfig', () => {
       ignoreDependencies: ['optional-package'],
       ignoreFiles: ['examples/package/prettier.config.cjs'],
     });
+  });
+
+  it('ignores the generated examples ESLint config in a consumer repository', () => {
+    const target = mkdtempSync(join(tmpdir(), 'devtools-knip-'));
+    const originalDirectory = process.cwd();
+    try {
+      writeFileSync(join(target, 'eslint.examples.config.mjs'), 'export default [];\n');
+      process.chdir(target);
+      expect(createKnipConfig()).toEqual({ ignoreFiles: ['eslint.examples.config.mjs'] });
+      expect(createKnipConfig({ ignoreFiles: ['fixture.ts'] })).toEqual({
+        ignoreFiles: ['fixture.ts', 'eslint.examples.config.mjs'],
+      });
+    } finally {
+      process.chdir(originalDirectory);
+      rmSync(target, { recursive: true, force: true });
+    }
   });
 });
 
