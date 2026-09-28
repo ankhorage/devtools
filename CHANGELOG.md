@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.13
+
+### Patch Changes
+
+- 693fdd6: Update Devtools-owned dependencies: `@ankhorage/apm`, `@ankhorage/doctor`, `@ankhorage/paradox`.
+
 ## 2.0.12
 
 ### Patch Changes
