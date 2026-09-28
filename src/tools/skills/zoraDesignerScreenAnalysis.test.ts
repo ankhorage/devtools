@@ -54,10 +54,9 @@ it('derives a canonical ScreenSpec through the released local Utility image pipe
   expect(Array.isArray(output.diagnostics)).toBe(true);
 });
 
-it('uses installed plugin metadata and keeps unavailable OCR supplementary', async () => {
+it('uses core Tabletop metadata and keeps unavailable OCR supplementary', async () => {
   const target = await createOwnerFixture();
   await linkDevtoolsSource(target);
-  await installTabletopPlugin(target);
   const inputPath = await writeScreenAnalysisInput(
     target,
     { id: 'table', name: 'Table' },
@@ -69,10 +68,10 @@ it('uses installed plugin metadata and keeps unavailable OCR supplementary', asy
   const output = JSON.parse(result.stdout) as {
     componentNames: string[];
     diagnostics: { kind: string }[];
-    owners: { plugins: Record<string, string> };
+    owners: { zora: string };
   };
   expect(output.componentNames).toContain('TabletopTable');
-  expect(Object.keys(output.owners.plugins)).toContain('@ankhorage/zora-tabletop');
+  expect(output.owners.zora).toBe(OWNER_RELEASES.zora.minimumVersion);
   expect(output.diagnostics.some((diagnostic) => diagnostic.kind === 'ocr')).toBe(true);
 });
 
@@ -164,32 +163,6 @@ async function createOwnerFixture(): Promise<string> {
   await writeFile(join(zoraDirectory, 'metadata.js'), ZORA_METADATA_FIXTURE_SOURCE);
   await writeFile(join(zoraDirectory, 'theme.js'), ZORA_THEME_FIXTURE_SOURCE);
   return target;
-}
-
-/*** Install one metadata-only ZORA plugin fixture and declare it on the target package. */
-async function installTabletopPlugin(target: string): Promise<void> {
-  await writeJson(join(target, 'package.json'), {
-    name: 'fixture',
-    type: 'module',
-    dependencies: { '@ankhorage/zora-tabletop': '^0.1.0' },
-  });
-  await writeFixturePackage(target, '@ankhorage/zora-tabletop', '0.1.0', {
-    './metadata': './metadata.js',
-    './package.json': './package.json',
-  });
-  await writeFile(
-    join(target, 'node_modules/@ankhorage/zora-tabletop/metadata.js'),
-    `export const ZORA_PLUGIN_METADATA = {
-  packageName: '@ankhorage/zora-tabletop',
-  componentMeta: {
-    TabletopTable: {
-      name: 'TabletopTable', category: 'component', directManifestNode: true,
-      allowedChildren: [], props: {},
-    },
-  },
-  placements: [{ child: 'TabletopTable', parents: ['Screen'] }],
-};\n`,
-  );
 }
 
 /*** Link the current Devtools package so the copied skill resolves its declared Utility dependency. */
