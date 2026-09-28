@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2
+
+### Patch Changes
+
+- 2923db0: Keep generated README documentation outside Renovate owner synchronization.
+
 ## 2.0.1
 
 ### Patch Changes

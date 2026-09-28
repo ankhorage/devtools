@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.1",
+      "value": "v2.0.2",
       "color": "cb3837"
     },
     {
@@ -525,7 +525,6 @@
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/applyBunRuntimePolicy.ts",
         "src/policy/bunRuntimePolicy.ts",
-        "src/policy/renderBunPolicyDocumentation.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
@@ -3031,7 +3030,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 20,
+        "line": 19,
         "column": 1
       }
     },
@@ -3042,7 +3041,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 59,
+        "line": 58,
         "column": 1
       }
     },
@@ -3053,7 +3052,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 69,
+        "line": 68,
         "column": 1
       }
     },
@@ -3064,7 +3063,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 117,
+        "line": 111,
         "column": 1
       }
     },
@@ -3075,7 +3074,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 128,
+        "line": 122,
         "column": 1
       }
     },
@@ -3086,7 +3085,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 147,
+        "line": 141,
         "column": 1
       }
     },
@@ -3097,7 +3096,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 152,
+        "line": 146,
         "column": 1
       }
     },
@@ -3108,7 +3107,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 157,
+        "line": 151,
         "column": 1
       }
     },
@@ -3119,7 +3118,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 182,
+        "line": 176,
         "column": 1
       }
     },
@@ -3130,7 +3129,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 187,
+        "line": 181,
         "column": 1
       }
     },
@@ -4843,11 +4842,6 @@
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "toPath": "src/policy/renderBunPolicyDocumentation.ts",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
@@ -5808,12 +5802,6 @@
         "fromSymbol": "createManagedDefinitionsAsync",
         "toSymbol": "renderRenovateWorkflowAsync",
         "callExpression": "renderRenovateWorkflowAsync",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromSymbol": "createManagedDefinitionsAsync",
-        "toSymbol": "renderBunPolicyDocumentation",
-        "callExpression": "renderBunPolicyDocumentation",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
