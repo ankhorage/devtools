@@ -57,9 +57,14 @@ describe('managed repository skill synchronization', () => {
     expect(await readFile(join(codingRulesSkill, 'agents/openai.yaml'), 'utf8')).toContain(
       'allow_implicit_invocation: true',
     );
-    const projectStructureContents = await readFile(join(projectStructureSkill, 'SKILL.md'), 'utf8');
+    const projectStructureContents = await readFile(
+      join(projectStructureSkill, 'SKILL.md'),
+      'utf8',
+    );
     expect(projectStructureContents).toContain('name: ankhorage-project-structure');
-    expect(projectStructureContents).toContain('Implementation-owning Ankhorage packages are feature-first');
+    expect(projectStructureContents).toContain(
+      'Implementation-owning Ankhorage packages are feature-first',
+    );
     expect(projectStructureContents).toContain('src/features/<feature>/');
     expect(projectStructureContents).toContain('Every public Ankh command');
     expect(projectStructureContents).toContain('src/cli/commands/config/validate.ts');
@@ -74,7 +79,10 @@ describe('managed repository skill ownership', () => {
   it('encodes feature-first implementation ownership and command-path ownership', async () => {
     const canonicalRoot = join(import.meta.dir, 'assets/ankhorage-project-structure');
     const skill = await readFile(join(canonicalRoot, 'SKILL.md'), 'utf8');
-    const profiles = await readFile(join(canonicalRoot, 'references/architecture-profiles.md'), 'utf8');
+    const profiles = await readFile(
+      join(canonicalRoot, 'references/architecture-profiles.md'),
+      'utf8',
+    );
 
     expect(skill).toContain('Implementation-owning Ankhorage packages are feature-first');
     expect(skill).toContain('src/features/<feature>/');
