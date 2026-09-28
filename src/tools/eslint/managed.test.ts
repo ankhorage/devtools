@@ -43,6 +43,31 @@ test('synchronizes the examples config only while a root TypeScript example exis
   expect(await Bun.file(join(target, 'eslint.examples.config.mjs')).exists()).toBe(false);
 });
 
+test('ignores dependency, generated, and declaration files when detecting TypeScript examples', async () => {
+  const target = await mkdtemp('/tmp/devtools-eslint-managed-');
+  temporaryDirectories.push(target);
+
+  await mkdir(join(target, 'examples/basic-usage/node_modules/dependency'), { recursive: true });
+  await mkdir(join(target, 'examples/basic-usage/dist'), { recursive: true });
+  await writeFile(
+    join(target, 'examples/basic-usage/node_modules/dependency/index.ts'),
+    'export const dependency = true;\n',
+  );
+  await writeFile(join(target, 'examples/basic-usage/types.d.ts'), 'export interface Example {}\n');
+  await writeFile(
+    join(target, 'examples/basic-usage/dist/generated.ts'),
+    'export const generated = true;\n',
+  );
+  await writeFile(join(target, 'examples/basic-usage/example.json'), '{}\n');
+
+  await syncManagedFiles(target, eslintManagedFiles, { dryRun: false });
+  expect(await Bun.file(join(target, 'eslint.examples.config.mjs')).exists()).toBe(false);
+
+  await writeFile(join(target, 'examples/basic-usage/main.tsx'), 'export {};\n');
+  await syncManagedFiles(target, eslintManagedFiles, { dryRun: false });
+  expect(await Bun.file(join(target, 'eslint.examples.config.mjs')).exists()).toBe(true);
+});
+
 test('protects a consumer config without an examples directory or a local override file', async () => {
   const target = await mkdtemp('/tmp/devtools-eslint-managed-');
   temporaryDirectories.push(target);

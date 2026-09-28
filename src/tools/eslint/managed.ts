@@ -22,6 +22,17 @@ const EMPTY_LOCAL_CONFIG = `export default [];
 `;
 
 const EXAMPLES_OWNERSHIP_MARKER = '// This file is managed by @ankhorage/devtools.\n';
+const IGNORED_EXAMPLE_DIRECTORY_NAMES = new Set([
+  '.expo',
+  '.next',
+  'android',
+  'build',
+  'dist',
+  'files',
+  'ios',
+  'node_modules',
+  'templates',
+]);
 
 const ESLINT_EXAMPLES_CONFIG = `${EXAMPLES_OWNERSHIP_MARKER}import { existsSync } from 'node:fs';
 
@@ -90,9 +101,9 @@ async function containsTypeScriptExampleAsync(directory: string): Promise<boolea
     return (
       await Promise.all(
         entries.map(async (entry) =>
-          entry.isDirectory()
+          entry.isDirectory() && !IGNORED_EXAMPLE_DIRECTORY_NAMES.has(entry.name)
             ? await containsTypeScriptExampleAsync(resolve(directory, entry.name))
-            : entry.isFile() && /\.tsx?$/u.test(entry.name),
+            : entry.isFile() && isTypeScriptExampleSource(entry.name),
         ),
       )
     ).some(Boolean);
@@ -102,6 +113,11 @@ async function containsTypeScriptExampleAsync(directory: string): Promise<boolea
     }
     throw error;
   }
+}
+
+/*** Report whether a file is lintable TypeScript example source rather than a declaration. */
+function isTypeScriptExampleSource(fileName: string): boolean {
+  return /\.tsx?$/u.test(fileName) && !fileName.endsWith('.d.ts');
 }
 
 /*** Require explicit adoption of consumer overrides before managing an existing examples config. */

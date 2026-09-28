@@ -247,7 +247,7 @@ The React profile adds React and React Hooks correctness rules. The React Native
 
 ### Managed ESLint setup and local overrides
 
-`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. When the repository has a root `examples/` directory, synchronization also owns `eslint.examples.config.mjs`; repositories without public examples do not receive that file, and synchronization removes the managed wrapper when the directory is removed.
+`ankh devtools eslint sync` centrally owns `eslint.config.mjs` and creates `eslint.local.config.mjs` once. Synchronization owns `eslint.examples.config.mjs` only while the root `examples/` tree contains repository-owned `.ts` or `.tsx` source. Declaration files and standard ignored trees such as `node_modules`, `dist`, and `build` do not make the wrapper applicable; JSON-only or otherwise non-TypeScript examples do not receive it, and synchronization removes the managed wrapper when the last applicable source disappears.
 
 The canonical wrapper uses automatic profile detection and appends repository-owned flat-config entries:
 
