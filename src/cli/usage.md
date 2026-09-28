@@ -317,7 +317,7 @@ packageManager    bun@1.4.2
 
 <!-- devtools-bun-policy:end -->
 
-`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, this documentation block, and `bun.lock`. The trusted owner workflow uses `bun scripts/sync-renovate-owner.ts sync repository` to regenerate those artifacts and `bun scripts/sync-renovate-owner.ts status repository` to reject stale rendered state. Do not duplicate runtime policy literals in Devtools.
+`ankhorage/policy` owns and updates the canonical Bun and `@types/bun` literals through Renovate. A released Policy update reaches Devtools as a normal dependency update; Devtools then renders that policy into `packageManager`, `@types/bun`, workflow setup versions, and `bun.lock`. The trusted owner workflow uses `bun scripts/sync-renovate-owner.ts sync repository` to regenerate those owner artifacts and `bun scripts/sync-renovate-owner.ts status repository` to reject stale rendered state. README documentation is generated separately by the release documentation pipeline through `bun run docs`; owner synchronization does not manage or validate the generated README. Do not duplicate runtime policy literals in Devtools.
 
 ## Managed package contract
 
