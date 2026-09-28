@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.8
+
+### Patch Changes
+
+- bbdb69f: Update Devtools-owned dependencies: `@ankhorage/doctor`.
+
 ## 2.0.7
 
 ### Patch Changes
