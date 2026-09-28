@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.5
+
+### Patch Changes
+
+- 0984619: Only manage the examples ESLint config when examples contain TypeScript source.
+
 ## 2.0.4
 
 ### Patch Changes

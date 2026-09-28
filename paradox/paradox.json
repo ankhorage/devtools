@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.4",
+      "value": "v2.0.5",
       "color": "cb3837"
     },
     {
@@ -3492,7 +3492,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 64,
+        "line": 75,
         "column": 1
       }
     },
@@ -3503,18 +3503,40 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 76,
+        "line": 87,
         "column": 1
       }
     },
     {
-      "name": "hasExamplesDirectory",
-      "description": "Report whether the target repository owns public examples at its root.",
+      "name": "hasTypeScriptExamples",
+      "description": "Report whether the target repository owns TypeScript source examples at its root.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 81,
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "containsTypeScriptExampleAsync",
+      "description": "Report whether a directory tree contains a TypeScript or TSX source example.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 98,
+        "column": 1
+      }
+    },
+    {
+      "name": "isTypeScriptExampleSource",
+      "description": "Report whether a file is lintable TypeScript example source rather than a declaration.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 119,
         "column": 1
       }
     },
@@ -3525,7 +3547,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 94,
+        "line": 124,
         "column": 1
       }
     },
@@ -6153,25 +6175,49 @@
         "sourcePath": "src/tools/eslint/managed.ts"
       },
       {
-        "fromSymbol": "hasExamplesDirectory",
+        "fromSymbol": "hasTypeScriptExamples",
         "toSymbol": "assertExamplesConfigOwnershipAsync",
         "callExpression": "assertExamplesConfigOwnershipAsync",
         "sourcePath": "src/tools/eslint/managed.ts"
       },
       {
-        "fromSymbol": "hasExamplesDirectory",
-        "toSymbol": "stat",
-        "callExpression": "stat",
+        "fromSymbol": "hasTypeScriptExamples",
+        "toSymbol": "containsTypeScriptExampleAsync",
+        "callExpression": "containsTypeScriptExampleAsync",
         "sourcePath": "src/tools/eslint/managed.ts"
       },
       {
-        "fromSymbol": "hasExamplesDirectory",
+        "fromSymbol": "hasTypeScriptExamples",
         "toSymbol": "resolve",
         "callExpression": "resolve",
         "sourcePath": "src/tools/eslint/managed.ts"
       },
       {
-        "fromSymbol": "hasExamplesDirectory",
+        "fromSymbol": "containsTypeScriptExampleAsync",
+        "toSymbol": "readdir",
+        "callExpression": "readdir",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "src/tools/eslint/managed.ts",
+        "toSymbol": "containsTypeScriptExampleAsync",
+        "callExpression": "containsTypeScriptExampleAsync",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "src/tools/eslint/managed.ts",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "src/tools/eslint/managed.ts",
+        "toSymbol": "isTypeScriptExampleSource",
+        "callExpression": "isTypeScriptExampleSource",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "containsTypeScriptExampleAsync",
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
         "sourcePath": "src/tools/eslint/managed.ts"
