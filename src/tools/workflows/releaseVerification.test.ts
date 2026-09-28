@@ -41,8 +41,13 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" bun -e \'await import(process.env.PACKAGE_SPECIFIER)\'',
   );
+  expect(release).toContain("const specifiers = new Set();");
+  expect(release).toContain("if (exportsMap === undefined)");
+  expect(release).toContain("!Object.keys(exportsMap).some((key) => key.startsWith('.'))");
   expect(release).toContain('PACKAGE_NAME="$package_name" node - <<\'NODE\' > binary-paths.txt');
-  expect(release).toContain('timeout 15s bun "$binary_path" --help >/dev/null');
+  expect(release).toContain(
+    'BINARY_PATH="$binary_path" bun -e "import { pathToFileURL } from \'node:url\'; await import(pathToFileURL(process.env.BINARY_PATH).href)"',
+  );
   expect(release).toContain('Verify published npm artifact from a fresh runner');
   expect(release).toContain('release_sha: ${{ steps.release.outputs.release_sha }}');
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
