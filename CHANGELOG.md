@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.16
+
+### Patch Changes
+
+- 796978a: Update Devtools-owned dependencies: `@ankhorage/apm`, `@ankhorage/contracts`.
+
 ## 2.0.15
 
 ### Patch Changes
