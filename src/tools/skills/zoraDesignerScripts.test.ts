@@ -109,33 +109,19 @@ describe('zora-designer owner API orchestration', () => {
 });
 
 describe('zora-designer owner repository discovery', () => {
-  it('composes installed ZORA plugin metadata into component discovery', async () => {
+  it('discovers migrated Chess, Game, and Tabletop components from core ZORA metadata', async () => {
     const target = await createOwnerFixture();
-    await writeJson(join(target, 'package.json'), {
-      name: 'fixture',
-      type: 'module',
-      dependencies: { '@ankhorage/zora-tabletop': '^0.1.0' },
-    });
-    await writeFixturePackage(target, '@ankhorage/zora-tabletop', '0.1.0', {
-      './metadata': './metadata.js',
-      './package.json': './package.json',
-    });
-    await writeFile(
-      join(target, 'node_modules/@ankhorage/zora-tabletop/metadata.js'),
-      `export const ZORA_PLUGIN_METADATA = {
-  packageName: '@ankhorage/zora-tabletop',
-  componentMeta: {
-    TabletopTable: { name: 'TabletopTable', directManifestNode: true, allowedChildren: [], props: {} },
-  },
-  placements: [{ child: 'TabletopTable', parents: ['View'] }],
-};\n`,
-    );
-
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+
     expect(result.exitCode).toBe(0);
-    expect((JSON.parse(result.stdout) as { components: string[] }).components).toContain(
-      'TabletopTable',
+    const output = JSON.parse(result.stdout) as {
+      components: string[];
+      versions: Record<string, string>;
+    };
+    expect(output.components).toEqual(
+      expect.arrayContaining(['ChessBoard', 'GameField', 'TabletopTable']),
     );
+    expect(Object.hasOwn(output.versions, 'plugins')).toBe(false);
   });
 
   it('reports interaction choices from their released owners', async () => {
@@ -185,59 +171,30 @@ describe('zora-designer owner repository discovery', () => {
   });
 });
 
-describe('zora-designer package-driven plugin discovery', () => {
-  it('derives arbitrary ZORA plugin release gates from the consumer dependency', async () => {
+describe('zora-designer core ZORA ownership', () => {
+  it('does not load obsolete standalone ZORA package declarations', async () => {
     const target = await createOwnerFixture();
     await writeJson(join(target, 'package.json'), {
       name: 'fixture',
       type: 'module',
-      dependencies: { '@ankhorage/zora-game': '^0.3.1' },
+      dependencies: {
+        '@ankhorage/zora-chess': '^0.2.2',
+        '@ankhorage/zora-game': '^0.8.53',
+        '@ankhorage/zora-tabletop': '^0.1.47',
+      },
     });
-    await writeFixturePackage(target, '@ankhorage/zora-game', '0.3.1', {
-      './metadata': './metadata.js',
-      './package.json': './package.json',
-    });
-    await writeFile(
-      join(target, 'node_modules/@ankhorage/zora-game/metadata.js'),
-      `export const ZORA_PLUGIN_METADATA = {
-  packageName: '@ankhorage/zora-game',
-  componentMeta: {
-    GameField: { name: 'GameField', directManifestNode: true, allowedChildren: [], props: {} },
-  },
-  placements: [{ child: 'GameField', parents: ['View'] }],
-};\n`,
-    );
 
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
+
     expect(result.exitCode).toBe(0);
     const output = JSON.parse(result.stdout) as {
       components: string[];
-      versions: { plugins: Record<string, string> };
+      versions: Record<string, string>;
     };
-    expect(output.components).toContain('GameField');
-    expect(output.versions.plugins['@ankhorage/zora-game']).toBe('0.3.1');
-  });
-
-  it('rejects an installed ZORA plugin below the consumer-declared lower bound', async () => {
-    const target = await createOwnerFixture();
-    await writeJson(join(target, 'package.json'), {
-      name: 'fixture',
-      type: 'module',
-      dependencies: { '@ankhorage/zora-game': '^0.4.0' },
-    });
-    await writeFixturePackage(target, '@ankhorage/zora-game', '0.3.9', {
-      './metadata': './metadata.js',
-      './package.json': './package.json',
-    });
-    await writeFile(
-      join(target, 'node_modules/@ankhorage/zora-game/metadata.js'),
-      `export const ZORA_PLUGIN_METADATA = { packageName: '@ankhorage/zora-game', componentMeta: {} };\n`,
+    expect(output.components).toEqual(
+      expect.arrayContaining(['ChessBoard', 'GameField', 'TabletopTable']),
     );
-
-    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
-    expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain('@ankhorage/zora-game >=0.4.0');
-    expect(result.stderr).toContain('is outdated');
+    expect(Object.hasOwn(output.versions, 'plugins')).toBe(false);
   });
 });
 
