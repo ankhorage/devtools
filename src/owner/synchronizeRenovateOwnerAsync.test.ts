@@ -10,7 +10,6 @@ import { synchronizeRenovateOwnerAsync } from './synchronizeRenovateOwnerAsync.j
 const temporaryDirectories: string[] = [];
 const managedPaths = [
   'package.json',
-  'README.md',
   'bun.lock',
   '.github/workflows/ci.yml',
   '.github/workflows/release.yml',
@@ -24,7 +23,7 @@ afterEach(async () => {
 });
 
 describe('Devtools Renovate owner synchronization', () => {
-  test('regenerates every Bun artifact and is byte-stable', async () => {
+  test('regenerates owner artifacts without a generated README and is byte-stable', async () => {
     const target = await createTarget();
     const unrelatedPath = join(target, 'notes.txt');
     await writeFile(unrelatedPath, 'leave me alone\n');
@@ -39,8 +38,6 @@ describe('Devtools Renovate owner synchronization', () => {
         typescript: '^5.9.3',
       },
     });
-    expect(first.readme).toContain(`Bun runtime       ${REPOSITORY_POLICY.runtime.bun.version}`);
-    expect(first.readme).toContain(`@types/bun        ${REPOSITORY_POLICY.runtime.bun.typesRange}`);
     expect(first.ci).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
     expect(first.ci).toContain('node ./dist/cli/bin/apm-release.js validate . --allow-owner-code');
     expect(first.release).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
@@ -96,10 +93,6 @@ async function createTarget(): Promise<string> {
       2,
     )}\n`,
   );
-  await writeFile(
-    join(target, 'README.md'),
-    `Before\n<!-- devtools-bun-policy:start -->\nstale\n<!-- devtools-bun-policy:end -->\nAfter\n`,
-  );
   return target;
 }
 
@@ -107,14 +100,13 @@ async function readManagedContents(target: string): Promise<{
   readonly bunLock: string;
   readonly ci: string;
   readonly packageJson: string;
-  readonly readme: string;
   readonly release: string;
   readonly renovate: string;
 }> {
-  const [packageJson, readme, bunLock, ci, release, renovate] = await Promise.all(
+  const [packageJson, bunLock, ci, release, renovate] = await Promise.all(
     managedPaths.map(async (relativePath) => await readFile(join(target, relativePath), 'utf8')),
   );
-  return { bunLock, ci, packageJson, readme, release, renovate };
+  return { bunLock, ci, packageJson, release, renovate };
 }
 
 async function runLockfileAsync(operation: 'status' | 'sync', target: string): Promise<void> {
