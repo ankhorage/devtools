@@ -34,6 +34,11 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   expect(release).toContain('last_stage="npm-pack"');
   expect(release).toContain('Published npm artifact not ready at stage: ${last_stage}.');
   expect(release).toContain('attempt_pack_dir="$pack_dir/attempt-${attempt}"');
+  expect(release).toContain('Verify standalone packed install');
+  expect(release).toContain('PACKAGE_NAME="$package_name" node - <<\'NODE\' > import-specifiers.txt');
+  expect(release).toContain("PACKAGE_SPECIFIER=\"$specifier\" bun -e 'await import(process.env.PACKAGE_SPECIFIER)'");
+  expect(release).toContain("git ls-files");
+  expect(release).toContain('timeout 15s bun "$binary_path" --help >/dev/null');
   expect(release).toContain('Verify published npm artifact from a fresh runner');
   expect(release).toContain('release_sha: ${{ steps.release.outputs.release_sha }}');
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
