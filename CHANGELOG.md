@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.9
+
+### Patch Changes
+
+- 71ec38f: Restore feature-first implementation ownership and strict public CLI command-path guidance in the managed project-structure skill.
+
 ## 2.0.8
 
 ### Patch Changes
