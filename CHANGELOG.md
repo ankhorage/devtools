@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.17
+
+### Patch Changes
+
+- 35642b5: Update Devtools-owned dependencies: `typescript-eslint`.
+
 ## 2.0.16
 
 ### Patch Changes
