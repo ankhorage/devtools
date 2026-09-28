@@ -48,6 +48,7 @@ test('lints standalone nested examples without a root ESLint TypeScript project'
 test('requires explicit override adoption and preserves local rules across subsequent syncs', async () => {
   const target = await createTargetAsync();
   await writeProjectAsync(target, 'tsconfig.eslint.json', ['examples/**/*.tsx']);
+  await writeFile(join(target, 'examples/basic-usage/main.tsx'), 'export {};\n');
   const oldConfig = `export default [{ files: ['examples/**/*.tsx'], rules: {
     'react-native/no-inline-styles': 'off',
     'max-lines-per-function': ['error', { max: 600 }],

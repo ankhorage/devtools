@@ -1,4 +1,4 @@
-import { readFile, stat } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
@@ -57,7 +57,7 @@ export const eslintManagedFiles = [
   {
     relativePath: 'eslint.examples.config.mjs',
     contents: ESLINT_EXAMPLES_CONFIG,
-    isApplicable: hasExamplesDirectory,
+    isApplicable: hasTypeScriptExamples,
   },
 ] as const satisfies readonly ManagedFileDefinition[];
 
@@ -77,11 +77,25 @@ function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
 }
 
-/*** Report whether the target repository owns public examples at its root. */
-async function hasExamplesDirectory(targetDirectory: string): Promise<boolean> {
+/*** Report whether the target repository owns TypeScript source examples at its root. */
+async function hasTypeScriptExamples(targetDirectory: string): Promise<boolean> {
   await assertExamplesConfigOwnershipAsync(targetDirectory);
+  return await containsTypeScriptExampleAsync(resolve(targetDirectory, 'examples'));
+}
+
+/*** Report whether a directory tree contains a TypeScript or TSX source example. */
+async function containsTypeScriptExampleAsync(directory: string): Promise<boolean> {
   try {
-    return (await stat(resolve(targetDirectory, 'examples'))).isDirectory();
+    const entries = await readdir(directory, { withFileTypes: true });
+    return (
+      await Promise.all(
+        entries.map(async (entry) =>
+          entry.isDirectory()
+            ? await containsTypeScriptExampleAsync(resolve(directory, entry.name))
+            : entry.isFile() && /\.tsx?$/u.test(entry.name),
+        ),
+      )
+    ).some(Boolean);
   } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') {
       return false;
