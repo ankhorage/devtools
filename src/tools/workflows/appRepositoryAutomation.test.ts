@@ -29,33 +29,17 @@ test('bootstraps app repository dependency automation without package release wo
     "extends: ['github>ankhorage/renovate']",
   );
 
-  const localRenovateConfig = `/***
- * Repository configuration
- *
- * Loads the canonical Ankhorage dependency-update policy from its default branch.
- *
- * @usage
- * @readme
- */
-{
+  const repositoryOwnedRenovateConfig = `{
   extends: ['github>ankhorage/renovate'],
   ignoreDeps: ['app-owned-example'],
 }\n`;
-  const migratedRenovateConfig = `/**
- * Repository configuration
- *
- * Loads the canonical Ankhorage dependency-update policy from its default branch.
- *
- */
-{
-  extends: ['github>ankhorage/renovate'],
-  ignoreDeps: ['app-owned-example'],
-}\n`;
-  await writeFile(join(target, 'renovate.json5'), localRenovateConfig);
+  await writeFile(join(target, 'renovate.json5'), repositoryOwnedRenovateConfig);
 
-  const migration = await syncManagedFiles(target, workflowManagedFiles, { dryRun: false });
-  expect(migration).toContainEqual({ relativePath: 'renovate.json5', action: 'updated' });
-  expect(await readFile(join(target, 'renovate.json5'), 'utf8')).toBe(migratedRenovateConfig);
+  const preservation = await syncManagedFiles(target, workflowManagedFiles, { dryRun: false });
+  expect(preservation).toContainEqual({ relativePath: 'renovate.json5', action: 'unchanged' });
+  expect(await readFile(join(target, 'renovate.json5'), 'utf8')).toBe(
+    repositoryOwnedRenovateConfig,
+  );
 
   const secondSync = await syncManagedFiles(target, workflowManagedFiles, { dryRun: false });
   expect(secondSync).toContainEqual({ relativePath: 'renovate.json5', action: 'unchanged' });
