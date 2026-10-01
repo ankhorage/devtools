@@ -31,7 +31,7 @@ jobs:
           node-version: '__ANKH_NODE_VERSION__'
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
       - name: Run build
         run: |
