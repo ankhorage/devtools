@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.27
+
+### Patch Changes
+
+- de56ffb: Update Renovate-managed workflows.
+
 ## 2.0.26
 
 ### Patch Changes
