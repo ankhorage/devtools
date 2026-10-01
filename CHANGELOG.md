@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.40
+
+### Patch Changes
+
+- aa44c54: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/doctor`.
+
 ## 2.0.39
 
 ### Patch Changes
