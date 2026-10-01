@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.18
+
+### Patch Changes
+
+- a4bf14b: Update Devtools-owned dependencies: `@next/eslint-plugin-next`, `eslint-plugin-security`, `knip`.
+
 ## 2.0.17
 
 ### Patch Changes
