@@ -10,7 +10,11 @@
  *
  * @readme
  */
+import { existsSync, readFileSync } from 'node:fs';
+
 import type { KnipConfig } from 'knip';
+
+import { EXAMPLES_ESLINT_OWNERSHIP_MARKER } from '../../constants/eslint.js';
 
 export interface DevtoolsKnipWorkspaceConfigOptions {
   readonly entry?: string[];
@@ -33,9 +37,14 @@ export interface DevtoolsKnipMonorepoConfigOptions {
 }
 
 const DEFAULT_MONOREPO_WORKSPACE_GLOBS = ['packages/*', 'apps/*'] as const;
+const MANAGED_EXAMPLES_ESLINT_CONFIG = 'eslint.examples.config.mjs';
 
 /*** Build shared Knip configuration while preserving repository-specific discovery. */
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
+  const ignoredFiles = [
+    ...(options.ignoreFiles ?? []),
+    ...(hasManagedExamplesEslintConfig() ? [MANAGED_EXAMPLES_ESLINT_CONFIG] : []),
+  ];
   return {
     ...(options.entry === undefined ? {} : { entry: options.entry }),
     ...(options.project === undefined ? {} : { project: options.project }),
@@ -44,7 +53,7 @@ export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipC
     ...(options.ignoreDependencies === undefined
       ? {}
       : { ignoreDependencies: options.ignoreDependencies }),
-    ...(options.ignoreFiles === undefined ? {} : { ignoreFiles: options.ignoreFiles }),
+    ...(ignoredFiles.length === 0 ? {} : { ignoreFiles: [...new Set(ignoredFiles)] }),
     ...(options.workspaces === undefined ? {} : { workspaces: options.workspaces }),
   } satisfies KnipConfig;
 }
@@ -71,4 +80,14 @@ export function createKnipMonorepoConfig(
   }
 
   return createKnipConfig({ workspaces });
+}
+
+/*** Report whether the examples ESLint config is owned by Devtools. */
+function hasManagedExamplesEslintConfig(): boolean {
+  return (
+    existsSync(MANAGED_EXAMPLES_ESLINT_CONFIG) &&
+    readFileSync(MANAGED_EXAMPLES_ESLINT_CONFIG, 'utf8').startsWith(
+      EXAMPLES_ESLINT_OWNERSHIP_MARKER,
+    )
+  );
 }
