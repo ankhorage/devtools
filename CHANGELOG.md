@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.24
+
+### Patch Changes
+
+- bf257de: Update Renovate-managed workflows.
+
 ## 2.0.23
 
 ### Patch Changes
