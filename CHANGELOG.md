@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.19
+
+### Patch Changes
+
+- c8f468f: Ignore the Devtools-managed examples ESLint configuration in Knip when it exists in a consumer repository.
+
 ## 2.0.18
 
 ### Patch Changes

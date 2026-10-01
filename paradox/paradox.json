@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.18",
+      "value": "v2.0.19",
       "color": "cb3837"
     },
     {
@@ -318,6 +318,14 @@
       ]
     },
     {
+      "path": "src/constants/eslint.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "EXAMPLES_ESLINT_OWNERSHIP_MARKER"
+      ]
+    },
+    {
       "path": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -601,6 +609,7 @@
       "path": "src/tools/eslint/managed.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/constants/eslint.ts",
         "src/tools/shared/managedFiles.ts"
       ],
       "exports": [
@@ -664,7 +673,9 @@
     {
       "path": "src/tools/knip/index.ts",
       "isEntrypoint": true,
-      "dependencies": [],
+      "dependencies": [
+        "src/constants/eslint.ts"
+      ],
       "exports": [
         "createKnipConfig",
         "createKnipMonorepoConfig",
@@ -1138,7 +1149,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 38,
+        "line": 43,
         "column": 1
       },
       "exportPaths": [
@@ -1176,7 +1187,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 53,
+        "line": 62,
         "column": 1
       },
       "exportPaths": [
@@ -1377,7 +1388,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 24,
+        "line": 28,
         "column": 1
       },
       "exportPaths": [
@@ -1451,7 +1462,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 28,
+        "line": 32,
         "column": 1
       },
       "exportPaths": [
@@ -1504,7 +1515,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 15,
+        "line": 19,
         "column": 1
       },
       "exportPaths": [
@@ -3668,7 +3679,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 38,
+        "line": 43,
         "column": 1
       }
     },
@@ -3679,7 +3690,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 53,
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasManagedExamplesEslintConfig",
+      "description": "Report whether the examples ESLint config is owned by Devtools.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 86,
         "column": 1
       }
     },
@@ -4939,6 +4961,11 @@
       },
       {
         "fromPath": "src/tools/eslint/managed.ts",
+        "toPath": "src/constants/eslint.ts",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/eslint/managed.ts",
         "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/tools/eslint/managed.ts"
       },
@@ -4971,6 +4998,11 @@
         "fromPath": "src/tools/gitignore/index.ts",
         "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/tools/gitignore/index.ts"
+      },
+      {
+        "fromPath": "src/tools/knip/index.ts",
+        "toPath": "src/constants/eslint.ts",
+        "sourcePath": "src/tools/knip/index.ts"
       },
       {
         "fromPath": "src/tools/knip/managed.ts",
@@ -6355,9 +6387,27 @@
         "sourcePath": "src/tools/gitignore/index.ts"
       },
       {
+        "fromSymbol": "createKnipConfig",
+        "toSymbol": "hasManagedExamplesEslintConfig",
+        "callExpression": "hasManagedExamplesEslintConfig",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
         "fromSymbol": "createKnipMonorepoConfig",
         "toSymbol": "createKnipConfig",
         "callExpression": "createKnipConfig",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "hasManagedExamplesEslintConfig",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "hasManagedExamplesEslintConfig",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
         "sourcePath": "src/tools/knip/index.ts"
       },
       {

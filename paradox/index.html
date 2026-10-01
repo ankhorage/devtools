@@ -339,7 +339,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/knip/index.ts">
       src/tools/knip/index.ts
-      <small>2 functions</small>
+      <small>3 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/index.ts">
@@ -423,7 +423,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>71</strong><span class="muted">modules</span></div>
+        <div><strong>72</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -554,6 +554,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>runStructureGenerationCommandAsync</code></p>
+  </article><article class="item" data-search="src/constants/eslint.ts EXAMPLES_ESLINT_OWNERSHIP_MARKER">
+    <h3>src/constants/eslint.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>EXAMPLES_ESLINT_OWNERSHIP_MARKER</code></p>
   </article><article class="item" data-search="src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts src/features/apm-release-validation/adapters/outbound/readApmReleaseManifestAsync.ts src/types/apm-release-validation.ts createApmReleaseDescriptorPort">
     <h3>src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts</h3>
     <p class="muted">Referenced module</p>
@@ -684,10 +689,10 @@
     <p class="muted">Configured entrypoint</p>
     <p><strong>Dependencies:</strong> <code>src/tools/eslint/resolveEslintProfile.ts</code>, <code>src/tools/eslint/types.ts</code></p>
     <p><strong>Exports:</strong> <code>createConfig</code>, <code>defaultIgnores</code>, <code>defaultRestrictedImports</code>, <code>DevtoolsConfigOptions</code>, <code>DevtoolsEslintProfile</code>, <code>FlatConfigItem</code>, <code>ResolvedDevtoolsEslintProfile</code>, <code>RestrictedImport</code></p>
-  </article><article class="item" data-search="src/tools/eslint/managed.ts src/tools/shared/managedFiles.ts eslintManagedFiles">
+  </article><article class="item" data-search="src/tools/eslint/managed.ts src/constants/eslint.ts src/tools/shared/managedFiles.ts eslintManagedFiles">
     <h3>src/tools/eslint/managed.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/tools/shared/managedFiles.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/constants/eslint.ts</code>, <code>src/tools/shared/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>eslintManagedFiles</code></p>
   </article><article class="item" data-search="src/tools/eslint/packageJsonPath.ts src/tools/eslint/types.ts resolveProjectPackageJsonPath">
     <h3>src/tools/eslint/packageJsonPath.ts</h3>
@@ -714,10 +719,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/tools/shared/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>gitignoreManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/knip/index.ts createKnipConfig createKnipMonorepoConfig DevtoolsKnipConfigOptions DevtoolsKnipMonorepoConfigOptions DevtoolsKnipWorkspaceConfigOptions">
+  </article><article class="item" data-search="src/tools/knip/index.ts src/constants/eslint.ts createKnipConfig createKnipMonorepoConfig DevtoolsKnipConfigOptions DevtoolsKnipMonorepoConfigOptions DevtoolsKnipWorkspaceConfigOptions">
     <h3>src/tools/knip/index.ts</h3>
     <p class="muted">Configured entrypoint</p>
-    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Dependencies:</strong> <code>src/constants/eslint.ts</code></p>
     <p><strong>Exports:</strong> <code>createKnipConfig</code>, <code>createKnipMonorepoConfig</code>, <code>DevtoolsKnipConfigOptions</code>, <code>DevtoolsKnipMonorepoConfigOptions</code>, <code>DevtoolsKnipWorkspaceConfigOptions</code></p>
   </article><article class="item" data-search="src/tools/knip/managed.ts src/tools/shared/managedFiles.ts knipManagedFiles">
     <h3>src/tools/knip/managed.ts</h3>
@@ -1133,7 +1138,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
               <article class="item" id="symbol-createknipconfig" data-search="createKnipConfig  function src/tools/knip/index.ts Build shared Knip configuration while preserving repository-specific discovery. DevtoolsKnipConfigOptions (options?: DevtoolsKnipConfigOptions) =&gt; KnipConfig">
     <h4>createKnipConfig</h4>
     
-    <p class="muted">function • <code>src/tools/knip/index.ts:38:1</code></p>
+    <p class="muted">function • <code>src/tools/knip/index.ts:43:1</code></p>
     <p>Build shared Knip configuration while preserving repository-specific discovery.</p>
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1158,7 +1163,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-createknipmonorepoconfig" data-search="createKnipMonorepoConfig  function src/tools/knip/index.ts Build shared monorepo Knip configuration. DevtoolsKnipMonorepoConfigOptions (options?: DevtoolsKnipMonorepoConfigOptions) =&gt; KnipConfig">
     <h4>createKnipMonorepoConfig</h4>
     
-    <p class="muted">function • <code>src/tools/knip/index.ts:53:1</code></p>
+    <p class="muted">function • <code>src/tools/knip/index.ts:62:1</code></p>
     <p>Build shared monorepo Knip configuration.</p>
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1183,7 +1188,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-devtoolsknipconfigoptions" data-search="DevtoolsKnipConfigOptions  type src/tools/knip/index.ts  DevtoolsKnipWorkspaceConfigOptions">
     <h4>DevtoolsKnipConfigOptions</h4>
     
-    <p class="muted">type • <code>src/tools/knip/index.ts:24:1</code></p>
+    <p class="muted">type • <code>src/tools/knip/index.ts:28:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1240,7 +1245,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-devtoolsknipmonorepoconfigoptions" data-search="DevtoolsKnipMonorepoConfigOptions  type src/tools/knip/index.ts  DevtoolsKnipWorkspaceConfigOptions">
     <h4>DevtoolsKnipMonorepoConfigOptions</h4>
     
-    <p class="muted">type • <code>src/tools/knip/index.ts:28:1</code></p>
+    <p class="muted">type • <code>src/tools/knip/index.ts:32:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1279,7 +1284,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-devtoolsknipworkspaceconfigoptions" data-search="DevtoolsKnipWorkspaceConfigOptions  type src/tools/knip/index.ts ">
     <h4>DevtoolsKnipWorkspaceConfigOptions</h4>
     
-    <p class="muted">type • <code>src/tools/knip/index.ts:15:1</code></p>
+    <p class="muted">type • <code>src/tools/knip/index.ts:19:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1580,6 +1585,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_constants_eslint_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts
@@ -1677,6 +1684,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_eslint_managed_ts
+  module_src_tools_eslint_managed_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_eslint_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_packageJsonPath_ts[&quot;src/tools/eslint/packageJsonPath.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_eslint_packageJsonPath_ts
@@ -1695,6 +1703,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_gitignore_index_ts
   module_src_tools_gitignore_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
+  module_src_tools_knip_index_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_knip_managed_ts
   module_src_tools_knip_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
@@ -1845,6 +1854,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_constants_eslint_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts
@@ -1942,6 +1953,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_eslint_managed_ts
+  module_src_tools_eslint_managed_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_eslint_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_packageJsonPath_ts[&quot;src/tools/eslint/packageJsonPath.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_eslint_packageJsonPath_ts
@@ -1960,6 +1972,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_gitignore_index_ts
   module_src_tools_gitignore_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
+  module_src_tools_knip_index_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_knip_managed_ts
   module_src_tools_knip_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
@@ -2042,6 +2055,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts&quot;]
@@ -2180,6 +2194,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
+  module_src_tools_eslint_managed_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_eslint_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_packageJsonPath_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_resolveEslintProfile_ts --&gt; module_src_tools_eslint_packageJsonPath_ts
@@ -2187,6 +2202,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_eslint_resolveEslintProfile_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_resolveEslintProfileFromDetectionInput_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_gitignore_index_ts --&gt; module_src_tools_shared_managedFiles_ts
+  module_src_tools_knip_index_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_knip_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
@@ -2230,6 +2246,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts&quot;]
@@ -2368,6 +2385,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_agents_index_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
+  module_src_tools_eslint_managed_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_eslint_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_packageJsonPath_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_resolveEslintProfile_ts --&gt; module_src_tools_eslint_packageJsonPath_ts
@@ -2375,6 +2393,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_eslint_resolveEslintProfile_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_resolveEslintProfileFromDetectionInput_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_gitignore_index_ts --&gt; module_src_tools_shared_managedFiles_ts
+  module_src_tools_knip_index_ts --&gt; module_src_constants_eslint_ts
   module_src_tools_knip_managed_ts --&gt; module_src_tools_shared_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_bunRuntimePolicy_ts
@@ -2420,6 +2439,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts&quot;]
@@ -2548,6 +2568,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
+  module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/probePackedApmExtensionAsync.ts&quot;]
@@ -2655,13 +2676,52 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   export_validatePackedApmReleaseAsync -.-&gt; export_ApmReleaseValidationResult
 </pre>
     </details>
+  </article><article class="item" data-search="createKnipConfig sequence diagrams/sequences/create-knip-config.mmd">
+    <h3>createKnipConfig sequence</h3>
+    <p class="muted"><code>diagrams/sequences/create-knip-config.mmd</code></p>
+    <div class="mermaid">sequenceDiagram
+  participant participant_createKnipConfig as createKnipConfig
+  participant participant_existsSync as existsSync
+  participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readFileSync as readFileSync
+  participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_readFileSync: readFileSync()
+  participant_readFileSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig--&gt;&gt;participant_createKnipConfig: return
+</div>
+    <details>
+      <summary>View Mermaid source</summary>
+      <pre>sequenceDiagram
+  participant participant_createKnipConfig as createKnipConfig
+  participant participant_existsSync as existsSync
+  participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readFileSync as readFileSync
+  participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_readFileSync: readFileSync()
+  participant_readFileSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig--&gt;&gt;participant_createKnipConfig: return
+</pre>
+    </details>
   </article><article class="item" data-search="createKnipMonorepoConfig sequence diagrams/sequences/create-knip-monorepo-config.mmd">
     <h3>createKnipMonorepoConfig sequence</h3>
     <p class="muted"><code>diagrams/sequences/create-knip-monorepo-config.mmd</code></p>
     <div class="mermaid">sequenceDiagram
   participant participant_createKnipConfig as createKnipConfig
   participant participant_createKnipMonorepoConfig as createKnipMonorepoConfig
+  participant participant_existsSync as existsSync
+  participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readFileSync as readFileSync
   participant_createKnipMonorepoConfig-&gt;&gt;participant_createKnipConfig: createKnipConfig()
+  participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_readFileSync: readFileSync()
+  participant_readFileSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig--&gt;&gt;participant_createKnipConfig: return
   participant_createKnipConfig--&gt;&gt;participant_createKnipMonorepoConfig: return
 </div>
     <details>
@@ -2669,7 +2729,16 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <pre>sequenceDiagram
   participant participant_createKnipConfig as createKnipConfig
   participant participant_createKnipMonorepoConfig as createKnipMonorepoConfig
+  participant participant_existsSync as existsSync
+  participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readFileSync as readFileSync
   participant_createKnipMonorepoConfig-&gt;&gt;participant_createKnipConfig: createKnipConfig()
+  participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_readFileSync: readFileSync()
+  participant_readFileSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
+  participant_hasManagedExamplesEslintConfig--&gt;&gt;participant_createKnipConfig: return
   participant_createKnipConfig--&gt;&gt;participant_createKnipMonorepoConfig: return
 </pre>
     </details>
@@ -3754,13 +3823,18 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/knip/index.ts</h2>
       <article class="item" data-search="createKnipConfig src/tools/knip/index.ts Build shared Knip configuration while preserving repository-specific discovery.">
     <h3>createKnipConfig</h3>
-    <p class="muted"><code>src/tools/knip/index.ts:38:1</code></p>
+    <p class="muted"><code>src/tools/knip/index.ts:43:1</code></p>
     <p>Build shared Knip configuration while preserving repository-specific discovery.</p>
     
   </article><article class="item" data-search="createKnipMonorepoConfig src/tools/knip/index.ts Build shared monorepo Knip configuration.">
     <h3>createKnipMonorepoConfig</h3>
-    <p class="muted"><code>src/tools/knip/index.ts:53:1</code></p>
+    <p class="muted"><code>src/tools/knip/index.ts:62:1</code></p>
     <p>Build shared monorepo Knip configuration.</p>
+    
+  </article><article class="item" data-search="hasManagedExamplesEslintConfig src/tools/knip/index.ts Report whether the examples ESLint config is owned by Devtools.">
+    <h3>hasManagedExamplesEslintConfig</h3>
+    <p class="muted"><code>src/tools/knip/index.ts:86:1</code></p>
+    <p>Report whether the examples ESLint config is owned by Devtools.</p>
     
   </article>
     </section>

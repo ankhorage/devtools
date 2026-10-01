@@ -88,6 +88,8 @@ graph TD
   module_src_cli_runStructureGenerationCommandAsync_ts["src/cli/runStructureGenerationCommandAsync.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_runStructureGenerationCommandAsync_ts --> module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
+  module_src_constants_eslint_ts["src/constants/eslint.ts"]
+  package__ankhorage_devtools -.-> module_src_constants_eslint_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts["src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts"]
   package__ankhorage_devtools -.-> module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --> module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts
@@ -185,6 +187,7 @@ graph TD
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_types_ts
   module_src_tools_eslint_managed_ts["src/tools/eslint/managed.ts"]
   package__ankhorage_devtools -.-> module_src_tools_eslint_managed_ts
+  module_src_tools_eslint_managed_ts --> module_src_constants_eslint_ts
   module_src_tools_eslint_managed_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_eslint_packageJsonPath_ts["src/tools/eslint/packageJsonPath.ts"]
   package__ankhorage_devtools -.-> module_src_tools_eslint_packageJsonPath_ts
@@ -203,6 +206,7 @@ graph TD
   package__ankhorage_devtools -.-> module_src_tools_gitignore_index_ts
   module_src_tools_gitignore_index_ts --> module_src_tools_shared_managedFiles_ts
   module_src_tools_knip_index_ts["src/tools/knip/index.ts"]
+  module_src_tools_knip_index_ts --> module_src_constants_eslint_ts
   module_src_tools_knip_managed_ts["src/tools/knip/managed.ts"]
   package__ankhorage_devtools -.-> module_src_tools_knip_managed_ts
   module_src_tools_knip_managed_ts --> module_src_tools_shared_managedFiles_ts

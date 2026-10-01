@@ -1,14 +1,11 @@
 sequenceDiagram
   participant participant_createKnipConfig as createKnipConfig
-  participant participant_createKnipMonorepoConfig as createKnipMonorepoConfig
   participant participant_existsSync as existsSync
   participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
   participant participant_readFileSync as readFileSync
-  participant_createKnipMonorepoConfig->>participant_createKnipConfig: createKnipConfig()
   participant_createKnipConfig->>participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
   participant_hasManagedExamplesEslintConfig->>participant_existsSync: existsSync()
   participant_existsSync-->>participant_hasManagedExamplesEslintConfig: return
   participant_hasManagedExamplesEslintConfig->>participant_readFileSync: readFileSync()
   participant_readFileSync-->>participant_hasManagedExamplesEslintConfig: return
   participant_hasManagedExamplesEslintConfig-->>participant_createKnipConfig: return
-  participant_createKnipConfig-->>participant_createKnipMonorepoConfig: return
