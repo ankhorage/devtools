@@ -141,14 +141,14 @@
     "knip": "^6.39.0",
     "prettier": "^3.9.9",
     "typescript-eslint": "^8.71.0",
-    "@ankhorage/contracts": "^22.8.39",
+    "@ankhorage/contracts": "^22.8.40",
     "typescript": "~6.0.3",
     "@ankhorage/policy": "^0.6.0"
   },
   "devDependencies": {
-    "@ankhorage/paradox": "^0.2.12",
-    "@ankhorage/ankh": "^0.10.32",
-    "@ankhorage/doctor": "0.11.36",
+    "@ankhorage/paradox": "^0.2.13",
+    "@ankhorage/ankh": "^0.10.33",
+    "@ankhorage/doctor": "0.11.38",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.2",
     "@types/node": "^26.6.3",
