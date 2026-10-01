@@ -60,6 +60,21 @@ describe('Devtools Renovate owner synchronization', () => {
       'Stale Devtools owner policy artifacts: package.json',
     );
   });
+
+  test('status does not reconcile the lockfile', async () => {
+    const target = await createTarget();
+    await synchronizeRenovateOwnerAsync('sync', target, { runLockfileAsync });
+    const operations: string[] = [];
+
+    await synchronizeRenovateOwnerAsync('status', target, {
+      runLockfileAsync: (operation) => {
+        operations.push(operation);
+        return Promise.resolve();
+      },
+    });
+
+    expect(operations).toEqual([]);
+  });
 });
 
 test('preserves the Renovate-managed digest during owner synchronization', async () => {

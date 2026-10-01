@@ -34,10 +34,6 @@ export async function synchronizeRenovateOwnerAsync(
   if (outdatedPaths.length > 0) {
     throw new Error(`Stale Devtools owner policy artifacts: ${outdatedPaths.join(', ')}`);
   }
-
-  if (operation === 'status') {
-    await (options.runLockfileAsync ?? runBunLockfileAsync)(operation, target);
-  }
 }
 
 type OwnerSyncOperation = 'status' | 'sync';
@@ -160,8 +156,6 @@ async function runBunLockfileAsync(
     '--lockfile-only',
     '--registry=https://registry.npmjs.org',
   ];
-  if (operation === 'status') args.push('--frozen-lockfile');
-
   await new Promise<void>((resolvePromise, rejectPromise) => {
     const child = spawn('bun', args, { stdio: 'inherit' });
     child.once('error', rejectPromise);
