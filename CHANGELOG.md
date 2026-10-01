@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.60
+
+### Patch Changes
+
+- fed7e4a: Update Renovate-managed workflows.
+
 ## 2.0.59
 
 ### Patch Changes
