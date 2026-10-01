@@ -34,7 +34,6 @@ export async function synchronizeRenovateOwnerAsync(
   if (outdatedPaths.length > 0) {
     throw new Error(`Stale Devtools owner policy artifacts: ${outdatedPaths.join(', ')}`);
   }
-
 }
 
 type OwnerSyncOperation = 'status' | 'sync';
