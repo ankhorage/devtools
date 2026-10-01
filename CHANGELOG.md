@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.33
+
+### Patch Changes
+
+- f62d5b5: Stop enforcing frozen lockfile installs in generic Devtools-managed CI and release workflows, and keep Renovate-owner status checks lockfile-independent.
+
 ## 2.0.32
 
 ### Patch Changes
