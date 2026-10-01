@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.25
+
+### Patch Changes
+
+- 08e3465: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/doctor`.
+
 ## 2.0.24
 
 ### Patch Changes
