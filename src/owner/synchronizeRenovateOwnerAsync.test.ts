@@ -67,8 +67,9 @@ describe('Devtools Renovate owner synchronization', () => {
     const operations: string[] = [];
 
     await synchronizeRenovateOwnerAsync('status', target, {
-      runLockfileAsync: async (operation) => {
+      runLockfileAsync: (operation) => {
         operations.push(operation);
+        return Promise.resolve();
       },
     });
 
