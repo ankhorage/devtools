@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.23
+
+### Patch Changes
+
+- a3050db: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`.
+
 ## 2.0.22
 
 ### Patch Changes
