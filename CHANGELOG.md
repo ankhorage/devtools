@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.0.17
+
+### Patch Changes
+
+- 35642b5: Update Devtools-owned dependencies: `typescript-eslint`.
+
+## 2.0.16
+
+### Patch Changes
+
+- 796978a: Update Devtools-owned dependencies: `@ankhorage/apm`, `@ankhorage/contracts`.
+
+## 2.0.15
+
+### Patch Changes
+
+- f0dd892: Update Devtools-owned dependencies: `@ankhorage/apm`.
+
+## 2.0.14
+
+### Patch Changes
+
+- 168b11d: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@ankhorage/paradox`, `@ankhorage/project-detector`.
+
 ## 2.0.13
 
 ### Patch Changes
