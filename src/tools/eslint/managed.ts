@@ -1,6 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+import { EXAMPLES_ESLINT_OWNERSHIP_MARKER } from '../../constants/eslint.js';
 import type { ManagedFileDefinition } from '../shared/managedFiles.js';
 
 const ESLINT_CONFIG = `import { createConfig } from '@ankhorage/devtools/eslint';
@@ -21,7 +22,6 @@ export default [
 const EMPTY_LOCAL_CONFIG = `export default [];
 `;
 
-const EXAMPLES_OWNERSHIP_MARKER = '// This file is managed by @ankhorage/devtools.\n';
 const IGNORED_EXAMPLE_DIRECTORY_NAMES = new Set([
   '.expo',
   '.next',
@@ -34,7 +34,7 @@ const IGNORED_EXAMPLE_DIRECTORY_NAMES = new Set([
   'templates',
 ]);
 
-const ESLINT_EXAMPLES_CONFIG = `${EXAMPLES_OWNERSHIP_MARKER}import { existsSync } from 'node:fs';
+const ESLINT_EXAMPLES_CONFIG = `${EXAMPLES_ESLINT_OWNERSHIP_MARKER}import { existsSync } from 'node:fs';
 
 import { createConfig } from '@ankhorage/devtools/eslint';
 import localConfig from './eslint.local.config.mjs';
@@ -129,7 +129,7 @@ async function assertExamplesConfigOwnershipAsync(targetDirectory: string): Prom
     if (isNodeError(error) && error.code === 'ENOENT') return;
     throw error;
   }
-  if (!contents.startsWith(EXAMPLES_OWNERSHIP_MARKER)) {
+  if (!contents.startsWith(EXAMPLES_ESLINT_OWNERSHIP_MARKER)) {
     throw new Error(
       'Cannot replace consumer-owned eslint.examples.config.mjs. ' +
         'Move its repository-specific overrides into eslint.local.config.mjs, keeping their ' +

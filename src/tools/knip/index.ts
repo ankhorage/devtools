@@ -10,9 +10,11 @@
  *
  * @readme
  */
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 import type { KnipConfig } from 'knip';
+
+import { EXAMPLES_ESLINT_OWNERSHIP_MARKER } from '../../constants/eslint.js';
 
 export interface DevtoolsKnipWorkspaceConfigOptions {
   readonly entry?: string[];
@@ -41,7 +43,7 @@ const MANAGED_EXAMPLES_ESLINT_CONFIG = 'eslint.examples.config.mjs';
 export function createKnipConfig(options: DevtoolsKnipConfigOptions = {}): KnipConfig {
   const ignoredFiles = [
     ...(options.ignoreFiles ?? []),
-    ...(existsSync(MANAGED_EXAMPLES_ESLINT_CONFIG) ? [MANAGED_EXAMPLES_ESLINT_CONFIG] : []),
+    ...(hasManagedExamplesEslintConfig() ? [MANAGED_EXAMPLES_ESLINT_CONFIG] : []),
   ];
   return {
     ...(options.entry === undefined ? {} : { entry: options.entry }),
@@ -78,4 +80,14 @@ export function createKnipMonorepoConfig(
   }
 
   return createKnipConfig({ workspaces });
+}
+
+/*** Report whether the examples ESLint config is owned by Devtools. */
+function hasManagedExamplesEslintConfig(): boolean {
+  return (
+    existsSync(MANAGED_EXAMPLES_ESLINT_CONFIG) &&
+    readFileSync(MANAGED_EXAMPLES_ESLINT_CONFIG, 'utf8').startsWith(
+      EXAMPLES_ESLINT_OWNERSHIP_MARKER,
+    )
+  );
 }
