@@ -41,10 +41,7 @@ describe('createKnipConfig', () => {
       process.chdir(target);
       expect(createKnipConfig()).toEqual({});
 
-      writeFileSync(
-        examplesConfig,
-        `${EXAMPLES_ESLINT_OWNERSHIP_MARKER}export default [];\n`,
-      );
+      writeFileSync(examplesConfig, `${EXAMPLES_ESLINT_OWNERSHIP_MARKER}export default [];\n`);
       expect(createKnipConfig()).toEqual({ ignoreFiles: ['eslint.examples.config.mjs'] });
       expect(createKnipConfig({ ignoreFiles: ['fixture.ts'] })).toEqual({
         ignoreFiles: ['fixture.ts', 'eslint.examples.config.mjs'],
