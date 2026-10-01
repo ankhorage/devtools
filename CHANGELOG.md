@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.51
+
+### Patch Changes
+
+- 1b7c1a0: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@ankhorage/paradox`.
+
 ## 2.0.50
 
 ### Patch Changes
