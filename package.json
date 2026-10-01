@@ -141,7 +141,7 @@
     "knip": "^6.39.0",
     "prettier": "^3.9.9",
     "typescript-eslint": "^8.71.0",
-    "@ankhorage/contracts": "^22.8.30",
+    "@ankhorage/contracts": "^22.8.31",
     "typescript": "~6.0.3",
     "@ankhorage/policy": "^0.6.0"
   },
