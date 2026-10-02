@@ -30,7 +30,7 @@
         "typescript-eslint": "^8.71.0",
       },
       "devDependencies": {
-        "@ankhorage/ankh": "^0.10.43",
+        "@ankhorage/ankh": "^0.10.44",
         "@ankhorage/doctor": "0.11.51",
         "@ankhorage/paradox": "^0.2.19",
         "@techstark/opencv-js": "^5.0.0-release.1",
@@ -41,7 +41,7 @@
     },
   },
   "packages": {
-    "@ankhorage/ankh": ["@ankhorage/ankh@0.10.43", "", { "dependencies": { "@ankhorage/contracts": "^22.0.1", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-N1NeXA6ZQ3/DtPHwSj2kI8fEVBKnrmILprrjgmPi0bjLrzk/yZ4JCVToDqJMv1NkrCzHCwCy0oO99Na4PezcYQ=="],
+    "@ankhorage/ankh": ["@ankhorage/ankh@0.10.44", "", { "dependencies": { "@ankhorage/contracts": "^22.0.1", "yaml": "^2.9.1" }, "bin": { "ankh": "dist/bin.js" } }, "sha512-7auJ7UEfLDjTFVsOpd7f2p21tH1GXSoLSOasxe0Uv7ix54NrdO8/n8MmkyuXEvWZ3V96GQ9EyUvBQbrf0n8BFQ=="],
 
     "@ankhorage/apm": ["@ankhorage/apm@0.8.13", "", { "dependencies": { "@ankhorage/project-detector": "^0.1.0", "@ankhorage/utility": "^1.4.0", "jsonc-parser": "^3.3.1", "semver": "^7.8.5", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.10.4" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "apm": "dist/cli/runAsync.js" } }, "sha512-5ZzR2/ZYaoWaNux7ZY3gkDMI/NuxGHlnqt6lHY6cmy2ePvtv5g5YCwVsqXwYK3Dw8f+vJe6lLWJMt88oSrQX8Q=="],
 
