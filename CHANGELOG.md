@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.65
+
+### Patch Changes
+
+- 9013d92: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/paradox`.
+
 ## 2.0.64
 
 ### Patch Changes
