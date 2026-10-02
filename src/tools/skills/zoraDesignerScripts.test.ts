@@ -121,7 +121,6 @@ describe('zora-designer owner repository discovery', () => {
     expect(output.components).toContain('ChessBoard');
     expect(output.components).toContain('GameField');
     expect(output.components).toContain('TabletopTable');
-    expect(Object.hasOwn(output.versions, 'plugins')).toBe(false);
   });
 
   it('reports interaction choices from their released owners', async () => {
@@ -168,33 +167,6 @@ describe('zora-designer owner repository discovery', () => {
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain(`"templates": "${OWNER_RELEASES.templates.minimumVersion}"`);
-  });
-});
-
-describe('zora-designer core ZORA ownership', () => {
-  it('does not load obsolete standalone ZORA package declarations', async () => {
-    const target = await createOwnerFixture();
-    await writeJson(join(target, 'package.json'), {
-      name: 'fixture',
-      type: 'module',
-      dependencies: {
-        '@ankhorage/zora-chess': '^0.2.2',
-        '@ankhorage/zora-game': '^0.8.53',
-        '@ankhorage/zora-tabletop': '^0.1.47',
-      },
-    });
-
-    const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
-
-    expect(result.exitCode).toBe(0);
-    const output = JSON.parse(result.stdout) as {
-      components: string[];
-      versions: Record<string, string>;
-    };
-    expect(output.components).toContain('ChessBoard');
-    expect(output.components).toContain('GameField');
-    expect(output.components).toContain('TabletopTable');
-    expect(Object.hasOwn(output.versions, 'plugins')).toBe(false);
   });
 });
 

@@ -68,10 +68,10 @@ it('uses core Tabletop metadata and keeps unavailable OCR supplementary', async 
   const output = JSON.parse(result.stdout) as {
     componentNames: string[];
     diagnostics: { kind: string }[];
-    owners: Record<string, unknown>;
+    owners: { zora: string };
   };
   expect(output.componentNames).toContain('TabletopTable');
-  expect(Object.hasOwn(output.owners, 'plugins')).toBe(false);
+  expect(output.owners.zora).toBe(OWNER_RELEASES.zora.minimumVersion);
   expect(output.diagnostics.some((diagnostic) => diagnostic.kind === 'ocr')).toBe(true);
 });
 
