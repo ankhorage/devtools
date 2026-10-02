@@ -88,7 +88,7 @@ The analyzer returns:
 - aggregate confidence;
 - ranked component candidates by region;
 - unresolved diagnostics;
-- the exact composed component names and owner/plugin version provenance used for the pass.
+- the exact component names and owner version provenance used for the pass.
 
 Use the generated `ScreenSpec` as the structural baseline. Do not discard a high-confidence exact
 metadata match merely because another component looks visually similar.
