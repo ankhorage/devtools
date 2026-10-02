@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.116",
+      "value": "v2.1.0",
       "color": "cb3837"
     },
     {
@@ -82,7 +82,7 @@
     {
       "ruleId": "documentation.public-function.description",
       "severity": "warning",
-      "message": "Public function createConfig has no Paradox description.",
+      "message": "Exported function createConfig has no documentation description.",
       "sourcePath": "src/tools/eslint/index.ts",
       "line": 77
     }

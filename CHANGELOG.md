@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0
+
+### Minor Changes
+
+- 15fa294: Replace @ankhorage/policy with the dedicated Rules providers, update managed documentation-rule
+  ownership, and align the Devtools-owned Doctor and Paradox toolchain with their Rules-based releases.
+
 ## 2.0.116
 
 ### Patch Changes
