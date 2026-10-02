@@ -95,9 +95,9 @@ describe('package metadata', () => {
     expect(packageJson.scripts).not.toHaveProperty('knip');
     const { dependencies } = packageJson;
     if (!isRecord(dependencies)) throw new Error('package.json dependencies must be an object.');
-    const policyRange = dependencies['@ankhorage/policy'];
-    expect(policyRange).toBeString();
-    expect(policyRange).toMatch(CARET_SEMVER_RANGE);
+    const repositoryRulesRange = dependencies['@ankhorage/rules-repository'];
+    expect(repositoryRulesRange).toBeString();
+    expect(repositoryRulesRange).toMatch(CARET_SEMVER_RANGE);
     expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
     expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
   });

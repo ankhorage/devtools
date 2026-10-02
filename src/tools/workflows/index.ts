@@ -1,7 +1,7 @@
 import { access } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
@@ -45,7 +45,7 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
         structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
         bunVersion: DEVTOOLS_BUN_RUNTIME_POLICY.version,
         doctorVersion: readCurrentDoctorVersion(),
-        nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
+        nodeVersion: REPOSITORY_RULE_METADATA.runtime.node.setupVersion,
         pkgvizAudit: await resolvePkgvizAuditPolicyAsync(targetDirectory),
       }),
   };
@@ -62,7 +62,7 @@ function createRenovateWorkflowDefinition(): ManagedFileDefinition {
         structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
         bunVersion: DEVTOOLS_BUN_RUNTIME_POLICY.version,
         doctorVersion: readCurrentDoctorVersion(),
-        nodeVersion: REPOSITORY_POLICY.runtime.node.setupVersion,
+        nodeVersion: REPOSITORY_RULE_METADATA.runtime.node.setupVersion,
       }),
   };
 }

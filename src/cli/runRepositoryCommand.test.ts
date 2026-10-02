@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
@@ -25,7 +25,7 @@ test('syncs only the selected concern and aggregate status reports drift', async
 
   expect((await runRepositoryCommand(workflowsSync, [], context)).exitCode).toBe(0);
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
-    `bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`,
+    `bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`,
   );
   const doctorVersion = readCurrentDoctorVersion();
   expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
@@ -81,10 +81,10 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
     /^\^\d+\.\d+\.\d+$/u,
   );
   expect(readNestedValue(packageJson, 'devDependencies', '@types/bun')).toBe(
-    REPOSITORY_POLICY.runtime.bun.typesRange,
+    REPOSITORY_RULE_METADATA.runtime.bun.typesRange,
   );
   expect(readProperty(packageJson, 'packageManager')).toBe(
-    REPOSITORY_POLICY.runtime.bun.packageManager,
+    REPOSITORY_RULE_METADATA.runtime.bun.packageManager,
   );
   expect(context.dependencySyncs).toBe(1);
   expect(context.dependencySyncObservedManagedFiles).toBe(true);

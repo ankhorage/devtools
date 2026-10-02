@@ -2,7 +2,7 @@ Shared development tools and repository standards for Ankhorage TypeScript proje
 
 ## What it owns
 
-`@ankhorage/policy` is the source of truth for canonical Ankhorage policy. `@ankhorage/devtools` is the execution and synchronization layer for these repository concerns:
+`@ankhorage/rules-repository`, `@ankhorage/rules-architecture`, and `@ankhorage/rules-documentation` own canonical Ankhorage rules. `@ankhorage/devtools` is the execution and synchronization layer for these repository concerns:
 
 ```text
 src/

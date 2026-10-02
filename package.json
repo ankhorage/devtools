@@ -122,7 +122,9 @@
   },
   "dependencies": {
     "@ankhorage/apm": "^0.8.13",
+    "@ankhorage/contracts": "^22.8.93",
     "@ankhorage/project-detector": "^0.3.3",
+    "@ankhorage/rules-repository": "^0.2.0",
     "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
     "@eslint/compat": "^2.1.1",
@@ -140,15 +142,13 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "knip": "^6.39.0",
     "prettier": "^3.9.9",
-    "typescript-eslint": "^8.71.0",
-    "@ankhorage/contracts": "^22.8.93",
     "typescript": "~6.0.3",
-    "@ankhorage/policy": "^0.6.0"
+    "typescript-eslint": "^8.71.0"
   },
   "devDependencies": {
-    "@ankhorage/paradox": "^0.2.25",
+    "@ankhorage/paradox": "^0.2.26",
     "@ankhorage/ankh": "^0.10.80",
-    "@ankhorage/doctor": "0.11.94",
+    "@ankhorage/doctor": "0.12.0",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.2",
     "@types/node": "^26.6.4",

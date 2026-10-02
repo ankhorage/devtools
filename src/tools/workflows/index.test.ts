@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
 import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
@@ -20,8 +20,10 @@ describe('managed workflows', () => {
     for (const definition of workflowManagedFiles.slice(0, 2)) {
       expect(definition.render).toBeDefined();
       const rendered = await definition.render?.('.');
-      expect(rendered).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
-      expect(rendered).toContain(`node-version: '${REPOSITORY_POLICY.runtime.node.setupVersion}'`);
+      expect(rendered).toContain(`bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`);
+      expect(rendered).toContain(
+        `node-version: '${REPOSITORY_RULE_METADATA.runtime.node.setupVersion}'`,
+      );
       expect(rendered).not.toContain('__ANKH_BUN_VERSION__');
       expect(rendered).not.toContain('__ANKH_NODE_VERSION__');
       expect(rendered).not.toContain('__ANKH_CHANGESETS_');
@@ -32,9 +34,9 @@ describe('managed workflows', () => {
     const ci = await workflowManagedFiles[0].render?.('.');
     const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(ci).toContain(REPOSITORY_POLICY.changesets.workflowCommands.status);
-    expect(release).toContain(REPOSITORY_POLICY.changesets.workflowCommands.version);
-    expect(release).toContain(REPOSITORY_POLICY.changesets.workflowCommands.publish);
+    expect(ci).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.status);
+    expect(release).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.version);
+    expect(release).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.publish);
     expect(release).toContain('id: release');
     expect(release).toContain('git checkout -B main origin/main');
     expect(release).toContain('git rebase origin/main');
@@ -45,29 +47,29 @@ describe('managed workflows', () => {
     expect(release).toContain('Finalize Changesets v3 tag and GitHub release');
     expect(release).not.toContain('bunx changeset');
   });
+});
 
-  test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
-    const release = await workflowManagedFiles[1].render?.('.');
+test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
+  const release = await workflowManagedFiles[1].render?.('.');
 
-    expect(release).toContain(
-      'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
-    );
-    expect(release).toContain('repositories: renovate');
-    expect(release).toContain('permission-contents: write');
-    expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
-    expect(release).not.toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
-    expect(release).toContain('!/^@ankhorage\\/[a-z0-9][a-z0-9-]*$/.test');
-    expect(release).toContain("event_type: 'package-release'");
-    expect(release).not.toContain("event_type: 'devtools-release'");
-    expect(release).toContain('package_name: release.name');
-    expect(release).toContain('version: release.version');
-    expect(release).toContain('source_repository: release.sourceRepository');
-    expect(release).toContain('PUBLISHED_SOURCE_REPOSITORY: ${{ github.repository }}');
-    expect(release).toContain("repo: 'renovate'");
-    expect(release).toContain(
-      'Changesets must report one exact published Ankhorage package identity.',
-    );
-  });
+  expect(release).toContain(
+    'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
+  );
+  expect(release).toContain('repositories: renovate');
+  expect(release).toContain('permission-contents: write');
+  expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
+  expect(release).not.toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
+  expect(release).toContain('!/^@ankhorage\\/[a-z0-9][a-z0-9-]*$/.test');
+  expect(release).toContain("event_type: 'package-release'");
+  expect(release).not.toContain("event_type: 'devtools-release'");
+  expect(release).toContain('package_name: release.name');
+  expect(release).toContain('version: release.version');
+  expect(release).toContain('source_repository: release.sourceRepository');
+  expect(release).toContain('PUBLISHED_SOURCE_REPOSITORY: ${{ github.repository }}');
+  expect(release).toContain("repo: 'renovate'");
+  expect(release).toContain(
+    'Changesets must report one exact published Ankhorage package identity.',
+  );
 });
 
 test('fails release with an actionable diagnostic when the scoped App token is unavailable', async () => {
@@ -93,7 +95,9 @@ test('diagnoses npm scope authorization when an initial package publish fails', 
   expect(release).toContain('package_absent=false');
   expect(release).toContain('npm view "$package_name" version --json > "$registry_evidence"');
   expect(release).toContain("p.error?.code !== 'E404'");
-  expect(release).toContain(`if ! ${REPOSITORY_POLICY.changesets.workflowCommands.publish}; then`);
+  expect(release).toContain(
+    `if ! ${REPOSITORY_RULE_METADATA.changesets.workflowCommands.publish}; then`,
+  );
   expect(release).toContain('npm scope publish access required');
   expect(release).toContain('Read and write (publish and stage) access to the @ankhorage scope');
   expect(release).toContain('The already-versioned release commit on main is reusable');
@@ -105,7 +109,9 @@ test('regenerates structure evidence and docs after versioning before the releas
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
-  const versionIndex = release.indexOf(REPOSITORY_POLICY.changesets.workflowCommands.version);
+  const versionIndex = release.indexOf(
+    REPOSITORY_RULE_METADATA.changesets.workflowCommands.version,
+  );
   const structureIndex = release.indexOf('node ./dist/cli/bin/structure.js build .');
   const docsIndex = release.indexOf('bun run docs');
   const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');
@@ -154,12 +160,12 @@ describe('managed PKGViz audit', () => {
 
     const ci = await workflowManagedFiles[0].render?.(target);
 
-    expect(ci).toContain(REPOSITORY_POLICY.pkgvizAudit.command);
+    expect(ci).toContain(REPOSITORY_RULE_METADATA.pkgvizAudit.command);
     expect(ci).toContain(
-      `if: always() && hashFiles('${REPOSITORY_POLICY.pkgvizAudit.artifactPath}') != ''`,
+      `if: always() && hashFiles('${REPOSITORY_RULE_METADATA.pkgvizAudit.artifactPath}') != ''`,
     );
-    expect(ci).toContain(`name: ${REPOSITORY_POLICY.pkgvizAudit.artifactName}`);
-    expect(ci).toContain(`path: ${REPOSITORY_POLICY.pkgvizAudit.artifactPath}`);
+    expect(ci).toContain(`name: ${REPOSITORY_RULE_METADATA.pkgvizAudit.artifactName}`);
+    expect(ci).toContain(`path: ${REPOSITORY_RULE_METADATA.pkgvizAudit.artifactPath}`);
   });
 
   test('omits the audit from repositories without analyzable source', async () => {
@@ -187,8 +193,8 @@ describe('managed CI Changesets contract', () => {
     );
     expect(ci).toContain('No pull-request-owned Changeset files; no release requested.');
     expect(ci).toContain('Empty Changesets are not supported. Remove ');
-    expect(ci).toContain(REPOSITORY_POLICY.changesets.workflowCommands.status);
-    expect(REPOSITORY_POLICY.changesets.packageScripts['changeset:status']).toContain(
+    expect(ci).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.status);
+    expect(REPOSITORY_RULE_METADATA.changesets.packageScripts['changeset:status']).toContain(
       '--since=origin/main',
     );
   });

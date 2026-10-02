@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
 import { synchronizeRenovateOwnerAsync } from './synchronizeRenovateOwnerAsync.js';
@@ -32,15 +32,17 @@ describe('Devtools Renovate owner synchronization', () => {
     const first = await readManagedContents(target);
 
     expect(JSON.parse(first.packageJson)).toMatchObject({
-      packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
+      packageManager: REPOSITORY_RULE_METADATA.runtime.bun.packageManager,
       devDependencies: {
-        '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
+        '@types/bun': REPOSITORY_RULE_METADATA.runtime.bun.typesRange,
         typescript: '^5.9.3',
       },
     });
-    expect(first.ci).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
+    expect(first.ci).toContain(`bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`);
     expect(first.ci).toContain('node ./dist/cli/bin/apm-release.js validate . --allow-owner-code');
-    expect(first.release).toContain(`bun-version: '${REPOSITORY_POLICY.runtime.bun.version}'`);
+    expect(first.release).toContain(
+      `bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`,
+    );
     expect(first.release).toContain('node ./dist/cli/bin/apm-release.js sync .');
     expect(first.release).toContain('node ./dist/cli/bin/structure.js build .');
     expect(first.renovate).toMatch(/changeset\.yml@[0-9a-f]{40}/u);

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 export interface WorkflowPolicy {
   readonly bunVersion: string;
@@ -23,15 +23,15 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
     .replaceAll(PKGVIZ_AUDIT_STEPS_TOKEN, renderPkgvizAuditSteps(policy))
     .replaceAll(
       CHANGESETS_PUBLISH_COMMAND_TOKEN,
-      REPOSITORY_POLICY.changesets.workflowCommands.publish,
+      REPOSITORY_RULE_METADATA.changesets.workflowCommands.publish,
     )
     .replaceAll(
       CHANGESETS_STATUS_COMMAND_TOKEN,
-      REPOSITORY_POLICY.changesets.workflowCommands.status,
+      REPOSITORY_RULE_METADATA.changesets.workflowCommands.status,
     )
     .replaceAll(
       CHANGESETS_VERSION_COMMAND_TOKEN,
-      REPOSITORY_POLICY.changesets.workflowCommands.version,
+      REPOSITORY_RULE_METADATA.changesets.workflowCommands.version,
     )
     .replaceAll(DOCTOR_VERSION_TOKEN, policy.doctorVersion)
     .replaceAll(

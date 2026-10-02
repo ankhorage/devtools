@@ -1,7 +1,7 @@
 import { stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 /*** Resolve the central PKGViz CI audit for repositories with analyzable source. */
 export async function resolvePkgvizAuditPolicyAsync(
@@ -9,7 +9,7 @@ export async function resolvePkgvizAuditPolicyAsync(
 ): Promise<PkgvizAuditPolicy | undefined> {
   if (!(await hasSourceDirectoryAsync(targetDirectory))) return undefined;
 
-  const { artifactName, artifactPath, command } = REPOSITORY_POLICY.pkgvizAudit;
+  const { artifactName, artifactPath, command } = REPOSITORY_RULE_METADATA.pkgvizAudit;
   return { artifactName, artifactPath, command };
 }
 

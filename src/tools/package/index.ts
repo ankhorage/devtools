@@ -21,7 +21,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
 import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../../policy/bunRuntimePolicy.js';
@@ -141,12 +141,12 @@ export function applyManagedPackageContract(
   delete scripts.knip;
   Object.assign(scripts, STANDARD_SCRIPTS);
   if (changesetsEnabled) {
-    Object.assign(scripts, REPOSITORY_POLICY.changesets.packageScripts);
+    Object.assign(scripts, REPOSITORY_RULE_METADATA.changesets.packageScripts);
   }
   const devDependencies = removeOwnedDependencies(toRecord(manifest.devDependencies));
   const dependencies = toRecord(manifest.dependencies);
-  delete dependencies[REPOSITORY_POLICY.changesets.packageName];
-  delete devDependencies[REPOSITORY_POLICY.changesets.packageName];
+  delete dependencies[REPOSITORY_RULE_METADATA.changesets.packageName];
+  delete devDependencies[REPOSITORY_RULE_METADATA.changesets.packageName];
 
   applyDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion);
 
@@ -179,8 +179,8 @@ export function isManagedPackageContractCurrent(
   return (
     hasStandardScripts(scripts) &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
-    dependencies[REPOSITORY_POLICY.changesets.packageName] === undefined &&
-    devDependencies[REPOSITORY_POLICY.changesets.packageName] === undefined &&
+    dependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
+    devDependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
     hasCurrentChangesetsScripts(scripts, changesetsEnabled) &&
     hasCurrentDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion)
   );
@@ -281,7 +281,7 @@ function hasCurrentChangesetsScripts(
 ): boolean {
   return (
     !changesetsEnabled ||
-    Object.entries(REPOSITORY_POLICY.changesets.packageScripts).every(
+    Object.entries(REPOSITORY_RULE_METADATA.changesets.packageScripts).every(
       ([name, command]) => scripts[name] === command,
     )
   );
@@ -294,7 +294,7 @@ function isChangesetsEnabled(
 ): boolean {
   return (
     changesetsConfigExists ||
-    Object.keys(REPOSITORY_POLICY.changesets.packageScripts).some(
+    Object.keys(REPOSITORY_RULE_METADATA.changesets.packageScripts).some(
       (scriptName) => scripts[scriptName] !== undefined,
     )
   );
