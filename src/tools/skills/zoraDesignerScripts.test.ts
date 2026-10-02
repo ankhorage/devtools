@@ -109,13 +109,8 @@ describe('zora-designer owner API orchestration', () => {
 });
 
 describe('zora-designer owner repository discovery', () => {
-  it('uses core ZORA metadata without inspecting standalone zora-* dependencies', async () => {
+  it('discovers Chess, Game, and Tabletop components from core ZORA metadata', async () => {
     const target = await createOwnerFixture();
-    await writeJson(join(target, 'package.json'), {
-      name: 'fixture',
-      type: 'module',
-      dependencies: { '@ankhorage/zora-legacy-fixture': '^0.1.0' },
-    });
 
     const result = await runScript(OWNER_SCRIPT, ['inspect'], target);
     expect(result.exitCode).toBe(0);
@@ -123,8 +118,10 @@ describe('zora-designer owner repository discovery', () => {
       components: string[];
       versions: Record<string, string>;
     };
+    expect(output.components).toContain('ChessBoard');
+    expect(output.components).toContain('GameField');
     expect(output.components).toContain('TabletopTable');
-    expect(output.versions).not.toHaveProperty('plugins');
+    expect(output.versions.zora).toBe(OWNER_RELEASES.zora.minimumVersion);
   });
 
   it('reports interaction choices from their released owners', async () => {
