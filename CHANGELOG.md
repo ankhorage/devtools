@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.87
+
+### Patch Changes
+
+- 5cff04b: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/paradox`.
+
 ## 2.0.86
 
 ### Patch Changes
