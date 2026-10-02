@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.92
+
+### Patch Changes
+
+- ec57ffd: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/doctor`.
+
 ## 2.0.91
 
 ### Patch Changes
