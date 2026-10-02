@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.96
+
+### Patch Changes
+
+- 3f01e04: Keep managed ZORA Designer guidance current-only by describing core ZORA ownership without retired
+  package-model terminology.
+
 ## 2.0.95
 
 ### Patch Changes
