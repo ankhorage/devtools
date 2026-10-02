@@ -55,7 +55,7 @@ jobs:
 
       - name: Run lint
         run: |
-          bun run lint:fix
+          bun run lint:fix || true
           git diff -- . ':!bun.lock'
           exit 1
 
