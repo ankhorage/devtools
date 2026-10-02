@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.102
+
+### Patch Changes
+
+- 596aa43: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+- adc7d04: Update Renovate-managed workflows.
+
 ## 2.0.101
 
 ### Patch Changes
