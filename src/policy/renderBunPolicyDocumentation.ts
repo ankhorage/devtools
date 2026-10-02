@@ -1,6 +1,6 @@
-import { DEVTOOLS_BUN_RUNTIME_POLICY } from './bunRuntimePolicy.js';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
-/*** Render the managed Bun policy section while preserving the surrounding guide. */
+/*** Render the managed Bun Rules section while preserving the surrounding guide. */
 export function renderBunPolicyDocumentation(readme: string): string {
   const startIndex = readme.indexOf(README_POLICY_START);
   const endIndex = readme.indexOf(README_POLICY_END);
@@ -22,10 +22,11 @@ export function renderBunPolicyDocumentation(readme: string): string {
 
 /*** Format canonical runtime and type-package versions for the guide. */
 function renderReadmePolicy(): string {
+  const bun = REPOSITORY_RULE_METADATA.runtime.bun;
   return `\`\`\`text
-Bun runtime       ${DEVTOOLS_BUN_RUNTIME_POLICY.version}
-packageManager    ${DEVTOOLS_BUN_RUNTIME_POLICY.packageManager}
-@types/bun        ${DEVTOOLS_BUN_RUNTIME_POLICY.typesRange}
+Bun runtime       ${bun.version}
+packageManager    ${bun.packageManager}
+@types/bun        ${bun.typesRange}
 \`\`\``;
 }
 
