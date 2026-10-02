@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.93
+
+### Patch Changes
+
+- c8945ec: Remove the final ZORA plugin-era Designer fixtures and wording so managed skills describe only core
+  ZORA ownership.
+
 ## 2.0.92
 
 ### Patch Changes
