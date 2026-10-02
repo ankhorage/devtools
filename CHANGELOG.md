@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.69
+
+### Patch Changes
+
+- c80b406: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/paradox`.
+
 ## 2.0.68
 
 ### Patch Changes
