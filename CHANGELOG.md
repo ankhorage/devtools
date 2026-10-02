@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.71
+
+### Patch Changes
+
+- 2d33fd1: Update Devtools-owned dependencies: `@ankhorage/ankh`.
+
 ## 2.0.70
 
 ### Patch Changes
