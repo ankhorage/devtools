@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.85
+
+### Patch Changes
+
+- d714fc3: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/doctor`.
+
 ## 2.0.84
 
 ### Patch Changes
