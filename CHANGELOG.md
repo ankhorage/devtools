@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.94
+
+### Patch Changes
+
+- a0e772b: Update Renovate-managed workflows.
+
 ## 2.0.93
 
 ### Patch Changes
