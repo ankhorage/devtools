@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.90
+
+### Patch Changes
+
+- cb99004: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/doctor`.
+
 ## 2.0.89
 
 ### Patch Changes
