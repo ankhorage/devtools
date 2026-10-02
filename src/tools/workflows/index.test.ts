@@ -21,7 +21,9 @@ describe('managed workflows', () => {
       expect(definition.render).toBeDefined();
       const rendered = await definition.render?.('.');
       expect(rendered).toContain(`bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`);
-      expect(rendered).toContain(`node-version: '${REPOSITORY_RULE_METADATA.runtime.node.setupVersion}'`);
+      expect(rendered).toContain(
+        `node-version: '${REPOSITORY_RULE_METADATA.runtime.node.setupVersion}'`,
+      );
       expect(rendered).not.toContain('__ANKH_BUN_VERSION__');
       expect(rendered).not.toContain('__ANKH_NODE_VERSION__');
       expect(rendered).not.toContain('__ANKH_CHANGESETS_');
@@ -46,7 +48,9 @@ describe('managed workflows', () => {
     expect(release).not.toContain('bunx changeset');
   });
 
-  test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
+});
+
+test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
     const release = await workflowManagedFiles[1].render?.('.');
 
     expect(release).toContain(
@@ -68,7 +72,6 @@ describe('managed workflows', () => {
       'Changesets must report one exact published Ankhorage package identity.',
     );
   });
-});
 
 test('fails release with an actionable diagnostic when the scoped App token is unavailable', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
@@ -93,7 +96,9 @@ test('diagnoses npm scope authorization when an initial package publish fails', 
   expect(release).toContain('package_absent=false');
   expect(release).toContain('npm view "$package_name" version --json > "$registry_evidence"');
   expect(release).toContain("p.error?.code !== 'E404'");
-  expect(release).toContain(`if ! ${REPOSITORY_RULE_METADATA.changesets.workflowCommands.publish}; then`);
+  expect(release).toContain(
+    `if ! ${REPOSITORY_RULE_METADATA.changesets.workflowCommands.publish}; then`,
+  );
   expect(release).toContain('npm scope publish access required');
   expect(release).toContain('Read and write (publish and stage) access to the @ankhorage scope');
   expect(release).toContain('The already-versioned release commit on main is reusable');
@@ -105,7 +110,9 @@ test('regenerates structure evidence and docs after versioning before the releas
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
-  const versionIndex = release.indexOf(REPOSITORY_RULE_METADATA.changesets.workflowCommands.version);
+  const versionIndex = release.indexOf(
+    REPOSITORY_RULE_METADATA.changesets.workflowCommands.version,
+  );
   const structureIndex = release.indexOf('node ./dist/cli/bin/structure.js build .');
   const docsIndex = release.indexOf('bun run docs');
   const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');

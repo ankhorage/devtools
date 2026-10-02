@@ -40,7 +40,9 @@ describe('Devtools Renovate owner synchronization', () => {
     });
     expect(first.ci).toContain(`bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`);
     expect(first.ci).toContain('node ./dist/cli/bin/apm-release.js validate . --allow-owner-code');
-    expect(first.release).toContain(`bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`);
+    expect(first.release).toContain(
+      `bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`,
+    );
     expect(first.release).toContain('node ./dist/cli/bin/apm-release.js sync .');
     expect(first.release).toContain('node ./dist/cli/bin/structure.js build .');
     expect(first.renovate).toMatch(/changeset\.yml@[0-9a-f]{40}/u);
