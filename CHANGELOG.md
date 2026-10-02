@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.70
+
+### Patch Changes
+
+- b77164a: Update Renovate-managed workflows.
+- fa4465d: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/paradox`.
+
 ## 2.0.69
 
 ### Patch Changes
