@@ -3,7 +3,7 @@
 
 # @ankhorage/devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.96](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: warnings](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v2.0.97](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: checked](././paradox/badges/tests.svg) ![paradox: warnings](././paradox/badges/docs.svg)
 
 Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects
 
@@ -34,40 +34,6 @@ export default createConfig({
 ```
 
 This package contains 1 additional example. See the generated documentation for the complete set.
-
-## Configuration
-
-### Example
-
-```ts
-import { readFileSync } from 'node:fs';
-
-import { defineParadoxConfig } from '@ankhorage/paradox';
-
-import { renderBunPolicyDocumentation } from './src/policy/renderBunPolicyDocumentation.js';
-
-export default defineParadoxConfig({
-  mode: 'write',
-  docs: {
-    usage: {
-      description: renderBunPolicyDocumentation(
-        readFileSync(new URL('./src/cli/usage.md', import.meta.url), 'utf8'),
-      ),
-    },
-  },
-  package: {
-    root: '.',
-    entrypoints: [
-      'src/cli/index.ts',
-      'src/tools/eslint/index.ts',
-      'src/tools/knip/index.ts',
-      'src/apmRelease.ts',
-      'src/types/public.ts',
-    ],
-  },
-  output: { dir: './paradox' },
-});
-```
 
 ## Generated documentation
 

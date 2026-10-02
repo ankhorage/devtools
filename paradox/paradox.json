@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.0.96",
+      "value": "v2.0.97",
       "color": "cb3837"
     },
     {
@@ -87,11 +87,6 @@
       "line": 77
     }
   ],
-  "readmeConfig": {
-    "language": "ts",
-    "code": "import { readFileSync } from 'node:fs';\n\nimport { defineParadoxConfig } from '@ankhorage/paradox';\n\nimport { renderBunPolicyDocumentation } from './src/policy/renderBunPolicyDocumentation.js';\n\nexport default defineParadoxConfig({\n  mode: 'write',\n  docs: {\n    usage: {\n      description: renderBunPolicyDocumentation(\n        readFileSync(new URL('./src/cli/usage.md', import.meta.url), 'utf8'),\n      ),\n    },\n  },\n  package: {\n    root: '.',\n    entrypoints: [\n      'src/cli/index.ts',\n      'src/tools/eslint/index.ts',\n      'src/tools/knip/index.ts',\n      'src/apmRelease.ts',\n      'src/types/public.ts',\n    ],\n  },\n  output: { dir: './paradox' },\n});",
-    "sourcePath": "paradox.config.ts"
-  },
   "config": null,
   "entrypoints": [
     "src/apmRelease.ts",
