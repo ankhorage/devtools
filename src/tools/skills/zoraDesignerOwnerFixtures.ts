@@ -91,14 +91,14 @@ export const ZORA_COMPONENT_META = {
     category: 'layout',
     description: 'Screen layout root',
     directManifestNode: true,
-    allowedChildren: ['View', 'Box', 'Text', 'MissingElement', 'TabletopTable'],
+    allowedChildren: ['View', 'Box', 'Text', 'MissingElement', 'ChessBoard', 'GameField', 'TabletopTable'],
     props: {},
   },
   View: {
     name: 'View',
     category: 'layout',
     directManifestNode: true,
-    allowedChildren: ['Text', 'Box', 'TabletopTable'],
+    allowedChildren: ['Text', 'Box', 'ChessBoard', 'GameField', 'TabletopTable'],
     props: {},
   },
   Box: {
@@ -121,6 +121,20 @@ export const ZORA_COMPONENT_META = {
         description: 'Text was pressed.',
       },
     },
+  },
+  ChessBoard: {
+    name: 'ChessBoard',
+    category: 'pattern',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
+  },
+  GameField: {
+    name: 'GameField',
+    category: 'pattern',
+    directManifestNode: true,
+    allowedChildren: [],
+    props: {},
   },
   TabletopTable: {
     name: 'TabletopTable',
