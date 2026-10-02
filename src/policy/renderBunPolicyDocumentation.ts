@@ -22,11 +22,11 @@ export function renderBunPolicyDocumentation(readme: string): string {
 
 /*** Format canonical runtime and type-package versions for the guide. */
 function renderReadmePolicy(): string {
-  const bun = REPOSITORY_RULE_METADATA.runtime.bun;
+  const { packageManager, typesRange, version } = REPOSITORY_RULE_METADATA.runtime.bun;
   return `\`\`\`text
-Bun runtime       ${bun.version}
-packageManager    ${bun.packageManager}
-@types/bun        ${bun.typesRange}
+Bun runtime       ${version}
+packageManager    ${packageManager}
+@types/bun        ${typesRange}
 \`\`\``;
 }
 
