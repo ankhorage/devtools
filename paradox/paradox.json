@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.1.0",
+      "value": "v2.1.1",
       "color": "cb3837"
     },
     {
@@ -527,7 +527,6 @@
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/applyBunRuntimePolicy.ts",
-        "src/policy/bunRuntimePolicy.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
@@ -539,27 +538,15 @@
     {
       "path": "src/policy/applyBunRuntimePolicy.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/policy/bunRuntimePolicy.ts"
-      ],
+      "dependencies": [],
       "exports": [
         "applyBunRuntimePolicy"
       ]
     },
     {
-      "path": "src/policy/bunRuntimePolicy.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "DEVTOOLS_BUN_RUNTIME_POLICY"
-      ]
-    },
-    {
       "path": "src/policy/renderBunPolicyDocumentation.ts",
       "isEntrypoint": false,
-      "dependencies": [
-        "src/policy/bunRuntimePolicy.ts"
-      ],
+      "dependencies": [],
       "exports": [
         "renderBunPolicyDocumentation"
       ]
@@ -694,7 +681,6 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/policy/applyBunRuntimePolicy.ts",
-        "src/policy/bunRuntimePolicy.ts",
         "src/tools/shared/managedFiles.ts"
       ],
       "exports": [
@@ -820,7 +806,6 @@
       "dependencies": [
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
-        "src/policy/bunRuntimePolicy.ts",
         "src/policy/resolvePkgvizAuditPolicyAsync.ts",
         "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
@@ -3036,7 +3021,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 19,
+        "line": 18,
         "column": 1
       }
     },
@@ -3047,7 +3032,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 54,
+        "line": 53,
         "column": 1
       }
     },
@@ -3058,7 +3043,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 64,
+        "line": 63,
         "column": 1
       }
     },
@@ -3069,7 +3054,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 107,
+        "line": 106,
         "column": 1
       }
     },
@@ -3080,7 +3065,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 118,
+        "line": 117,
         "column": 1
       }
     },
@@ -3091,7 +3076,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 137,
+        "line": 136,
         "column": 1
       }
     },
@@ -3102,7 +3087,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 142,
+        "line": 141,
         "column": 1
       }
     },
@@ -3113,7 +3098,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 147,
+        "line": 146,
         "column": 1
       }
     },
@@ -3124,7 +3109,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 170,
+        "line": 169,
         "column": 1
       }
     },
@@ -3135,13 +3120,13 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 175,
+        "line": 174,
         "column": 1
       }
     },
     {
       "name": "applyBunRuntimePolicy",
-      "description": "Apply the Devtools-owned Bun runtime policy to one package manifest.",
+      "description": "Apply the Rules-owned Bun runtime contract to one package manifest.",
       "see": [],
       "security": [],
       "sourceLocation": {
@@ -3152,29 +3137,29 @@
     },
     {
       "name": "isRecord",
-      "description": null,
+      "description": "Narrow an unknown JSON-like value to a non-array record.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/policy/applyBunRuntimePolicy.ts",
-        "line": 15,
+        "line": 16,
         "column": 1
       }
     },
     {
       "name": "toRecord",
-      "description": null,
+      "description": "Copy a JSON-like value to a mutable record or return an empty record.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/policy/applyBunRuntimePolicy.ts",
-        "line": 19,
+        "line": 21,
         "column": 1
       }
     },
     {
       "name": "renderBunPolicyDocumentation",
-      "description": "Render the managed Bun policy section while preserving the surrounding guide.",
+      "description": "Render the managed Bun Rules section while preserving the surrounding guide.",
       "see": [],
       "security": [],
       "sourceLocation": {
@@ -3707,7 +3692,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 67,
+        "line": 66,
         "column": 1
       }
     },
@@ -3718,7 +3703,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 89,
+        "line": 88,
         "column": 1
       }
     },
@@ -3729,7 +3714,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 130,
+        "line": 129,
         "column": 1
       }
     },
@@ -3740,7 +3725,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 162,
+        "line": 161,
         "column": 1
       }
     },
@@ -3751,7 +3736,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 190,
+        "line": 189,
         "column": 1
       }
     },
@@ -3762,7 +3747,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 201,
+        "line": 200,
         "column": 1
       }
     },
@@ -3773,7 +3758,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 219,
+        "line": 218,
         "column": 1
       }
     },
@@ -3784,7 +3769,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 228,
+        "line": 227,
         "column": 1
       }
     },
@@ -3795,7 +3780,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 238,
+        "line": 237,
         "column": 1
       }
     },
@@ -3806,7 +3791,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 250,
+        "line": 249,
         "column": 1
       }
     },
@@ -3817,7 +3802,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 260,
+        "line": 259,
         "column": 1
       }
     },
@@ -3828,7 +3813,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 270,
+        "line": 269,
         "column": 1
       }
     },
@@ -3839,7 +3824,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 278,
+        "line": 277,
         "column": 1
       }
     },
@@ -3850,7 +3835,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 291,
+        "line": 290,
         "column": 1
       }
     },
@@ -3861,7 +3846,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 304,
+        "line": 303,
         "column": 1
       }
     },
@@ -3872,7 +3857,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 309,
+        "line": 308,
         "column": 1
       }
     },
@@ -3883,7 +3868,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 314,
+        "line": 313,
         "column": 1
       }
     },
@@ -3894,7 +3879,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 319,
+        "line": 318,
         "column": 1
       }
     },
@@ -4543,7 +4528,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 38,
+        "line": 37,
         "column": 1
       }
     },
@@ -4554,7 +4539,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 55,
+        "line": 54,
         "column": 1
       }
     },
@@ -4876,11 +4861,6 @@
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "toPath": "src/policy/bunRuntimePolicy.ts",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
@@ -4893,16 +4873,6 @@
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/renderWorkflowAsync.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromPath": "src/policy/applyBunRuntimePolicy.ts",
-        "toPath": "src/policy/bunRuntimePolicy.ts",
-        "sourcePath": "src/policy/applyBunRuntimePolicy.ts"
-      },
-      {
-        "fromPath": "src/policy/renderBunPolicyDocumentation.ts",
-        "toPath": "src/policy/bunRuntimePolicy.ts",
-        "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
       },
       {
         "fromPath": "src/types/public.ts",
@@ -5011,11 +4981,6 @@
       },
       {
         "fromPath": "src/tools/package/index.ts",
-        "toPath": "src/policy/bunRuntimePolicy.ts",
-        "sourcePath": "src/tools/package/index.ts"
-      },
-      {
-        "fromPath": "src/tools/package/index.ts",
         "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/tools/package/index.ts"
       },
@@ -5057,11 +5022,6 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
-        "sourcePath": "src/tools/workflows/index.ts"
-      },
-      {
-        "fromPath": "src/tools/workflows/index.ts",
-        "toPath": "src/policy/bunRuntimePolicy.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {

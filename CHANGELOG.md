@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.1
+
+### Patch Changes
+
+- 3a039b3: Remove the duplicated Devtools Bun runtime owner and consume canonical repository-rule metadata
+  directly from @ankhorage/rules-repository. Update active Devtools usage documentation to the Rules
+  owners.
+
 ## 2.1.0
 
 ### Minor Changes
