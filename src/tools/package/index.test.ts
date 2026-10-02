@@ -1,4 +1,4 @@
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { expect, test } from 'bun:test';
 
 import { applyManagedPackageContract, isManagedPackageContractCurrent } from './index.js';
@@ -14,7 +14,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
   );
 
   expect(updated).toMatchObject({
-    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
+    packageManager: REPOSITORY_RULE_METADATA.runtime.bun.packageManager,
     scripts: {
       test: 'bun test',
       lint: 'ankhorage-eslint . --max-warnings=0',
@@ -23,7 +23,7 @@ test('merges standard scripts and the shared devtools dependency', () => {
     devDependencies: {
       typescript: '^5.9.3',
       '@ankhorage/devtools': '^2.3.4',
-      '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
+      '@types/bun': REPOSITORY_RULE_METADATA.runtime.bun.typesRange,
     },
   });
   expect(readNestedValue(updated, 'devDependencies', 'eslint')).toBeUndefined();
@@ -135,14 +135,14 @@ test('moves devtools to devDependencies for ankh', () => {
   );
 
   expect(updated).toMatchObject({
-    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
+    packageManager: REPOSITORY_RULE_METADATA.runtime.bun.packageManager,
     dependencies: {
       yaml: '^2.8.1',
     },
     devDependencies: {
       typescript: '^5.9.3',
       '@ankhorage/devtools': '^2.3.4',
-      '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange,
+      '@types/bun': REPOSITORY_RULE_METADATA.runtime.bun.typesRange,
     },
   });
   expect(readNestedValue(updated, 'dependencies', '@ankhorage/devtools')).toBeUndefined();
@@ -198,10 +198,10 @@ test('applies only the Bun policy to devtools itself', () => {
 
   expect(updated).toMatchObject({
     name: '@ankhorage/devtools',
-    packageManager: REPOSITORY_POLICY.runtime.bun.packageManager,
+    packageManager: REPOSITORY_RULE_METADATA.runtime.bun.packageManager,
     dependencies: { eslint: '^10.2.0' },
     scripts: { lint: 'eslint .' },
-    devDependencies: { '@types/bun': REPOSITORY_POLICY.runtime.bun.typesRange },
+    devDependencies: { '@types/bun': REPOSITORY_RULE_METADATA.runtime.bun.typesRange },
   });
   expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
 });

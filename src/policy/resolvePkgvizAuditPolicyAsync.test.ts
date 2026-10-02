@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { REPOSITORY_POLICY } from '@ankhorage/policy/repository';
+import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
 import { resolvePkgvizAuditPolicyAsync } from './resolvePkgvizAuditPolicyAsync.js';
@@ -22,9 +22,9 @@ describe('PKGViz audit policy', () => {
     const policy = await resolvePkgvizAuditPolicyAsync(target);
 
     expect(policy).toEqual({
-      artifactName: REPOSITORY_POLICY.pkgvizAudit.artifactName,
-      artifactPath: REPOSITORY_POLICY.pkgvizAudit.artifactPath,
-      command: REPOSITORY_POLICY.pkgvizAudit.command,
+      artifactName: REPOSITORY_RULE_METADATA.pkgvizAudit.artifactName,
+      artifactPath: REPOSITORY_RULE_METADATA.pkgvizAudit.artifactPath,
+      command: REPOSITORY_RULE_METADATA.pkgvizAudit.command,
     });
   });
 
