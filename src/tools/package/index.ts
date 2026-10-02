@@ -24,7 +24,6 @@ import { resolve } from 'node:path';
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
-import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../../policy/bunRuntimePolicy.js';
 import type { ManagedFileStatus, ManagedFileSyncResult } from '../shared/managedFiles.js';
 
 const PACKAGE_PATH = 'package.json';
@@ -219,8 +218,8 @@ async function readPackageManifest(targetDirectory: string): Promise<PackageMani
 function hasCurrentBunRuntimePolicy(manifest: Record<string, unknown>): boolean {
   const devDependencies = toRecord(manifest.devDependencies);
   return (
-    manifest.packageManager === DEVTOOLS_BUN_RUNTIME_POLICY.packageManager &&
-    devDependencies[BUN_TYPES_PACKAGE_NAME] === DEVTOOLS_BUN_RUNTIME_POLICY.typesRange
+    manifest.packageManager === REPOSITORY_RULE_METADATA.runtime.bun.packageManager &&
+    devDependencies[BUN_TYPES_PACKAGE_NAME] === REPOSITORY_RULE_METADATA.runtime.bun.typesRange
   );
 }
 

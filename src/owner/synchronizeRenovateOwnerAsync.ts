@@ -7,7 +7,6 @@ import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { resolveApmReleaseCommandAsync } from '../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
-import { DEVTOOLS_BUN_RUNTIME_POLICY } from '../policy/bunRuntimePolicy.js';
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
 import {
@@ -108,7 +107,7 @@ async function createWorkflowPolicyAsync(targetDirectory: string): Promise<Workf
   return {
     apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
     structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
-    bunVersion: DEVTOOLS_BUN_RUNTIME_POLICY.version,
+    bunVersion: REPOSITORY_RULE_METADATA.runtime.bun.version,
     doctorVersion: readCurrentDoctorVersion(),
     nodeVersion: REPOSITORY_RULE_METADATA.runtime.node.setupVersion,
   };
