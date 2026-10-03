@@ -5,7 +5,7 @@ import { afterEach, expect, test } from 'bun:test';
 
 import { findDevtoolsCommandByPath } from '../../cli/commands.js';
 import { runRepositoryCommand } from '../../cli/runRepositoryCommand.js';
-import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
+import { inspectManagedFiles, syncManagedFiles } from '../../features/managed-files/managedFiles.js';
 import { gitignoreManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
