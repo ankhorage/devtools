@@ -10,9 +10,9 @@ const temporaryDirectories: string[] = [];
 
 afterEach(async () => {
   await Promise.all(
-    temporaryDirectories.splice(0).map((directory) =>
-      rm(directory, { recursive: true, force: true }),
-    ),
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => rm(directory, { recursive: true, force: true })),
   );
 });
 
@@ -65,14 +65,17 @@ test('restores package.json when Bun update fails', async () => {
   const original = '{"name":"fixture","devDependencies":{"@ankhorage/devtools":"^2.1.12"}}\n';
   await writeFile(packagePath, original, 'utf8');
 
-  await expect(
-    refreshAnkhorageBunResolutionsAsync(root, async (args) => {
-      if (args[0] === 'update') {
-        await writeFile(packagePath, '{"name":"changed"}\n', 'utf8');
-        throw new Error('resolver failed');
-      }
-    }),
-  ).rejects.toThrow('resolver failed');
+  const failure = await refreshAnkhorageBunResolutionsAsync(root, async (args) => {
+    if (args[0] === 'update') {
+      await writeFile(packagePath, '{"name":"changed"}\n', 'utf8');
+      throw new Error('resolver failed');
+    }
+  }).then(
+    () => undefined,
+    (error: unknown) => error,
+  );
 
+  expect(failure).toBeInstanceOf(Error);
+  expect(failure instanceof Error ? failure.message : '').toBe('resolver failed');
   expect(await readFile(packagePath, 'utf8')).toBe(original);
 });
