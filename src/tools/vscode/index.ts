@@ -1,4 +1,4 @@
-import type { ManagedFileDefinition } from '../shared/managedFiles.js';
+import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 
 export const vscodeManagedFiles = [
   {
