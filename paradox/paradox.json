@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.1.4",
+      "value": "v2.1.5",
       "color": "cb3837"
     },
     {
@@ -272,6 +272,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/commands.ts",
+        "src/features/managed-files/managedFiles.ts",
         "src/tools/agents/index.ts",
         "src/tools/eslint/managed.ts",
         "src/tools/gitignore/index.ts",
@@ -279,7 +280,6 @@
         "src/tools/package/index.ts",
         "src/tools/package/syncBunDependencies.ts",
         "src/tools/prettier/managed.ts",
-        "src/tools/shared/managedFiles.ts",
         "src/tools/skills/managed.ts",
         "src/tools/vscode/index.ts",
         "src/tools/workflows/index.ts"
@@ -426,6 +426,20 @@
       ]
     },
     {
+      "path": "src/features/managed-files/managedFiles.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "inspectManagedFiles",
+        "ManagedFileDefinition",
+        "ManagedFileStatus",
+        "ManagedFileSyncAction",
+        "ManagedFileSyncResult",
+        "resolveManagedTargetDirectory",
+        "syncManagedFiles"
+      ]
+    },
+    {
       "path": "src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -563,7 +577,7 @@
       "path": "src/tools/agents/index.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "agentsManagedFiles"
@@ -592,7 +606,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/constants/eslint.ts",
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "eslintManagedFiles"
@@ -646,7 +660,7 @@
       "path": "src/tools/gitignore/index.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "gitignoreManagedFiles"
@@ -670,7 +684,7 @@
       "path": "src/tools/knip/managed.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "knipManagedFiles"
@@ -680,8 +694,8 @@
       "path": "src/tools/package/index.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/policy/applyBunRuntimePolicy.ts",
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts",
+        "src/policy/applyBunRuntimePolicy.ts"
       ],
       "exports": [
         "applyManagedPackageContract",
@@ -695,7 +709,7 @@
       "path": "src/tools/package/syncBunDependencies.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "planBunDependencySync",
@@ -706,24 +720,10 @@
       "path": "src/tools/prettier/managed.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "prettierManagedFiles"
-      ]
-    },
-    {
-      "path": "src/tools/shared/managedFiles.ts",
-      "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "inspectManagedFiles",
-        "ManagedFileDefinition",
-        "ManagedFileStatus",
-        "ManagedFileSyncAction",
-        "ManagedFileSyncResult",
-        "resolveManagedTargetDirectory",
-        "syncManagedFiles"
       ]
     },
     {
@@ -741,7 +741,7 @@
       "path": "src/tools/skills/managed.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts",
+        "src/features/managed-files/managedFiles.ts",
         "src/tools/skills/manifest.ts",
         "src/tools/skills/selection.ts"
       ],
@@ -794,7 +794,7 @@
       "path": "src/tools/vscode/index.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/tools/shared/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts"
       ],
       "exports": [
         "vscodeManagedFiles"
@@ -805,9 +805,9 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "src/features/managed-files/managedFiles.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/resolvePkgvizAuditPolicyAsync.ts",
-        "src/tools/shared/managedFiles.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateConfigAsync.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
@@ -2421,6 +2421,149 @@
       }
     },
     {
+      "name": "resolveManagedTargetDirectory",
+      "description": "Resolve and validate the repository directory targeted by a managed-files operation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 38,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectManagedFiles",
+      "description": "Inspect managed files and symbolic links without mutating repository state.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncManagedFiles",
+      "description": "Synchronize managed files and symbolic links to their canonical definitions.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 70,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectManagedFileAsync",
+      "description": "Inspect one managed artifact against its file or symbolic-link definition.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCurrentFileAsync",
+      "description": "Compare one regular managed file with its canonical rendered contents.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCurrentSymlinkAsync",
+      "description": "Compare one managed symbolic link with its canonical relative target.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 146,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncManagedFileAsync",
+      "description": "Apply one managed artifact status to the target repository.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 155,
+        "column": 1
+      }
+    },
+    {
+      "name": "prepareManagedTargetAsync",
+      "description": "Remove an existing artifact only when writing through it would violate the target type.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 202,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeManagedArtifactAsync",
+      "description": "Write either a canonical regular file or a canonical symbolic link.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 217,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCanonicalContents",
+      "description": "Resolve canonical contents for one regular managed file definition.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 233,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertSingleContentSource",
+      "description": "Require every managed artifact to define exactly one canonical source.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 253,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMissingFileError",
+      "description": "Check whether an unknown failure means the target path does not exist.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 268,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNodeError",
+      "description": "Check whether an unknown failure carries a Node.js error code.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 273,
+        "column": 1
+      }
+    },
+    {
       "name": "createStructureGenerationWorkspacePort",
       "description": "Create the bounded filesystem/compiler adapter used by structure build and check commands.",
       "see": [],
@@ -3692,7 +3835,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 66,
+        "line": 69,
         "column": 1
       }
     },
@@ -3703,7 +3846,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 88,
+        "line": 91,
         "column": 1
       }
     },
@@ -3714,7 +3857,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 129,
+        "line": 132,
         "column": 1
       }
     },
@@ -3725,7 +3868,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 161,
+        "line": 164,
         "column": 1
       }
     },
@@ -3736,7 +3879,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 189,
+        "line": 192,
         "column": 1
       }
     },
@@ -3747,7 +3890,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 200,
+        "line": 203,
         "column": 1
       }
     },
@@ -3758,7 +3901,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 218,
+        "line": 221,
         "column": 1
       }
     },
@@ -3769,7 +3912,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 227,
+        "line": 230,
         "column": 1
       }
     },
@@ -3780,7 +3923,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 237,
+        "line": 240,
         "column": 1
       }
     },
@@ -3791,7 +3934,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 249,
+        "line": 252,
         "column": 1
       }
     },
@@ -3802,7 +3945,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 259,
+        "line": 262,
         "column": 1
       }
     },
@@ -3813,7 +3956,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 269,
+        "line": 272,
         "column": 1
       }
     },
@@ -3824,7 +3967,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 277,
+        "line": 280,
         "column": 1
       }
     },
@@ -3835,7 +3978,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 290,
+        "line": 293,
         "column": 1
       }
     },
@@ -3846,7 +3989,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 303,
+        "line": 306,
         "column": 1
       }
     },
@@ -3857,7 +4000,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 308,
+        "line": 311,
         "column": 1
       }
     },
@@ -3868,7 +4011,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 313,
+        "line": 316,
         "column": 1
       }
     },
@@ -3879,7 +4022,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 318,
+        "line": 321,
         "column": 1
       }
     },
@@ -3990,149 +4133,6 @@
       "sourceLocation": {
         "filePath": "src/tools/prettier/managed.ts",
         "line": 118,
-        "column": 1
-      }
-    },
-    {
-      "name": "resolveManagedTargetDirectory",
-      "description": "Resolve and validate the repository directory targeted by a managed-files operation.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 38,
-        "column": 1
-      }
-    },
-    {
-      "name": "inspectManagedFiles",
-      "description": "Inspect managed files and symbolic links without mutating repository state.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 59,
-        "column": 1
-      }
-    },
-    {
-      "name": "syncManagedFiles",
-      "description": "Synchronize managed files and symbolic links to their canonical definitions.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 70,
-        "column": 1
-      }
-    },
-    {
-      "name": "inspectManagedFileAsync",
-      "description": "Inspect one managed artifact against its file or symbolic-link definition.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 89,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCurrentFileAsync",
-      "description": "Compare one regular managed file with its canonical rendered contents.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 132,
-        "column": 1
-      }
-    },
-    {
-      "name": "isCurrentSymlinkAsync",
-      "description": "Compare one managed symbolic link with its canonical relative target.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 146,
-        "column": 1
-      }
-    },
-    {
-      "name": "syncManagedFileAsync",
-      "description": "Apply one managed artifact status to the target repository.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 155,
-        "column": 1
-      }
-    },
-    {
-      "name": "prepareManagedTargetAsync",
-      "description": "Remove an existing artifact only when writing through it would violate the target type.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 202,
-        "column": 1
-      }
-    },
-    {
-      "name": "writeManagedArtifactAsync",
-      "description": "Write either a canonical regular file or a canonical symbolic link.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 217,
-        "column": 1
-      }
-    },
-    {
-      "name": "readCanonicalContents",
-      "description": "Resolve canonical contents for one regular managed file definition.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 233,
-        "column": 1
-      }
-    },
-    {
-      "name": "assertSingleContentSource",
-      "description": "Require every managed artifact to define exactly one canonical source.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 253,
-        "column": 1
-      }
-    },
-    {
-      "name": "isMissingFileError",
-      "description": "Check whether an unknown failure means the target path does not exist.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 268,
-        "column": 1
-      }
-    },
-    {
-      "name": "isNodeError",
-      "description": "Check whether an unknown failure carries a Node.js error code.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/shared/managedFiles.ts",
-        "line": 273,
         "column": 1
       }
     },
@@ -4771,6 +4771,11 @@
       },
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/tools/agents/index.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
@@ -4802,11 +4807,6 @@
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/tools/prettier/managed.ts",
-        "sourcePath": "src/cli/runRepositoryCommand.ts"
-      },
-      {
-        "fromPath": "src/cli/runRepositoryCommand.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -4911,7 +4911,7 @@
       },
       {
         "fromPath": "src/tools/agents/index.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/agents/index.ts"
       },
       {
@@ -4931,7 +4931,7 @@
       },
       {
         "fromPath": "src/tools/eslint/managed.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/eslint/managed.ts"
       },
       {
@@ -4961,7 +4961,7 @@
       },
       {
         "fromPath": "src/tools/gitignore/index.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/gitignore/index.ts"
       },
       {
@@ -4971,8 +4971,13 @@
       },
       {
         "fromPath": "src/tools/knip/managed.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/knip/managed.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/tools/package/index.ts"
       },
       {
         "fromPath": "src/tools/package/index.ts",
@@ -4980,23 +4985,18 @@
         "sourcePath": "src/tools/package/index.ts"
       },
       {
-        "fromPath": "src/tools/package/index.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
-        "sourcePath": "src/tools/package/index.ts"
-      },
-      {
         "fromPath": "src/tools/package/syncBunDependencies.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/package/syncBunDependencies.ts"
       },
       {
         "fromPath": "src/tools/prettier/managed.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/prettier/managed.ts"
       },
       {
         "fromPath": "src/tools/skills/managed.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/skills/managed.ts"
       },
       {
@@ -5011,12 +5011,17 @@
       },
       {
         "fromPath": "src/tools/vscode/index.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/vscode/index.ts"
       },
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -5027,11 +5032,6 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
-        "sourcePath": "src/tools/workflows/index.ts"
-      },
-      {
-        "fromPath": "src/tools/workflows/index.ts",
-        "toPath": "src/tools/shared/managedFiles.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -5976,6 +5976,192 @@
         "sourcePath": "src/cli/bin/structure.ts"
       },
       {
+        "fromSymbol": "resolveManagedTargetDirectory",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedTargetDirectory",
+        "toSymbol": "stat",
+        "callExpression": "stat",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "src/features/managed-files/managedFiles.ts",
+        "toSymbol": "inspectManagedFileAsync",
+        "callExpression": "inspectManagedFileAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFiles",
+        "toSymbol": "inspectManagedFiles",
+        "callExpression": "inspectManagedFiles",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFiles",
+        "toSymbol": "syncManagedFileAsync",
+        "callExpression": "syncManagedFileAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "assertSingleContentSource",
+        "callExpression": "assertSingleContentSource",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "isApplicable",
+        "callExpression": "definition.isApplicable",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "isCurrentFileAsync",
+        "callExpression": "isCurrentFileAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "isCurrentSymlinkAsync",
+        "callExpression": "isCurrentSymlinkAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "isMissingFileError",
+        "callExpression": "isMissingFileError",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "isCurrentFileAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "isCurrentFileAsync",
+        "toSymbol": "readCanonicalContents",
+        "callExpression": "readCanonicalContents",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "isCurrentSymlinkAsync",
+        "toSymbol": "readlink",
+        "callExpression": "readlink",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "readCanonicalContents",
+        "callExpression": "readCanonicalContents",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "prepareManagedTargetAsync",
+        "callExpression": "prepareManagedTargetAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "syncManagedFileAsync",
+        "toSymbol": "writeManagedArtifactAsync",
+        "callExpression": "writeManagedArtifactAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "prepareManagedTargetAsync",
+        "toSymbol": "lstat",
+        "callExpression": "lstat",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "prepareManagedTargetAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "prepareManagedTargetAsync",
+        "toSymbol": "isMissingFileError",
+        "callExpression": "isMissingFileError",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "writeManagedArtifactAsync",
+        "toSymbol": "symlink",
+        "callExpression": "symlink",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "writeManagedArtifactAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "readCanonicalContents",
+        "toSymbol": "assertSingleContentSource",
+        "callExpression": "assertSingleContentSource",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "readCanonicalContents",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "readCanonicalContents",
+        "toSymbol": "render",
+        "callExpression": "definition.render",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "isMissingFileError",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
         "fromSymbol": "renderAgentsFile",
         "toSymbol": "readPackageManifest",
         "callExpression": "readPackageManifest",
@@ -6664,192 +6850,6 @@
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
         "sourcePath": "src/tools/prettier/managed.ts"
-      },
-      {
-        "fromSymbol": "resolveManagedTargetDirectory",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "resolveManagedTargetDirectory",
-        "toSymbol": "stat",
-        "callExpression": "stat",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "src/tools/shared/managedFiles.ts",
-        "toSymbol": "inspectManagedFileAsync",
-        "callExpression": "inspectManagedFileAsync",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFiles",
-        "toSymbol": "inspectManagedFiles",
-        "callExpression": "inspectManagedFiles",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFiles",
-        "toSymbol": "syncManagedFileAsync",
-        "callExpression": "syncManagedFileAsync",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "assertSingleContentSource",
-        "callExpression": "assertSingleContentSource",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "isApplicable",
-        "callExpression": "definition.isApplicable",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "lstat",
-        "callExpression": "lstat",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "isCurrentFileAsync",
-        "callExpression": "isCurrentFileAsync",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "isCurrentSymlinkAsync",
-        "callExpression": "isCurrentSymlinkAsync",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "inspectManagedFileAsync",
-        "toSymbol": "isMissingFileError",
-        "callExpression": "isMissingFileError",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "isCurrentFileAsync",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "isCurrentFileAsync",
-        "toSymbol": "readCanonicalContents",
-        "callExpression": "readCanonicalContents",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "isCurrentSymlinkAsync",
-        "toSymbol": "readlink",
-        "callExpression": "readlink",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "mkdir",
-        "callExpression": "mkdir",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "dirname",
-        "callExpression": "dirname",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "readCanonicalContents",
-        "callExpression": "readCanonicalContents",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "prepareManagedTargetAsync",
-        "callExpression": "prepareManagedTargetAsync",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "syncManagedFileAsync",
-        "toSymbol": "writeManagedArtifactAsync",
-        "callExpression": "writeManagedArtifactAsync",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "prepareManagedTargetAsync",
-        "toSymbol": "lstat",
-        "callExpression": "lstat",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "prepareManagedTargetAsync",
-        "toSymbol": "rm",
-        "callExpression": "rm",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "prepareManagedTargetAsync",
-        "toSymbol": "isMissingFileError",
-        "callExpression": "isMissingFileError",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "writeManagedArtifactAsync",
-        "toSymbol": "symlink",
-        "callExpression": "symlink",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "writeManagedArtifactAsync",
-        "toSymbol": "writeFile",
-        "callExpression": "writeFile",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "readCanonicalContents",
-        "toSymbol": "assertSingleContentSource",
-        "callExpression": "assertSingleContentSource",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "readCanonicalContents",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "readCanonicalContents",
-        "toSymbol": "render",
-        "callExpression": "definition.render",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
-      },
-      {
-        "fromSymbol": "isMissingFileError",
-        "toSymbol": "isNodeError",
-        "callExpression": "isNodeError",
-        "sourcePath": "src/tools/shared/managedFiles.ts"
       },
       {
         "fromSymbol": "createAssetFixture",

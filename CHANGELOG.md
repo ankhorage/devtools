@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.5
+
+### Patch Changes
+
+- 6ac217c: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/paradox`, `eslint`.
+
 ## 2.1.4
 
 ### Patch Changes
