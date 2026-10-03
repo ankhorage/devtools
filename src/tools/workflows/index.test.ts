@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
-import { inspectManagedFiles, syncManagedFiles } from '../shared/managedFiles.js';
+import { inspectManagedFiles, syncManagedFiles } from '../../features/managed-files/managedFiles.js';
 import { workflowManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
