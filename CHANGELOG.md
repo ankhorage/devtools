@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.7
+
+### Patch Changes
+
+- dc260bc: Preserve canonical `@performance` documentation metadata in the distributed coding-rules skill instead of rewriting supported tags as prose labels.
+
 ## 2.1.6
 
 ### Patch Changes
