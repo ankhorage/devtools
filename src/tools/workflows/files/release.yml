@@ -99,7 +99,19 @@ jobs:
             done
 
             if [ -n "$release_sha" ]; then
-              echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
+              release_tag="v$current_version"
+              tagged_sha="$(git rev-parse -q --verify "refs/tags/${release_tag}^{commit}" 2>/dev/null || true)"
+              if [ -n "$tagged_sha" ] && [ "$tagged_sha" != "$release_sha" ]; then
+                echo "::error title=Release tag mismatch::${release_tag} points to ${tagged_sha}, expected ${release_sha}."
+                exit 1
+              fi
+
+              if [ -n "$tagged_sha" ]; then
+                echo "Release tag ${release_tag} already points to ${release_sha}; resuming idempotent finalization."
+              else
+                echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
+              fi
+              git checkout --detach "$release_sha"
               echo "versioned=true" >> "$GITHUB_OUTPUT"
               echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
               echo "package_version=$current_version" >> "$GITHUB_OUTPUT"
