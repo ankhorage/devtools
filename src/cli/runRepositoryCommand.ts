@@ -19,7 +19,7 @@ import {
   type ManagedFileSyncResult,
   resolveManagedTargetDirectory,
   syncManagedFiles,
-} from '../tools/shared/managedFiles.js';
+} from '../features/managed-files/managedFiles.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
 import { workflowManagedFiles } from '../tools/workflows/index.js';
