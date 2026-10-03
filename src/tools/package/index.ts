@@ -23,8 +23,11 @@ import { resolve } from 'node:path';
 
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
+import type {
+  ManagedFileStatus,
+  ManagedFileSyncResult,
+} from '../../features/managed-files/managedFiles.js';
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
-import type { ManagedFileStatus, ManagedFileSyncResult } from '../../features/managed-files/managedFiles.js';
 
 const PACKAGE_PATH = 'package.json';
 const DEVTOOLS_PACKAGE_NAME = '@ankhorage/devtools';
