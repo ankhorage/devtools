@@ -1,3 +1,11 @@
+import {
+  inspectManagedFiles,
+  type ManagedFileDefinition,
+  type ManagedFileStatus,
+  type ManagedFileSyncResult,
+  resolveManagedTargetDirectory,
+  syncManagedFiles,
+} from '../features/managed-files/managedFiles.js';
 import { agentsManagedFiles } from '../tools/agents/index.js';
 import { eslintManagedFiles } from '../tools/eslint/managed.js';
 import { gitignoreManagedFiles } from '../tools/gitignore/index.js';
@@ -12,14 +20,6 @@ import {
   syncBunDependencies,
 } from '../tools/package/syncBunDependencies.js';
 import { prettierManagedFiles } from '../tools/prettier/managed.js';
-import {
-  inspectManagedFiles,
-  type ManagedFileDefinition,
-  type ManagedFileStatus,
-  type ManagedFileSyncResult,
-  resolveManagedTargetDirectory,
-  syncManagedFiles,
-} from '../features/managed-files/managedFiles.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
 import { workflowManagedFiles } from '../tools/workflows/index.js';
