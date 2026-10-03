@@ -47,6 +47,10 @@ function expectPackedRuntimeVerification(release: string): void {
     "const importConditions = new Set(['bun', 'default', 'import', 'node']);",
   );
   expect(release).toContain("const requireConditions = new Set(['default', 'node', 'require']);");
+  expect(release).toContain("const platformConditions = new Set(['browser', 'react-native']);");
+  expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
+  expect(release).toContain('const isPlatformOnlyRuntimeTarget = (target) =>');
+  expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return undefined;');
   expect(release).toContain("if (supportsLoader(target, importConditions)) return 'import';");
   expect(release).toContain("if (supportsLoader(target, requireConditions)) return 'require';");
   expect(release).toContain('if (exportsMap === undefined)');
@@ -89,4 +93,61 @@ function expectPublishedArtifactVerification(release: string): void {
   expect(release).toContain('Published npm artifact not ready at stage: ${last_stage}.');
   expect(release).toContain('attempt_pack_dir="$pack_dir/attempt-${attempt}"');
   expect(release).toContain('Verify published npm artifact from a fresh runner');
+}
+
+test('packed runtime loader selection distinguishes platform-only and server-capable exports', () => {
+  expect(selectPackedRuntimeLoader({ import: './dist/index.js' })).toBe('import');
+  expect(
+    selectPackedRuntimeLoader({
+      'react-native': './src/index.ts',
+      browser: './src/index.ts',
+      import: './dist/index.js',
+      default: './dist/index.js',
+    }),
+  ).toBeUndefined();
+  expect(
+    selectPackedRuntimeLoader({
+      browser: './dist/browser.js',
+      node: './dist/node.js',
+      import: './dist/index.js',
+    }),
+  ).toBe('import');
+});
+
+/*** Mirror the managed workflow's environment-aware packed runtime loader decision. */
+function selectPackedRuntimeLoader(target: unknown): 'import' | 'require' | undefined {
+  const importConditions = new Set(['bun', 'default', 'import', 'node']);
+  const requireConditions = new Set(['default', 'node', 'require']);
+  const platformConditions = new Set(['browser', 'react-native']);
+  const explicitServerConditions = new Set(['bun', 'node']);
+  const supportsLoader = (value: unknown, conditions: ReadonlySet<string>): boolean => {
+    if (typeof value === 'string') return true;
+    if (Array.isArray(value)) return value.some((entry) => supportsLoader(entry, conditions));
+    if (!isConditionMap(value)) return false;
+    return Object.entries(value).some(
+      ([condition, entry]) => conditions.has(condition) && supportsLoader(entry, conditions),
+    );
+  };
+  const declaresCondition = (value: unknown, conditions: ReadonlySet<string>): boolean => {
+    if (Array.isArray(value)) return value.some((entry) => declaresCondition(entry, conditions));
+    if (!isConditionMap(value)) return false;
+    return Object.entries(value).some(
+      ([condition, entry]) => conditions.has(condition) || declaresCondition(entry, conditions),
+    );
+  };
+
+  if (
+    declaresCondition(target, platformConditions) &&
+    !declaresCondition(target, explicitServerConditions)
+  ) {
+    return undefined;
+  }
+  if (supportsLoader(target, importConditions)) return 'import';
+  if (supportsLoader(target, requireConditions)) return 'require';
+  return undefined;
+}
+
+/*** Narrow conditional export maps used by the workflow contract fixture. */
+function isConditionMap(value: unknown): value is Readonly<Record<string, unknown>> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
