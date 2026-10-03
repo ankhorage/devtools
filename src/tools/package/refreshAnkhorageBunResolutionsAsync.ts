@@ -15,6 +15,7 @@ export async function refreshAnkhorageBunResolutionsAsync(
   const packagePath = resolve(targetDirectory, 'package.json');
   const manifest = await readFile(packagePath, 'utf8');
 
+  await runCommand(['install', '--lockfile-only', '--ignore-scripts'], targetDirectory);
   try {
     await runCommand(
       ['update', '@ankhorage/*', '--lockfile-only', '--ignore-scripts'],
