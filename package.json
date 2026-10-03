@@ -122,7 +122,7 @@
   },
   "dependencies": {
     "@ankhorage/apm": "^0.8.13",
-    "@ankhorage/contracts": "^22.8.99",
+    "@ankhorage/contracts": "^22.8.100",
     "@ankhorage/project-detector": "^0.3.3",
     "@ankhorage/rules-repository": "^0.2.0",
     "@ankhorage/utility": "^0.5.5",
