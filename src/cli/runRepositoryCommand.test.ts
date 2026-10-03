@@ -103,16 +103,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(
     await readFile(join(target, '.agents/skills/ankhorage-coding-rules/SKILL.md'), 'utf8'),
   ).toContain('name: ankhorage-coding-rules');
-  const workflowPath = join(target, '.github/workflows/renovate.yml');
-  const preservedDigest = 'f'.repeat(40);
-  const workflow = await readFile(workflowPath, 'utf8');
-  await writeFile(
-    workflowPath,
-    workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
-  );
-  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
-  expect(context.dependencySyncs).toBe(2);
-  expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
+  await assertRepeatedSyncPreservesRenovateDigest(target, context, sync);
 });
 
 test('migrates a Changesets repository and keeps the second sync byte-stable', async () => {
@@ -270,6 +261,23 @@ test('supports dry-run and validates arguments', async () => {
     'Only one target path may be provided.',
   );
 });
+
+async function assertRepeatedSyncPreservesRenovateDigest(
+  target: string,
+  context: ReturnType<typeof createContext>,
+  sync: ReturnType<typeof getRepositoryCommand>,
+): Promise<void> {
+  const workflowPath = join(target, '.github/workflows/renovate.yml');
+  const preservedDigest = 'f'.repeat(40);
+  const workflow = await readFile(workflowPath, 'utf8');
+  await writeFile(
+    workflowPath,
+    workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
+  );
+  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  expect(context.dependencySyncs).toBe(2);
+  expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
+}
 
 function getRepositoryCommand(path: readonly string[]) {
   const command = findDevtoolsCommandByPath(path);
