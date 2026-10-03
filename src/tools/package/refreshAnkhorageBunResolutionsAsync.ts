@@ -2,10 +2,7 @@ import { spawn } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-type BunCommandRunner = (
-  args: readonly string[],
-  targetDirectory: string,
-) => Promise<void>;
+type BunCommandRunner = (args: readonly string[], targetDirectory: string) => Promise<void>;
 
 /*** Refresh every Ankhorage package in a Bun lock within declared ranges without changing manifest ownership. */
 export async function refreshAnkhorageBunResolutionsAsync(
@@ -29,10 +26,7 @@ export async function refreshAnkhorageBunResolutionsAsync(
 }
 
 /*** Execute one Bun package-manager command with inherited output and exact exit handling. */
-async function runBunCommandAsync(
-  args: readonly string[],
-  targetDirectory: string,
-): Promise<void> {
+async function runBunCommandAsync(args: readonly string[], targetDirectory: string): Promise<void> {
   await new Promise<void>((resolvePromise, rejectPromise) => {
     const child = spawn('bun', [...args], { cwd: targetDirectory, stdio: 'inherit' });
     child.once('error', rejectPromise);
@@ -41,9 +35,7 @@ async function runBunCommandAsync(
         resolvePromise();
         return;
       }
-      rejectPromise(
-        new Error(`bun ${args.join(' ')} exited with code ${code ?? 'unknown'}.`),
-      );
+      rejectPromise(new Error(`bun ${args.join(' ')} exited with code ${code ?? 'unknown'}.`));
     });
   });
 }
