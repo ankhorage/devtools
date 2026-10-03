@@ -147,7 +147,7 @@
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.2.27",
-    "@ankhorage/ankh": "^0.10.84",
+    "@ankhorage/ankh": "^0.11.0",
     "@ankhorage/doctor": "0.12.6",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.2",
