@@ -143,7 +143,9 @@ test('managed release synchronizes main before build and recovers a matching his
   expect(release).toContain('git show "${candidate_sha}:package.json"');
   expect(release).toContain('if [ "$candidate_version" = "$current_version" ]; then');
   expect(release).toContain('release_tag="v$current_version"');
-  expect(release).toContain('tagged_sha="$(git rev-parse -q --verify "refs/tags/${release_tag}^{commit}"');
+  expect(release).toContain(
+    'tagged_sha="$(git rev-parse -q --verify "refs/tags/${release_tag}^{commit}"',
+  );
   expect(release).toContain('Release tag mismatch');
   expect(release).toContain('resuming idempotent finalization');
   expect(release).not.toContain('is already finalized at');
