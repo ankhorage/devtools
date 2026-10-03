@@ -2,4 +2,4 @@
 '@ankhorage/devtools': patch
 ---
 
-Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/doctor`, `@ankhorage/paradox`, `eslint`.
+Update Devtools-owned dependencies and move managed-file synchronization out of the deprecated `src/tools/shared` catch-all into feature ownership.
