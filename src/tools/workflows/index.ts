@@ -4,9 +4,9 @@ import { join } from 'node:path';
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
+import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { resolvePkgvizAuditPolicyAsync } from '../../policy/resolvePkgvizAuditPolicyAsync.js';
-import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
 import { renderRenovateConfigAsync } from './renderRenovateConfigAsync.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
