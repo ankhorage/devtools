@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.2
+
+### Patch Changes
+
+- c076e32: Update Renovate-managed workflows.
+
 ## 2.1.1
 
 ### Patch Changes
