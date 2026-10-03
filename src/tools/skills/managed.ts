@@ -6,7 +6,7 @@ import type {
   ManagedFileStatus,
   ManagedFileSyncAction,
   ManagedFileSyncResult,
-} from '../shared/managedFiles.js';
+} from '../../features/managed-files/managedFiles.js';
 import {
   assertManagedSkillPath,
   createManifestContents,

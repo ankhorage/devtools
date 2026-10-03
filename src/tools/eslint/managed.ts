@@ -2,7 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { EXAMPLES_ESLINT_OWNERSHIP_MARKER } from '../../constants/eslint.js';
-import type { ManagedFileDefinition } from '../shared/managedFiles.js';
+import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 
 const ESLINT_CONFIG = `import { createConfig } from '@ankhorage/devtools/eslint';
 import localConfig from './eslint.local.config.mjs';

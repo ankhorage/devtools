@@ -4,7 +4,7 @@ import { join, resolve } from 'node:path';
 import { afterEach, expect, test } from 'bun:test';
 import { ESLint } from 'eslint';
 
-import { syncManagedFiles } from '../shared/managedFiles.js';
+import { syncManagedFiles } from '../../features/managed-files/managedFiles.js';
 import { eslintManagedFiles } from './managed.js';
 
 const targets: string[] = [];

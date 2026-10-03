@@ -3,7 +3,7 @@ import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
 
-import { syncManagedFiles } from '../shared/managedFiles.js';
+import { syncManagedFiles } from '../../features/managed-files/managedFiles.js';
 import { agentsManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];

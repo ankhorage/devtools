@@ -1,7 +1,7 @@
 import { access, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-import type { ManagedFileDefinition } from '../shared/managedFiles.js';
+import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 
 const TRACKED_DOCUMENTATION_PATTERNS = new Set([
   'docs',

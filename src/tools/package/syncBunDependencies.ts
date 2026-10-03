@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import type { ManagedFileSyncResult } from '../shared/managedFiles.js';
+import type { ManagedFileSyncResult } from '../../features/managed-files/managedFiles.js';
 
 export function planBunDependencySync(targetDirectory: string): ManagedFileSyncResult {
   return {
