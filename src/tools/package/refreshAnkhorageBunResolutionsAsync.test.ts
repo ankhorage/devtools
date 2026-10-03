@@ -35,7 +35,6 @@ test('refreshes Ankhorage lock resolutions without changing package.json ownersh
   )}\n`;
   await writeFile(packagePath, original, 'utf8');
 
-  const commands: readonly string[][] = [];
   const recorded: string[][] = [];
   await refreshAnkhorageBunResolutionsAsync(root, async (args) => {
     recorded.push([...args]);
@@ -49,7 +48,6 @@ test('refreshes Ankhorage lock resolutions without changing package.json ownersh
     }
   });
 
-  expect(commands).toEqual([]);
   expect(recorded).toEqual([
     ['update', '@ankhorage/*', '--lockfile-only', '--ignore-scripts'],
     ['install', '--lockfile-only', '--ignore-scripts'],
