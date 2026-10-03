@@ -1,6 +1,7 @@
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { isRecord } from '@ankhorage/utility/object';
 import { afterEach, expect, test } from 'bun:test';
 
 import { refreshAnkhorageBunResolutionsAsync } from './refreshAnkhorageBunResolutionsAsync.js';
@@ -39,7 +40,8 @@ test('refreshes Ankhorage lock resolutions without changing package.json ownersh
   await refreshAnkhorageBunResolutionsAsync(root, async (args) => {
     recorded.push([...args]);
     if (args[0] === 'update') {
-      const changed = JSON.parse(await readFile(packagePath, 'utf8')) as Record<string, unknown>;
+      const changed: unknown = JSON.parse(await readFile(packagePath, 'utf8'));
+      if (!isRecord(changed)) throw new Error('Fixture package.json must contain an object.');
       await writeFile(
         packagePath,
         `${JSON.stringify({ ...changed, touchedByBunUpdate: true }, null, 2)}\n`,
