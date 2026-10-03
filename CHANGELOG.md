@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.6
+
+### Patch Changes
+
+- 138859f: Keep packed release verification strict for generic Node/Bun entrypoints while skipping platform-only
+  browser and React Native exports that do not explicitly declare a server runtime condition.
+
 ## 2.1.5
 
 ### Patch Changes
