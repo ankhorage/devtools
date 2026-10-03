@@ -10,7 +10,9 @@ test('coding rules require canonical Paradox comments and policy-owned tags', as
   expect(contents).toContain('every named production function under `src`');
   expect(contents).toContain('Paradox `/*** ... */` comment');
   expect(contents).toContain('`@readme`, `@usage`, `@config`, `@title`');
-  expect(contents).toContain('`@see`, and `@security`');
+  expect(contents).toContain('`@see`, `@security`, and `@performance`');
+  expect(contents).toContain('Preserve supported metadata tags verbatim');
+  expect(contents).toContain('labels such as `Performance:`');
   expect(contents).toContain('Unsupported tag-shaped lines are invalid');
   expect(contents).toContain('`@example` does not exist');
   expect(contents).toContain('Do not use JSDoc-only tags such as');
