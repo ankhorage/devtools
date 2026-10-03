@@ -51,7 +51,7 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
   expect(release).toContain('const isPlatformOnlyRuntimeTarget = (target) =>');
   expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return undefined;');
-  expect(release).toContain("if (supportsLoader(target, importConditions)) return 'import';")
+  expect(release).toContain("if (supportsLoader(target, importConditions)) return 'import';");
   expect(release).toContain("if (supportsLoader(target, requireConditions)) return 'require';");
   expect(release).toContain('if (exportsMap === undefined)');
   expect(release).toContain("!Object.keys(exportsMap).some((key) => key.startsWith('.'))");
@@ -94,7 +94,6 @@ function expectPublishedArtifactVerification(release: string): void {
   expect(release).toContain('attempt_pack_dir="$pack_dir/attempt-${attempt}"');
   expect(release).toContain('Verify published npm artifact from a fresh runner');
 }
-
 
 test('packed runtime loader selection distinguishes platform-only and server-capable exports', () => {
   expect(selectPackedRuntimeLoader({ import: './dist/index.js' })).toBe('import');
