@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.3
+
+### Patch Changes
+
+- a1c8363: Preserve finalized-release detection and exact release-commit recovery in managed release workflows.
+
 ## 2.1.2
 
 ### Patch Changes
