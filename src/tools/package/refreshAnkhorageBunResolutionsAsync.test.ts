@@ -49,6 +49,7 @@ test('refreshes Ankhorage lock resolutions without changing package.json ownersh
   });
 
   expect(recorded).toEqual([
+    ['install', '--lockfile-only', '--ignore-scripts'],
     ['update', '@ankhorage/*', '--lockfile-only', '--ignore-scripts'],
     ['install', '--lockfile-only', '--ignore-scripts'],
   ]);
