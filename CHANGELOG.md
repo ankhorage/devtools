@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.4
+
+### Patch Changes
+
+- d1e40ae: Strengthen the managed release standalone gate to import packed public runtime entrypoints and exercise declared binaries before publication.
+
 ## 2.1.3
 
 ### Patch Changes
