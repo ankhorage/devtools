@@ -111,6 +111,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
     workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
   );
   expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  expect(context.dependencySyncs).toBe(2);
   expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
 });
 
@@ -155,7 +156,7 @@ test('migrates a Changesets repository and keeps the second sync byte-stable', a
   expect((await runRepositoryCommand(status, [], context)).exitCode).toBe(0);
   expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
   expect(await readFile(join(target, 'package.json'), 'utf8')).toBe(firstPackageJson);
-  expect(context.dependencySyncs).toBe(1);
+  expect(context.dependencySyncs).toBe(2);
 });
 
 test('preserves create-only local extensions across repeated synchronization', async () => {
@@ -186,7 +187,7 @@ test('preserves create-only local extensions across repeated synchronization', a
     localPrettierConfig,
   );
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain("'custom.ts'");
-  expect(context.dependencySyncs).toBe(1);
+  expect(context.dependencySyncs).toBe(2);
 });
 
 test('preserves an existing Prettier config during first synchronization', async () => {
