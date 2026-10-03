@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.11
+
+### Patch Changes
+
+- 42de59d: Update Devtools-owned dependencies: `@ankhorage/apm`, `@ankhorage/doctor`.
+
 ## 2.1.10
 
 ### Patch Changes
