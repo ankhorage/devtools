@@ -118,7 +118,7 @@
     "changeset:status": "bun src/cli/bin/changeset.ts status --since=origin/main",
     "version-packages": "bun src/cli/bin/changeset.ts version",
     "check-types": "bun x tsc --noEmit -p tsconfig.test.json",
-    "test:standalone": "bun test src/tools/agents/index.test.ts src/tools/shared/managedFiles.test.ts"
+    "test:standalone": "bun test src/tools/agents/index.test.ts src/features/managed-files/managedFiles.test.ts"
   },
   "dependencies": {
     "@ankhorage/apm": "^0.8.13",
