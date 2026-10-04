@@ -7,7 +7,7 @@ import { afterEach, expect, test } from 'bun:test';
 
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { findDevtoolsCommandByPath } from './commands.js';
-import { parseRepositoryArguments, runRepositoryCommand } from './runRepositoryCommand.js';
+import { runRepositoryCommand } from './runRepositoryCommand.js';
 
 const temporaryDirectories: string[] = [];
 
