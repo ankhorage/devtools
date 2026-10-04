@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.1.12",
+      "value": "v2.1.13",
       "color": "cb3837"
     },
     {
@@ -541,6 +541,7 @@
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/applyBunRuntimePolicy.ts",
+        "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
@@ -706,10 +707,19 @@
       ]
     },
     {
+      "path": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "refreshAnkhorageBunResolutionsAsync"
+      ]
+    },
+    {
       "path": "src/tools/package/syncBunDependencies.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/features/managed-files/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts",
+        "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
       ],
       "exports": [
         "planBunDependencySync",
@@ -2108,7 +2118,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 141,
+        "line": 140,
         "column": 1
       }
     },
@@ -2119,7 +2129,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 163,
+        "line": 162,
         "column": 1
       }
     },
@@ -2130,7 +2140,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 180,
+        "line": 179,
         "column": 1
       }
     },
@@ -2141,7 +2151,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 190,
+        "line": 189,
         "column": 1
       }
     },
@@ -2152,7 +2162,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 203,
+        "line": 202,
         "column": 1
       }
     },
@@ -2163,7 +2173,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 222,
+        "line": 221,
         "column": 1
       }
     },
@@ -3236,7 +3246,7 @@
     },
     {
       "name": "runBunLockfileAsync",
-      "description": "Synchronize or validate the target Bun lockfile through Bun itself.",
+      "description": "Synchronize the target Bun lock while refreshing every Ankhorage package within its declared range.",
       "see": [],
       "security": [],
       "sourceLocation": {
@@ -3252,7 +3262,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 169,
+        "line": 154,
         "column": 1
       }
     },
@@ -3263,7 +3273,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "line": 174,
+        "line": 159,
         "column": 1
       }
     },
@@ -4027,13 +4037,35 @@
       }
     },
     {
+      "name": "refreshAnkhorageBunResolutionsAsync",
+      "description": "Refresh every Ankhorage package in a Bun lock within declared ranges without changing manifest ownership.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "runBunCommandAsync",
+      "description": "Execute one Bun package-manager command with inherited output and exact exit handling.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
       "name": "planBunDependencySync",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
-        "line": 7,
+        "line": 8,
         "column": 1
       }
     },
@@ -4044,7 +4076,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
-        "line": 14,
+        "line": 15,
         "column": 1
       }
     },
@@ -4055,7 +4087,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
-        "line": 24,
+        "line": 26,
         "column": 1
       }
     },
@@ -4861,6 +4893,11 @@
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
+        "toPath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
+      },
+      {
+        "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
         "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
@@ -4987,6 +5024,11 @@
       {
         "fromPath": "src/tools/package/syncBunDependencies.ts",
         "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromPath": "src/tools/package/syncBunDependencies.ts",
+        "toPath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
         "sourcePath": "src/tools/package/syncBunDependencies.ts"
       },
       {
@@ -5850,21 +5892,9 @@
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
-        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "toSymbol": "spawn",
-        "callExpression": "spawn",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "toSymbol": "resolvePromise",
-        "callExpression": "resolvePromise",
-        "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
-      },
-      {
-        "fromSymbol": "src/owner/synchronizeRenovateOwnerAsync.ts",
-        "toSymbol": "rejectPromise",
-        "callExpression": "rejectPromise",
+        "fromSymbol": "runBunLockfileAsync",
+        "toSymbol": "refreshAnkhorageBunResolutionsAsync",
+        "callExpression": "refreshAnkhorageBunResolutionsAsync",
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
@@ -6726,6 +6756,48 @@
         "sourcePath": "src/tools/package/index.ts"
       },
       {
+        "fromSymbol": "refreshAnkhorageBunResolutionsAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
+        "fromSymbol": "refreshAnkhorageBunResolutionsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
+        "fromSymbol": "refreshAnkhorageBunResolutionsAsync",
+        "toSymbol": "runCommand",
+        "callExpression": "runCommand",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
+        "fromSymbol": "refreshAnkhorageBunResolutionsAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
+        "fromSymbol": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+        "toSymbol": "spawn",
+        "callExpression": "spawn",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
+        "fromSymbol": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+        "toSymbol": "resolvePromise",
+        "callExpression": "resolvePromise",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
+        "fromSymbol": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
+        "toSymbol": "rejectPromise",
+        "callExpression": "rejectPromise",
+        "sourcePath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"
+      },
+      {
         "fromSymbol": "planBunDependencySync",
         "toSymbol": "existsSync",
         "callExpression": "existsSync",
@@ -6747,6 +6819,12 @@
         "fromSymbol": "syncBunDependencies",
         "toSymbol": "resolve",
         "callExpression": "resolve",
+        "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "syncBunDependencies",
+        "toSymbol": "refreshAnkhorageBunResolutionsAsync",
+        "callExpression": "refreshAnkhorageBunResolutionsAsync",
         "sourcePath": "src/tools/package/syncBunDependencies.ts"
       },
       {

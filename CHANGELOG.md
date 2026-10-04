@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.13
+
+### Patch Changes
+
+- 84e0308: Refresh every @ankhorage package in managed Bun lockfiles to the newest version allowed by its declared ranges on each package synchronization, while preserving package.json as the compatibility authority.
+
 ## 2.1.12
 
 ### Patch Changes

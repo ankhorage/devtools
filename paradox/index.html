@@ -352,6 +352,11 @@
       <small>18 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts">
+      src/tools/package/refreshAnkhorageBunResolutionsAsync.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/syncBunDependencies.ts">
       src/tools/package/syncBunDependencies.ts
       <small>3 functions</small>
@@ -423,7 +428,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>71</strong><span class="muted">modules</span></div>
+        <div><strong>72</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -659,10 +664,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>getReadmeDocumentationErrors</code></p>
-  </article><article class="item" data-search="src/owner/synchronizeRenovateOwnerAsync.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/applyBunRuntimePolicy.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts synchronizeRenovateOwnerAsync">
+  </article><article class="item" data-search="src/owner/synchronizeRenovateOwnerAsync.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/applyBunRuntimePolicy.ts src/tools/package/refreshAnkhorageBunResolutionsAsync.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts synchronizeRenovateOwnerAsync">
     <h3>src/owner/synchronizeRenovateOwnerAsync.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code>, <code>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>synchronizeRenovateOwnerAsync</code></p>
   </article><article class="item" data-search="src/policy/applyBunRuntimePolicy.ts applyBunRuntimePolicy">
     <h3>src/policy/applyBunRuntimePolicy.ts</h3>
@@ -734,10 +739,15 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code></p>
     <p><strong>Exports:</strong> <code>applyManagedPackageContract</code>, <code>inspectPackageManifest</code>, <code>isManagedPackageContractCurrent</code>, <code>readCurrentDevtoolsVersion</code>, <code>syncPackageManifest</code></p>
-  </article><article class="item" data-search="src/tools/package/syncBunDependencies.ts src/features/managed-files/managedFiles.ts planBunDependencySync syncBunDependencies">
+  </article><article class="item" data-search="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts refreshAnkhorageBunResolutionsAsync">
+    <h3>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>refreshAnkhorageBunResolutionsAsync</code></p>
+  </article><article class="item" data-search="src/tools/package/syncBunDependencies.ts src/features/managed-files/managedFiles.ts src/tools/package/refreshAnkhorageBunResolutionsAsync.ts planBunDependencySync syncBunDependencies">
     <h3>src/tools/package/syncBunDependencies.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>planBunDependencySync</code>, <code>syncBunDependencies</code></p>
   </article><article class="item" data-search="src/tools/prettier/managed.ts src/features/managed-files/managedFiles.ts prettierManagedFiles">
     <h3>src/tools/prettier/managed.ts</h3>
@@ -1659,6 +1669,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -1703,9 +1714,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_index_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_prettier_managed_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -1921,6 +1935,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -1965,9 +1980,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_index_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_prettier_managed_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -2072,6 +2090,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2165,6 +2184,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2184,6 +2204,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_skills_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_manifest_ts
@@ -2257,6 +2278,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2350,6 +2372,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2369,6 +2392,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_skills_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_manifest_ts
@@ -2444,6 +2468,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2572,6 +2597,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2907,32 +2933,32 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article><article class="item" data-search="getManagedFiles src/cli/runRepositoryCommand.ts ">
     <h3>getManagedFiles</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:141:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:140:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="writeStatusOutput src/cli/runRepositoryCommand.ts ">
     <h3>writeStatusOutput</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:163:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:162:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="writeSyncOutput src/cli/runRepositoryCommand.ts ">
     <h3>writeSyncOutput</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:180:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:179:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getActionPrefix src/cli/runRepositoryCommand.ts ">
     <h3>getActionPrefix</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:190:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:189:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="formatAction src/cli/runRepositoryCommand.ts ">
     <h3>formatAction</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:203:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:202:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getErrorMessage src/cli/runRepositoryCommand.ts ">
     <h3>getErrorMessage</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:222:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:221:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -3548,19 +3574,19 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:141:1</code></p>
     <p>Narrow an unknown JSON-like value to a non-array record.</p>
     
-  </article><article class="item" data-search="runBunLockfileAsync src/owner/synchronizeRenovateOwnerAsync.ts Synchronize or validate the target Bun lockfile through Bun itself.">
+  </article><article class="item" data-search="runBunLockfileAsync src/owner/synchronizeRenovateOwnerAsync.ts Synchronize the target Bun lock while refreshing every Ankhorage package within its declared range.">
     <h3>runBunLockfileAsync</h3>
     <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:146:1</code></p>
-    <p>Synchronize or validate the target Bun lockfile through Bun itself.</p>
+    <p>Synchronize the target Bun lock while refreshing every Ankhorage package within its declared range.</p>
     
   </article><article class="item" data-search="serializePackageManifest src/owner/synchronizeRenovateOwnerAsync.ts Serialize a package manifest using repository formatting.">
     <h3>serializePackageManifest</h3>
-    <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:169:1</code></p>
+    <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:154:1</code></p>
     <p>Serialize a package manifest using repository formatting.</p>
     
   </article><article class="item" data-search="syncDefinitionsAsync src/owner/synchronizeRenovateOwnerAsync.ts Write changed owner-managed artifacts while preserving byte-identical files.">
     <h3>syncDefinitionsAsync</h3>
-    <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:174:1</code></p>
+    <p class="muted"><code>src/owner/synchronizeRenovateOwnerAsync.ts:159:1</code></p>
     <p>Write changed owner-managed artifacts while preserving byte-identical files.</p>
     
   </article>
@@ -3970,22 +3996,37 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article>
     </section>
+  </section><section id="view-src-tools-package-refreshankhoragebunresolutionsasync-ts" class="view" data-view="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</h2>
+      <article class="item" data-search="refreshAnkhorageBunResolutionsAsync src/tools/package/refreshAnkhorageBunResolutionsAsync.ts Refresh every Ankhorage package in a Bun lock within declared ranges without changing manifest ownership.">
+    <h3>refreshAnkhorageBunResolutionsAsync</h3>
+    <p class="muted"><code>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts:8:1</code></p>
+    <p>Refresh every Ankhorage package in a Bun lock within declared ranges without changing manifest ownership.</p>
+    
+  </article><article class="item" data-search="runBunCommandAsync src/tools/package/refreshAnkhorageBunResolutionsAsync.ts Execute one Bun package-manager command with inherited output and exact exit handling.">
+    <h3>runBunCommandAsync</h3>
+    <p class="muted"><code>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts:29:1</code></p>
+    <p>Execute one Bun package-manager command with inherited output and exact exit handling.</p>
+    
+  </article>
+    </section>
   </section><section id="view-src-tools-package-syncbundependencies-ts" class="view" data-view="src/tools/package/syncBunDependencies.ts" hidden>
     <section class="panel">
       <h2>src/tools/package/syncBunDependencies.ts</h2>
       <article class="item" data-search="planBunDependencySync src/tools/package/syncBunDependencies.ts ">
     <h3>planBunDependencySync</h3>
-    <p class="muted"><code>src/tools/package/syncBunDependencies.ts:7:1</code></p>
+    <p class="muted"><code>src/tools/package/syncBunDependencies.ts:8:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="syncBunDependencies src/tools/package/syncBunDependencies.ts ">
     <h3>syncBunDependencies</h3>
-    <p class="muted"><code>src/tools/package/syncBunDependencies.ts:14:1</code></p>
+    <p class="muted"><code>src/tools/package/syncBunDependencies.ts:15:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="runBunInstall src/tools/package/syncBunDependencies.ts ">
     <h3>runBunInstall</h3>
-    <p class="muted"><code>src/tools/package/syncBunDependencies.ts:24:1</code></p>
+    <p class="muted"><code>src/tools/package/syncBunDependencies.ts:26:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
