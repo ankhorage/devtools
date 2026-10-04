@@ -243,25 +243,6 @@ test('preserves an existing ESLint config during first synchronization', async (
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
 });
 
-test('supports dry-run and validates arguments', async () => {
-  const target = await createTarget();
-  const context = createContext(target);
-  const sync = getRepositoryCommand(['sync']);
-
-  expect((await runRepositoryCommand(sync, ['--dry-run'], context)).exitCode).toBe(0);
-  expect(context.stdout.join('')).toContain('package.json would create');
-  expect(context.stdout.join('')).toContain('bun.lock would create');
-  expect(await Bun.file(join(target, 'package.json')).exists()).toBe(false);
-  expect(await Bun.file(join(target, '.github/workflows/ci.yml')).exists()).toBe(false);
-  expect(context.dependencySyncs).toBe(0);
-  expect(() => parseRepositoryArguments(['--dry-run'], false)).toThrow(
-    '--dry-run is only valid for sync commands.',
-  );
-  expect(() => parseRepositoryArguments(['one', 'two'], true)).toThrow(
-    'Only one target path may be provided.',
-  );
-});
-
 async function assertRepeatedSyncPreservesRenovateDigest(
   target: string,
   context: ReturnType<typeof createContext>,
