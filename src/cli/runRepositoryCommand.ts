@@ -115,17 +115,16 @@ async function runSync(
   context: DevtoolsRepositoryCommandContext,
 ): Promise<DevtoolsRepositoryCommandResult> {
   const results: ManagedFileSyncResult[] = [];
-  let packageDependenciesChanged = false;
   if (scope === 'all' || scope === 'package') {
     const packageResult = await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun });
     results.push(packageResult);
-    packageDependenciesChanged = packageResult.action !== 'unchanged';
   }
   results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
   if (scope === 'all' || scope === 'skills') {
     results.push(...(await syncManagedSkills(targetDirectory, devtoolsVersion, { dryRun })));
   }
-  if (packageDependenciesChanged) {
+  const shouldSyncDependencies = scope === 'all' || scope === 'package';
+  if (shouldSyncDependencies) {
     if (dryRun) {
       results.push(planBunDependencySync(targetDirectory));
     } else {

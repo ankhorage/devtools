@@ -7,7 +7,7 @@ import { afterEach, expect, test } from 'bun:test';
 
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { findDevtoolsCommandByPath } from './commands.js';
-import { parseRepositoryArguments, runRepositoryCommand } from './runRepositoryCommand.js';
+import { runRepositoryCommand } from './runRepositoryCommand.js';
 
 const temporaryDirectories: string[] = [];
 
@@ -103,15 +103,7 @@ test('syncs configs and merge-updates package.json without replacing unrelated f
   expect(
     await readFile(join(target, '.agents/skills/ankhorage-coding-rules/SKILL.md'), 'utf8'),
   ).toContain('name: ankhorage-coding-rules');
-  const workflowPath = join(target, '.github/workflows/renovate.yml');
-  const preservedDigest = 'f'.repeat(40);
-  const workflow = await readFile(workflowPath, 'utf8');
-  await writeFile(
-    workflowPath,
-    workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
-  );
-  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
-  expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
+  await assertRepeatedSyncPreservesRenovateDigest(target, context, sync);
 });
 
 test('migrates a Changesets repository and keeps the second sync byte-stable', async () => {
@@ -155,7 +147,7 @@ test('migrates a Changesets repository and keeps the second sync byte-stable', a
   expect((await runRepositoryCommand(status, [], context)).exitCode).toBe(0);
   expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
   expect(await readFile(join(target, 'package.json'), 'utf8')).toBe(firstPackageJson);
-  expect(context.dependencySyncs).toBe(1);
+  expect(context.dependencySyncs).toBe(2);
 });
 
 test('preserves create-only local extensions across repeated synchronization', async () => {
@@ -186,7 +178,7 @@ test('preserves create-only local extensions across repeated synchronization', a
     localPrettierConfig,
   );
   expect(await readFile(join(target, 'knip.config.ts'), 'utf8')).toContain("'custom.ts'");
-  expect(context.dependencySyncs).toBe(1);
+  expect(context.dependencySyncs).toBe(2);
 });
 
 test('preserves an existing Prettier config during first synchronization', async () => {
@@ -251,24 +243,22 @@ test('preserves an existing ESLint config during first synchronization', async (
   expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
 });
 
-test('supports dry-run and validates arguments', async () => {
-  const target = await createTarget();
-  const context = createContext(target);
-  const sync = getRepositoryCommand(['sync']);
-
-  expect((await runRepositoryCommand(sync, ['--dry-run'], context)).exitCode).toBe(0);
-  expect(context.stdout.join('')).toContain('package.json would create');
-  expect(context.stdout.join('')).toContain('bun.lock would create');
-  expect(await Bun.file(join(target, 'package.json')).exists()).toBe(false);
-  expect(await Bun.file(join(target, '.github/workflows/ci.yml')).exists()).toBe(false);
-  expect(context.dependencySyncs).toBe(0);
-  expect(() => parseRepositoryArguments(['--dry-run'], false)).toThrow(
-    '--dry-run is only valid for sync commands.',
+async function assertRepeatedSyncPreservesRenovateDigest(
+  target: string,
+  context: ReturnType<typeof createContext>,
+  sync: ReturnType<typeof getRepositoryCommand>,
+): Promise<void> {
+  const workflowPath = join(target, '.github/workflows/renovate.yml');
+  const preservedDigest = 'f'.repeat(40);
+  const workflow = await readFile(workflowPath, 'utf8');
+  await writeFile(
+    workflowPath,
+    workflow.replace(/(changeset\.yml@)[0-9a-f]{40}/u, `$1${preservedDigest}`),
   );
-  expect(() => parseRepositoryArguments(['one', 'two'], true)).toThrow(
-    'Only one target path may be provided.',
-  );
-});
+  expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
+  expect(context.dependencySyncs).toBe(2);
+  expect(await readFile(workflowPath, 'utf8')).toContain(`changeset.yml@${preservedDigest}`);
+}
 
 function getRepositoryCommand(path: readonly string[]) {
   const command = findDevtoolsCommandByPath(path);

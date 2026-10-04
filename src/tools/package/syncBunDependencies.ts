@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import type { ManagedFileSyncResult } from '../../features/managed-files/managedFiles.js';
+import { refreshAnkhorageBunResolutionsAsync } from './refreshAnkhorageBunResolutionsAsync.js';
 
 export function planBunDependencySync(targetDirectory: string): ManagedFileSyncResult {
   return {
@@ -13,6 +14,7 @@ export function planBunDependencySync(targetDirectory: string): ManagedFileSyncR
 
 export async function syncBunDependencies(targetDirectory: string): Promise<ManagedFileSyncResult> {
   const existed = existsSync(resolve(targetDirectory, 'bun.lock'));
+  await refreshAnkhorageBunResolutionsAsync(targetDirectory);
   await runBunInstall(targetDirectory);
 
   return {

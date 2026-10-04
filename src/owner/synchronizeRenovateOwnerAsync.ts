@@ -1,4 +1,3 @@
-import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
@@ -7,6 +6,7 @@ import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { resolveApmReleaseCommandAsync } from '../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import { resolveStructureReleaseCommandAsync } from '../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { applyBunRuntimePolicy } from '../policy/applyBunRuntimePolicy.js';
+import { refreshAnkhorageBunResolutionsAsync } from '../tools/package/refreshAnkhorageBunResolutionsAsync.js';
 import { readCurrentDoctorVersion } from '../tools/workflows/readCurrentDoctorVersion.js';
 import { renderRenovateWorkflowAsync } from '../tools/workflows/renderRenovateWorkflowAsync.js';
 import {
@@ -142,27 +142,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-/*** Synchronize or validate the target Bun lockfile through Bun itself. */
+/*** Synchronize the target Bun lock while refreshing every Ankhorage package within its declared range. */
 async function runBunLockfileAsync(
-  operation: OwnerSyncOperation,
+  _operation: OwnerSyncOperation,
   targetDirectory: string,
 ): Promise<void> {
-  const args = [
-    'install',
-    '--cwd',
-    targetDirectory,
-    '--ignore-scripts',
-    '--lockfile-only',
-    '--registry=https://registry.npmjs.org',
-  ];
-  await new Promise<void>((resolvePromise, rejectPromise) => {
-    const child = spawn('bun', args, { stdio: 'inherit' });
-    child.once('error', rejectPromise);
-    child.once('exit', (code) => {
-      if (code === 0) return resolvePromise();
-      rejectPromise(new Error(`Bun lockfile ${operation} exited with code ${code ?? 'unknown'}.`));
-    });
-  });
+  await refreshAnkhorageBunResolutionsAsync(targetDirectory);
 }
 
 /*** Serialize a package manifest using repository formatting. */
