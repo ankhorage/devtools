@@ -15,9 +15,9 @@ test('supports repository dry-run without materializing managed files', async ()
 
     const result = await runRepositoryCommand(command, ['--dry-run'], {
       cwd: target,
-      syncDependencies: async () => {
+      syncDependencies: () => {
         dependencySyncs += 1;
-        return { relativePath: 'bun.lock', action: 'created' };
+        return Promise.resolve({ relativePath: 'bun.lock', action: 'created' });
       },
       writeStdout: (text) => stdout.push(text),
       writeStderr: () => undefined,
