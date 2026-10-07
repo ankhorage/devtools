@@ -31,6 +31,9 @@ function expectReleaseOrdering(release: string): void {
   expect(release).toContain('release_sha: ${{ steps.release.outputs.release_sha }}');
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('git tag "$tag" "$RELEASE_SHA"');
+  expect(release).toContain('Synchronize package capability metadata');
+  expect(release).toContain('bunx ankhorage-repository package sync .');
+  expect(release).toContain('bunx ankhorage-repository package status .');
   expect(release).toContain(
     'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"',
   );
@@ -60,6 +63,11 @@ function expectPackedRuntimeVerification(release: string): void {
     "process.stdout.write(output.length === 0 ? '' : `${output.join('\\n')}\\n`);",
   );
   expect(release).toContain("while IFS='|' read -r loader specifier; do");
+  expect(release).toContain(
+    'Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.',
+  );
+  expect(release).toContain('await import(`${name}/capabilities`)');
+  expect(release).toContain("requireFromPackage.resolve('@ankhorage/contracts/capabilities')");
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" bun -e \'await import(process.env.PACKAGE_SPECIFIER)\'',
   );
