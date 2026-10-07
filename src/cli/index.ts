@@ -33,6 +33,7 @@ import { readFileSync } from 'node:fs';
 
 import type { AnkhRuntimeCommandProvider } from '@ankhorage/ankh';
 
+import { CAPABILITIES } from '../capabilities/index.js';
 import { getDevtoolsCommands } from './commands.js';
 import { runProviderCommand } from './runProviderCommand.js';
 
@@ -43,7 +44,7 @@ const provider = {
   id: '@ankhorage/devtools',
   category: 'devtools',
   version: packageVersion,
-  capabilities: commands.map((command) => command.capability),
+  capabilities: CAPABILITIES,
   commands: commands.map((command) => ({
     path: [...command.path],
     capability: command.capability,

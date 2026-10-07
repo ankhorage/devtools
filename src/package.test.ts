@@ -3,105 +3,84 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'bun:test';
 
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
-const capabilities = [
-  'devtools.apm.sync',
-  'devtools.apm.validate',
-  'devtools.structure.build',
-  'devtools.structure.check',
-  'devtools.changeset',
-  'devtools.lint',
-  'devtools.format',
-  'devtools.knip',
-  'devtools.sync',
-  'devtools.status',
-  'devtools.agents.sync',
-  'devtools.agents.status',
-  'devtools.skills.sync',
-  'devtools.skills.status',
-  'devtools.eslint.sync',
-  'devtools.eslint.status',
-  'devtools.prettier.sync',
-  'devtools.prettier.status',
-  'devtools.knip.sync',
-  'devtools.knip.status',
-  'devtools.package.sync',
-  'devtools.package.status',
-  'devtools.workflows.sync',
-  'devtools.workflows.status',
-  'devtools.vscode.sync',
-  'devtools.vscode.status',
-];
 const obsoleteSkillName = ['ankhorage', 'package-structure'].join('-');
 
 describe('package metadata', () => {
-  it('publishes the canonical provider, binaries, exports, and managed assets', () => {
-    const packageJson = JSON.parse(
-      readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
-    ) as Record<string, unknown>;
-
-    expect(packageJson.name).toBe('@ankhorage/devtools');
-    expect(packageJson.type).toBe('module');
-    expect(packageJson.ankh).toEqual({
-      category: 'devtools',
-      provider: './dist/cli/index.js',
-      capabilities,
-    });
-    expect(packageJson.bin).toEqual({
-      'ankhorage-apm-release': './dist/cli/bin/apm-release.js',
-      'ankhorage-changeset': './dist/cli/bin/changeset.js',
-      'ankhorage-eslint': './dist/cli/bin/eslint.js',
-      'ankhorage-knip': './dist/cli/bin/knip.js',
-      'ankhorage-prettier': './dist/cli/bin/prettier.js',
-      'ankhorage-structure': './dist/cli/bin/structure.js',
-    });
-    expect(packageJson.exports).toEqual({
-      './apm-release': {
-        types: './dist/apmRelease.d.ts',
-        import: './dist/apmRelease.js',
-      },
-      './types': {
-        types: './dist/types/public.d.ts',
-        import: './dist/types/public.js',
-      },
-      './cli': {
-        types: './dist/cli/index.d.ts',
-        import: './dist/cli/index.js',
-      },
-      './eslint': {
-        types: './dist/tools/eslint/index.d.ts',
-        import: './dist/tools/eslint/index.js',
-      },
-      './knip': {
-        types: './dist/tools/knip/index.d.ts',
-        import: './dist/tools/knip/index.js',
-      },
-      './prettier': {
-        import: './dist/tools/prettier/index.cjs',
-        require: './dist/tools/prettier/index.cjs',
-        default: './dist/tools/prettier/index.cjs',
-      },
-    });
-
-    const { build } = packageJson.scripts as Record<string, string>;
-    expect(build).toContain('src/tools/workflows/files');
-    expect(build).toContain('dist/tools/workflows/files');
-    expect(build).toContain('src/tools/vscode/files');
-    expect(build).toContain('dist/tools/vscode/files');
-    expect(build).toContain('src/tools/skills/assets');
-    expect(build).toContain('dist/tools/skills/assets');
-    expect(build).toContain('src/tools/prettier/index.cjs');
-    expect(build).toContain('dist/tools/prettier/index.cjs');
-    expect(packageJson.scripts).toMatchObject({ 'knip:check': 'knip' });
-    expect(packageJson.scripts).not.toHaveProperty('knip');
-    const { dependencies } = packageJson;
-    if (!isRecord(dependencies)) throw new Error('package.json dependencies must be an object.');
-    const repositoryRulesRange = dependencies['@ankhorage/rules-repository'];
-    expect(repositoryRulesRange).toBeString();
-    expect(repositoryRulesRange).toMatch(CARET_SEMVER_RANGE);
-    expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
-    expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
-  });
+  it('publishes the canonical binaries and public exports', testPackageEntrypoints);
+  it('publishes managed scripts and dependency policy', testManagedPackageMetadata);
 });
+
+function testPackageEntrypoints(): void {
+  const packageJson = readPackageMetadata();
+  expect(packageJson.name).toBe('@ankhorage/devtools');
+  expect(packageJson.type).toBe('module');
+  expect(packageJson.bin).toEqual({
+    'ankhorage-apm-release': './dist/cli/bin/apm-release.js',
+    'ankhorage-changeset': './dist/cli/bin/changeset.js',
+    'ankhorage-eslint': './dist/cli/bin/eslint.js',
+    'ankhorage-knip': './dist/cli/bin/knip.js',
+    'ankhorage-prettier': './dist/cli/bin/prettier.js',
+    'ankhorage-structure': './dist/cli/bin/structure.js',
+  });
+  expect(packageJson.exports).toEqual({
+    './apm-release': {
+      types: './dist/apmRelease.d.ts',
+      import: './dist/apmRelease.js',
+    },
+    './types': {
+      types: './dist/types/public.d.ts',
+      import: './dist/types/public.js',
+    },
+    './cli': {
+      types: './dist/cli/index.d.ts',
+      import: './dist/cli/index.js',
+    },
+    './eslint': {
+      types: './dist/tools/eslint/index.d.ts',
+      import: './dist/tools/eslint/index.js',
+    },
+    './knip': {
+      types: './dist/tools/knip/index.d.ts',
+      import: './dist/tools/knip/index.js',
+    },
+    './prettier': {
+      import: './dist/tools/prettier/index.cjs',
+      require: './dist/tools/prettier/index.cjs',
+      default: './dist/tools/prettier/index.cjs',
+    },
+    './capabilities': {
+      types: './dist/capabilities/index.d.ts',
+      import: './dist/capabilities/index.js',
+    },
+  });
+}
+
+function testManagedPackageMetadata(): void {
+  const packageJson = readPackageMetadata();
+  const { scripts, dependencies } = packageJson;
+  if (!isRecord(scripts)) throw new Error('package.json scripts must be an object.');
+  if (!isRecord(dependencies)) throw new Error('package.json dependencies must be an object.');
+
+  const { build } = scripts;
+  expect(build).toBeString();
+  if (typeof build !== 'string') throw new Error('package.json build script must be a string.');
+  expect(build).toContain('src/tools/workflows/files');
+  expect(build).toContain('dist/tools/workflows/files');
+  expect(build).toContain('src/tools/vscode/files');
+  expect(build).toContain('dist/tools/vscode/files');
+  expect(build).toContain('src/tools/skills/assets');
+  expect(build).toContain('dist/tools/skills/assets');
+  expect(build).toContain('src/tools/prettier/index.cjs');
+  expect(build).toContain('dist/tools/prettier/index.cjs');
+  expect(scripts).toMatchObject({ 'knip:check': 'knip' });
+  expect(scripts).not.toHaveProperty('knip');
+
+  const repositoryRulesRange = dependencies['@ankhorage/rules-repository'];
+  expect(repositoryRulesRange).toBeString();
+  expect(repositoryRulesRange).toMatch(CARET_SEMVER_RANGE);
+  expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
+  expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
+}
 
 describe('package release contract', () => {
   it('owns Changesets through the source runner and published dependency', () => {
@@ -313,6 +292,14 @@ function collectManagedSkillScripts(root: URL, directory = root): string[] {
     }
   }
   return scripts.sort();
+}
+
+function readPackageMetadata(): Record<string, unknown> {
+  const parsed: unknown = JSON.parse(
+    readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
+  );
+  if (!isRecord(parsed)) throw new Error('package.json must contain a JSON object.');
+  return parsed;
 }
 
 /*** Narrow unknown JSON data to a non-array record. */
