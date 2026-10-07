@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0
+
+### Minor Changes
+
+- 7adab10: Publish canonical Devtools capability descriptors and use them consistently across package metadata, command typing, and the Ankh provider.
+
 ## 2.1.19
 
 ### Patch Changes

@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.1.19",
+      "value": "v2.2.0",
       "color": "cb3837"
     },
     {
@@ -107,6 +107,14 @@
         "synchronizeApmReleaseDescriptorAsync",
         "validateApmReleaseCandidate",
         "validatePackedApmReleaseAsync"
+      ]
+    },
+    {
+      "path": "src/capabilities/index.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "CAPABILITIES"
       ]
     },
     {
@@ -219,6 +227,7 @@
       "path": "src/cli/index.ts",
       "isEntrypoint": true,
       "dependencies": [
+        "src/capabilities/index.ts",
         "src/cli/commands.ts",
         "src/cli/runProviderCommand.ts"
       ],
@@ -1592,7 +1601,7 @@
       "modulePath": "src/cli/index.ts",
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 42,
+        "line": 43,
         "column": 7
       },
       "exportPaths": [
@@ -1799,7 +1808,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 242,
+        "line": 216,
         "column": 1
       }
     },
@@ -1810,7 +1819,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 246,
+        "line": 220,
         "column": 1
       }
     },
@@ -1821,7 +1830,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 258,
+        "line": 232,
         "column": 1
       }
     },
@@ -1832,7 +1841,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 270,
+        "line": 244,
         "column": 1
       }
     },
@@ -1843,7 +1852,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 291,
+        "line": 262,
         "column": 1
       }
     },
@@ -1898,7 +1907,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 62,
+        "line": 63,
         "column": 1
       }
     },
@@ -1909,7 +1918,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 74,
+        "line": 75,
         "column": 1
       }
     },
@@ -1920,7 +1929,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 78,
+        "line": 79,
         "column": 1
       }
     },
@@ -4735,6 +4744,11 @@
         "fromPath": "src/apmRelease.ts",
         "toPath": "src/types/apm-release-validation.ts",
         "sourcePath": "src/apmRelease.ts"
+      },
+      {
+        "fromPath": "src/cli/index.ts",
+        "toPath": "src/capabilities/index.ts",
+        "sourcePath": "src/cli/index.ts"
       },
       {
         "fromPath": "src/cli/index.ts",

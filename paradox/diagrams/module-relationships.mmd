@@ -1,5 +1,6 @@
 graph LR
   module_src_apmRelease_ts["src/apmRelease.ts"]
+  module_src_capabilities_index_ts["src/capabilities/index.ts"]
   module_src_cli_bin_apm_release_ts["src/cli/bin/apm-release.ts"]
   module_src_cli_bin_changeset_ts["src/cli/bin/changeset.ts"]
   module_src_cli_bin_eslint_ts["src/cli/bin/eslint.ts"]
@@ -85,6 +86,7 @@ graph LR
   module_src_cli_commands_structure_build_ts --> module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_structure_check_ts --> module_src_cli_runProviderCommand_ts
   module_src_cli_commands_structure_check_ts --> module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_index_ts --> module_src_capabilities_index_ts
   module_src_cli_index_ts --> module_src_cli_commands_ts
   module_src_cli_index_ts --> module_src_cli_runProviderCommand_ts
   module_src_cli_runApmReleaseCommandAsync_ts --> module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts

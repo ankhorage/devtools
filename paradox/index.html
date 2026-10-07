@@ -428,7 +428,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>72</strong><span class="muted">modules</span></div>
+        <div><strong>73</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -469,6 +469,11 @@
     <p class="muted">Configured entrypoint</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>ApmPackedReleaseCandidate</code>, <code>ApmReleaseValidationOptions</code>, <code>ApmReleaseValidationResult</code>, <code>synchronizeApmReleaseDescriptorAsync</code>, <code>validateApmReleaseCandidate</code>, <code>validatePackedApmReleaseAsync</code></p>
+  </article><article class="item" data-search="src/capabilities/index.ts CAPABILITIES">
+    <h3>src/capabilities/index.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>CAPABILITIES</code></p>
   </article><article class="item" data-search="src/cli/bin/apm-release.ts src/cli/runApmReleaseCommandAsync.ts">
     <h3>src/cli/bin/apm-release.ts</h3>
     <p class="muted">Referenced module</p>
@@ -524,10 +529,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/runProviderCommand.ts</code>, <code>src/cli/runStructureGenerationCommandAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>check</code></p>
-  </article><article class="item" data-search="src/cli/index.ts src/cli/commands.ts src/cli/runProviderCommand.ts default">
+  </article><article class="item" data-search="src/cli/index.ts src/capabilities/index.ts src/cli/commands.ts src/cli/runProviderCommand.ts default">
     <h3>src/cli/index.ts</h3>
     <p class="muted">Configured entrypoint</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/runProviderCommand.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/capabilities/index.ts</code>, <code>src/cli/commands.ts</code>, <code>src/cli/runProviderCommand.ts</code></p>
     <p><strong>Exports:</strong> <code>default</code></p>
   </article><article class="item" data-search="src/cli/runApmReleaseCommandAsync.ts src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts src/types/apm-release-validation.ts runApmReleaseCommandAsync">
     <h3>src/cli/runApmReleaseCommandAsync.ts</h3>
@@ -834,7 +839,7 @@
               <article class="item" id="symbol-provider" data-search="provider  value src/cli/index.ts ">
     <h4>provider</h4>
     
-    <p class="muted">value • <code>src/cli/index.ts:42:7</code></p>
+    <p class="muted">value • <code>src/cli/index.ts:43:7</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/cli/index.ts</code></p>
@@ -1513,6 +1518,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   entrypoint_src_types_public_ts[&quot;src/types/public.ts&quot;]
   package__ankhorage_devtools --&gt; entrypoint_src_types_public_ts
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
+  module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_capabilities_index_ts
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_apm_release_ts
   module_src_cli_bin_apm_release_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
@@ -1550,6 +1557,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
+  module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
@@ -1779,6 +1787,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   entrypoint_src_types_public_ts[&quot;src/types/public.ts&quot;]
   package__ankhorage_devtools --&gt; entrypoint_src_types_public_ts
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
+  module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_capabilities_index_ts
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_apm_release_ts
   module_src_cli_bin_apm_release_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
@@ -1816,6 +1826,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
+  module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
@@ -2036,6 +2047,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p class="muted"><code>diagrams/module-relationships.mmd</code></p>
     <div class="mermaid">graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
+  module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
@@ -2121,6 +2133,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
@@ -2224,6 +2237,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <summary>View Mermaid source</summary>
       <pre>graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
+  module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
@@ -2309,6 +2323,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
   module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
@@ -2414,6 +2429,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p class="muted"><code>diagrams/export-graph.mmd</code></p>
     <div class="mermaid">graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
+  module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
@@ -2543,6 +2559,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <summary>View Mermaid source</summary>
       <pre>graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
+  module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
@@ -2743,27 +2760,27 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/commands.ts</h2>
       <article class="item" data-search="getDevtoolsCommands src/cli/commands.ts ">
     <h3>getDevtoolsCommands</h3>
-    <p class="muted"><code>src/cli/commands.ts:242:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:216:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="findDevtoolsCommandByPath src/cli/commands.ts ">
     <h3>findDevtoolsCommandByPath</h3>
-    <p class="muted"><code>src/cli/commands.ts:246:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:220:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getDevtoolsToolCommand src/cli/commands.ts ">
     <h3>getDevtoolsToolCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:258:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:232:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="externalCommand src/cli/commands.ts ">
     <h3>externalCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:270:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:244:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="repositoryCommand src/cli/commands.ts ">
     <h3>repositoryCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:291:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:262:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -2813,17 +2830,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/index.ts</h2>
       <article class="item" data-search="readPackageVersion src/cli/index.ts ">
     <h3>readPackageVersion</h3>
-    <p class="muted"><code>src/cli/index.ts:62:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:63:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="isNonEmptyString src/cli/index.ts ">
     <h3>isNonEmptyString</h3>
-    <p class="muted"><code>src/cli/index.ts:74:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:75:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="isRecord src/cli/index.ts ">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/cli/index.ts:78:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:79:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
