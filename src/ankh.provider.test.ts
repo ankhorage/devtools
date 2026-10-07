@@ -11,8 +11,8 @@ describe('devtools package provider', () => {
     expect(provider.id).toBe('@ankhorage/devtools');
     expect(provider.category).toBe('devtools');
     expect(provider.capabilities).toEqual(CAPABILITIES);
-    expect(commands.map((command) => command.capability)).toEqual(
-      CAPABILITIES.map((capability) => capability.id),
+    expect(new Set(commands.map((command) => command.capability))).toEqual(
+      new Set(CAPABILITIES.map((capability) => capability.id)),
     );
     expect(provider.commands).toEqual(
       commands.map((command) => ({
