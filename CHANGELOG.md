@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.16
+
+### Patch Changes
+
+- d9027d3: Update Devtools-owned dependencies: `@next/eslint-plugin-next`, `knip`.
+
 ## 2.1.15
 
 ### Patch Changes
