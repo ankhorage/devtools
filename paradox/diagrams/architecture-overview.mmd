@@ -28,6 +28,10 @@ graph TD
   module_src_cli_bin_prettier_ts["src/cli/bin/prettier.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_prettier_ts
   module_src_cli_bin_prettier_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_repository_ts["src/cli/bin/repository.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_bin_repository_ts
+  module_src_cli_bin_repository_ts --> module_src_cli_commands_ts
+  module_src_cli_bin_repository_ts --> module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts["src/cli/bin/structure.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_structure_ts
   module_src_cli_bin_structure_ts --> module_src_cli_runStructureGenerationCommandAsync_ts
@@ -215,8 +219,11 @@ graph TD
   package__ankhorage_devtools -.-> module_src_tools_package_index_ts
   module_src_tools_package_index_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --> module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts["src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts["src/tools/package/resolvePackageCapabilitiesAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts["src/tools/package/syncBunDependencies.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_features_managed_files_managedFiles_ts

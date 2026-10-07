@@ -349,12 +349,17 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/index.ts">
       src/tools/package/index.ts
-      <small>18 functions</small>
+      <small>20 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts">
       src/tools/package/refreshAnkhorageBunResolutionsAsync.ts
       <small>2 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/package/resolvePackageCapabilitiesAsync.ts">
+      src/tools/package/resolvePackageCapabilitiesAsync.ts
+      <small>4 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/syncBunDependencies.ts">
@@ -428,7 +433,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>73</strong><span class="muted">modules</span></div>
+        <div><strong>75</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -498,6 +503,11 @@
     <h3>src/cli/bin/prettier.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/runStandaloneTool.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/cli/bin/repository.ts src/cli/commands.ts src/cli/runRepositoryCommand.ts">
+    <h3>src/cli/bin/repository.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/runRepositoryCommand.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/cli/bin/structure.ts src/cli/runStructureGenerationCommandAsync.ts">
     <h3>src/cli/bin/structure.ts</h3>
@@ -739,16 +749,21 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>knipManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/package/index.ts src/features/managed-files/managedFiles.ts src/policy/applyBunRuntimePolicy.ts applyManagedPackageContract inspectPackageManifest isManagedPackageContractCurrent readCurrentDevtoolsVersion syncPackageManifest">
+  </article><article class="item" data-search="src/tools/package/index.ts src/features/managed-files/managedFiles.ts src/policy/applyBunRuntimePolicy.ts src/tools/package/resolvePackageCapabilitiesAsync.ts applyManagedPackageContract inspectPackageManifest isManagedPackageContractCurrent readCurrentDevtoolsVersion syncPackageManifest">
     <h3>src/tools/package/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code>, <code>src/tools/package/resolvePackageCapabilitiesAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>applyManagedPackageContract</code>, <code>inspectPackageManifest</code>, <code>isManagedPackageContractCurrent</code>, <code>readCurrentDevtoolsVersion</code>, <code>syncPackageManifest</code></p>
   </article><article class="item" data-search="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts refreshAnkhorageBunResolutionsAsync">
     <h3>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>refreshAnkhorageBunResolutionsAsync</code></p>
+  </article><article class="item" data-search="src/tools/package/resolvePackageCapabilitiesAsync.ts resolvePackageCapabilitiesAsync">
+    <h3>src/tools/package/resolvePackageCapabilitiesAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>resolvePackageCapabilitiesAsync</code></p>
   </article><article class="item" data-search="src/tools/package/syncBunDependencies.ts src/features/managed-files/managedFiles.ts src/tools/package/refreshAnkhorageBunResolutionsAsync.ts planBunDependencySync syncBunDependencies">
     <h3>src/tools/package/syncBunDependencies.ts</h3>
     <p class="muted">Referenced module</p>
@@ -1535,6 +1550,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_prettier_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_bin_repository_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_commands_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_structure_ts
   module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
@@ -1722,8 +1741,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_index_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -1804,6 +1826,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_prettier_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_bin_repository_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_commands_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_structure_ts
   module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
@@ -1991,8 +2017,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_index_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -2053,6 +2082,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
@@ -2103,6 +2133,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2124,6 +2155,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_commands_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
@@ -2216,6 +2249,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -2243,6 +2277,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
@@ -2293,6 +2328,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2314,6 +2350,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_commands_ts
+  module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
@@ -2406,6 +2444,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -2435,6 +2474,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
@@ -2485,6 +2525,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -2565,6 +2606,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
+  module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
@@ -2615,6 +2657,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
+  module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
@@ -3923,92 +3966,102 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/package/index.ts</h2>
       <article class="item" data-search="inspectPackageManifest src/tools/package/index.ts Inspect whether the Devtools-owned package manifest contract is current.">
     <h3>inspectPackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:69:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:70:1</code></p>
     <p>Inspect whether the Devtools-owned package manifest contract is current.</p>
     
   </article><article class="item" data-search="syncPackageManifest src/tools/package/index.ts Synchronize the Devtools-owned package manifest fields.">
     <h3>syncPackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:91:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:93:1</code></p>
     <p>Synchronize the Devtools-owned package manifest fields.</p>
     
   </article><article class="item" data-search="applyManagedPackageContract src/tools/package/index.ts Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy.">
     <h3>applyManagedPackageContract</h3>
-    <p class="muted"><code>src/tools/package/index.ts:132:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:139:1</code></p>
     <p>Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy.</p>
+    
+  </article><article class="item" data-search="applyManagedPackageCapabilities src/tools/package/index.ts Apply a canonical capability catalog without replacing authored Ankh metadata.">
+    <h3>applyManagedPackageCapabilities</h3>
+    <p class="muted"><code>src/tools/package/index.ts:171:1</code></p>
+    <p>Apply a canonical capability catalog without replacing authored Ankh metadata.</p>
     
   </article><article class="item" data-search="isManagedPackageContractCurrent src/tools/package/index.ts Check whether the Devtools-owned package manifest fields match current policy.">
     <h3>isManagedPackageContractCurrent</h3>
-    <p class="muted"><code>src/tools/package/index.ts:164:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:180:1</code></p>
     <p>Check whether the Devtools-owned package manifest fields match current policy.</p>
+    
+  </article><article class="item" data-search="isManagedPackageContractCurrentAsync src/tools/package/index.ts Check managed package policy and materialized capability metadata without writing files.">
+    <h3>isManagedPackageContractCurrentAsync</h3>
+    <p class="muted"><code>src/tools/package/index.ts:208:1</code></p>
+    <p>Check managed package policy and materialized capability metadata without writing files.</p>
     
   </article><article class="item" data-search="readCurrentDevtoolsVersion src/tools/package/index.ts Read the current Devtools package version used for consumer synchronization.">
     <h3>readCurrentDevtoolsVersion</h3>
-    <p class="muted"><code>src/tools/package/index.ts:192:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:225:1</code></p>
     <p>Read the current Devtools package version used for consumer synchronization.</p>
     
   </article><article class="item" data-search="readPackageManifest src/tools/package/index.ts Read one package manifest snapshot and Changesets applicability state.">
     <h3>readPackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:203:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:236:1</code></p>
     <p>Read one package manifest snapshot and Changesets applicability state.</p>
     
   </article><article class="item" data-search="hasCurrentBunRuntimePolicy src/tools/package/index.ts Check the Bun package manager and Bun type dependency contract.">
     <h3>hasCurrentBunRuntimePolicy</h3>
-    <p class="muted"><code>src/tools/package/index.ts:221:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:254:1</code></p>
     <p>Check the Bun package manager and Bun type dependency contract.</p>
     
   </article><article class="item" data-search="applyDevtoolsDependencyPlacement src/tools/package/index.ts Place Devtools in development dependencies for every consuming repository.">
     <h3>applyDevtoolsDependencyPlacement</h3>
-    <p class="muted"><code>src/tools/package/index.ts:230:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:263:1</code></p>
     <p>Place Devtools in development dependencies for every consuming repository.</p>
     
   </article><article class="item" data-search="hasCurrentDevtoolsDependencyPlacement src/tools/package/index.ts Check that Devtools is development-only at the current synchronized version.">
     <h3>hasCurrentDevtoolsDependencyPlacement</h3>
-    <p class="muted"><code>src/tools/package/index.ts:240:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:273:1</code></p>
     <p>Check that Devtools is development-only at the current synchronized version.</p>
     
   </article><article class="item" data-search="removeOwnedDependencies src/tools/package/index.ts Remove direct development dependencies owned by the Devtools package.">
     <h3>removeOwnedDependencies</h3>
-    <p class="muted"><code>src/tools/package/index.ts:252:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:285:1</code></p>
     <p>Remove direct development dependencies owned by the Devtools package.</p>
     
   </article><article class="item" data-search="normalizedDependencies src/tools/package/index.ts Preserve an existing dependencies object or omit a newly empty one.">
     <h3>normalizedDependencies</h3>
-    <p class="muted"><code>src/tools/package/index.ts:262:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:295:1</code></p>
     <p>Preserve an existing dependencies object or omit a newly empty one.</p>
     
   </article><article class="item" data-search="hasStandardScripts src/tools/package/index.ts Check the canonical development-tool scripts.">
     <h3>hasStandardScripts</h3>
-    <p class="muted"><code>src/tools/package/index.ts:272:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:305:1</code></p>
     <p>Check the canonical development-tool scripts.</p>
     
   </article><article class="item" data-search="hasCurrentChangesetsScripts src/tools/package/index.ts Check Changesets scripts when the repository participates in Changesets.">
     <h3>hasCurrentChangesetsScripts</h3>
-    <p class="muted"><code>src/tools/package/index.ts:280:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:313:1</code></p>
     <p>Check Changesets scripts when the repository participates in Changesets.</p>
     
   </article><article class="item" data-search="isChangesetsEnabled src/tools/package/index.ts Determine whether the repository participates in Changesets synchronization.">
     <h3>isChangesetsEnabled</h3>
-    <p class="muted"><code>src/tools/package/index.ts:293:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:326:1</code></p>
     <p>Determine whether the repository participates in Changesets synchronization.</p>
     
   </article><article class="item" data-search="serializePackageManifest src/tools/package/index.ts Serialize a package manifest using the repository formatting contract.">
     <h3>serializePackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:306:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:339:1</code></p>
     <p>Serialize a package manifest using the repository formatting contract.</p>
     
   </article><article class="item" data-search="toRecord src/tools/package/index.ts Copy a JSON-like value to a mutable record or return an empty record.">
     <h3>toRecord</h3>
-    <p class="muted"><code>src/tools/package/index.ts:311:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:344:1</code></p>
     <p>Copy a JSON-like value to a mutable record or return an empty record.</p>
     
   </article><article class="item" data-search="isRecord src/tools/package/index.ts Narrow an unknown JSON-like value to a non-array record.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/tools/package/index.ts:316:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:349:1</code></p>
     <p>Narrow an unknown JSON-like value to a non-array record.</p>
     
   </article><article class="item" data-search="isNodeError src/tools/package/index.ts Narrow an unknown error to a Node error carrying an error code.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/package/index.ts:321:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:354:1</code></p>
     <p>Narrow an unknown error to a Node error carrying an error code.</p>
     
   </article>
@@ -4025,6 +4078,31 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>runBunCommandAsync</h3>
     <p class="muted"><code>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts:29:1</code></p>
     <p>Execute one Bun package-manager command with inherited output and exact exit handling.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-tools-package-resolvepackagecapabilitiesasync-ts" class="view" data-view="src/tools/package/resolvePackageCapabilitiesAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/package/resolvePackageCapabilitiesAsync.ts</h2>
+      <article class="item" data-search="resolvePackageCapabilitiesAsync src/tools/package/resolvePackageCapabilitiesAsync.ts Resolve, validate, and normalize one opted-in package&#39;s canonical capability catalog.">
+    <h3>resolvePackageCapabilitiesAsync</h3>
+    <p class="muted"><code>src/tools/package/resolvePackageCapabilitiesAsync.ts:15:1</code></p>
+    <p>Resolve, validate, and normalize one opted-in package&#39;s canonical capability catalog.</p>
+    
+  </article><article class="item" data-search="assertUniqueCapabilityIds src/tools/package/resolvePackageCapabilitiesAsync.ts Reject duplicate identifiers before serializing a catalog into static package metadata.">
+    <h3>assertUniqueCapabilityIds</h3>
+    <p class="muted"><code>src/tools/package/resolvePackageCapabilitiesAsync.ts:53:1</code></p>
+    <p>Reject duplicate identifiers before serializing a catalog into static package metadata.</p>
+    
+  </article><article class="item" data-search="isRecord src/tools/package/resolvePackageCapabilitiesAsync.ts Narrow an unknown value to a JSON object.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/tools/package/resolvePackageCapabilitiesAsync.ts:64:1</code></p>
+    <p>Narrow an unknown value to a JSON object.</p>
+    
+  </article><article class="item" data-search="isNodeError src/tools/package/resolvePackageCapabilitiesAsync.ts Narrow an unknown error to a Node error carrying an error code.">
+    <h3>isNodeError</h3>
+    <p class="muted"><code>src/tools/package/resolvePackageCapabilitiesAsync.ts:69:1</code></p>
+    <p>Narrow an unknown error to a Node error carrying an error code.</p>
     
   </article>
     </section>

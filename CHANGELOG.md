@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0
+
+### Minor Changes
+
+- 6ed3a92: Derive published Ankh capability metadata from each package's canonical capability catalog during repository synchronization and managed releases.
+
 ## 2.2.2
 
 ### Patch Changes
