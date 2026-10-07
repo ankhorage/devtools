@@ -294,6 +294,14 @@ function collectManagedSkillScripts(root: URL, directory = root): string[] {
   return scripts.sort();
 }
 
+function readPackageMetadata(): Record<string, unknown> {
+  const parsed: unknown = JSON.parse(
+    readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
+  );
+  if (!isRecord(parsed)) throw new Error('package.json must contain a JSON object.');
+  return parsed;
+}
+
 /*** Narrow unknown JSON data to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
