@@ -1,36 +1,11 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 
+import { areCapabilitiesEqual, isCapability } from '@ankhorage/contracts/capabilities';
 import { describe, expect, it } from 'bun:test';
 
+import { CAPABILITIES } from './capabilities/index.js';
+
 const CARET_SEMVER_RANGE = /^\^\d+\.\d+\.\d+$/u;
-const capabilities = [
-  'devtools.apm.sync',
-  'devtools.apm.validate',
-  'devtools.structure.build',
-  'devtools.structure.check',
-  'devtools.changeset',
-  'devtools.lint',
-  'devtools.format',
-  'devtools.knip',
-  'devtools.sync',
-  'devtools.status',
-  'devtools.agents.sync',
-  'devtools.agents.status',
-  'devtools.skills.sync',
-  'devtools.skills.status',
-  'devtools.eslint.sync',
-  'devtools.eslint.status',
-  'devtools.prettier.sync',
-  'devtools.prettier.status',
-  'devtools.knip.sync',
-  'devtools.knip.status',
-  'devtools.package.sync',
-  'devtools.package.status',
-  'devtools.workflows.sync',
-  'devtools.workflows.status',
-  'devtools.vscode.sync',
-  'devtools.vscode.status',
-];
 const obsoleteSkillName = ['ankhorage', 'package-structure'].join('-');
 
 describe('package metadata', () => {
@@ -41,11 +16,24 @@ describe('package metadata', () => {
 
     expect(packageJson.name).toBe('@ankhorage/devtools');
     expect(packageJson.type).toBe('module');
-    expect(packageJson.ankh).toEqual({
-      category: 'devtools',
-      provider: './dist/cli/index.js',
-      capabilities,
-    });
+    const ankh = packageJson.ankh;
+    expect(isRecord(ankh)).toBeTrue();
+    if (!isRecord(ankh)) throw new Error('package.json ankh metadata must be an object.');
+    expect(ankh.category).toBe('devtools');
+    expect(ankh.provider).toBe('./dist/cli/index.js');
+    const publishedCapabilities = ankh.capabilities;
+    expect(Array.isArray(publishedCapabilities)).toBeTrue();
+    if (!Array.isArray(publishedCapabilities)) {
+      throw new Error('package.json ankh.capabilities must be an array.');
+    }
+    expect(publishedCapabilities).toHaveLength(CAPABILITIES.length);
+    expect(publishedCapabilities.every(isCapability)).toBeTrue();
+    for (const [index, capability] of CAPABILITIES.entries()) {
+      const published = publishedCapabilities.at(index);
+      expect(isCapability(published)).toBeTrue();
+      if (!isCapability(published)) continue;
+      expect(areCapabilitiesEqual(published, capability)).toBeTrue();
+    }
     expect(packageJson.bin).toEqual({
       'ankhorage-apm-release': './dist/cli/bin/apm-release.js',
       'ankhorage-changeset': './dist/cli/bin/changeset.js',
@@ -79,6 +67,10 @@ describe('package metadata', () => {
         import: './dist/tools/prettier/index.cjs',
         require: './dist/tools/prettier/index.cjs',
         default: './dist/tools/prettier/index.cjs',
+      },
+      './capabilities': {
+        types: './dist/capabilities/index.d.ts',
+        import: './dist/capabilities/index.js',
       },
     });
 

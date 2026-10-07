@@ -1,35 +1,11 @@
+import { CAPABILITIES } from '../capabilities/index.js';
+
 export type DevtoolsToolName = 'changeset' | 'format' | 'knip' | 'lint';
 type DevtoolsManagedScope =
   'agents' | 'all' | 'eslint' | 'knip' | 'package' | 'prettier' | 'skills' | 'vscode' | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
-type DevtoolsCapability =
-  | 'devtools.apm.sync'
-  | 'devtools.apm.validate'
-  | 'devtools.changeset'
-  | 'devtools.format'
-  | 'devtools.knip'
-  | 'devtools.lint'
-  | 'devtools.status'
-  | 'devtools.sync'
-  | 'devtools.agents.status'
-  | 'devtools.agents.sync'
-  | 'devtools.eslint.status'
-  | 'devtools.eslint.sync'
-  | 'devtools.knip.status'
-  | 'devtools.knip.sync'
-  | 'devtools.package.status'
-  | 'devtools.package.sync'
-  | 'devtools.prettier.status'
-  | 'devtools.prettier.sync'
-  | 'devtools.skills.status'
-  | 'devtools.skills.sync'
-  | 'devtools.structure.build'
-  | 'devtools.structure.check'
-  | 'devtools.vscode.status'
-  | 'devtools.vscode.sync'
-  | 'devtools.workflows.status'
-  | 'devtools.workflows.sync';
+type DevtoolsCapability = (typeof CAPABILITIES)[number]['id'];
 
 interface DevtoolsCommandBase {
   readonly path: readonly [string, ...string[]];

@@ -19,32 +19,396 @@
     "category": "devtools",
     "provider": "./dist/cli/index.js",
     "capabilities": [
-      "devtools.apm.sync",
-      "devtools.apm.validate",
-      "devtools.structure.build",
-      "devtools.structure.check",
-      "devtools.changeset",
-      "devtools.lint",
-      "devtools.format",
-      "devtools.knip",
-      "devtools.sync",
-      "devtools.status",
-      "devtools.agents.sync",
-      "devtools.agents.status",
-      "devtools.skills.sync",
-      "devtools.skills.status",
-      "devtools.eslint.sync",
-      "devtools.eslint.status",
-      "devtools.prettier.sync",
-      "devtools.prettier.status",
-      "devtools.knip.sync",
-      "devtools.knip.status",
-      "devtools.package.sync",
-      "devtools.package.status",
-      "devtools.workflows.sync",
-      "devtools.workflows.status",
-      "devtools.vscode.sync",
-      "devtools.vscode.status"
+      {
+        "id": "devtools.apm.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync APM release",
+        "description": "Bind owner metadata to the Changesets release version."
+      },
+      {
+        "id": "devtools.apm.validate",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Validate APM release",
+        "description": "Validate the exact packed APM release artifact."
+      },
+      {
+        "id": "devtools.structure.build",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Build structure evidence",
+        "description": "Generate deterministic structural descriptor evidence."
+      },
+      {
+        "id": "devtools.structure.check",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check structure evidence",
+        "description": "Verify structural descriptor evidence is current."
+      },
+      {
+        "id": "devtools.changeset",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Run Changesets",
+        "description": "Run the shared Changesets toolchain."
+      },
+      {
+        "id": "devtools.lint",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Run ESLint",
+        "description": "Run the shared ESLint toolchain."
+      },
+      {
+        "id": "devtools.format",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Run Prettier",
+        "description": "Run the shared Prettier toolchain."
+      },
+      {
+        "id": "devtools.knip",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Run Knip",
+        "description": "Run the shared Knip toolchain."
+      },
+      {
+        "id": "devtools.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync repository",
+        "description": "Synchronize all managed repository setup."
+      },
+      {
+        "id": "devtools.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check repository status",
+        "description": "Report drift for all managed repository setup."
+      },
+      {
+        "id": "devtools.agents.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync agent instructions",
+        "description": "Synchronize the canonical repository agent instructions."
+      },
+      {
+        "id": "devtools.agents.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check agent instructions",
+        "description": "Report drift for the canonical repository agent instructions."
+      },
+      {
+        "id": "devtools.skills.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync agent skills",
+        "description": "Synchronize canonical repository-local agent skills."
+      },
+      {
+        "id": "devtools.skills.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check agent skills",
+        "description": "Report drift for canonical repository-local agent skills."
+      },
+      {
+        "id": "devtools.eslint.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync ESLint",
+        "description": "Synchronize the shared ESLint setup."
+      },
+      {
+        "id": "devtools.eslint.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check ESLint",
+        "description": "Report drift for the shared ESLint setup."
+      },
+      {
+        "id": "devtools.prettier.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync Prettier",
+        "description": "Synchronize the shared Prettier setup."
+      },
+      {
+        "id": "devtools.prettier.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check Prettier",
+        "description": "Report drift for the shared Prettier setup."
+      },
+      {
+        "id": "devtools.knip.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync Knip",
+        "description": "Synchronize the shared Knip setup."
+      },
+      {
+        "id": "devtools.knip.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check Knip",
+        "description": "Report drift for the shared Knip setup."
+      },
+      {
+        "id": "devtools.package.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync package metadata",
+        "description": "Synchronize the shared package.json contract."
+      },
+      {
+        "id": "devtools.package.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check package metadata",
+        "description": "Report drift for the shared package.json contract."
+      },
+      {
+        "id": "devtools.workflows.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync workflows",
+        "description": "Synchronize the canonical GitHub Actions workflows."
+      },
+      {
+        "id": "devtools.workflows.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check workflows",
+        "description": "Report drift for the canonical GitHub Actions workflows."
+      },
+      {
+        "id": "devtools.vscode.sync",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Sync VS Code",
+        "description": "Synchronize the canonical VS Code workspace configuration."
+      },
+      {
+        "id": "devtools.vscode.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check VS Code",
+        "description": "Report drift for the canonical VS Code workspace configuration."
+      }
     ]
   },
   "ankhorage": {
@@ -94,6 +458,10 @@
     "./types": {
       "types": "./dist/types/public.d.ts",
       "import": "./dist/types/public.js"
+    },
+    "./capabilities": {
+      "types": "./dist/capabilities/index.d.ts",
+      "import": "./dist/capabilities/index.js"
     }
   },
   "files": [

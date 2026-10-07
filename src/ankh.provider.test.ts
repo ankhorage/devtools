@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
+import { CAPABILITIES } from './capabilities/index.js';
 import { getDevtoolsCommands } from './cli/commands.js';
 import provider from './cli/index.js';
 
@@ -9,7 +10,10 @@ describe('devtools package provider', () => {
 
     expect(provider.id).toBe('@ankhorage/devtools');
     expect(provider.category).toBe('devtools');
-    expect(provider.capabilities).toEqual(commands.map((command) => command.capability));
+    expect(provider.capabilities).toEqual(CAPABILITIES);
+    expect(commands.map((command) => command.capability)).toEqual(
+      CAPABILITIES.map((capability) => capability.id),
+    );
     expect(provider.commands).toEqual(
       commands.map((command) => ({
         path: [...command.path],
