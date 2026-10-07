@@ -28,7 +28,10 @@ test('syncs only the selected concern and aggregate status reports drift', async
     `bun-version: '${REPOSITORY_RULE_METADATA.runtime.bun.version}'`,
   );
   const doctorVersion = readCurrentDoctorVersion();
-  expect(await readFile(join(target, '.github/workflows/ci.yml'), 'utf8')).toContain(
+  const ciWorkflow = await readFile(join(target, '.github/workflows/ci.yml'), 'utf8');
+  expect(ciWorkflow).toContain("p.name === '@ankhorage/doctor'");
+  expect(ciWorkflow).toContain('bun ./dist/cli/standalone.js validate .');
+  expect(ciWorkflow).toContain(
     `BUN_INSTALL_CACHE_DIR="\${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@${doctorVersion} validate .`,
   );
   expect(await Bun.file(join(target, '.vscode/settings.json')).exists()).toBe(false);
