@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.1
+
+### Patch Changes
+
+- a8638c9: Update Devtools-owned dependencies: `@ankhorage/project-detector`.
+
 ## 2.2.0
 
 ### Minor Changes
