@@ -20,6 +20,7 @@ function testPackageEntrypoints(): void {
     'ankhorage-eslint': './dist/cli/bin/eslint.js',
     'ankhorage-knip': './dist/cli/bin/knip.js',
     'ankhorage-prettier': './dist/cli/bin/prettier.js',
+    'ankhorage-repository': './dist/cli/bin/repository.js',
     'ankhorage-structure': './dist/cli/bin/structure.js',
   });
   expect(packageJson.exports).toEqual({

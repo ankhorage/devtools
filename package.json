@@ -431,7 +431,8 @@
     "ankhorage-knip": "./dist/cli/bin/knip.js",
     "ankhorage-prettier": "./dist/cli/bin/prettier.js",
     "ankhorage-apm-release": "./dist/cli/bin/apm-release.js",
-    "ankhorage-structure": "./dist/cli/bin/structure.js"
+    "ankhorage-structure": "./dist/cli/bin/structure.js",
+    "ankhorage-repository": "./dist/cli/bin/repository.js"
   },
   "exports": {
     "./cli": {

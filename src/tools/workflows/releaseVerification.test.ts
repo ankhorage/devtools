@@ -31,9 +31,23 @@ function expectReleaseOrdering(release: string): void {
   expect(release).toContain('release_sha: ${{ steps.release.outputs.release_sha }}');
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('git tag "$tag" "$RELEASE_SHA"');
+  expectRepositoryCapabilityMaterialization(release);
   expect(release).toContain(
     'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"',
   );
+}
+
+/*** Assert release materialization uses Bun without assuming Devtools installs itself. */
+function expectRepositoryCapabilityMaterialization(release: string): void {
+  expect(release).toContain('Synchronize package capability metadata');
+  expect(release)
+    .toContain(`if node -e "const p=require('./package.json'); process.exit(p.name === '@ankhorage/devtools' ? 0 : 1)"; then
+              bun ./dist/cli/bin/repository.js package sync .
+              bun ./dist/cli/bin/repository.js package status .
+            else
+              bunx --bun --no-install ankhorage-repository package sync .
+              bunx --bun --no-install ankhorage-repository package status .
+            fi`);
 }
 
 /*** Assert the clean packed consumer loads every declared runtime boundary before publication. */
@@ -60,6 +74,11 @@ function expectPackedRuntimeVerification(release: string): void {
     "process.stdout.write(output.length === 0 ? '' : `${output.join('\\n')}\\n`);",
   );
   expect(release).toContain("while IFS='|' read -r loader specifier; do");
+  expect(release).toContain(
+    'Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.',
+  );
+  expect(release).toContain('await import(`${name}/capabilities`)');
+  expect(release).toContain("requireFromPackage.resolve('@ankhorage/contracts/capabilities')");
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" bun -e \'await import(process.env.PACKAGE_SPECIFIER)\'',
   );

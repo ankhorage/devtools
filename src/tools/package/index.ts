@@ -28,6 +28,7 @@ import type {
   ManagedFileSyncResult,
 } from '../../features/managed-files/managedFiles.js';
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
+import { resolvePackageCapabilitiesAsync } from './resolvePackageCapabilitiesAsync.js';
 
 const PACKAGE_PATH = 'package.json';
 const DEVTOOLS_PACKAGE_NAME = '@ankhorage/devtools';
@@ -77,11 +78,12 @@ export async function inspectPackageManifest(
 
   return {
     relativePath: PACKAGE_PATH,
-    state: isManagedPackageContractCurrent(
+    state: (await isManagedPackageContractCurrentAsync(
       snapshot.manifest,
       devtoolsVersion,
       snapshot.changesetsConfigExists,
-    )
+      targetDirectory,
+    ))
       ? 'current'
       : 'outdated',
   };
@@ -96,11 +98,12 @@ export async function syncPackageManifest(
   const snapshot = await readPackageManifest(targetDirectory);
   if (
     snapshot.exists &&
-    isManagedPackageContractCurrent(
+    (await isManagedPackageContractCurrentAsync(
       snapshot.manifest,
       devtoolsVersion,
       snapshot.changesetsConfigExists,
-    )
+      targetDirectory,
+    ))
   ) {
     return { relativePath: PACKAGE_PATH, action: 'unchanged' };
   }
@@ -112,11 +115,15 @@ export async function syncPackageManifest(
     };
   }
 
-  const updatedManifest = applyManagedPackageContract(
+  let updatedManifest = applyManagedPackageContract(
     snapshot.manifest,
     devtoolsVersion,
     snapshot.changesetsConfigExists,
   );
+  const capabilities = await resolvePackageCapabilitiesAsync(targetDirectory, snapshot.manifest);
+  if (capabilities !== undefined) {
+    updatedManifest = applyManagedPackageCapabilities(updatedManifest, capabilities);
+  }
   await writeFile(
     resolve(targetDirectory, PACKAGE_PATH),
     serializePackageManifest(updatedManifest),
@@ -160,6 +167,15 @@ export function applyManagedPackageContract(
   });
 }
 
+/*** Apply a canonical capability catalog without replacing authored Ankh metadata. */
+function applyManagedPackageCapabilities(
+  manifest: Record<string, unknown>,
+  capabilities: readonly unknown[],
+): Record<string, unknown> {
+  const ankh = toRecord(manifest.ankh);
+  return { ...manifest, ankh: { ...ankh, capabilities } };
+}
+
 /*** Check whether the Devtools-owned package manifest fields match current policy. */
 export function isManagedPackageContractCurrent(
   manifest: Record<string, unknown>,
@@ -185,6 +201,23 @@ export function isManagedPackageContractCurrent(
     devDependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
     hasCurrentChangesetsScripts(scripts, changesetsEnabled) &&
     hasCurrentDevtoolsDependencyPlacement(dependencies, devDependencies, devtoolsVersion)
+  );
+}
+
+/*** Check managed package policy and materialized capability metadata without writing files. */
+async function isManagedPackageContractCurrentAsync(
+  manifest: Record<string, unknown>,
+  devtoolsVersion: string,
+  changesetsConfigExists: boolean,
+  targetDirectory: string,
+): Promise<boolean> {
+  const capabilities = await resolvePackageCapabilitiesAsync(targetDirectory, manifest);
+  if (!isManagedPackageContractCurrent(manifest, devtoolsVersion, changesetsConfigExists)) {
+    return false;
+  }
+  return (
+    capabilities === undefined ||
+    JSON.stringify(toRecord(manifest.ankh).capabilities) === JSON.stringify(capabilities)
   );
 }
 
