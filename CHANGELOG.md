@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.2
+
+### Patch Changes
+
+- 3c9f06f: Allow the scoped release GitHub App token to finalize releases whose commits change managed workflow files.
+
 ## 2.2.1
 
 ### Patch Changes
