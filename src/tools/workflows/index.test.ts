@@ -55,6 +55,8 @@ describe('managed workflows', () => {
 test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
 
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
   expect(release).toContain(
     'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1',
   );
