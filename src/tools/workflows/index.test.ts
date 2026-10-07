@@ -60,6 +60,8 @@ test('dispatches every published Ankhorage package to the trusted Renovate rollo
   );
   expect(release).toContain('repositories: renovate');
   expect(release).toContain('permission-contents: write');
+  expect(release).toContain('permission-workflows: write');
+  expect(release.match(/permission-workflows: write/gu)).toHaveLength(1);
   expect(release).toContain('github-token: ${{ steps.rollout-token.outputs.token }}');
   expect(release).not.toContain("needs.release.outputs.package_name == '@ankhorage/devtools'");
   expect(release).toContain('!/^@ankhorage\\/[a-z0-9][a-z0-9-]*$/.test');
