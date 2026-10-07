@@ -31,7 +31,7 @@ const EXPECTED_COMMAND_PATHS = [
   'workflows status',
   'vscode sync',
   'vscode status',
-] as const;
+];
 
 describe('devtools package provider', () => {
   it('exposes the complete canonical devtools command surface', testCanonicalCommandSurface);
