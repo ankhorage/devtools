@@ -22,9 +22,9 @@ test('package capability materialization leaves packages without Ankh metadata u
   expect(await resolvePackageCapabilitiesAsync(target, await readManifest(target))).toBeUndefined();
 });
 
-test('package capability materialization supports static and derived catalogs', async () => {
+test('package capability materialization supports static and cross-module derived catalogs', async () => {
   const staticTarget = await createCapabilityFixture(staticCatalogSource());
-  const derivedTarget = await createCapabilityFixture(derivedCatalogSource());
+  const derivedTarget = await createCrossModuleDerivedCapabilityFixture();
 
   expect(
     await resolvePackageCapabilitiesAsync(staticTarget, await readManifest(staticTarget)),
@@ -32,6 +32,20 @@ test('package capability materialization supports static and derived catalogs', 
   expect(
     await resolvePackageCapabilitiesAsync(derivedTarget, await readManifest(derivedTarget)),
   ).toEqual([capability('fixture.derived.one'), capability('fixture.derived.two')]);
+  expect((await inspectPackageManifest(derivedTarget, '2.3.4')).state).toBe('outdated');
+  await syncPackageManifest(derivedTarget, '2.3.4', { dryRun: false });
+  const synchronized = await readFile(join(derivedTarget, 'package.json'), 'utf8');
+  const materialized = await readManifest(derivedTarget);
+  expect(materialized.ankh).toEqual({
+    category: 'fixture',
+    provider: null,
+    capabilities: [capability('fixture.derived.one'), capability('fixture.derived.two')],
+  });
+  expect((await inspectPackageManifest(derivedTarget, '2.3.4')).state).toBe('current');
+  expect((await syncPackageManifest(derivedTarget, '2.3.4', { dryRun: false })).action).toBe(
+    'unchanged',
+  );
+  expect(await readFile(join(derivedTarget, 'package.json'), 'utf8')).toBe(synchronized);
 });
 
 test('package capability materialization uses Contracts normalization', async () => {
@@ -180,6 +194,17 @@ async function createCapabilityFixture(
   return target;
 }
 
+/*** Create a catalog fixture that derives descriptors from package-owned TypeScript metadata. */
+async function createCrossModuleDerivedCapabilityFixture(): Promise<string> {
+  const target = await createCapabilityFixture(derivedCatalogSource());
+  await mkdir(join(target, 'src/metadata'), { recursive: true });
+  await Bun.write(
+    join(target, 'src/metadata/events.ts'),
+    "export const EVENTS = ['one', 'two'];\n",
+  );
+  return target;
+}
+
 async function createFixture(manifest: Record<string, unknown>): Promise<string> {
   const target = await mkdtemp('/tmp/devtools-package-capabilities-');
   temporaryDirectories.push(target);
@@ -208,8 +233,9 @@ function staticCatalogSource(): string {
 }
 
 function derivedCatalogSource(): string {
-  return `const COMPONENTS = ['one', 'two'];
-export const CAPABILITIES = COMPONENTS.map((name) => ({
+  return `import { EVENTS } from '../metadata/events';
+
+export const CAPABILITIES = EVENTS.map((name) => ({
   id: \`fixture.derived.\${name}\`,
   owner: '@example/fixture',
   access: ['invoke'],

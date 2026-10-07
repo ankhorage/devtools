@@ -80,8 +80,13 @@ jobs:
       - name: Synchronize package capability metadata
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.ankh === undefined ? 1 : 0)"; then
-            bunx ankhorage-repository package sync .
-            bunx ankhorage-repository package status .
+            if node -e "const p=require('./package.json'); process.exit(p.name === '@ankhorage/devtools' ? 0 : 1)"; then
+              bun ./dist/cli/bin/repository.js package sync .
+              bun ./dist/cli/bin/repository.js package status .
+            else
+              bunx --bun --no-install ankhorage-repository package sync .
+              bunx --bun --no-install ankhorage-repository package status .
+            fi
           else
             echo "No Ankh package metadata found; skipping capability materialization."
           fi
