@@ -1,15 +1,13 @@
-import { CAPABILITIES } from '../capabilities/index.js';
+import type { Capability } from '@ankhorage/contracts/capabilities';
 
 export type DevtoolsToolName = 'changeset' | 'format' | 'knip' | 'lint';
 type DevtoolsManagedScope =
   'agents' | 'all' | 'eslint' | 'knip' | 'package' | 'prettier' | 'skills' | 'vscode' | 'workflows';
 type DevtoolsManagedOperation = 'status' | 'sync';
 
-type DevtoolsCapability = (typeof CAPABILITIES)[number]['id'];
-
 interface DevtoolsCommandBase {
   readonly path: readonly [string, ...string[]];
-  readonly capability: DevtoolsCapability;
+  readonly capability: Capability['id'];
   readonly summary: string;
 }
 
@@ -245,10 +243,7 @@ export function getDevtoolsToolCommand(
 
 function externalCommand(
   toolName: DevtoolsToolName,
-  capability: Extract<
-    DevtoolsCapability,
-    'devtools.changeset' | 'devtools.format' | 'devtools.knip' | 'devtools.lint'
-  >,
+  capability: Capability['id'],
   summary: string,
   packageName: DevtoolsExternalCommandDefinition['packageName'],
   binName: DevtoolsExternalCommandDefinition['binName'],
@@ -266,7 +261,7 @@ function externalCommand(
 
 function repositoryCommand(
   path: DevtoolsRepositoryCommandDefinition['path'],
-  capability: DevtoolsCapability,
+  capability: Capability['id'],
   summary: string,
   scope: DevtoolsManagedScope,
   operation: DevtoolsManagedOperation,
