@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.4
+
+### Patch Changes
+
+- f6fdec0: Run the release packed capability-parity probe as explicit Node ESM so Node 24 can validate published catalogs.
+
 ## 2.3.3
 
 ### Patch Changes
