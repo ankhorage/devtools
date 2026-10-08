@@ -77,6 +77,7 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain(
     'Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.',
   );
+  expect(release).toContain("!Object.hasOwn(manifest.ankh, 'capabilities')");
   expect(release).toContain('await import(`${name}/capabilities`)');
   expect(release).toContain("requireFromPackage.resolve('@ankhorage/contracts/capabilities')");
   expect(release).toContain(

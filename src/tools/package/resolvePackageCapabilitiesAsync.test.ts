@@ -22,6 +22,44 @@ test('package capability materialization leaves packages without Ankh metadata u
   expect(await resolvePackageCapabilitiesAsync(target, await readManifest(target))).toBeUndefined();
 });
 
+test('package capability materialization leaves unrelated Ankh metadata without a catalog unchanged', async () => {
+  const target = await createFixture({
+    name: '@example/structure-only',
+    ankh: { structure: { output: 'structure.json', roots: { source: 'src' } } },
+  });
+
+  expect(await resolvePackageCapabilitiesAsync(target, await readManifest(target))).toBeUndefined();
+  await syncPackageManifest(target, '2.3.4', { dryRun: false });
+  const synchronized = await readFile(join(target, 'package.json'), 'utf8');
+  expect((await readManifest(target)).ankh).toEqual({
+    structure: { output: 'structure.json', roots: { source: 'src' } },
+  });
+  expect((await syncPackageManifest(target, '2.3.4', { dryRun: false })).action).toBe('unchanged');
+  expect(await readFile(join(target, 'package.json'), 'utf8')).toBe(synchronized);
+});
+
+test('package capability materialization ignores an unrelated public capabilities export', async () => {
+  const target = await createFixture({
+    name: '@example/contracts-like',
+    ankh: { structure: { output: 'structure.json', roots: { source: 'src' } } },
+    exports: { './capabilities': './dist/capabilities.js' },
+  });
+
+  expect(await resolvePackageCapabilitiesAsync(target, await readManifest(target))).toBeUndefined();
+});
+
+test('package capability materialization rejects stale metadata without a canonical catalog', async () => {
+  const target = await createFixture({
+    name: '@example/stale-capabilities',
+    ankh: { capabilities: [capability('fixture.stale')] },
+  });
+
+  await expectCapabilityResolutionFailure(
+    resolvePackageCapabilitiesAsync(target, await readManifest(target)),
+    'ankh.capabilities requires the canonical src/capabilities/index.ts',
+  );
+});
+
 test('package capability materialization supports static and cross-module derived catalogs', async () => {
   const staticTarget = await createCapabilityFixture(staticCatalogSource());
   const derivedTarget = await createCrossModuleDerivedCapabilityFixture();
@@ -62,6 +100,17 @@ test('package capability materialization uses Contracts normalization', async ()
       binding: { kind: 'action', bindableAs: ['source', 'target'] },
     },
   ]);
+});
+
+test('package capability materialization requires Ankh discovery metadata for a canonical catalog', async () => {
+  const target = await createFixture({ name: '@example/missing-discovery' });
+  await mkdir(join(target, 'src/capabilities'), { recursive: true });
+  await Bun.write(join(target, 'src/capabilities/index.ts'), staticCatalogSource());
+
+  await expectCapabilityResolutionFailure(
+    resolvePackageCapabilitiesAsync(target, await readManifest(target)),
+    'requires package.json ankh discovery metadata for publication',
+  );
 });
 
 test('package capability materialization preserves provider-null and unrelated metadata', async () => {
