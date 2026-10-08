@@ -28,8 +28,8 @@ export async function inspectPackedApmReleaseCandidateAsync(
   const temporaryRoot = await mkdtemp(resolve(tmpdir(), 'ankh-apm-release-'));
   try {
     const archive = resolve(temporaryRoot, 'candidate.tgz');
-    const packageRoot = resolve(temporaryRoot, 'package');
     await packCandidateAsync(root, temporaryRoot, archive);
+    const packageRoot = await realpath(resolve(temporaryRoot, 'package'));
     const candidate = await readPackedCandidateAsync(packageRoot, archive);
     const result = await validatePackedCandidateAsync(candidate, packageRoot, root, options);
     if (!result.valid || options.artifactPath === undefined) return result;

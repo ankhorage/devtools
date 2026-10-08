@@ -76,6 +76,23 @@ test('packs outside the checkout, disables lifecycle scripts, and retains exact 
   );
 });
 
+test('packed validation accepts a canonicalized extracted root reached through a temporary symlink', async () => {
+  const root = await fixtureAsync(descriptor());
+  const temporaryRoot = await temporaryRootAsync();
+  const resolvedTemporaryRoot = join(temporaryRoot, 'resolved');
+  const symlinkedTemporaryRoot = join(temporaryRoot, 'symlinked');
+  await mkdir(resolvedTemporaryRoot);
+  await symlink(resolvedTemporaryRoot, symlinkedTemporaryRoot, 'dir');
+  const originalTemporaryRoot = process.env.TMPDIR;
+  process.env.TMPDIR = symlinkedTemporaryRoot;
+  try {
+    expect(await validatePackedApmReleaseAsync(root)).toMatchObject({ valid: true, blockers: [] });
+  } finally {
+    if (originalTemporaryRoot === undefined) delete process.env.TMPDIR;
+    else process.env.TMPDIR = originalTemporaryRoot;
+  }
+});
+
 test('owner code requires consent and native conditional exports resolve from the packed package', async () => {
   const root = await fixtureAsync(projectionDescriptor());
   expect((await validatePackedApmReleaseAsync(root)).blockers[0]).toContain('owner-code-consent');
