@@ -16,19 +16,24 @@ export async function resolvePackageCapabilitiesAsync(
   targetDirectory: string,
   manifest: Readonly<Record<string, unknown>>,
 ): Promise<readonly Capability[] | undefined> {
-  if (!isRecord(manifest.ankh)) return undefined;
-
   const sourcePath = resolve(targetDirectory, CAPABILITIES_SOURCE_PATH);
   try {
     await access(sourcePath);
   } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') {
+      if (!hasCapabilityMetadata(manifest)) return undefined;
       throw new Error(
-        `Ankh package metadata requires the canonical ${CAPABILITIES_SOURCE_PATH} capability surface.`,
+        `package.json ankh.capabilities requires the canonical ${CAPABILITIES_SOURCE_PATH} capability surface.`,
         { cause: error },
       );
     }
     throw error;
+  }
+
+  if (!isRecord(manifest.ankh)) {
+    throw new Error(
+      `${CAPABILITIES_SOURCE_PATH} requires package.json ankh discovery metadata for publication.`,
+    );
   }
 
   const source: unknown = await import(pathToFileURL(sourcePath).href);
@@ -47,6 +52,11 @@ export async function resolvePackageCapabilitiesAsync(
   });
   assertUniqueCapabilityIds(capabilities);
   return capabilities;
+}
+
+/*** Check whether a manifest declares published capability discovery metadata. */
+function hasCapabilityMetadata(manifest: Readonly<Record<string, unknown>>): boolean {
+  return isRecord(manifest.ankh) && Object.hasOwn(manifest.ankh, 'capabilities');
 }
 
 /*** Reject duplicate identifiers before serializing a catalog into static package metadata. */
