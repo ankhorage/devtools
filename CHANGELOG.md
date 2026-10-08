@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.2
+
+### Patch Changes
+
+- 86e6599: Canonicalize packed APM extraction roots before containment validation so equivalent temporary realpaths are accepted without weakening traversal or symlink-escape protection.
+
 ## 2.3.1
 
 ### Patch Changes
