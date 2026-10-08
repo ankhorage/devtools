@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.5
+
+### Patch Changes
+
+- e00f04c: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
 ## 2.3.4
 
 ### Patch Changes
