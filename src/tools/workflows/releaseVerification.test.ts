@@ -1,6 +1,19 @@
-import { expect, test } from 'bun:test';
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
+import { afterEach, expect, test } from 'bun:test';
 
 import { workflowManagedFiles } from './index.js';
+
+const temporaryDirectories: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => rm(directory, { force: true, recursive: true })),
+  );
+});
 
 test('managed release verifies the exact npm artifact before finalization', async () => {
   const releaseDefinition = workflowManagedFiles.find(
@@ -77,6 +90,9 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain(
     'Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.',
   );
+  expect(release).toContain('PACKAGE_NAME="$package_name" node --input-type=module - <<\'NODE\'');
+  expect(release).toContain("import { createRequire } from 'node:module';");
+  expect(release).not.toContain("const { createRequire } = require('node:module');");
   expect(release).toContain("!Object.hasOwn(manifest.ankh, 'capabilities')");
   expect(release).toContain('await import(`${name}/capabilities`)');
   expect(release).toContain("requireFromPackage.resolve('@ankhorage/contracts/capabilities')");
@@ -95,6 +111,118 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain('Packed binary runtime dependency missing');
   expect(release).not.toContain('pathToFileURL(process.env.BINARY_PATH)');
   expect(release).not.toContain('--help');
+}
+
+test('packed capability parity probe runs as ESM and rejects catalog drift', async () => {
+  const release = await renderReleaseWorkflowAsync();
+  const probe = extractCapabilityParityProbe(release);
+  const matchingFixture = await createPackedCapabilityFixture(false);
+  const matchingResult = await runCapabilityParityProbeAsync(matchingFixture, probe);
+
+  expect(matchingResult.exitCode).toBe(0);
+  expect(matchingResult.stderr).not.toContain('ERR_AMBIGUOUS_MODULE_SYNTAX');
+
+  const driftedFixture = await createPackedCapabilityFixture(true);
+  const driftedResult = await runCapabilityParityProbeAsync(driftedFixture, probe);
+
+  expect(driftedResult.exitCode).not.toBe(0);
+  expect(driftedResult.stderr).toContain(
+    'Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.',
+  );
+  expect(driftedResult.stderr).not.toContain('ERR_AMBIGUOUS_MODULE_SYNTAX');
+});
+
+/*** Render the managed release workflow used as the executable probe source. */
+async function renderReleaseWorkflowAsync(): Promise<string> {
+  const releaseDefinition = workflowManagedFiles.find(
+    ({ relativePath }) => relativePath === '.github/workflows/release.yml',
+  );
+  if (releaseDefinition?.render === undefined) {
+    throw new Error('Missing managed release workflow renderer.');
+  }
+  return releaseDefinition.render('.');
+}
+
+/*** Extract the ESM capability-parity heredoc from the rendered release workflow. */
+function extractCapabilityParityProbe(release: string): string {
+  const match =
+    /PACKAGE_NAME="\$package_name" node --input-type=module - <<'NODE'\n(?<probe>[\s\S]*?)\n {10}NODE/u.exec(
+      release,
+    );
+  if (match?.groups?.probe === undefined) {
+    throw new Error('Missing packed capability parity probe.');
+  }
+  return match.groups.probe;
+}
+
+/*** Create an installed package fixture with package-scoped Contracts resolution. */
+async function createPackedCapabilityFixture(drifted: boolean): Promise<string> {
+  const directory = await mkdtemp('/tmp/devtools-release-parity-');
+  temporaryDirectories.push(directory);
+  const packageDirectory = join(directory, 'node_modules/@example/packed');
+  const capability = {
+    access: ['invoke'],
+    binding: { bindableAs: ['target'], kind: 'action' },
+    description: 'Exercise the packed parity probe.',
+    id: 'example.packed.probe',
+    label: 'Probe packed capability parity',
+    owner: '@example/packed',
+  };
+  const metadata = drifted
+    ? { ...capability, label: 'Drifted packed capability parity' }
+    : capability;
+
+  await mkdir(packageDirectory, { recursive: true });
+  await mkdir(join(directory, 'node_modules/@ankhorage'), { recursive: true });
+  await mkdir(join(directory, 'node_modules/@ankhorage/contracts'), { recursive: true });
+  await writeFile(
+    join(directory, 'node_modules/@ankhorage/contracts/package.json'),
+    `${JSON.stringify({ exports: { './capabilities': './capabilities.js' }, type: 'module' })}\n`,
+  );
+  await writeFile(
+    join(directory, 'node_modules/@ankhorage/contracts/capabilities.js'),
+    `export const isCapability = (value) => typeof value === 'object' && value !== null;
+export const normalizeCapability = (value) => value;
+export const areCapabilitiesEqual = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+`,
+  );
+  await writeFile(
+    join(packageDirectory, 'package.json'),
+    `${JSON.stringify(
+      {
+        ankh: { capabilities: [metadata] },
+        exports: { './capabilities': './capabilities.js' },
+        name: '@example/packed',
+        type: 'module',
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  await writeFile(
+    join(packageDirectory, 'capabilities.js'),
+    `export const CAPABILITIES = ${JSON.stringify([capability])};\n`,
+  );
+  return directory;
+}
+
+/*** Run the rendered ESM probe exactly as the packed-install workflow does. */
+async function runCapabilityParityProbeAsync(
+  directory: string,
+  probe: string,
+): Promise<{ readonly exitCode: number; readonly stderr: string }> {
+  const subprocess = Bun.spawn(['node', '--input-type=module', '-'], {
+    cwd: directory,
+    env: { ...process.env, PACKAGE_NAME: '@example/packed' },
+    stderr: 'pipe',
+    stdin: new TextEncoder().encode(probe),
+    stdout: 'pipe',
+  });
+  const [exitCode, stderr] = await Promise.all([
+    subprocess.exited,
+    new Response(subprocess.stderr).text(),
+  ]);
+  return { exitCode, stderr };
 }
 
 /*** Assert the public npm artifact is independently retrievable before finalization. */
