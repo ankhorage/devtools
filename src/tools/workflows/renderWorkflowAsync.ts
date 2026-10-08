@@ -2,6 +2,8 @@ import { readFile } from 'node:fs/promises';
 
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
+import { formatYamlAsync } from '../prettier/formatYamlAsync.js';
+
 export interface WorkflowPolicy {
   readonly bunVersion: string;
   readonly doctorVersion: string;
@@ -43,7 +45,7 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
       policy.structureReleaseCommand ?? './node_modules/.bin/ankhorage-structure',
     )
     .replaceAll(NODE_VERSION_TOKEN, policy.nodeVersion);
-  return `${rendered.trimEnd()}\n`;
+  return await formatYamlAsync(`${rendered.trimEnd()}\n`);
 }
 
 const BUN_VERSION_TOKEN = '__ANKH_BUN_VERSION__';
