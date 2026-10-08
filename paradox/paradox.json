@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.2",
+      "value": "v2.3.3",
       "color": "cb3837"
     },
     {
@@ -4119,13 +4119,24 @@
       }
     },
     {
+      "name": "hasCapabilityMetadata",
+      "description": "Check whether a manifest declares published capability discovery metadata.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
       "name": "assertUniqueCapabilityIds",
       "description": "Reject duplicate identifiers before serializing a catalog into static package metadata.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 53,
+        "line": 63,
         "column": 1
       }
     },
@@ -4136,7 +4147,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 64,
+        "line": 74,
         "column": 1
       }
     },
@@ -4147,7 +4158,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 69,
+        "line": 79,
         "column": 1
       }
     },
@@ -6960,12 +6971,6 @@
       },
       {
         "fromSymbol": "resolvePackageCapabilitiesAsync",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
-      },
-      {
-        "fromSymbol": "resolvePackageCapabilitiesAsync",
         "toSymbol": "resolve",
         "callExpression": "resolve",
         "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
@@ -6980,6 +6985,18 @@
         "fromSymbol": "resolvePackageCapabilitiesAsync",
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolvePackageCapabilitiesAsync",
+        "toSymbol": "hasCapabilityMetadata",
+        "callExpression": "hasCapabilityMetadata",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolvePackageCapabilitiesAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
       },
       {
@@ -7004,6 +7021,12 @@
         "fromSymbol": "resolvePackageCapabilitiesAsync",
         "toSymbol": "assertUniqueCapabilityIds",
         "callExpression": "assertUniqueCapabilityIds",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "hasCapabilityMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
       },
       {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.3
+
+### Patch Changes
+
+- 2df87bd: Use the canonical capability source surface as the package opt-in and skip packed catalog verification for packages without published capability metadata.
+
 ## 2.3.2
 
 ### Patch Changes
