@@ -367,6 +367,11 @@
       <small>3 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/prettier/formatYamlAsync.ts">
+      src/tools/prettier/formatYamlAsync.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/tools/prettier/managed.ts">
       src/tools/prettier/managed.ts
       <small>7 functions</small>
@@ -433,7 +438,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>75</strong><span class="muted">modules</span></div>
+        <div><strong>76</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -769,6 +774,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>planBunDependencySync</code>, <code>syncBunDependencies</code></p>
+  </article><article class="item" data-search="src/tools/prettier/formatYamlAsync.ts formatYamlAsync">
+    <h3>src/tools/prettier/formatYamlAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>formatYamlAsync</code></p>
   </article><article class="item" data-search="src/tools/prettier/managed.ts src/features/managed-files/managedFiles.ts prettierManagedFiles">
     <h3>src/tools/prettier/managed.ts</h3>
     <p class="muted">Referenced module</p>
@@ -824,10 +834,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>renderRenovateWorkflowAsync</code></p>
-  </article><article class="item" data-search="src/tools/workflows/renderWorkflowAsync.ts renderWorkflowAsync WorkflowPolicy">
+  </article><article class="item" data-search="src/tools/workflows/renderWorkflowAsync.ts src/tools/prettier/formatYamlAsync.ts renderWorkflowAsync WorkflowPolicy">
     <h3>src/tools/workflows/renderWorkflowAsync.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Dependencies:</strong> <code>src/tools/prettier/formatYamlAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>renderWorkflowAsync</code>, <code>WorkflowPolicy</code></p>
   </article><article class="item" data-search="src/types/apm-release-validation.ts ApmPackedReleaseCandidate ApmReleaseDescriptorPort ApmReleaseValidationOptions ApmReleaseValidationResult">
     <h3>src/types/apm-release-validation.ts</h3>
@@ -1750,6 +1760,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_prettier_formatYamlAsync_ts[&quot;src/tools/prettier/formatYamlAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_prettier_formatYamlAsync_ts
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_prettier_managed_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -1788,6 +1800,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_apm_release_validation_ts
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
@@ -2026,6 +2039,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_prettier_formatYamlAsync_ts[&quot;src/tools/prettier/formatYamlAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_prettier_formatYamlAsync_ts
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_prettier_managed_ts
   module_src_tools_prettier_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
@@ -2064,6 +2079,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_apm_release_validation_ts
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
@@ -2135,6 +2151,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
+  module_src_tools_prettier_formatYamlAsync_ts[&quot;src/tools/prettier/formatYamlAsync.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
   module_src_tools_skills_managed_ts[&quot;src/tools/skills/managed.ts&quot;]
@@ -2266,6 +2283,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
 </div>
     <details>
       <summary>View Mermaid source</summary>
@@ -2330,6 +2348,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
+  module_src_tools_prettier_formatYamlAsync_ts[&quot;src/tools/prettier/formatYamlAsync.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
   module_src_tools_skills_managed_ts[&quot;src/tools/skills/managed.ts&quot;]
@@ -2461,6 +2480,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
 </pre>
     </details>
   </article><article class="item" data-search="Export graph diagrams/export-graph.mmd">
@@ -2527,6 +2547,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
+  module_src_tools_prettier_formatYamlAsync_ts[&quot;src/tools/prettier/formatYamlAsync.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
   module_src_tools_skills_managed_ts[&quot;src/tools/skills/managed.ts&quot;]
@@ -2659,6 +2680,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
+  module_src_tools_prettier_formatYamlAsync_ts[&quot;src/tools/prettier/formatYamlAsync.ts&quot;]
   module_src_tools_prettier_managed_ts[&quot;src/tools/prettier/managed.ts&quot;]
   module_src_tools_skills_assetTestFixture_ts[&quot;src/tools/skills/assetTestFixture.ts&quot;]
   module_src_tools_skills_managed_ts[&quot;src/tools/skills/managed.ts&quot;]
@@ -4131,6 +4153,16 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article>
     </section>
+  </section><section id="view-src-tools-prettier-formatyamlasync-ts" class="view" data-view="src/tools/prettier/formatYamlAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/prettier/formatYamlAsync.ts</h2>
+      <article class="item" data-search="formatYamlAsync src/tools/prettier/formatYamlAsync.ts Format YAML with the published Devtools Prettier policy.">
+    <h3>formatYamlAsync</h3>
+    <p class="muted"><code>src/tools/prettier/formatYamlAsync.ts:9:1</code></p>
+    <p>Format YAML with the published Devtools Prettier policy.</p>
+    
+  </article>
+    </section>
   </section><section id="view-src-tools-prettier-managed-ts" class="view" data-view="src/tools/prettier/managed.ts" hidden>
     <section class="panel">
       <h2>src/tools/prettier/managed.ts</h2>
@@ -4436,12 +4468,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/workflows/renderWorkflowAsync.ts</h2>
       <article class="item" data-search="renderWorkflowAsync src/tools/workflows/renderWorkflowAsync.ts Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.">
     <h3>renderWorkflowAsync</h3>
-    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:19:1</code></p>
+    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:21:1</code></p>
     <p>Renders one workflow template with the canonical runtime, Doctor, and Changesets policy.</p>
     
   </article><article class="item" data-search="renderPkgvizAuditSteps src/tools/workflows/renderWorkflowAsync.ts Render the centrally managed PKGViz audit steps only for applicable repositories.">
     <h3>renderPkgvizAuditSteps</h3>
-    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:57:1</code></p>
+    <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:59:1</code></p>
     <p>Render the centrally managed PKGViz audit steps only for applicable repositories.</p>
     
   </article>

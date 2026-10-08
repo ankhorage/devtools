@@ -59,6 +59,7 @@ graph LR
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts["src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts["src/tools/package/resolvePackageCapabilitiesAsync.ts"]
   module_src_tools_package_syncBunDependencies_ts["src/tools/package/syncBunDependencies.ts"]
+  module_src_tools_prettier_formatYamlAsync_ts["src/tools/prettier/formatYamlAsync.ts"]
   module_src_tools_prettier_managed_ts["src/tools/prettier/managed.ts"]
   module_src_tools_skills_assetTestFixture_ts["src/tools/skills/assetTestFixture.ts"]
   module_src_tools_skills_managed_ts["src/tools/skills/managed.ts"]
@@ -190,3 +191,4 @@ graph LR
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --> module_src_tools_prettier_formatYamlAsync_ts

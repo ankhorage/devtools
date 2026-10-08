@@ -228,6 +228,8 @@ graph TD
   package__ankhorage_devtools -.-> module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_prettier_formatYamlAsync_ts["src/tools/prettier/formatYamlAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_prettier_formatYamlAsync_ts
   module_src_tools_prettier_managed_ts["src/tools/prettier/managed.ts"]
   package__ankhorage_devtools -.-> module_src_tools_prettier_managed_ts
   module_src_tools_prettier_managed_ts --> module_src_features_managed_files_managedFiles_ts
@@ -266,6 +268,7 @@ graph TD
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --> module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_workflows_renderWorkflowAsync_ts
+  module_src_tools_workflows_renderWorkflowAsync_ts --> module_src_tools_prettier_formatYamlAsync_ts
   module_src_types_apm_release_validation_ts["src/types/apm-release-validation.ts"]
   package__ankhorage_devtools -.-> module_src_types_apm_release_validation_ts
   module_src_types_public_ts["src/types/public.ts"]

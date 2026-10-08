@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.6
+
+### Patch Changes
+
+- 81b81d9: Format managed GitHub Actions workflows with the shared Devtools Prettier policy before synchronization.
+
 ## 2.3.5
 
 ### Patch Changes

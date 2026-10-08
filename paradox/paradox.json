@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.5",
+      "value": "v2.3.6",
       "color": "cb3837"
     },
     {
@@ -754,6 +754,14 @@
       ]
     },
     {
+      "path": "src/tools/prettier/formatYamlAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "formatYamlAsync"
+      ]
+    },
+    {
       "path": "src/tools/prettier/managed.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -883,7 +891,9 @@
     {
       "path": "src/tools/workflows/renderWorkflowAsync.ts",
       "isEntrypoint": false,
-      "dependencies": [],
+      "dependencies": [
+        "src/tools/prettier/formatYamlAsync.ts"
+      ],
       "exports": [
         "renderWorkflowAsync",
         "WorkflowPolicy"
@@ -4196,6 +4206,17 @@
       }
     },
     {
+      "name": "formatYamlAsync",
+      "description": "Format YAML with the published Devtools Prettier policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/prettier/formatYamlAsync.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
       "name": "renderPrettierConfig",
       "description": "Renders the shared Prettier wrapper for the target package module type.",
       "see": [],
@@ -4752,7 +4773,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 19,
+        "line": 21,
         "column": 1
       }
     },
@@ -4763,7 +4784,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/renderWorkflowAsync.ts",
-        "line": 57,
+        "line": 59,
         "column": 1
       }
     }
@@ -5224,6 +5245,11 @@
         "fromPath": "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "toPath": "src/tools/workflows/renderWorkflowAsync.ts",
         "sourcePath": "src/tools/workflows/renderRenovateWorkflowAsync.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/renderWorkflowAsync.ts",
+        "toPath": "src/tools/prettier/formatYamlAsync.ts",
+        "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
       },
       {
         "fromPath": "src/cli/commands/apm/sync.ts",
@@ -7084,6 +7110,24 @@
         "sourcePath": "src/tools/package/syncBunDependencies.ts"
       },
       {
+        "fromSymbol": "src/tools/prettier/formatYamlAsync.ts",
+        "toSymbol": "createRequire",
+        "callExpression": "createRequire",
+        "sourcePath": "src/tools/prettier/formatYamlAsync.ts"
+      },
+      {
+        "fromSymbol": "src/tools/prettier/formatYamlAsync.ts",
+        "toSymbol": "require",
+        "callExpression": "require",
+        "sourcePath": "src/tools/prettier/formatYamlAsync.ts"
+      },
+      {
+        "fromSymbol": "formatYamlAsync",
+        "toSymbol": "format",
+        "callExpression": "format",
+        "sourcePath": "src/tools/prettier/formatYamlAsync.ts"
+      },
+      {
         "fromSymbol": "renderPrettierConfig",
         "toSymbol": "readPackageType",
         "callExpression": "readPackageType",
@@ -7741,6 +7785,12 @@
         "fromSymbol": "renderWorkflowAsync",
         "toSymbol": "renderPkgvizAuditSteps",
         "callExpression": "renderPkgvizAuditSteps",
+        "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "renderWorkflowAsync",
+        "toSymbol": "formatYamlAsync",
+        "callExpression": "formatYamlAsync",
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
       },
       {
