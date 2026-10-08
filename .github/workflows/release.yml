@@ -271,15 +271,19 @@ jobs:
           process.stdout.write(output.length === 0 ? '' : `${output.join('\n')}\n`);
           NODE
 
-            PACKAGE_NAME="$package_name" node - <<'NODE'
-          const { createRequire } = require('node:module');
-          const { readFileSync } = require('node:fs');
-          const { join } = require('node:path');
-          const { pathToFileURL } = require('node:url');
+            PACKAGE_NAME="$package_name" node --input-type=module - <<'NODE'
+          import { readFileSync } from 'node:fs';
+          import { createRequire } from 'node:module';
+          import { join } from 'node:path';
+          import { pathToFileURL } from 'node:url';
           const name = process.env.PACKAGE_NAME;
           const packageDir = join(process.cwd(), 'node_modules', ...name.split('/'));
           const manifest = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'));
-          if (!manifest.ankh || typeof manifest.ankh !== 'object') process.exit(0);
+          if (
+            !manifest.ankh ||
+            typeof manifest.ankh !== 'object' ||
+            !Object.hasOwn(manifest.ankh, 'capabilities')
+          ) process.exit(0);
           const requireFromPackage = createRequire(join(packageDir, 'package.json'));
           const contractsPath = requireFromPackage.resolve('@ankhorage/contracts/capabilities');
           const { areCapabilitiesEqual, isCapability, normalizeCapability } = await import(pathToFileURL(contractsPath).href);
