@@ -3,11 +3,8 @@ import { access } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import {
-  type Capability,
-  isCapability,
-  normalizeCapability,
-} from '@ankhorage/contracts/capabilities';
+import { isCapability, normalizeCapability } from '@ankhorage/capability';
+import type { Capability } from '@ankhorage/contracts/capability';
 
 const CAPABILITIES_SOURCE_PATH = 'src/capabilities/index.ts';
 

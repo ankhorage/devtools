@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 
-import { areCapabilitiesEqual, isCapability } from '@ankhorage/contracts/capabilities';
+import { areCapabilitiesEqual, isCapability } from '@ankhorage/capability';
 import { describe, expect, it } from 'bun:test';
 
 import { CAPABILITIES } from './index.js';

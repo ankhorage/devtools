@@ -1,4 +1,4 @@
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { Capability } from '@ankhorage/contracts/capability';
 
 /*** Publish Devtools' canonical executable capabilities for Ankh discovery and bindings. */
 export const CAPABILITIES = [

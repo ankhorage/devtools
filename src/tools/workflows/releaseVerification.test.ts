@@ -95,7 +95,7 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).not.toContain("const { createRequire } = require('node:module');");
   expect(release).toContain("!Object.hasOwn(manifest.ankh, 'capabilities')");
   expect(release).toContain('await import(`${name}/capabilities`)');
-  expect(release).toContain("requireFromPackage.resolve('@ankhorage/contracts/capabilities')");
+  expect(release).toContain("requireFromPackage.resolve('@ankhorage/capability')");
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" bun -e \'await import(process.env.PACKAGE_SPECIFIER)\'',
   );
@@ -155,7 +155,7 @@ function extractCapabilityParityProbe(release: string): string {
   return match.groups.probe;
 }
 
-/*** Create an installed package fixture with package-scoped Contracts resolution. */
+/*** Create an installed package fixture with package-scoped toolkit resolution. */
 async function createPackedCapabilityFixture(drifted: boolean): Promise<string> {
   const directory = await mkdtemp('/tmp/devtools-release-parity-');
   temporaryDirectories.push(directory);
@@ -174,13 +174,13 @@ async function createPackedCapabilityFixture(drifted: boolean): Promise<string> 
 
   await mkdir(packageDirectory, { recursive: true });
   await mkdir(join(directory, 'node_modules/@ankhorage'), { recursive: true });
-  await mkdir(join(directory, 'node_modules/@ankhorage/contracts'), { recursive: true });
+  await mkdir(join(directory, 'node_modules/@ankhorage/capability'), { recursive: true });
   await writeFile(
-    join(directory, 'node_modules/@ankhorage/contracts/package.json'),
-    `${JSON.stringify({ exports: { './capabilities': './capabilities.js' }, type: 'module' })}\n`,
+    join(directory, 'node_modules/@ankhorage/capability/package.json'),
+    `${JSON.stringify({ exports: './index.js', type: 'module' })}\n`,
   );
   await writeFile(
-    join(directory, 'node_modules/@ankhorage/contracts/capabilities.js'),
+    join(directory, 'node_modules/@ankhorage/capability/index.js'),
     `export const isCapability = (value) => typeof value === 'object' && value !== null;
 export const normalizeCapability = (value) => value;
 export const areCapabilitiesEqual = (left, right) => JSON.stringify(left) === JSON.stringify(right);
