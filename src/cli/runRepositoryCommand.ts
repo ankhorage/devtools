@@ -23,14 +23,8 @@ import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
 import { workflowManagedFiles } from '../tools/workflows/index.js';
+import type { DevtoolsRepositoryCommandContext } from '../types/provider-command.js';
 import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
-
-export interface DevtoolsRepositoryCommandContext {
-  readonly cwd: string;
-  readonly syncDependencies?: (targetDirectory: string) => Promise<ManagedFileSyncResult>;
-  writeStdout(text: string): void;
-  writeStderr(text: string): void;
-}
 
 export interface DevtoolsRepositoryCommandResult {
   readonly exitCode: number;

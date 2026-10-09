@@ -1,5 +1,5 @@
-import { runApmReleaseCommandAsync } from '../../runApmReleaseCommandAsync.js';
-import type { DevtoolsProviderCommandContext } from '../../runProviderCommand.js';
+import type { DevtoolsProviderCommandContext } from '../../../types/provider-command.js';
+import { runApmReleaseCommandAsync } from './runApmReleaseCommandAsync.js';
 
 /*** Adapt the public APM release sync command to the shared release boundary. */
 export async function sync(

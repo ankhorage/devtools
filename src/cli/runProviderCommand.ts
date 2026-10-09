@@ -1,17 +1,11 @@
+import type { DevtoolsProviderCommandContext } from '../types/provider-command.js';
 import type { DevtoolsCommandDefinition } from './commands.js';
 import { sync } from './commands/apm/sync.js';
 import { validate } from './commands/apm/validate.js';
 import { build } from './commands/structure/build.js';
 import { check } from './commands/structure/check.js';
 import { runExternalTool } from './runExternalTool.js';
-import {
-  type DevtoolsRepositoryCommandContext,
-  runRepositoryCommand,
-} from './runRepositoryCommand.js';
-
-export interface DevtoolsProviderCommandContext extends DevtoolsRepositoryCommandContext {
-  readonly env: Readonly<Record<string, string | undefined>>;
-}
+import { runRepositoryCommand } from './runRepositoryCommand.js';
 
 export async function runProviderCommand(
   command: DevtoolsCommandDefinition,

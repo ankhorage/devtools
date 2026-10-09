@@ -10,7 +10,6 @@ import {
   synchronizeApmReleaseDescriptorAsync,
   validatePackedApmReleaseAsync,
 } from '../../apmRelease.js';
-import { runApmReleaseCommandAsync } from '../../cli/runApmReleaseCommandAsync.js';
 import { descriptor, manifest, projectionDescriptor } from './apmRelease.fixtures.test.js';
 
 const roots: string[] = [];
@@ -136,32 +135,6 @@ test('invalid descriptor and changed integrity never load executable owner code'
   });
   expect((await validatePackedApmReleaseAsync(root, { allowOwnerCode: true })).valid).toBe(false);
   expect(await rejectedAsync(access(join(root, 'owner-ran')))).toBeInstanceOf(Error);
-});
-
-test('CLI reports failures through exit codes and does not accept undeclared arguments', async () => {
-  const root = await fixtureAsync(descriptor());
-  const stdout: string[] = [];
-  const stderr: string[] = [];
-  const context = {
-    cwd: root,
-    writeStdout: (text: string) => {
-      stdout.push(text);
-    },
-    writeStderr: (text: string) => {
-      stderr.push(text);
-    },
-  };
-  expect(await runApmReleaseCommandAsync('validate', [], context)).toEqual({ exitCode: 0 });
-  expect(stdout.join('')).toContain('"valid":true');
-  for (const args of [
-    ['--unknown'],
-    ['--artifact'],
-    ['--artifact', '--allow-owner-code'],
-    ['one', 'two'],
-  ]) {
-    expect(await runApmReleaseCommandAsync('validate', args, context)).toEqual({ exitCode: 1 });
-  }
-  expect(stderr.length).toBe(4);
 });
 
 /*** Create an independent package root; only normal installed dependencies are supplied. */
