@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.8
+
+### Patch Changes
+
+- f1cad06: Use the standalone capability toolkit for managed release and package catalog parity checks.
+
 ## 2.3.7
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/devtools",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/devtools#readme",
