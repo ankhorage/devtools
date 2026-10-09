@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { runStructureGenerationCommandAsync } from '../runStructureGenerationCommandAsync.js';
+import { runStructureGenerationCommandAsync } from '../commands/structure/runStructureGenerationCommandAsync.js';
 
 const [operation, ...argv] = process.argv.slice(2);
 if (operation !== 'build' && operation !== 'check') {

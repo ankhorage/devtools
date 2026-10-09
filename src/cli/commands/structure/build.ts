@@ -1,5 +1,5 @@
-import type { DevtoolsProviderCommandContext } from '../../runProviderCommand.js';
-import { runStructureGenerationCommandAsync } from '../../runStructureGenerationCommandAsync.js';
+import type { DevtoolsProviderCommandContext } from '../../../types/provider-command.js';
+import { runStructureGenerationCommandAsync } from './runStructureGenerationCommandAsync.js';
 
 /*** Adapt the public structure build command to deterministic owner artifact generation. */
 export async function build(
