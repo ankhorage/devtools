@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import type { Capability } from '@ankhorage/contracts/capabilities';
+import type { Capability } from '@ankhorage/contracts/capability';
 import { afterEach, expect, test } from 'bun:test';
 
 import { inspectPackageManifest, syncPackageManifest } from './index.js';
@@ -86,7 +86,7 @@ test('package capability materialization supports static and cross-module derive
   expect(await readFile(join(derivedTarget, 'package.json'), 'utf8')).toBe(synchronized);
 });
 
-test('package capability materialization uses Contracts normalization', async () => {
+test('package capability materialization uses standalone toolkit normalization', async () => {
   const target = await createCapabilityFixture(`export const CAPABILITIES = [{
   ...${JSON.stringify(capability('fixture.normalized'))},
   access: ['write', 'invoke', 'invoke'],

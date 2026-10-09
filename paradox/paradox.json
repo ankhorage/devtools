@@ -4135,7 +4135,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 15,
+        "line": 12,
         "column": 1
       }
     },
@@ -4146,7 +4146,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 58,
+        "line": 55,
         "column": 1
       }
     },
@@ -4157,7 +4157,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 63,
+        "line": 60,
         "column": 1
       }
     },
@@ -4168,7 +4168,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 74,
+        "line": 71,
         "column": 1
       }
     },
@@ -4179,7 +4179,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 79,
+        "line": 76,
         "column": 1
       }
     },
