@@ -9,6 +9,7 @@ import {
   syncManagedFiles,
 } from '../../features/managed-files/managedFiles.js';
 import { workflowManagedFiles } from './index.js';
+import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
 
 const temporaryDirectories: string[] = [];
 
@@ -19,6 +20,15 @@ afterEach(async () => {
 });
 
 describe('managed workflows', () => {
+  test('render the Doctor release that supports non-catalog metadata', async () => {
+    expect(readCurrentDoctorVersion()).toBe('0.14.6');
+
+    for (const definition of workflowManagedFiles.slice(0, 2)) {
+      const rendered = await definition.render?.('.');
+      expect(rendered).toContain('bunx @ankhorage/doctor@0.14.6 validate .');
+    }
+  });
+
   test('render the canonical Bun and Node runtime policies', async () => {
     for (const definition of workflowManagedFiles.slice(0, 2)) {
       expect(definition.render).toBeDefined();
