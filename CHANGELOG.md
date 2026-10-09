@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.9
+
+### Patch Changes
+
+- 909f0a8: Update Devtools-owned dependencies: `@ankhorage/contracts`, `knip`.
+
 ## 2.3.8
 
 ### Patch Changes
