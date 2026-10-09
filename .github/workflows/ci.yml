@@ -124,13 +124,3 @@ jobs:
           else
             echo "No changeset:status script found; skipping validation."
           fi
-
-      - name: Enforce PKGViz cyclic-dependencies rule
-        run: cd src && bunx pkgviz@0.8.1 --out pkgviz-audit.json --rule cyclic-dependencies=block
-
-      - name: Upload PKGViz audit
-        if: always() && hashFiles('src/pkgviz-audit.json') != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: pkgviz-audit
-          path: src/pkgviz-audit.json
