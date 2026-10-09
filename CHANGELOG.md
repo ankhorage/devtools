@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.7
+
+### Patch Changes
+
+- 57c5590: Update managed CI and release workflows to validate repositories with Doctor 0.14.6.
+
 ## 2.3.6
 
 ### Patch Changes

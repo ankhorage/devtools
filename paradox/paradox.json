@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.6",
+      "value": "v2.3.7",
       "color": "cb3837"
     },
     {
@@ -121,7 +121,7 @@
       "path": "src/cli/bin/apm-release.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runApmReleaseCommandAsync.ts"
+        "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
       ],
       "exports": []
     },
@@ -170,7 +170,7 @@
       "path": "src/cli/bin/structure.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runStructureGenerationCommandAsync.ts"
+        "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
       ],
       "exports": []
     },
@@ -189,11 +189,23 @@
       ]
     },
     {
+      "path": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "src/types/apm-release-validation.ts"
+      ],
+      "exports": [
+        "runApmReleaseCommandAsync"
+      ]
+    },
+    {
       "path": "src/cli/commands/apm/sync.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runApmReleaseCommandAsync.ts",
-        "src/cli/runProviderCommand.ts"
+        "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "src/types/provider-command.ts"
       ],
       "exports": [
         "sync"
@@ -203,8 +215,8 @@
       "path": "src/cli/commands/apm/validate.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runApmReleaseCommandAsync.ts",
-        "src/cli/runProviderCommand.ts"
+        "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "src/types/provider-command.ts"
       ],
       "exports": [
         "validate"
@@ -214,8 +226,8 @@
       "path": "src/cli/commands/structure/build.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runProviderCommand.ts",
-        "src/cli/runStructureGenerationCommandAsync.ts"
+        "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
+        "src/types/provider-command.ts"
       ],
       "exports": [
         "build"
@@ -225,11 +237,21 @@
       "path": "src/cli/commands/structure/check.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runProviderCommand.ts",
-        "src/cli/runStructureGenerationCommandAsync.ts"
+        "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
+        "src/types/provider-command.ts"
       ],
       "exports": [
         "check"
+      ]
+    },
+    {
+      "path": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts"
+      ],
+      "exports": [
+        "runStructureGenerationCommandAsync"
       ]
     },
     {
@@ -242,18 +264,6 @@
       ],
       "exports": [
         "default"
-      ]
-    },
-    {
-      "path": "src/cli/runApmReleaseCommandAsync.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
-        "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
-        "src/types/apm-release-validation.ts"
-      ],
-      "exports": [
-        "runApmReleaseCommandAsync"
       ]
     },
     {
@@ -278,10 +288,10 @@
         "src/cli/commands/structure/build.ts",
         "src/cli/commands/structure/check.ts",
         "src/cli/runExternalTool.ts",
-        "src/cli/runRepositoryCommand.ts"
+        "src/cli/runRepositoryCommand.ts",
+        "src/types/provider-command.ts"
       ],
       "exports": [
-        "DevtoolsProviderCommandContext",
         "runProviderCommand"
       ]
     },
@@ -300,10 +310,10 @@
         "src/tools/prettier/managed.ts",
         "src/tools/skills/managed.ts",
         "src/tools/vscode/index.ts",
-        "src/tools/workflows/index.ts"
+        "src/tools/workflows/index.ts",
+        "src/types/provider-command.ts"
       ],
       "exports": [
-        "DevtoolsRepositoryCommandContext",
         "DevtoolsRepositoryCommandResult",
         "parseRepositoryArguments",
         "runRepositoryCommand"
@@ -318,16 +328,6 @@
       ],
       "exports": [
         "runStandaloneTool"
-      ]
-    },
-    {
-      "path": "src/cli/runStructureGenerationCommandAsync.ts",
-      "isEntrypoint": false,
-      "dependencies": [
-        "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts"
-      ],
-      "exports": [
-        "runStructureGenerationCommandAsync"
       ]
     },
     {
@@ -908,6 +908,17 @@
         "ApmReleaseDescriptorPort",
         "ApmReleaseValidationOptions",
         "ApmReleaseValidationResult"
+      ]
+    },
+    {
+      "path": "src/types/provider-command.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/managed-files/managedFiles.ts"
+      ],
+      "exports": [
+        "DevtoolsProviderCommandContext",
+        "DevtoolsRepositoryCommandContext"
       ]
     },
     {
@@ -1885,6 +1896,39 @@
       }
     },
     {
+      "name": "runApmReleaseCommandAsync",
+      "description": "Parse release CLI input and report the same structured validation result on every entrypoint.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseArguments",
+      "description": "Separate release argument validation from execution; reject duplicates and incomplete flags.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "line": 39,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionIndex",
+      "description": "Require a single option occurrence followed by a value.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
       "name": "sync",
       "description": "Adapt the public APM release sync command to the shared release boundary.",
       "see": [],
@@ -1929,6 +1973,28 @@
       }
     },
     {
+      "name": "runStructureGenerationCommandAsync",
+      "description": "Parse structure build/check CLI input and emit one machine-readable result.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseTarget",
+      "description": "Resolve the optional target directory and reject unsupported flags/extra operands.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
+        "line": 31,
+        "column": 1
+      }
+    },
+    {
       "name": "readPackageVersion",
       "description": null,
       "see": [],
@@ -1958,39 +2024,6 @@
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
         "line": 79,
-        "column": 1
-      }
-    },
-    {
-      "name": "runApmReleaseCommandAsync",
-      "description": "Parse release CLI input and report the same structured validation result on every entrypoint.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/cli/runApmReleaseCommandAsync.ts",
-        "line": 8,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseArguments",
-      "description": "Separate release argument validation from execution; reject duplicates and incomplete flags.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/cli/runApmReleaseCommandAsync.ts",
-        "line": 39,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionIndex",
-      "description": "Require a single option occurrence followed by a value.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/cli/runApmReleaseCommandAsync.ts",
-        "line": 69,
         "column": 1
       }
     },
@@ -2100,7 +2133,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runProviderCommand.ts",
-        "line": 16,
+        "line": 10,
         "column": 1
       }
     },
@@ -2111,7 +2144,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 44,
+        "line": 38,
         "column": 1
       }
     },
@@ -2122,7 +2155,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 63,
+        "line": 57,
         "column": 1
       }
     },
@@ -2133,7 +2166,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 91,
+        "line": 85,
         "column": 1
       }
     },
@@ -2144,7 +2177,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 110,
+        "line": 104,
         "column": 1
       }
     },
@@ -2155,7 +2188,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 140,
+        "line": 134,
         "column": 1
       }
     },
@@ -2166,7 +2199,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 162,
+        "line": 156,
         "column": 1
       }
     },
@@ -2177,7 +2210,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 179,
+        "line": 173,
         "column": 1
       }
     },
@@ -2188,7 +2221,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 189,
+        "line": 183,
         "column": 1
       }
     },
@@ -2199,7 +2232,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 202,
+        "line": 196,
         "column": 1
       }
     },
@@ -2210,7 +2243,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 221,
+        "line": 215,
         "column": 1
       }
     },
@@ -2222,28 +2255,6 @@
       "sourceLocation": {
         "filePath": "src/cli/runStandaloneTool.ts",
         "line": 4,
-        "column": 1
-      }
-    },
-    {
-      "name": "runStructureGenerationCommandAsync",
-      "description": "Parse structure build/check CLI input and emit one machine-readable result.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/cli/runStructureGenerationCommandAsync.ts",
-        "line": 6,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseTarget",
-      "description": "Resolve the optional target directory and reject unsupported flags/extra operands.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/cli/runStructureGenerationCommandAsync.ts",
-        "line": 31,
         "column": 1
       }
     },
@@ -4877,24 +4888,14 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
-        "fromPath": "src/cli/runApmReleaseCommandAsync.ts",
-        "toPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromPath": "src/cli/runApmReleaseCommandAsync.ts",
-        "toPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromPath": "src/cli/runApmReleaseCommandAsync.ts",
-        "toPath": "src/types/apm-release-validation.ts",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
         "fromPath": "src/cli/runExternalTool.ts",
         "toPath": "src/cli/commands.ts",
         "sourcePath": "src/cli/runExternalTool.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/types/provider-command.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
       },
       {
         "fromPath": "src/cli/runProviderCommand.ts",
@@ -4988,6 +4989,11 @@
       },
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/types/provider-command.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/cli/commands.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
@@ -5000,11 +5006,6 @@
         "fromPath": "src/cli/runStandaloneTool.ts",
         "toPath": "src/cli/runExternalTool.ts",
         "sourcePath": "src/cli/runStandaloneTool.ts"
-      },
-      {
-        "fromPath": "src/cli/runStructureGenerationCommandAsync.ts",
-        "toPath": "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts",
-        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromPath": "src/owner/synchronizeRenovateOwnerAsync.ts",
@@ -5042,13 +5043,18 @@
         "sourcePath": "src/owner/synchronizeRenovateOwnerAsync.ts"
       },
       {
+        "fromPath": "src/types/provider-command.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/types/provider-command.ts"
+      },
+      {
         "fromPath": "src/types/public.ts",
         "toPath": "src/types/apm-release-validation.ts",
         "sourcePath": "src/types/public.ts"
       },
       {
         "fromPath": "src/cli/bin/apm-release.ts",
-        "toPath": "src/cli/runApmReleaseCommandAsync.ts",
+        "toPath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
         "sourcePath": "src/cli/bin/apm-release.ts"
       },
       {
@@ -5083,7 +5089,7 @@
       },
       {
         "fromPath": "src/cli/bin/structure.ts",
-        "toPath": "src/cli/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/bin/structure.ts"
       },
       {
@@ -5252,44 +5258,64 @@
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
       },
       {
+        "fromPath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "toPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
+        "toPath": "src/types/apm-release-validation.ts",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
         "fromPath": "src/cli/commands/apm/sync.ts",
-        "toPath": "src/cli/runApmReleaseCommandAsync.ts",
+        "toPath": "src/types/provider-command.ts",
         "sourcePath": "src/cli/commands/apm/sync.ts"
       },
       {
         "fromPath": "src/cli/commands/apm/sync.ts",
-        "toPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
         "sourcePath": "src/cli/commands/apm/sync.ts"
       },
       {
         "fromPath": "src/cli/commands/apm/validate.ts",
-        "toPath": "src/cli/runApmReleaseCommandAsync.ts",
+        "toPath": "src/types/provider-command.ts",
         "sourcePath": "src/cli/commands/apm/validate.ts"
       },
       {
         "fromPath": "src/cli/commands/apm/validate.ts",
-        "toPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts",
         "sourcePath": "src/cli/commands/apm/validate.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/build.ts",
-        "toPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/types/provider-command.ts",
         "sourcePath": "src/cli/commands/structure/build.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/build.ts",
-        "toPath": "src/cli/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/commands/structure/build.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/check.ts",
-        "toPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/types/provider-command.ts",
         "sourcePath": "src/cli/commands/structure/check.ts"
       },
       {
         "fromPath": "src/cli/commands/structure/check.ts",
-        "toPath": "src/cli/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/commands/structure/check.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
+        "toPath": "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts",
+        "sourcePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromPath": "src/features/apm-release-validation/application/synchronizeApmReleaseMetadataAsync.ts",
@@ -5500,48 +5526,6 @@
         "toSymbol": "isNonEmptyString",
         "callExpression": "isNonEmptyString",
         "sourcePath": "src/cli/index.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "parseArguments",
-        "callExpression": "parseArguments",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "writeStdout",
-        "callExpression": "context.writeStdout",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "synchronizeApmReleaseDescriptorAsync",
-        "callExpression": "synchronizeApmReleaseDescriptorAsync",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "validatePackedApmReleaseAsync",
-        "callExpression": "validatePackedApmReleaseAsync",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runApmReleaseCommandAsync",
-        "toSymbol": "writeStderr",
-        "callExpression": "context.writeStderr",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseArguments",
-        "toSymbol": "optionIndex",
-        "callExpression": "optionIndex",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseArguments",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/cli/runApmReleaseCommandAsync.ts"
       },
       {
         "fromSymbol": "src/cli/runExternalTool.ts",
@@ -5872,36 +5856,6 @@
         "toSymbol": "getDevtoolsToolCommand",
         "callExpression": "getDevtoolsToolCommand",
         "sourcePath": "src/cli/runStandaloneTool.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "parseTarget",
-        "callExpression": "parseTarget",
-        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "synchronizeStructureArtifactForDirectoryAsync",
-        "callExpression": "synchronizeStructureArtifactForDirectoryAsync",
-        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "writeStdout",
-        "callExpression": "context.writeStdout",
-        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "runStructureGenerationCommandAsync",
-        "toSymbol": "writeStderr",
-        "callExpression": "context.writeStderr",
-        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseTarget",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/cli/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromSymbol": "synchronizeRenovateOwnerAsync",
@@ -7794,6 +7748,48 @@
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
       },
       {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "parseArguments",
+        "callExpression": "parseArguments",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "synchronizeApmReleaseDescriptorAsync",
+        "callExpression": "synchronizeApmReleaseDescriptorAsync",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "validatePackedApmReleaseAsync",
+        "callExpression": "validatePackedApmReleaseAsync",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runApmReleaseCommandAsync",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseArguments",
+        "toSymbol": "optionIndex",
+        "callExpression": "optionIndex",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseArguments",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/cli/commands/apm/runApmReleaseCommandAsync.ts"
+      },
+      {
         "fromSymbol": "sync",
         "toSymbol": "runApmReleaseCommandAsync",
         "callExpression": "runApmReleaseCommandAsync",
@@ -7816,6 +7812,36 @@
         "toSymbol": "runStructureGenerationCommandAsync",
         "callExpression": "runStructureGenerationCommandAsync",
         "sourcePath": "src/cli/commands/structure/check.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "parseTarget",
+        "callExpression": "parseTarget",
+        "sourcePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "synchronizeStructureArtifactForDirectoryAsync",
+        "callExpression": "synchronizeStructureArtifactForDirectoryAsync",
+        "sourcePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runStructureGenerationCommandAsync",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseTarget",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts"
       },
       {
         "fromSymbol": "synchronizeApmReleaseMetadataAsync",

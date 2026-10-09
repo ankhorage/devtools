@@ -132,6 +132,11 @@
       <small>5 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/cli/commands/apm/runApmReleaseCommandAsync.ts">
+      src/cli/commands/apm/runApmReleaseCommandAsync.ts
+      <small>3 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/cli/commands/apm/sync.ts">
       src/cli/commands/apm/sync.ts
       <small>1 function</small>
@@ -152,13 +157,13 @@
       <small>1 function</small>
     </button>
   </li><li>
-    <button class="nav-button" type="button" data-target="src/cli/index.ts">
-      src/cli/index.ts
-      <small>3 functions</small>
+    <button class="nav-button" type="button" data-target="src/cli/commands/structure/runStructureGenerationCommandAsync.ts">
+      src/cli/commands/structure/runStructureGenerationCommandAsync.ts
+      <small>2 functions</small>
     </button>
   </li><li>
-    <button class="nav-button" type="button" data-target="src/cli/runApmReleaseCommandAsync.ts">
-      src/cli/runApmReleaseCommandAsync.ts
+    <button class="nav-button" type="button" data-target="src/cli/index.ts">
+      src/cli/index.ts
       <small>3 functions</small>
     </button>
   </li><li>
@@ -180,11 +185,6 @@
     <button class="nav-button" type="button" data-target="src/cli/runStandaloneTool.ts">
       src/cli/runStandaloneTool.ts
       <small>1 function</small>
-    </button>
-  </li><li>
-    <button class="nav-button" type="button" data-target="src/cli/runStructureGenerationCommandAsync.ts">
-      src/cli/runStructureGenerationCommandAsync.ts
-      <small>2 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts">
@@ -438,7 +438,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>76</strong><span class="muted">modules</span></div>
+        <div><strong>77</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -484,10 +484,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>CAPABILITIES</code></p>
-  </article><article class="item" data-search="src/cli/bin/apm-release.ts src/cli/runApmReleaseCommandAsync.ts">
+  </article><article class="item" data-search="src/cli/bin/apm-release.ts src/cli/commands/apm/runApmReleaseCommandAsync.ts">
     <h3>src/cli/bin/apm-release.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/runApmReleaseCommandAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands/apm/runApmReleaseCommandAsync.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/cli/bin/changeset.ts src/cli/runStandaloneTool.ts">
     <h3>src/cli/bin/changeset.ts</h3>
@@ -514,71 +514,71 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/runRepositoryCommand.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
-  </article><article class="item" data-search="src/cli/bin/structure.ts src/cli/runStructureGenerationCommandAsync.ts">
+  </article><article class="item" data-search="src/cli/bin/structure.ts src/cli/commands/structure/runStructureGenerationCommandAsync.ts">
     <h3>src/cli/bin/structure.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/runStructureGenerationCommandAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands/structure/runStructureGenerationCommandAsync.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/cli/commands.ts DevtoolsCommandDefinition DevtoolsExternalCommandDefinition DevtoolsRepositoryCommandDefinition DevtoolsToolName findDevtoolsCommandByPath getDevtoolsCommands getDevtoolsToolCommand">
     <h3>src/cli/commands.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>DevtoolsCommandDefinition</code>, <code>DevtoolsExternalCommandDefinition</code>, <code>DevtoolsRepositoryCommandDefinition</code>, <code>DevtoolsToolName</code>, <code>findDevtoolsCommandByPath</code>, <code>getDevtoolsCommands</code>, <code>getDevtoolsToolCommand</code></p>
-  </article><article class="item" data-search="src/cli/commands/apm/sync.ts src/cli/runApmReleaseCommandAsync.ts src/cli/runProviderCommand.ts sync">
+  </article><article class="item" data-search="src/cli/commands/apm/runApmReleaseCommandAsync.ts src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts src/types/apm-release-validation.ts runApmReleaseCommandAsync">
+    <h3>src/cli/commands/apm/runApmReleaseCommandAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts</code>, <code>src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts</code>, <code>src/types/apm-release-validation.ts</code></p>
+    <p><strong>Exports:</strong> <code>runApmReleaseCommandAsync</code></p>
+  </article><article class="item" data-search="src/cli/commands/apm/sync.ts src/cli/commands/apm/runApmReleaseCommandAsync.ts src/types/provider-command.ts sync">
     <h3>src/cli/commands/apm/sync.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/runApmReleaseCommandAsync.ts</code>, <code>src/cli/runProviderCommand.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands/apm/runApmReleaseCommandAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>sync</code></p>
-  </article><article class="item" data-search="src/cli/commands/apm/validate.ts src/cli/runApmReleaseCommandAsync.ts src/cli/runProviderCommand.ts validate">
+  </article><article class="item" data-search="src/cli/commands/apm/validate.ts src/cli/commands/apm/runApmReleaseCommandAsync.ts src/types/provider-command.ts validate">
     <h3>src/cli/commands/apm/validate.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/runApmReleaseCommandAsync.ts</code>, <code>src/cli/runProviderCommand.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands/apm/runApmReleaseCommandAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>validate</code></p>
-  </article><article class="item" data-search="src/cli/commands/structure/build.ts src/cli/runProviderCommand.ts src/cli/runStructureGenerationCommandAsync.ts build">
+  </article><article class="item" data-search="src/cli/commands/structure/build.ts src/cli/commands/structure/runStructureGenerationCommandAsync.ts src/types/provider-command.ts build">
     <h3>src/cli/commands/structure/build.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/runProviderCommand.ts</code>, <code>src/cli/runStructureGenerationCommandAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands/structure/runStructureGenerationCommandAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>build</code></p>
-  </article><article class="item" data-search="src/cli/commands/structure/check.ts src/cli/runProviderCommand.ts src/cli/runStructureGenerationCommandAsync.ts check">
+  </article><article class="item" data-search="src/cli/commands/structure/check.ts src/cli/commands/structure/runStructureGenerationCommandAsync.ts src/types/provider-command.ts check">
     <h3>src/cli/commands/structure/check.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/runProviderCommand.ts</code>, <code>src/cli/runStructureGenerationCommandAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands/structure/runStructureGenerationCommandAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>check</code></p>
+  </article><article class="item" data-search="src/cli/commands/structure/runStructureGenerationCommandAsync.ts src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts runStructureGenerationCommandAsync">
+    <h3>src/cli/commands/structure/runStructureGenerationCommandAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts</code></p>
+    <p><strong>Exports:</strong> <code>runStructureGenerationCommandAsync</code></p>
   </article><article class="item" data-search="src/cli/index.ts src/capabilities/index.ts src/cli/commands.ts src/cli/runProviderCommand.ts default">
     <h3>src/cli/index.ts</h3>
     <p class="muted">Configured entrypoint</p>
     <p><strong>Dependencies:</strong> <code>src/capabilities/index.ts</code>, <code>src/cli/commands.ts</code>, <code>src/cli/runProviderCommand.ts</code></p>
     <p><strong>Exports:</strong> <code>default</code></p>
-  </article><article class="item" data-search="src/cli/runApmReleaseCommandAsync.ts src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts src/types/apm-release-validation.ts runApmReleaseCommandAsync">
-    <h3>src/cli/runApmReleaseCommandAsync.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts</code>, <code>src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts</code>, <code>src/types/apm-release-validation.ts</code></p>
-    <p><strong>Exports:</strong> <code>runApmReleaseCommandAsync</code></p>
   </article><article class="item" data-search="src/cli/runExternalTool.ts src/cli/commands.ts DevtoolsRunResult runExternalTool runExternalToolWithDependencies">
     <h3>src/cli/runExternalTool.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code></p>
     <p><strong>Exports:</strong> <code>DevtoolsRunResult</code>, <code>runExternalTool</code>, <code>runExternalToolWithDependencies</code></p>
-  </article><article class="item" data-search="src/cli/runProviderCommand.ts src/cli/commands.ts src/cli/commands/apm/sync.ts src/cli/commands/apm/validate.ts src/cli/commands/structure/build.ts src/cli/commands/structure/check.ts src/cli/runExternalTool.ts src/cli/runRepositoryCommand.ts DevtoolsProviderCommandContext runProviderCommand">
+  </article><article class="item" data-search="src/cli/runProviderCommand.ts src/cli/commands.ts src/cli/commands/apm/sync.ts src/cli/commands/apm/validate.ts src/cli/commands/structure/build.ts src/cli/commands/structure/check.ts src/cli/runExternalTool.ts src/cli/runRepositoryCommand.ts src/types/provider-command.ts runProviderCommand">
     <h3>src/cli/runProviderCommand.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/commands/structure/build.ts</code>, <code>src/cli/commands/structure/check.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code></p>
-    <p><strong>Exports:</strong> <code>DevtoolsProviderCommandContext</code>, <code>runProviderCommand</code></p>
-  </article><article class="item" data-search="src/cli/runRepositoryCommand.ts src/cli/commands.ts src/features/managed-files/managedFiles.ts src/tools/agents/index.ts src/tools/eslint/managed.ts src/tools/gitignore/index.ts src/tools/knip/managed.ts src/tools/package/index.ts src/tools/package/syncBunDependencies.ts src/tools/prettier/managed.ts src/tools/skills/managed.ts src/tools/vscode/index.ts src/tools/workflows/index.ts DevtoolsRepositoryCommandContext DevtoolsRepositoryCommandResult parseRepositoryArguments runRepositoryCommand">
+    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/commands/structure/build.ts</code>, <code>src/cli/commands/structure/check.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code>, <code>src/types/provider-command.ts</code></p>
+    <p><strong>Exports:</strong> <code>runProviderCommand</code></p>
+  </article><article class="item" data-search="src/cli/runRepositoryCommand.ts src/cli/commands.ts src/features/managed-files/managedFiles.ts src/tools/agents/index.ts src/tools/eslint/managed.ts src/tools/gitignore/index.ts src/tools/knip/managed.ts src/tools/package/index.ts src/tools/package/syncBunDependencies.ts src/tools/prettier/managed.ts src/tools/skills/managed.ts src/tools/vscode/index.ts src/tools/workflows/index.ts src/types/provider-command.ts DevtoolsRepositoryCommandResult parseRepositoryArguments runRepositoryCommand">
     <h3>src/cli/runRepositoryCommand.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/agents/index.ts</code>, <code>src/tools/eslint/managed.ts</code>, <code>src/tools/gitignore/index.ts</code>, <code>src/tools/knip/managed.ts</code>, <code>src/tools/package/index.ts</code>, <code>src/tools/package/syncBunDependencies.ts</code>, <code>src/tools/prettier/managed.ts</code>, <code>src/tools/skills/managed.ts</code>, <code>src/tools/vscode/index.ts</code>, <code>src/tools/workflows/index.ts</code></p>
-    <p><strong>Exports:</strong> <code>DevtoolsRepositoryCommandContext</code>, <code>DevtoolsRepositoryCommandResult</code>, <code>parseRepositoryArguments</code>, <code>runRepositoryCommand</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/agents/index.ts</code>, <code>src/tools/eslint/managed.ts</code>, <code>src/tools/gitignore/index.ts</code>, <code>src/tools/knip/managed.ts</code>, <code>src/tools/package/index.ts</code>, <code>src/tools/package/syncBunDependencies.ts</code>, <code>src/tools/prettier/managed.ts</code>, <code>src/tools/skills/managed.ts</code>, <code>src/tools/vscode/index.ts</code>, <code>src/tools/workflows/index.ts</code>, <code>src/types/provider-command.ts</code></p>
+    <p><strong>Exports:</strong> <code>DevtoolsRepositoryCommandResult</code>, <code>parseRepositoryArguments</code>, <code>runRepositoryCommand</code></p>
   </article><article class="item" data-search="src/cli/runStandaloneTool.ts src/cli/commands.ts src/cli/runExternalTool.ts runStandaloneTool">
     <h3>src/cli/runStandaloneTool.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/runExternalTool.ts</code></p>
     <p><strong>Exports:</strong> <code>runStandaloneTool</code></p>
-  </article><article class="item" data-search="src/cli/runStructureGenerationCommandAsync.ts src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts runStructureGenerationCommandAsync">
-    <h3>src/cli/runStructureGenerationCommandAsync.ts</h3>
-    <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts</code></p>
-    <p><strong>Exports:</strong> <code>runStructureGenerationCommandAsync</code></p>
   </article><article class="item" data-search="src/constants/eslint.ts EXAMPLES_ESLINT_OWNERSHIP_MARKER">
     <h3>src/constants/eslint.ts</h3>
     <p class="muted">Referenced module</p>
@@ -844,6 +844,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>ApmPackedReleaseCandidate</code>, <code>ApmReleaseDescriptorPort</code>, <code>ApmReleaseValidationOptions</code>, <code>ApmReleaseValidationResult</code></p>
+  </article><article class="item" data-search="src/types/provider-command.ts src/features/managed-files/managedFiles.ts DevtoolsProviderCommandContext DevtoolsRepositoryCommandContext">
+    <h3>src/types/provider-command.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code></p>
+    <p><strong>Exports:</strong> <code>DevtoolsProviderCommandContext</code>, <code>DevtoolsRepositoryCommandContext</code></p>
   </article><article class="item" data-search="src/types/public.ts ApmPackedReleaseCandidate ApmReleaseValidationOptions ApmReleaseValidationResult">
     <h3>src/types/public.ts</h3>
     <p class="muted">Configured entrypoint</p>
@@ -1547,7 +1552,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_capabilities_index_ts
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_apm_release_ts
-  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
+  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_changeset_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1566,34 +1571,37 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_structure_ts
-  module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_sync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_validate_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_build_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_check_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
-  package__ankhorage_devtools -.-&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runExternalTool_ts --&gt; module_src_cli_commands_ts
@@ -1606,6 +1614,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_cli_commands_ts
@@ -1620,13 +1629,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_runExternalTool_ts
-  module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
-  package__ankhorage_devtools -.-&gt; module_src_cli_runStructureGenerationCommandAsync_ts
-  module_src_cli_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_constants_eslint_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
@@ -1803,6 +1810,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_apm_release_validation_ts
+  module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_types_provider_command_ts
+  module_src_types_provider_command_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_structure_generation_ts
@@ -1826,7 +1836,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_capabilities_index_ts
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_apm_release_ts
-  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
+  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_changeset_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1845,34 +1855,37 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_structure_ts
-  module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_sync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_validate_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_build_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_check_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
   module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
-  package__ankhorage_devtools -.-&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runExternalTool_ts --&gt; module_src_cli_commands_ts
@@ -1885,6 +1898,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_cli_commands_ts
@@ -1899,13 +1913,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_runExternalTool_ts
-  module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
-  package__ankhorage_devtools -.-&gt; module_src_cli_runStructureGenerationCommandAsync_ts
-  module_src_cli_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_constants_eslint_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
@@ -2082,6 +2094,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_apm_release_validation_ts
+  module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_types_provider_command_ts
+  module_src_types_provider_command_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_structure_generation_ts
@@ -2101,17 +2116,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
-  module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
-  module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
   module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
@@ -2165,30 +2180,32 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
+  module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
-  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
+  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_repository_ts --&gt; module_src_cli_commands_ts
   module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
-  module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_cli_runExternalTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
@@ -2197,6 +2214,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_agents_index_ts
@@ -2209,9 +2227,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_runExternalTool_ts
-  module_src_cli_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts
@@ -2284,6 +2302,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
+  module_src_types_provider_command_ts --&gt; module_src_features_managed_files_managedFiles_ts
 </div>
     <details>
       <summary>View Mermaid source</summary>
@@ -2298,17 +2317,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
-  module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
-  module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
   module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
@@ -2362,30 +2381,32 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
+  module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
-  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
+  module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_repository_ts --&gt; module_src_cli_commands_ts
   module_src_cli_bin_repository_ts --&gt; module_src_cli_runRepositoryCommand_ts
-  module_src_cli_bin_structure_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runApmReleaseCommandAsync_ts
-  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_runStructureGenerationCommandAsync_ts
+  module_src_cli_bin_structure_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_sync_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
+  module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_build_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
+  module_src_cli_commands_structure_check_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_cli_index_ts --&gt; module_src_capabilities_index_ts
   module_src_cli_index_ts --&gt; module_src_cli_commands_ts
   module_src_cli_index_ts --&gt; module_src_cli_runProviderCommand_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts
-  module_src_cli_runApmReleaseCommandAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_cli_runExternalTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
@@ -2394,6 +2415,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runRepositoryCommand_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_agents_index_ts
@@ -2406,9 +2428,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_runExternalTool_ts
-  module_src_cli_runStructureGenerationCommandAsync_ts --&gt; module_src_features_structure_descriptor_generation_composition_synchronizeStructureArtifactForDirectoryAsync_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_readApmReleaseManifestAsync_ts
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_probePackedApmExtensionAsync_ts
@@ -2481,6 +2503,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
+  module_src_types_provider_command_ts --&gt; module_src_features_managed_files_managedFiles_ts
 </pre>
     </details>
   </article><article class="item" data-search="Export graph diagrams/export-graph.mmd">
@@ -2497,17 +2520,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
-  module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
-  module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
   module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
@@ -2561,6 +2584,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
+  module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   export_ApmPackedReleaseCandidate[&quot;ApmPackedReleaseCandidate&quot;]
@@ -2630,17 +2654,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_bin_repository_ts[&quot;src/cli/bin/repository.ts&quot;]
   module_src_cli_bin_structure_ts[&quot;src/cli/bin/structure.ts&quot;]
   module_src_cli_commands_ts[&quot;src/cli/commands.ts&quot;]
+  module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
+  module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
   module_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
-  module_src_cli_runApmReleaseCommandAsync_ts[&quot;src/cli/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_runExternalTool_ts[&quot;src/cli/runExternalTool.ts&quot;]
   module_src_cli_runProviderCommand_ts[&quot;src/cli/runProviderCommand.ts&quot;]
   module_src_cli_runRepositoryCommand_ts[&quot;src/cli/runRepositoryCommand.ts&quot;]
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
-  module_src_cli_runStructureGenerationCommandAsync_ts[&quot;src/cli/runStructureGenerationCommandAsync.ts&quot;]
   module_src_constants_eslint_ts[&quot;src/constants/eslint.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_createApmReleaseDescriptorPort_ts[&quot;src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts&quot;]
   module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts[&quot;src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts&quot;]
@@ -2694,6 +2718,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
+  module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   export_ApmPackedReleaseCandidate[&quot;ApmPackedReleaseCandidate&quot;]
@@ -2850,6 +2875,26 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article>
     </section>
+  </section><section id="view-src-cli-commands-apm-runapmreleasecommandasync-ts" class="view" data-view="src/cli/commands/apm/runApmReleaseCommandAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/cli/commands/apm/runApmReleaseCommandAsync.ts</h2>
+      <article class="item" data-search="runApmReleaseCommandAsync src/cli/commands/apm/runApmReleaseCommandAsync.ts Parse release CLI input and report the same structured validation result on every entrypoint.">
+    <h3>runApmReleaseCommandAsync</h3>
+    <p class="muted"><code>src/cli/commands/apm/runApmReleaseCommandAsync.ts:8:1</code></p>
+    <p>Parse release CLI input and report the same structured validation result on every entrypoint.</p>
+    
+  </article><article class="item" data-search="parseArguments src/cli/commands/apm/runApmReleaseCommandAsync.ts Separate release argument validation from execution; reject duplicates and incomplete flags.">
+    <h3>parseArguments</h3>
+    <p class="muted"><code>src/cli/commands/apm/runApmReleaseCommandAsync.ts:39:1</code></p>
+    <p>Separate release argument validation from execution; reject duplicates and incomplete flags.</p>
+    
+  </article><article class="item" data-search="optionIndex src/cli/commands/apm/runApmReleaseCommandAsync.ts Require a single option occurrence followed by a value.">
+    <h3>optionIndex</h3>
+    <p class="muted"><code>src/cli/commands/apm/runApmReleaseCommandAsync.ts:69:1</code></p>
+    <p>Require a single option occurrence followed by a value.</p>
+    
+  </article>
+    </section>
   </section><section id="view-src-cli-commands-apm-sync-ts" class="view" data-view="src/cli/commands/apm/sync.ts" hidden>
     <section class="panel">
       <h2>src/cli/commands/apm/sync.ts</h2>
@@ -2890,6 +2935,21 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article>
     </section>
+  </section><section id="view-src-cli-commands-structure-runstructuregenerationcommandasync-ts" class="view" data-view="src/cli/commands/structure/runStructureGenerationCommandAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/cli/commands/structure/runStructureGenerationCommandAsync.ts</h2>
+      <article class="item" data-search="runStructureGenerationCommandAsync src/cli/commands/structure/runStructureGenerationCommandAsync.ts Parse structure build/check CLI input and emit one machine-readable result.">
+    <h3>runStructureGenerationCommandAsync</h3>
+    <p class="muted"><code>src/cli/commands/structure/runStructureGenerationCommandAsync.ts:6:1</code></p>
+    <p>Parse structure build/check CLI input and emit one machine-readable result.</p>
+    
+  </article><article class="item" data-search="parseTarget src/cli/commands/structure/runStructureGenerationCommandAsync.ts Resolve the optional target directory and reject unsupported flags/extra operands.">
+    <h3>parseTarget</h3>
+    <p class="muted"><code>src/cli/commands/structure/runStructureGenerationCommandAsync.ts:31:1</code></p>
+    <p>Resolve the optional target directory and reject unsupported flags/extra operands.</p>
+    
+  </article>
+    </section>
   </section><section id="view-src-cli-index-ts" class="view" data-view="src/cli/index.ts" hidden>
     <section class="panel">
       <h2>src/cli/index.ts</h2>
@@ -2907,26 +2967,6 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>isRecord</h3>
     <p class="muted"><code>src/cli/index.ts:79:1</code></p>
     <p class="empty">No description available.</p>
-    
-  </article>
-    </section>
-  </section><section id="view-src-cli-runapmreleasecommandasync-ts" class="view" data-view="src/cli/runApmReleaseCommandAsync.ts" hidden>
-    <section class="panel">
-      <h2>src/cli/runApmReleaseCommandAsync.ts</h2>
-      <article class="item" data-search="runApmReleaseCommandAsync src/cli/runApmReleaseCommandAsync.ts Parse release CLI input and report the same structured validation result on every entrypoint.">
-    <h3>runApmReleaseCommandAsync</h3>
-    <p class="muted"><code>src/cli/runApmReleaseCommandAsync.ts:8:1</code></p>
-    <p>Parse release CLI input and report the same structured validation result on every entrypoint.</p>
-    
-  </article><article class="item" data-search="parseArguments src/cli/runApmReleaseCommandAsync.ts Separate release argument validation from execution; reject duplicates and incomplete flags.">
-    <h3>parseArguments</h3>
-    <p class="muted"><code>src/cli/runApmReleaseCommandAsync.ts:39:1</code></p>
-    <p>Separate release argument validation from execution; reject duplicates and incomplete flags.</p>
-    
-  </article><article class="item" data-search="optionIndex src/cli/runApmReleaseCommandAsync.ts Require a single option occurrence followed by a value.">
-    <h3>optionIndex</h3>
-    <p class="muted"><code>src/cli/runApmReleaseCommandAsync.ts:69:1</code></p>
-    <p>Require a single option occurrence followed by a value.</p>
     
   </article>
     </section>
@@ -2985,7 +3025,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/runProviderCommand.ts</h2>
       <article class="item" data-search="runProviderCommand src/cli/runProviderCommand.ts ">
     <h3>runProviderCommand</h3>
-    <p class="muted"><code>src/cli/runProviderCommand.ts:16:1</code></p>
+    <p class="muted"><code>src/cli/runProviderCommand.ts:10:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -2995,52 +3035,52 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/runRepositoryCommand.ts</h2>
       <article class="item" data-search="runRepositoryCommand src/cli/runRepositoryCommand.ts ">
     <h3>runRepositoryCommand</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:44:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:38:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="parseRepositoryArguments src/cli/runRepositoryCommand.ts ">
     <h3>parseRepositoryArguments</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:63:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:57:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="runStatus src/cli/runRepositoryCommand.ts ">
     <h3>runStatus</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:91:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:85:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="runSync src/cli/runRepositoryCommand.ts ">
     <h3>runSync</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:110:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:104:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getManagedFiles src/cli/runRepositoryCommand.ts ">
     <h3>getManagedFiles</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:140:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:134:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="writeStatusOutput src/cli/runRepositoryCommand.ts ">
     <h3>writeStatusOutput</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:162:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:156:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="writeSyncOutput src/cli/runRepositoryCommand.ts ">
     <h3>writeSyncOutput</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:179:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:173:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getActionPrefix src/cli/runRepositoryCommand.ts ">
     <h3>getActionPrefix</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:189:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:183:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="formatAction src/cli/runRepositoryCommand.ts ">
     <h3>formatAction</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:202:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:196:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getErrorMessage src/cli/runRepositoryCommand.ts ">
     <h3>getErrorMessage</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:221:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:215:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -3052,21 +3092,6 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>runStandaloneTool</h3>
     <p class="muted"><code>src/cli/runStandaloneTool.ts:4:1</code></p>
     <p class="empty">No description available.</p>
-    
-  </article>
-    </section>
-  </section><section id="view-src-cli-runstructuregenerationcommandasync-ts" class="view" data-view="src/cli/runStructureGenerationCommandAsync.ts" hidden>
-    <section class="panel">
-      <h2>src/cli/runStructureGenerationCommandAsync.ts</h2>
-      <article class="item" data-search="runStructureGenerationCommandAsync src/cli/runStructureGenerationCommandAsync.ts Parse structure build/check CLI input and emit one machine-readable result.">
-    <h3>runStructureGenerationCommandAsync</h3>
-    <p class="muted"><code>src/cli/runStructureGenerationCommandAsync.ts:6:1</code></p>
-    <p>Parse structure build/check CLI input and emit one machine-readable result.</p>
-    
-  </article><article class="item" data-search="parseTarget src/cli/runStructureGenerationCommandAsync.ts Resolve the optional target directory and reject unsupported flags/extra operands.">
-    <h3>parseTarget</h3>
-    <p class="muted"><code>src/cli/runStructureGenerationCommandAsync.ts:31:1</code></p>
-    <p>Resolve the optional target directory and reject unsupported flags/extra operands.</p>
     
   </article>
     </section>
