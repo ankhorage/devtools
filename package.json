@@ -492,7 +492,7 @@
   "dependencies": {
     "@ankhorage/apm": "^0.8.14",
     "@ankhorage/capability": "^0.2.1",
-    "@ankhorage/contracts": "^25.0.1",
+    "@ankhorage/contracts": "^25.1.0",
     "@ankhorage/project-detector": "^0.3.4",
     "@ankhorage/rules-repository": "^0.2.0",
     "@ankhorage/utility": "^0.5.5",
@@ -516,9 +516,9 @@
     "typescript-eslint": "^8.71.1"
   },
   "devDependencies": {
-    "@ankhorage/paradox": "^0.3.1",
+    "@ankhorage/paradox": "^0.3.3",
     "@ankhorage/ankh": "^0.13.0",
-    "@ankhorage/doctor": "0.14.6",
+    "@ankhorage/doctor": "0.14.10",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.2",
     "@types/node": "^26.6.5",
