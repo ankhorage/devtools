@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.14
+
+### Patch Changes
+
+- c1145a6: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/paradox`, `prettier`.
+
 ## 2.3.13
 
 ### Patch Changes
