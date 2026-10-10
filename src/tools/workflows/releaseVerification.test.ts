@@ -126,7 +126,15 @@ function expectPackedRuntimeVerification(release: string): void {
 }
 /*** Assert capability parity uses the release validator instead of a package dependency. */
 function expectCapabilityParityVerification(release: string): void {
-  expect(release).toContain('capability_module_path=');
+  const installedConsumerIndex = release.indexOf('            cd "$install_dir"');
+  const installedArtifactIndex = release.indexOf(
+    '            bun add "$artifact" --ignore-scripts',
+  );
+  const capabilityValidatorIndex = release.indexOf('            capability_module_path=');
+
+  expect(installedConsumerIndex).toBeGreaterThan(-1);
+  expect(installedArtifactIndex).toBeGreaterThan(installedConsumerIndex);
+  expect(capabilityValidatorIndex).toBeGreaterThan(installedArtifactIndex);
   expect(release).toContain(
     "createRequire(import.meta.resolve('@ankhorage/devtools/cli')).resolve('@ankhorage/capability')",
   );
