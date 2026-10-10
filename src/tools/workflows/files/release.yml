@@ -269,7 +269,7 @@ jobs:
           fi
           printf '{"name":"standalone-consumer","private":true,"version":"0.0.0"}\n' > "$install_dir/package.json"
           package_name="$(node -p "require('./package.json').name")"
-          capability_module_path="$(node -p "require.resolve('@ankhorage/capability')")"
+          capability_module_path="$(node --input-type=module -e "import { createRequire } from 'node:module'; console.log(createRequire(import.meta.resolve('@ankhorage/devtools/cli')).resolve('@ankhorage/capability'))")"
           (
             cd "$install_dir"
             bun add "$artifact" --ignore-scripts
