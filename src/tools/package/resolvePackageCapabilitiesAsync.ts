@@ -1,6 +1,6 @@
 /*** Materialize the trusted canonical capability surface for one package checkout. */
-import { access } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { access, mkdtemp, rm } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 import { isCapability, normalizeCapability } from '@ankhorage/capability';
@@ -33,7 +33,7 @@ export async function resolvePackageCapabilitiesAsync(
     );
   }
 
-  const source: unknown = await import(pathToFileURL(sourcePath).href);
+  const source = await loadCapabilityCatalogAsync(targetDirectory, sourcePath);
   const catalog = isRecord(source) ? source.CAPABILITIES : undefined;
   if (!Array.isArray(catalog)) {
     throw new Error(`${CAPABILITIES_SOURCE_PATH} must export CAPABILITIES as an array.`);
@@ -49,6 +49,30 @@ export async function resolvePackageCapabilitiesAsync(
   });
   assertUniqueCapabilityIds(capabilities);
   return capabilities;
+}
+
+/*** Build and load the catalog's local TypeScript module closure through Bun resolution. */
+async function loadCapabilityCatalogAsync(
+  targetDirectory: string,
+  sourcePath: string,
+): Promise<unknown> {
+  const buildDirectory = await mkdtemp(join(targetDirectory, '.ankh-capability-catalog-'));
+  try {
+    const build = await Bun.build({
+      entrypoints: [sourcePath],
+      outdir: buildDirectory,
+      naming: 'catalog.[ext]',
+      format: 'esm',
+      sourcemap: 'none',
+      target: 'bun',
+    });
+    if (!build.success) {
+      throw new Error(`Unable to build ${CAPABILITIES_SOURCE_PATH} for materialization.`);
+    }
+    return await import(pathToFileURL(join(buildDirectory, 'catalog.js')).href);
+  } finally {
+    await rm(buildDirectory, { force: true, recursive: true });
+  }
 }
 
 /*** Check whether a manifest declares published capability discovery metadata. */
