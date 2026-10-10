@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.11
+
+### Patch Changes
+
+- ef390e7: Roll managed workflows to Doctor 0.14.11 for static public Contracts schema imports.
+
 ## 2.3.10
 
 ### Patch Changes
