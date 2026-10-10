@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.12
+
+### Patch Changes
+
+- d670789: Roll managed workflows to Doctor 0.14.12 for mixed capability catalogs and static Contracts schema composition.
+
 ## 2.3.11
 
 ### Patch Changes
