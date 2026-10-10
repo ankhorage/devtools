@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.14",
+      "value": "v2.3.15",
       "color": "cb3837"
     },
     {
@@ -715,6 +715,7 @@
       "dependencies": [
         "src/features/managed-files/managedFiles.ts",
         "src/policy/applyBunRuntimePolicy.ts",
+        "src/tools/package/isCompatibleDevtoolsRange.ts",
         "src/tools/package/resolvePackageCapabilitiesAsync.ts"
       ],
       "exports": [
@@ -723,6 +724,14 @@
         "isManagedPackageContractCurrent",
         "readCurrentDevtoolsVersion",
         "syncPackageManifest"
+      ]
+    },
+    {
+      "path": "src/tools/package/isCompatibleDevtoolsRange.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "isCompatibleDevtoolsRange"
       ]
     },
     {
@@ -3893,7 +3902,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 70,
+        "line": 71,
         "column": 1
       }
     },
@@ -3904,7 +3913,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 93,
+        "line": 94,
         "column": 1
       }
     },
@@ -3915,7 +3924,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 139,
+        "line": 140,
         "column": 1
       }
     },
@@ -3926,7 +3935,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 171,
+        "line": 172,
         "column": 1
       }
     },
@@ -3937,7 +3946,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 180,
+        "line": 181,
         "column": 1
       }
     },
@@ -3948,7 +3957,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 208,
+        "line": 209,
         "column": 1
       }
     },
@@ -3959,7 +3968,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 225,
+        "line": 226,
         "column": 1
       }
     },
@@ -3970,7 +3979,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 236,
+        "line": 237,
         "column": 1
       }
     },
@@ -3981,7 +3990,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 254,
+        "line": 255,
         "column": 1
       }
     },
@@ -3992,7 +4001,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 263,
+        "line": 264,
         "column": 1
       }
     },
@@ -4003,7 +4012,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 273,
+        "line": 274,
         "column": 1
       }
     },
@@ -4014,7 +4023,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 285,
+        "line": 286,
         "column": 1
       }
     },
@@ -4025,7 +4034,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 295,
+        "line": 296,
         "column": 1
       }
     },
@@ -4036,7 +4045,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 305,
+        "line": 306,
         "column": 1
       }
     },
@@ -4047,7 +4056,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 313,
+        "line": 314,
         "column": 1
       }
     },
@@ -4058,7 +4067,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 326,
+        "line": 327,
         "column": 1
       }
     },
@@ -4069,7 +4078,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 339,
+        "line": 340,
         "column": 1
       }
     },
@@ -4080,7 +4089,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 344,
+        "line": 345,
         "column": 1
       }
     },
@@ -4091,7 +4100,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 349,
+        "line": 350,
         "column": 1
       }
     },
@@ -4102,7 +4111,40 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 354,
+        "line": 355,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCompatibleDevtoolsRange",
+      "description": "Check whether the declared Devtools caret range includes the executing Devtools release.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/isCompatibleDevtoolsRange.ts",
+        "line": 2,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseStableVersion",
+      "description": "Parse one stable semantic version used by the managed Devtools range contract.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/isCompatibleDevtoolsRange.ts",
+        "line": 21,
+        "column": 1
+      }
+    },
+    {
+      "name": "compareStableVersions",
+      "description": "Compare stable semantic-version tuples.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/isCompatibleDevtoolsRange.ts",
+        "line": 34,
         "column": 1
       }
     },
@@ -5176,6 +5218,11 @@
       {
         "fromPath": "src/tools/package/index.ts",
         "toPath": "src/policy/applyBunRuntimePolicy.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/tools/package/isCompatibleDevtoolsRange.ts",
         "sourcePath": "src/tools/package/index.ts"
       },
       {
@@ -6913,10 +6960,28 @@
         "sourcePath": "src/tools/package/index.ts"
       },
       {
+        "fromSymbol": "hasCurrentDevtoolsDependencyPlacement",
+        "toSymbol": "isCompatibleDevtoolsRange",
+        "callExpression": "isCompatibleDevtoolsRange",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
         "fromSymbol": "toRecord",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isCompatibleDevtoolsRange",
+        "toSymbol": "parseStableVersion",
+        "callExpression": "parseStableVersion",
+        "sourcePath": "src/tools/package/isCompatibleDevtoolsRange.ts"
+      },
+      {
+        "fromSymbol": "isCompatibleDevtoolsRange",
+        "toSymbol": "compareStableVersions",
+        "callExpression": "compareStableVersions",
+        "sourcePath": "src/tools/package/isCompatibleDevtoolsRange.ts"
       },
       {
         "fromSymbol": "refreshAnkhorageBunResolutionsAsync",

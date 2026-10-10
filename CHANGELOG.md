@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.15
+
+### Patch Changes
+
+- 862d5db: Keep managed package synchronization stable across compatible Devtools updates and reject release version rollbacks before publication.
+
 ## 2.3.14
 
 ### Patch Changes

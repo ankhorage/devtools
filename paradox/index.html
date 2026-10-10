@@ -352,6 +352,11 @@
       <small>20 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/package/isCompatibleDevtoolsRange.ts">
+      src/tools/package/isCompatibleDevtoolsRange.ts
+      <small>3 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts">
       src/tools/package/refreshAnkhorageBunResolutionsAsync.ts
       <small>2 functions</small>
@@ -438,7 +443,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>77</strong><span class="muted">modules</span></div>
+        <div><strong>78</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -754,11 +759,16 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>knipManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/package/index.ts src/features/managed-files/managedFiles.ts src/policy/applyBunRuntimePolicy.ts src/tools/package/resolvePackageCapabilitiesAsync.ts applyManagedPackageContract inspectPackageManifest isManagedPackageContractCurrent readCurrentDevtoolsVersion syncPackageManifest">
+  </article><article class="item" data-search="src/tools/package/index.ts src/features/managed-files/managedFiles.ts src/policy/applyBunRuntimePolicy.ts src/tools/package/isCompatibleDevtoolsRange.ts src/tools/package/resolvePackageCapabilitiesAsync.ts applyManagedPackageContract inspectPackageManifest isManagedPackageContractCurrent readCurrentDevtoolsVersion syncPackageManifest">
     <h3>src/tools/package/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code>, <code>src/tools/package/resolvePackageCapabilitiesAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/policy/applyBunRuntimePolicy.ts</code>, <code>src/tools/package/isCompatibleDevtoolsRange.ts</code>, <code>src/tools/package/resolvePackageCapabilitiesAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>applyManagedPackageContract</code>, <code>inspectPackageManifest</code>, <code>isManagedPackageContractCurrent</code>, <code>readCurrentDevtoolsVersion</code>, <code>syncPackageManifest</code></p>
+  </article><article class="item" data-search="src/tools/package/isCompatibleDevtoolsRange.ts isCompatibleDevtoolsRange">
+    <h3>src/tools/package/isCompatibleDevtoolsRange.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>isCompatibleDevtoolsRange</code></p>
   </article><article class="item" data-search="src/tools/package/refreshAnkhorageBunResolutionsAsync.ts refreshAnkhorageBunResolutionsAsync">
     <h3>src/tools/package/refreshAnkhorageBunResolutionsAsync.ts</h3>
     <p class="muted">Referenced module</p>
@@ -1758,7 +1768,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_index_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
+  module_src_tools_package_isCompatibleDevtoolsRange_ts[&quot;src/tools/package/isCompatibleDevtoolsRange.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
@@ -2042,7 +2055,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_tools_package_index_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
+  module_src_tools_package_isCompatibleDevtoolsRange_ts[&quot;src/tools/package/isCompatibleDevtoolsRange.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
@@ -2163,6 +2179,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_isCompatibleDevtoolsRange_ts[&quot;src/tools/package/isCompatibleDevtoolsRange.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
@@ -2284,6 +2301,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
@@ -2364,6 +2382,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_isCompatibleDevtoolsRange_ts[&quot;src/tools/package/isCompatibleDevtoolsRange.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
@@ -2485,6 +2504,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_managed_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --&gt; module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --&gt; module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_index_ts --&gt; module_src_tools_package_resolvePackageCapabilitiesAsync_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --&gt; module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
@@ -2567,6 +2587,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_isCompatibleDevtoolsRange_ts[&quot;src/tools/package/isCompatibleDevtoolsRange.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
@@ -2701,6 +2722,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_knip_index_ts[&quot;src/tools/knip/index.ts&quot;]
   module_src_tools_knip_managed_ts[&quot;src/tools/knip/managed.ts&quot;]
   module_src_tools_package_index_ts[&quot;src/tools/package/index.ts&quot;]
+  module_src_tools_package_isCompatibleDevtoolsRange_ts[&quot;src/tools/package/isCompatibleDevtoolsRange.ts&quot;]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts[&quot;src/tools/package/refreshAnkhorageBunResolutionsAsync.ts&quot;]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts[&quot;src/tools/package/resolvePackageCapabilitiesAsync.ts&quot;]
   module_src_tools_package_syncBunDependencies_ts[&quot;src/tools/package/syncBunDependencies.ts&quot;]
@@ -4013,103 +4035,123 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/package/index.ts</h2>
       <article class="item" data-search="inspectPackageManifest src/tools/package/index.ts Inspect whether the Devtools-owned package manifest contract is current.">
     <h3>inspectPackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:70:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:71:1</code></p>
     <p>Inspect whether the Devtools-owned package manifest contract is current.</p>
     
   </article><article class="item" data-search="syncPackageManifest src/tools/package/index.ts Synchronize the Devtools-owned package manifest fields.">
     <h3>syncPackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:93:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:94:1</code></p>
     <p>Synchronize the Devtools-owned package manifest fields.</p>
     
   </article><article class="item" data-search="applyManagedPackageContract src/tools/package/index.ts Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy.">
     <h3>applyManagedPackageContract</h3>
-    <p class="muted"><code>src/tools/package/index.ts:139:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:140:1</code></p>
     <p>Apply the Devtools-owned package scripts, dependencies, and Bun runtime policy.</p>
     
   </article><article class="item" data-search="applyManagedPackageCapabilities src/tools/package/index.ts Apply a canonical capability catalog without replacing authored Ankh metadata.">
     <h3>applyManagedPackageCapabilities</h3>
-    <p class="muted"><code>src/tools/package/index.ts:171:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:172:1</code></p>
     <p>Apply a canonical capability catalog without replacing authored Ankh metadata.</p>
     
   </article><article class="item" data-search="isManagedPackageContractCurrent src/tools/package/index.ts Check whether the Devtools-owned package manifest fields match current policy.">
     <h3>isManagedPackageContractCurrent</h3>
-    <p class="muted"><code>src/tools/package/index.ts:180:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:181:1</code></p>
     <p>Check whether the Devtools-owned package manifest fields match current policy.</p>
     
   </article><article class="item" data-search="isManagedPackageContractCurrentAsync src/tools/package/index.ts Check managed package policy and materialized capability metadata without writing files.">
     <h3>isManagedPackageContractCurrentAsync</h3>
-    <p class="muted"><code>src/tools/package/index.ts:208:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:209:1</code></p>
     <p>Check managed package policy and materialized capability metadata without writing files.</p>
     
   </article><article class="item" data-search="readCurrentDevtoolsVersion src/tools/package/index.ts Read the current Devtools package version used for consumer synchronization.">
     <h3>readCurrentDevtoolsVersion</h3>
-    <p class="muted"><code>src/tools/package/index.ts:225:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:226:1</code></p>
     <p>Read the current Devtools package version used for consumer synchronization.</p>
     
   </article><article class="item" data-search="readPackageManifest src/tools/package/index.ts Read one package manifest snapshot and Changesets applicability state.">
     <h3>readPackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:236:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:237:1</code></p>
     <p>Read one package manifest snapshot and Changesets applicability state.</p>
     
   </article><article class="item" data-search="hasCurrentBunRuntimePolicy src/tools/package/index.ts Check the Bun package manager and Bun type dependency contract.">
     <h3>hasCurrentBunRuntimePolicy</h3>
-    <p class="muted"><code>src/tools/package/index.ts:254:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:255:1</code></p>
     <p>Check the Bun package manager and Bun type dependency contract.</p>
     
   </article><article class="item" data-search="applyDevtoolsDependencyPlacement src/tools/package/index.ts Place Devtools in development dependencies for every consuming repository.">
     <h3>applyDevtoolsDependencyPlacement</h3>
-    <p class="muted"><code>src/tools/package/index.ts:263:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:264:1</code></p>
     <p>Place Devtools in development dependencies for every consuming repository.</p>
     
   </article><article class="item" data-search="hasCurrentDevtoolsDependencyPlacement src/tools/package/index.ts Check that Devtools is development-only at the current synchronized version.">
     <h3>hasCurrentDevtoolsDependencyPlacement</h3>
-    <p class="muted"><code>src/tools/package/index.ts:273:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:274:1</code></p>
     <p>Check that Devtools is development-only at the current synchronized version.</p>
     
   </article><article class="item" data-search="removeOwnedDependencies src/tools/package/index.ts Remove direct development dependencies owned by the Devtools package.">
     <h3>removeOwnedDependencies</h3>
-    <p class="muted"><code>src/tools/package/index.ts:285:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:286:1</code></p>
     <p>Remove direct development dependencies owned by the Devtools package.</p>
     
   </article><article class="item" data-search="normalizedDependencies src/tools/package/index.ts Preserve an existing dependencies object or omit a newly empty one.">
     <h3>normalizedDependencies</h3>
-    <p class="muted"><code>src/tools/package/index.ts:295:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:296:1</code></p>
     <p>Preserve an existing dependencies object or omit a newly empty one.</p>
     
   </article><article class="item" data-search="hasStandardScripts src/tools/package/index.ts Check the canonical development-tool scripts.">
     <h3>hasStandardScripts</h3>
-    <p class="muted"><code>src/tools/package/index.ts:305:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:306:1</code></p>
     <p>Check the canonical development-tool scripts.</p>
     
   </article><article class="item" data-search="hasCurrentChangesetsScripts src/tools/package/index.ts Check Changesets scripts when the repository participates in Changesets.">
     <h3>hasCurrentChangesetsScripts</h3>
-    <p class="muted"><code>src/tools/package/index.ts:313:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:314:1</code></p>
     <p>Check Changesets scripts when the repository participates in Changesets.</p>
     
   </article><article class="item" data-search="isChangesetsEnabled src/tools/package/index.ts Determine whether the repository participates in Changesets synchronization.">
     <h3>isChangesetsEnabled</h3>
-    <p class="muted"><code>src/tools/package/index.ts:326:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:327:1</code></p>
     <p>Determine whether the repository participates in Changesets synchronization.</p>
     
   </article><article class="item" data-search="serializePackageManifest src/tools/package/index.ts Serialize a package manifest using the repository formatting contract.">
     <h3>serializePackageManifest</h3>
-    <p class="muted"><code>src/tools/package/index.ts:339:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:340:1</code></p>
     <p>Serialize a package manifest using the repository formatting contract.</p>
     
   </article><article class="item" data-search="toRecord src/tools/package/index.ts Copy a JSON-like value to a mutable record or return an empty record.">
     <h3>toRecord</h3>
-    <p class="muted"><code>src/tools/package/index.ts:344:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:345:1</code></p>
     <p>Copy a JSON-like value to a mutable record or return an empty record.</p>
     
   </article><article class="item" data-search="isRecord src/tools/package/index.ts Narrow an unknown JSON-like value to a non-array record.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/tools/package/index.ts:349:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:350:1</code></p>
     <p>Narrow an unknown JSON-like value to a non-array record.</p>
     
   </article><article class="item" data-search="isNodeError src/tools/package/index.ts Narrow an unknown error to a Node error carrying an error code.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/package/index.ts:354:1</code></p>
+    <p class="muted"><code>src/tools/package/index.ts:355:1</code></p>
     <p>Narrow an unknown error to a Node error carrying an error code.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-tools-package-iscompatibledevtoolsrange-ts" class="view" data-view="src/tools/package/isCompatibleDevtoolsRange.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/package/isCompatibleDevtoolsRange.ts</h2>
+      <article class="item" data-search="isCompatibleDevtoolsRange src/tools/package/isCompatibleDevtoolsRange.ts Check whether the declared Devtools caret range includes the executing Devtools release.">
+    <h3>isCompatibleDevtoolsRange</h3>
+    <p class="muted"><code>src/tools/package/isCompatibleDevtoolsRange.ts:2:1</code></p>
+    <p>Check whether the declared Devtools caret range includes the executing Devtools release.</p>
+    
+  </article><article class="item" data-search="parseStableVersion src/tools/package/isCompatibleDevtoolsRange.ts Parse one stable semantic version used by the managed Devtools range contract.">
+    <h3>parseStableVersion</h3>
+    <p class="muted"><code>src/tools/package/isCompatibleDevtoolsRange.ts:21:1</code></p>
+    <p>Parse one stable semantic version used by the managed Devtools range contract.</p>
+    
+  </article><article class="item" data-search="compareStableVersions src/tools/package/isCompatibleDevtoolsRange.ts Compare stable semantic-version tuples.">
+    <h3>compareStableVersions</h3>
+    <p class="muted"><code>src/tools/package/isCompatibleDevtoolsRange.ts:34:1</code></p>
+    <p>Compare stable semantic-version tuples.</p>
     
   </article>
     </section>

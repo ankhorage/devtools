@@ -221,7 +221,10 @@ graph TD
   package__ankhorage_devtools -.-> module_src_tools_package_index_ts
   module_src_tools_package_index_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
+  module_src_tools_package_index_ts --> module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_index_ts --> module_src_tools_package_resolvePackageCapabilitiesAsync_ts
+  module_src_tools_package_isCompatibleDevtoolsRange_ts["src/tools/package/isCompatibleDevtoolsRange.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_package_isCompatibleDevtoolsRange_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts["src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts["src/tools/package/resolvePackageCapabilitiesAsync.ts"]
