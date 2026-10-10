@@ -45,8 +45,23 @@ function expectReleaseOrdering(release: string): void {
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('git tag "$tag" "$RELEASE_SHA"');
   expectRepositoryCapabilityMaterialization(release);
+  expectReleaseMonotonicity(release);
   expect(release).toContain(
     'gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"',
+  );
+}
+
+/*** Assert release versioning is anchored to the highest npm publication. */
+function expectReleaseMonotonicity(release: string): void {
+  expect(release).toContain('Verify npm release baseline');
+  expect(release).toContain('npm view "$package_name" versions --json > "$registry_evidence"');
+  expect(release).toContain('highest_published_version');
+  expect(release).toContain(
+    'Restore main to the published baseline before applying pending Changesets.',
+  );
+  expect(release).toContain('must be strictly greater than published npm version');
+  expect(release.indexOf('Verify npm release baseline')).toBeLessThan(
+    release.indexOf('bun run version-packages'),
   );
 }
 
