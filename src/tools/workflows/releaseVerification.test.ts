@@ -1,8 +1,8 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { rm } from 'node:fs/promises';
 
 import { afterEach, expect, test } from 'bun:test';
 
+import { createPackedCapabilityFixtureAsync } from './createPackedCapabilityFixtureAsync.test.js';
 import { workflowManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
@@ -105,12 +105,9 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain(
     'Packed package.json ankh.capabilities must exactly match the public CAPABILITIES catalog.',
   );
-  expect(release).toContain('PACKAGE_NAME="$package_name" node --input-type=module - <<\'NODE\'');
-  expect(release).toContain("import { createRequire } from 'node:module';");
-  expect(release).not.toContain("const { createRequire } = require('node:module');");
+  expectCapabilityParityVerification(release);
   expect(release).toContain("!Object.hasOwn(manifest.ankh, 'capabilities')");
   expect(release).toContain('await import(`${name}/capabilities`)');
-  expect(release).toContain("requireFromPackage.resolve('@ankhorage/capability')");
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" bun -e \'await import(process.env.PACKAGE_SPECIFIER)\'',
   );
@@ -127,18 +124,32 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).not.toContain('pathToFileURL(process.env.BINARY_PATH)');
   expect(release).not.toContain('--help');
 }
+/*** Assert capability parity uses the release validator instead of a package dependency. */
+function expectCapabilityParityVerification(release: string): void {
+  expect(release).toContain('capability_module_path=');
+  expect(release).toContain(
+    "createRequire(import.meta.resolve('@ankhorage/devtools/cli')).resolve('@ankhorage/capability')",
+  );
+  expect(release).toContain('CAPABILITY_MODULE_PATH="$capability_module_path"');
+  expect(release).toContain('const capabilityPath = process.env.CAPABILITY_MODULE_PATH;');
+  expect(release).not.toContain("require.resolve('@ankhorage/capability')");
+}
 
-test('packed capability parity probe runs as ESM and rejects catalog drift', async () => {
+test('managed release resolves the nested Devtools validator and rejects packed catalog drift', async () => {
   const release = await renderReleaseWorkflowAsync();
   const probe = extractCapabilityParityProbe(release);
-  const matchingFixture = await createPackedCapabilityFixture(false);
-  const matchingResult = await runCapabilityParityProbeAsync(matchingFixture, probe);
+  const resolution = extractCapabilityValidatorResolution(release);
+  const matchingFixture = await createPackedFixtureAsync({ drifted: false });
+  const matchingResult = await runCapabilityParityWorkflowAsync(matchingFixture, resolution, probe);
 
   expect(matchingResult.exitCode).toBe(0);
   expect(matchingResult.stderr).not.toContain('ERR_AMBIGUOUS_MODULE_SYNTAX');
 
-  const driftedFixture = await createPackedCapabilityFixture(true);
-  const driftedResult = await runCapabilityParityProbeAsync(driftedFixture, probe);
+  const driftedResult = await runCapabilityParityWorkflowAsync(
+    await createPackedFixtureAsync({ drifted: true }),
+    resolution,
+    probe,
+  );
 
   expect(driftedResult.exitCode).not.toBe(0);
   expect(driftedResult.stderr).toContain(
@@ -147,6 +158,21 @@ test('packed capability parity probe runs as ESM and rejects catalog drift', asy
   expect(driftedResult.stderr).not.toContain('ERR_AMBIGUOUS_MODULE_SYNTAX');
 });
 
+test('managed release fails closed when the Devtools validator boundary is unavailable', async () => {
+  const release = await renderReleaseWorkflowAsync();
+  const probe = extractCapabilityParityProbe(release);
+  const resolution = extractCapabilityValidatorResolution(release);
+
+  for (const validator of ['missing-devtools', 'missing-capability'] as const) {
+    const result = await runCapabilityParityWorkflowAsync(
+      await createPackedFixtureAsync({ drifted: false, validator }),
+      resolution,
+      probe,
+    );
+
+    expect(result.exitCode).not.toBe(0);
+  }
+});
 /*** Render the managed release workflow used as the executable probe source. */
 async function renderReleaseWorkflowAsync(): Promise<string> {
   const releaseDefinition = workflowManagedFiles.find(
@@ -161,7 +187,7 @@ async function renderReleaseWorkflowAsync(): Promise<string> {
 /*** Extract the ESM capability-parity heredoc from the rendered release workflow. */
 function extractCapabilityParityProbe(release: string): string {
   const match =
-    /PACKAGE_NAME="\$package_name" node --input-type=module - <<'NODE'\n(?<probe>[\s\S]*?)\n {10}NODE/u.exec(
+    /PACKAGE_NAME="\$package_name" CAPABILITY_MODULE_PATH="\$capability_module_path" node --input-type=module - <<'NODE'\n(?<probe>[\s\S]*?)\n {10}NODE/u.exec(
       release,
     );
   if (match?.groups?.probe === undefined) {
@@ -170,67 +196,41 @@ function extractCapabilityParityProbe(release: string): string {
   return match.groups.probe;
 }
 
-/*** Create an installed package fixture with package-scoped toolkit resolution. */
-async function createPackedCapabilityFixture(drifted: boolean): Promise<string> {
-  const directory = await mkdtemp('/tmp/devtools-release-parity-');
-  temporaryDirectories.push(directory);
-  const packageDirectory = join(directory, 'node_modules/@example/packed');
-  const capability = {
-    access: ['invoke'],
-    binding: { bindableAs: ['target'], kind: 'action' },
-    description: 'Exercise the packed parity probe.',
-    id: 'example.packed.probe',
-    label: 'Probe packed capability parity',
-    owner: '@example/packed',
-  };
-  const metadata = drifted
-    ? { ...capability, label: 'Drifted packed capability parity' }
-    : capability;
-
-  await mkdir(packageDirectory, { recursive: true });
-  await mkdir(join(directory, 'node_modules/@ankhorage'), { recursive: true });
-  await mkdir(join(directory, 'node_modules/@ankhorage/capability'), { recursive: true });
-  await writeFile(
-    join(directory, 'node_modules/@ankhorage/capability/package.json'),
-    `${JSON.stringify({ exports: './index.js', type: 'module' })}\n`,
-  );
-  await writeFile(
-    join(directory, 'node_modules/@ankhorage/capability/index.js'),
-    `export const isCapability = (value) => typeof value === 'object' && value !== null;
-export const normalizeCapability = (value) => value;
-export const areCapabilitiesEqual = (left, right) => JSON.stringify(left) === JSON.stringify(right);
-`,
-  );
-  await writeFile(
-    join(packageDirectory, 'package.json'),
-    `${JSON.stringify(
-      {
-        ankh: { capabilities: [metadata] },
-        exports: { './capabilities': './capabilities.js' },
-        name: '@example/packed',
-        type: 'module',
-      },
-      null,
-      2,
-    )}\n`,
-  );
-  await writeFile(
-    join(packageDirectory, 'capabilities.js'),
-    `export const CAPABILITIES = ${JSON.stringify([capability])};\n`,
-  );
-  return directory;
+/*** Extract the exact workflow assignment that resolves the Devtools-owned validator. */
+function extractCapabilityValidatorResolution(release: string): string {
+  const match =
+    /(?<resolution>capability_module_path="\$\(node --input-type=module -e ".+"\)")/u.exec(release);
+  if (match?.groups?.resolution === undefined) {
+    throw new Error('Missing Devtools capability validator resolution.');
+  }
+  return match.groups.resolution;
 }
 
-/*** Run the rendered ESM probe exactly as the packed-install workflow does. */
-async function runCapabilityParityProbeAsync(
-  directory: string,
+/*** Create and register a temporary packed fixture for automatic cleanup. */
+async function createPackedFixtureAsync(input: {
+  readonly drifted: boolean;
+  readonly validator?: 'available' | 'missing-capability' | 'missing-devtools';
+}): Promise<{ readonly directory: string }> {
+  const fixture = await createPackedCapabilityFixtureAsync(input);
+  temporaryDirectories.push(fixture.directory);
+  return fixture;
+}
+
+/*** Execute the rendered workflow resolution and parity probe inside the packed consumer fixture. */
+async function runCapabilityParityWorkflowAsync(
+  fixture: { readonly directory: string },
+  resolution: string,
   probe: string,
 ): Promise<{ readonly exitCode: number; readonly stderr: string }> {
-  const subprocess = Bun.spawn(['node', '--input-type=module', '-'], {
-    cwd: directory,
-    env: { ...process.env, PACKAGE_NAME: '@example/packed' },
+  const script = `set -eu
+${resolution}
+PACKAGE_NAME='@example/packed' CAPABILITY_MODULE_PATH="$capability_module_path" node --input-type=module - <<'NODE'
+${probe}
+NODE`;
+  const subprocess = Bun.spawn(['sh', '-c', script], {
+    cwd: fixture.directory,
+    env: process.env,
     stderr: 'pipe',
-    stdin: new TextEncoder().encode(probe),
     stdout: 'pipe',
   });
   const [exitCode, stderr] = await Promise.all([
