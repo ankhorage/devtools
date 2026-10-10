@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.16
+
+### Patch Changes
+
+- 998d303: Validate packed capability catalogs with Devtools' validator dependency instead of requiring it from consumer packages.
+
 ## 2.3.15
 
 ### Patch Changes

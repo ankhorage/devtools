@@ -62,7 +62,7 @@
 
     "@ankhorage/paradox": ["@ankhorage/paradox@0.3.3", "", { "dependencies": { "@ankhorage/ankh": "^0.13.0", "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^25.0.1", "@ankhorage/rules": "^0.2.0", "@ankhorage/rules-documentation": "^0.3.4", "@ankhorage/utility": "^1.9.63", "ts-morph": "^28.0.0" }, "bin": { "paradox": "dist/cli/standalone.js" } }, "sha512-ioBRWJgzYp3JL97ycym6gm/dOcr62cLIoczQLYUUQxyNqALDMTc3WkKBa7iAhj27kYvioqbQOP6mXWr+VYj+xQ=="],
 
-    "@ankhorage/project-detector": ["@ankhorage/project-detector@0.3.4", "", { "dependencies": { "@ankhorage/contracts": "^24.1.0", "@ankhorage/utility": "^0.8.0", "minimatch": "^10.2.6", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.12.0" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "project-detector": "dist/cli/runAsync.js" } }, "sha512-x5ohJdllBIv3HQvS0ohJAO9RbRNM2RwK5SSRkHQap9GrA8UIYptLoNmafpjlyIYrsZ8s+VoPWivLb8lEq8jVUQ=="],
+    "@ankhorage/project-detector": ["@ankhorage/project-detector@0.3.5", "", { "dependencies": { "@ankhorage/capability": "^0.2.1", "@ankhorage/contracts": "^26.0.0", "@ankhorage/utility": "^0.8.0", "minimatch": "^10.2.6", "yaml": "^2.9.1" }, "peerDependencies": { "@ankhorage/ankh": "^0.12.0" }, "optionalPeers": ["@ankhorage/ankh"], "bin": { "project-detector": "dist/cli/runAsync.js" } }, "sha512-3cENcse8iLkfWYlAMt5uASGCLpoP0xphlfZmNmjj28skR54KWHmz+HOUdenS8F/H2uxyeaOLtMdlI1BiiZlY7w=="],
 
     "@ankhorage/rules": ["@ankhorage/rules@0.2.1", "", { "dependencies": { "@ankhorage/ankh": "^0.12.0", "@ankhorage/contracts": "^24.1.0", "@ankhorage/utility": "^1.9.0" }, "bin": { "ankhorage-rules": "dist/cli/standalone.js" } }, "sha512-cYpOfDvGO0rlRQztlW5IYyDrh59Cznc1Gv5doxujxmDLIUvrGf+pZANPCpBWmpNJxKW4AkraHJ79xZK9I81NEg=="],
 
@@ -952,7 +952,7 @@
 
     "@ankhorage/paradox/@ankhorage/utility": ["@ankhorage/utility@1.9.85", "", { "peerDependencies": { "fastify": "^5.12.5" }, "optionalPeers": ["fastify"] }, "sha512-039OnOPntg5EY7BwMR4shCaHOO8N/DgNZOgQxkh/lxtsZbqIlf34bp47ZYh7NoPVibxLDwj8CeMl6m1Pw8y1aQ=="],
 
-    "@ankhorage/project-detector/@ankhorage/contracts": ["@ankhorage/contracts@24.2.1", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.1", "@ankhorage/utility": "^1.9.85" } }, "sha512-CQwUMsNID2GZwDb4N9bvUKtt/1S91/dTZMfzqBr6uAGDoSCGVMtqsswZXJ1qrjhtZPBLVQOgG5Vbw+yMxpLsQQ=="],
+    "@ankhorage/project-detector/@ankhorage/contracts": ["@ankhorage/contracts@26.0.0", "", { "dependencies": { "@ankhorage/color-theory": "^0.3.1", "@ankhorage/utility": "^1.9.85" } }, "sha512-Kp7Ps1eVKCrUrbKXTqJT0S4p/DzlIeoCvCvacWIj5N3lD1kJw9bWYcFtpbEYazjztVr+qH60oTrFMfxb0pTH9g=="],
 
     "@ankhorage/project-detector/@ankhorage/utility": ["@ankhorage/utility@0.8.0", "", {}, "sha512-0ywzdqu1pO+n9yNhbJE5+JD4CeUQ1GEvMGbh8pccr8ieLFlYgTKMFWxH3XUk0Mw6P2ngelQU+PHC+kjJ/xL8Uw=="],
 
