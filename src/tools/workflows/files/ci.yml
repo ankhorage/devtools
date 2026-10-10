@@ -41,7 +41,7 @@ jobs:
           candidate_version="$(node -p "require('./package.json').version")"
           BASE_VERSION="$base_version" CANDIDATE_VERSION="$candidate_version" node -e '
             const parse = (value) => {
-              const match = /^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$/u.exec(value);
+              const match = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.exec(value);
               if (!match) throw new Error(`Expected a stable semantic version, received ${value}.`);
               return match.slice(1).map(Number);
             };
