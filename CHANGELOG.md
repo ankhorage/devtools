@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.13
+
+### Patch Changes
+
+- fdaa36e: Roll managed workflows to Doctor 0.14.13 for Node ESM TypeScript capability-catalog imports.
+
 ## 2.3.12
 
 ### Patch Changes
