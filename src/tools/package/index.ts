@@ -28,6 +28,7 @@ import type {
   ManagedFileSyncResult,
 } from '../../features/managed-files/managedFiles.js';
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
+import { isCompatibleDevtoolsRange } from './isCompatibleDevtoolsRange.js';
 import { resolvePackageCapabilitiesAsync } from './resolvePackageCapabilitiesAsync.js';
 
 const PACKAGE_PATH = 'package.json';
@@ -276,7 +277,7 @@ function hasCurrentDevtoolsDependencyPlacement(
   devtoolsVersion: string,
 ): boolean {
   return (
-    devDependencies[DEVTOOLS_PACKAGE_NAME] === `^${devtoolsVersion}` &&
+    isCompatibleDevtoolsRange(devDependencies[DEVTOOLS_PACKAGE_NAME], devtoolsVersion) &&
     dependencies[DEVTOOLS_PACKAGE_NAME] === undefined
   );
 }

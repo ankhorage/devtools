@@ -170,7 +170,8 @@ test('detects managed package drift without caring about unrelated fields', () =
   const manifest = applyManagedPackageContract({ name: 'fixture', private: true }, '2.3.4');
   expect(isManagedPackageContractCurrent(manifest, '2.3.4')).toBe(true);
   expect(isManagedPackageContractCurrent({ ...manifest, private: false }, '2.3.4')).toBe(true);
-  expect(isManagedPackageContractCurrent(manifest, '2.3.5')).toBe(false);
+  expect(isManagedPackageContractCurrent(manifest, '2.3.5')).toBe(true);
+  expect(isManagedPackageContractCurrent(manifest, '3.0.0')).toBe(false);
   expect(
     isManagedPackageContractCurrent({ ...manifest, packageManager: 'bun@0.0.0' }, '2.3.4'),
   ).toBe(false);
