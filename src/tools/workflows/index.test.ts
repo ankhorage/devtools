@@ -20,12 +20,12 @@ afterEach(async () => {
 });
 
 describe('managed workflows', () => {
-  test('render the Doctor release that supports static public Contracts imports', async () => {
-    expect(readCurrentDoctorVersion()).toBe('0.14.11');
+  test('render the Doctor release that supports mixed catalogs and static Contracts schemas', async () => {
+    expect(readCurrentDoctorVersion()).toBe('0.14.12');
 
     for (const definition of workflowManagedFiles.slice(0, 2)) {
       const rendered = await definition.render?.('.');
-      expect(rendered).toContain('bunx @ankhorage/doctor@0.14.11 validate .');
+      expect(rendered).toContain('bunx @ankhorage/doctor@0.14.12 validate .');
     }
   });
 
