@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.9",
+      "value": "v2.3.10",
       "color": "cb3837"
     },
     {
@@ -4140,13 +4140,24 @@
       }
     },
     {
+      "name": "loadCapabilityCatalogAsync",
+      "description": "Build and load the catalog's local TypeScript module closure through Bun resolution.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
+        "line": 55,
+        "column": 1
+      }
+    },
+    {
       "name": "hasCapabilityMetadata",
       "description": "Check whether a manifest declares published capability discovery metadata.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 55,
+        "line": 79,
         "column": 1
       }
     },
@@ -4157,7 +4168,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 60,
+        "line": 84,
         "column": 1
       }
     },
@@ -4168,7 +4179,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 71,
+        "line": 95,
         "column": 1
       }
     },
@@ -4179,7 +4190,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
-        "line": 76,
+        "line": 100,
         "column": 1
       }
     },
@@ -6981,8 +6992,8 @@
       },
       {
         "fromSymbol": "resolvePackageCapabilitiesAsync",
-        "toSymbol": "pathToFileURL",
-        "callExpression": "pathToFileURL",
+        "toSymbol": "loadCapabilityCatalogAsync",
+        "callExpression": "loadCapabilityCatalogAsync",
         "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
       },
       {
@@ -7001,6 +7012,30 @@
         "fromSymbol": "resolvePackageCapabilitiesAsync",
         "toSymbol": "assertUniqueCapabilityIds",
         "callExpression": "assertUniqueCapabilityIds",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "loadCapabilityCatalogAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "loadCapabilityCatalogAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "loadCapabilityCatalogAsync",
+        "toSymbol": "pathToFileURL",
+        "callExpression": "pathToFileURL",
+        "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
+      },
+      {
+        "fromSymbol": "loadCapabilityCatalogAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
         "sourcePath": "src/tools/package/resolvePackageCapabilitiesAsync.ts"
       },
       {

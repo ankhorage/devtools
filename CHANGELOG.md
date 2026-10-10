@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.10
+
+### Patch Changes
+
+- 164ded4: Resolve canonical capability catalogs through their local TypeScript import closure during package synchronization.
+
 ## 2.3.9
 
 ### Patch Changes
