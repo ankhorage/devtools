@@ -187,17 +187,15 @@ test('package capability materialization fails for invalid and duplicate descrip
   );
 });
 
-test('package capability materialization keeps packed metadata equal to public catalog', async () => {
-  const target = await createCapabilityFixture(staticCatalogSource(), {
-    category: 'fixture',
-    provider: null,
-  });
+test('package capability materialization keeps packed metadata equal to a public catalog with local TypeScript imports', async () => {
+  const target = await createCrossModuleDerivedCapabilityFixture();
   const manifest = await readManifest(target);
   await writeFile(
     join(target, 'package.json'),
     `${JSON.stringify(
       {
         ...manifest,
+        ankh: { category: 'fixture', provider: null },
         exports: { './capabilities': './dist/capabilities/index.js' },
         files: ['dist'],
         type: 'module',
