@@ -269,6 +269,7 @@ jobs:
           fi
           printf '{"name":"standalone-consumer","private":true,"version":"0.0.0"}\n' > "$install_dir/package.json"
           package_name="$(node -p "require('./package.json').name")"
+          capability_module_path="$(node -p "require.resolve('@ankhorage/capability')")"
           (
             cd "$install_dir"
             bun add "$artifact" --ignore-scripts
@@ -339,9 +340,8 @@ jobs:
           process.stdout.write(output.length === 0 ? '' : `${output.join('\n')}\n`);
           NODE
 
-            PACKAGE_NAME="$package_name" node --input-type=module - <<'NODE'
+            PACKAGE_NAME="$package_name" CAPABILITY_MODULE_PATH="$capability_module_path" node --input-type=module - <<'NODE'
           import { readFileSync } from 'node:fs';
-          import { createRequire } from 'node:module';
           import { join } from 'node:path';
           import { pathToFileURL } from 'node:url';
           const name = process.env.PACKAGE_NAME;
@@ -352,8 +352,10 @@ jobs:
             typeof manifest.ankh !== 'object' ||
             !Object.hasOwn(manifest.ankh, 'capabilities')
           ) process.exit(0);
-          const requireFromPackage = createRequire(join(packageDir, 'package.json'));
-          const capabilityPath = requireFromPackage.resolve('@ankhorage/capability');
+          const capabilityPath = process.env.CAPABILITY_MODULE_PATH;
+          if (typeof capabilityPath !== 'string' || capabilityPath.length === 0) {
+            throw new Error('The release capability validator module path is required.');
+          }
           const { areCapabilitiesEqual, isCapability, normalizeCapability } = await import(pathToFileURL(capabilityPath).href);
           const { CAPABILITIES } = await import(`${name}/capabilities`);
           const metadata = manifest.ankh.capabilities;
