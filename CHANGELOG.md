@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.17
+
+### Patch Changes
+
+- 7d22f8c: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/contracts`, `@ankhorage/project-detector`.
+
 ## 2.3.16
 
 ### Patch Changes
