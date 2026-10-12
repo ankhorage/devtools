@@ -513,16 +513,16 @@
     "knip": "^6.41.0",
     "prettier": "^3.9.10",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.71.1"
+    "typescript-eslint": "^8.71.2"
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.3.4",
     "@ankhorage/ankh": "^0.13.1",
     "@ankhorage/doctor": "0.14.13",
     "@techstark/opencv-js": "^5.0.0-release.1",
-    "@types/bun": "^1.4.2",
+    "@types/bun": "^1.4.3",
     "@types/node": "^26.6.5",
     "sharp": "^0.35.5"
   },
-  "packageManager": "bun@1.4.2"
+  "packageManager": "bun@1.4.3"
 }
