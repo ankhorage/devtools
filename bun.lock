@@ -35,7 +35,7 @@
         "@ankhorage/doctor": "0.14.13",
         "@ankhorage/paradox": "^0.3.4",
         "@techstark/opencv-js": "^5.0.0-release.1",
-        "@types/bun": "^1.4.2",
+        "@types/bun": "^1.4.3",
         "@types/node": "^26.6.5",
         "sharp": "^0.35.5",
       },
