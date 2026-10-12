@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.18
+
+### Patch Changes
+
+- 16f6700: Update Devtools-owned dependencies: `typescript-eslint`.
+
 ## 2.3.17
 
 ### Patch Changes
