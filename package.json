@@ -520,9 +520,9 @@
     "@ankhorage/ankh": "^0.13.1",
     "@ankhorage/doctor": "0.14.13",
     "@techstark/opencv-js": "^5.0.0-release.1",
-    "@types/bun": "^1.4.3",
+    "@types/bun": "^1.4.2",
     "@types/node": "^26.6.5",
     "sharp": "^0.35.5"
   },
-  "packageManager": "bun@1.4.3"
+  "packageManager": "bun@1.4.2"
 }
