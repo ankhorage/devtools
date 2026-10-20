@@ -132,6 +132,8 @@ function expectReactNativePlatformFallback(release: string): void {
   expect(release).toContain('grep -Fq \'react-native/index.js\' "$runtime_log"');
   expect(release).toContain('grep -Fq \'Unexpected typeof\' "$runtime_log"');
   expect(release).toContain('"$install_dir/node_modules/.bin/expo" export --platform ios');
+  expect(release).toContain(`APP_DIR="$platform_dir" PACKAGE_SPECIFIER="$specifier" node - <<'NODE'
+          const { writeFileSync } = require('node:fs');`);
   expect(release).toContain(
     "writeFileSync(join(appDir, 'App.tsx'), `export * from ${JSON.stringify(specifier)};\\n`);",
   );
