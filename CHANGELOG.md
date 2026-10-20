@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.20
+
+### Patch Changes
+
+- da72036: Publish the corrected Expo packed-export verifier workflow.
+
 ## 2.3.19
 
 ### Patch Changes
