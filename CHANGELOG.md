@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.19
+
+### Patch Changes
+
+- a465eb9: Verify React Native packed exports with Expo after Bun encounters React Native Flow syntax.
+
 ## 2.3.18
 
 ### Patch Changes
