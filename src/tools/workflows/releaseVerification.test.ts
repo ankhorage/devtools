@@ -111,6 +111,7 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" bun -e \'await import(process.env.PACKAGE_SPECIFIER)\'',
   );
+  expectReactNativePlatformFallback(release);
   expect(release).toContain(
     'PACKAGE_SPECIFIER="$specifier" node -e \'require(process.env.PACKAGE_SPECIFIER)\'',
   );
@@ -123,6 +124,20 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain('Packed binary runtime dependency missing');
   expect(release).not.toContain('pathToFileURL(process.env.BINARY_PATH)');
   expect(release).not.toContain('--help');
+}
+
+/*** Assert React Native Flow parse failures are compiled with Expo rather than ignored. */
+function expectReactNativePlatformFallback(release: string): void {
+  expect(release).toContain('runtime_log="$(mktemp "${RUNNER_TEMP}/standalone-runtime.XXXXXX")"');
+  expect(release).toContain('grep -Fq \'react-native/index.js\' "$runtime_log"');
+  expect(release).toContain('grep -Fq \'Unexpected typeof\' "$runtime_log"');
+  expect(release).toContain('"$install_dir/node_modules/.bin/expo" export --platform ios');
+  expect(release).toContain(
+    "writeFileSync(join(appDir, 'App.tsx'), `export * from ${JSON.stringify(specifier)};\\n`);",
+  );
+  expect(release).toContain(
+    'Packed runtime export failed::$specifier could not load with Bun or compile with Expo.',
+  );
 }
 /*** Assert capability parity uses the release validator instead of a package dependency. */
 function expectCapabilityParityVerification(release: string): void {
