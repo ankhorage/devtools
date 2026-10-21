@@ -166,7 +166,11 @@ test('managed React Native fallback materializes a standalone Expo package', asy
 
   const directory = await mkdtemp('/tmp/devtools-release-expo-');
   temporaryDirectories.push(directory);
-  const command = `APP_DIR=${JSON.stringify(directory)} PACKAGE_SPECIFIER='@example/packed' node - <<'NODE'\n${source}\nNODE`;
+  const command = [
+    `APP_DIR=${JSON.stringify(directory)} PACKAGE_SPECIFIER='@example/packed' node - <<'NODE'`,
+    source,
+    'NODE',
+  ].join('\n');
   const child = Bun.spawn(['sh', '-c', command], {
     cwd: directory,
     env: process.env,
