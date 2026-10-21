@@ -158,7 +158,7 @@ function expectCapabilityParityVerification(release: string): void {
 test('managed React Native fallback materializes a standalone Expo package', async () => {
   const release = await renderReleaseWorkflowAsync();
   const match =
-    /APP_DIR="\\$platform_dir" PACKAGE_SPECIFIER="\\$specifier" node - <<'NODE'\\n(?<source>[\\s\\S]*?)\\n {10}NODE/u.exec(
+    /APP_DIR="\$platform_dir" PACKAGE_SPECIFIER="\$specifier" node - <<'NODE'\n(?<source>[\s\S]*?)\n {10}NODE/u.exec(
       release,
     );
   const source = match?.groups?.source;
@@ -188,7 +188,7 @@ test('managed React Native fallback materializes a standalone Expo package', asy
     version: '0.0.0',
   });
   expect(await readFile(join(directory, 'App.tsx'), 'utf8')).toBe(
-    'export * from "@example/packed";\\n',
+    'export * from "@example/packed";\n',
   );
 });
 
