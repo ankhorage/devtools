@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.21
+
+### Patch Changes
+
+- bf358fc: Supply a standalone package manifest and explicit entrypoint for the Expo/Metro fallback used when validating React Native exports in the packed release consumer.
+
 ## 2.3.20
 
 ### Patch Changes
