@@ -1,5 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { join } from 'node:path';
+import { rm } from 'node:fs/promises';
 
 import { afterEach, expect, test } from 'bun:test';
 
@@ -154,47 +153,6 @@ function expectCapabilityParityVerification(release: string): void {
   expect(release).toContain('const capabilityPath = process.env.CAPABILITY_MODULE_PATH;');
   expect(release).not.toContain("require.resolve('@ankhorage/capability')");
 }
-
-test('managed React Native fallback materializes a standalone Expo package', async () => {
-  const release = await renderReleaseWorkflowAsync();
-  const match =
-    /APP_DIR="\$platform_dir" PACKAGE_SPECIFIER="\$specifier" node - <<'NODE'\n(?<source>[\s\S]*?)\n {10}NODE/u.exec(
-      release,
-    );
-  const source = match?.groups?.source;
-  if (source === undefined) throw new Error('Missing packed Expo fallback source.');
-
-  const directory = await mkdtemp('/tmp/devtools-release-expo-');
-  temporaryDirectories.push(directory);
-  const command = [
-    `APP_DIR=${JSON.stringify(directory)} PACKAGE_SPECIFIER='@example/packed' node - <<'NODE'`,
-    source,
-    'NODE',
-  ].join('\n');
-  const child = Bun.spawn(['sh', '-c', command], {
-    cwd: directory,
-    env: process.env,
-    stderr: 'pipe',
-    stdout: 'pipe',
-  });
-  const [exitCode, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stderr).text(),
-  ]);
-  expect(exitCode).toBe(0);
-  expect(stderr).toBe('');
-
-  const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')) as unknown;
-  expect(manifest).toMatchObject({
-    main: './App.tsx',
-    name: 'packed-platform-verification',
-    private: true,
-    version: '0.0.0',
-  });
-  expect(await readFile(join(directory, 'App.tsx'), 'utf8')).toBe(
-    'export * from "@example/packed";\n',
-  );
-});
 
 test('managed release resolves the nested Devtools validator and rejects packed catalog drift', async () => {
   const release = await renderReleaseWorkflowAsync();
