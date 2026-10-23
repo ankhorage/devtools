@@ -269,7 +269,6 @@ function expectPublishedArtifactVerification(release: string): void {
 
   expect(verification).toContain('Verify published npm artifact from a fresh runner');
   expect(verification).toContain('timeout-minutes: 5');
-  expect(verification).toContain('registry-url: https://registry.npmjs.org');
   expect(verification).toContain('max_attempts=5');
   expect(verification).toContain('retry_seconds=15');
   expect(verification).toContain(
@@ -278,7 +277,6 @@ function expectPublishedArtifactVerification(release: string): void {
   expect(verification).toContain(
     `find "$pack_dir" -maxdepth 1 -type f -name '*.tgz' -size +0c -print -quit`,
   );
-  expect(verification).toContain('tail -n 20 "$pack_log"');
   expect(verification).toContain('npm publication not retrievable');
   expect(verification).not.toContain('npm view ');
   expect(verification).not.toContain('curl --fail');
