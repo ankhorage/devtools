@@ -259,22 +259,29 @@ NODE`;
   return { exitCode, stderr };
 }
 
-/*** Assert the public npm artifact is independently retrievable before finalization. */
+/*** Assert one public npm pack download gates finalization with bounded retries. */
 function expectPublishedArtifactVerification(release: string): void {
-  expect(release).toContain('npm view "$package_spec" version dist.tarball dist.integrity --json');
-  expect(release).toContain('Array.isArray(raw)&&raw.length===1?raw[0]:raw');
-  expect(release).toContain('curl --fail --location --silent --show-error --output "$artifact"');
-  expect(release).toContain("const actual='sha512-'");
-  expect(release).toContain('npm pack "$package_spec" --pack-destination "$attempt_pack_dir"');
-  expect(release).toContain('max_attempts=60');
-  expect(release).toContain('retry_seconds=30');
-  expect(release).toContain('last_stage="registry-metadata"');
-  expect(release).toContain('last_stage="tarball-download"');
-  expect(release).toContain('last_stage="integrity"');
-  expect(release).toContain('last_stage="npm-pack"');
-  expect(release).toContain('Published npm artifact not ready at stage: ${last_stage}.');
-  expect(release).toContain('attempt_pack_dir="$pack_dir/attempt-${attempt}"');
-  expect(release).toContain('Verify published npm artifact from a fresh runner');
+  const verificationStart = release.indexOf('  verify-publication:');
+  const finalizationStart = release.indexOf('  finalize:', verificationStart);
+  expect(verificationStart).toBeGreaterThanOrEqual(0);
+  expect(finalizationStart).toBeGreaterThan(verificationStart);
+  const verification = release.slice(verificationStart, finalizationStart);
+
+  expect(verification).toContain('Verify published npm artifact from a fresh runner');
+  expect(verification).toContain('timeout-minutes: 5');
+  expect(verification).toContain('max_attempts=5');
+  expect(verification).toContain('retry_seconds=15');
+  expect(verification).toContain(
+    'npm pack "$package_spec" --ignore-scripts --prefer-online --pack-destination "$pack_dir"',
+  );
+  expect(verification).toContain(
+    `find "$pack_dir" -maxdepth 1 -type f -name '*.tgz' -size +0c -print -quit`,
+  );
+  expect(verification).toContain('npm publication not retrievable');
+  expect(verification).not.toContain('npm view ');
+  expect(verification).not.toContain('curl --fail');
+  expect(verification).not.toContain('dist.integrity');
+  expect(verification).not.toContain('createHash(');
 }
 
 test('packed runtime loader selection distinguishes platform-only and server-capable exports', () => {
