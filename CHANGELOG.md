@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.22
+
+### Patch Changes
+
+- ec3aeed: Simplify managed release publication verification to a single public `npm pack` download with bounded retries while preserving the finalization gate.
+
 ## 2.3.21
 
 ### Patch Changes
