@@ -261,10 +261,11 @@ NODE`;
 
 /*** Assert one public npm pack download gates finalization with bounded retries. */
 function expectPublishedArtifactVerification(release: string): void {
-  const verification = release.split('  verify-publication:')[1]?.split('  finalize:')[0];
-  if (verification === undefined) {
-    throw new Error('Missing managed npm publication verification job.');
-  }
+  const verificationStart = release.indexOf('  verify-publication:');
+  const finalizationStart = release.indexOf('  finalize:', verificationStart);
+  expect(verificationStart).toBeGreaterThanOrEqual(0);
+  expect(finalizationStart).toBeGreaterThan(verificationStart);
+  const verification = release.slice(verificationStart, finalizationStart);
 
   expect(verification).toContain('Verify published npm artifact from a fresh runner');
   expect(verification).toContain('timeout-minutes: 5');
