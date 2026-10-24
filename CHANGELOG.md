@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.27
+
+### Patch Changes
+
+- bd23b61: Fail closed when a managed release verifies an npm first-publication baseline.
+
 ## 2.3.26
 
 ### Patch Changes
