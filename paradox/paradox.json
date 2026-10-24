@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.27",
+      "value": "v2.3.28",
       "color": "cb3837"
     },
     {
@@ -129,7 +129,7 @@
       "path": "src/cli/bin/changeset.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/cli/runStandaloneTool.ts"
+        "src/cli/runChangesetAsync.ts"
       ],
       "exports": []
     },
@@ -264,6 +264,17 @@
       ],
       "exports": [
         "default"
+      ]
+    },
+    {
+      "path": "src/cli/runChangesetAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/commands.ts",
+        "src/cli/runExternalTool.ts"
+      ],
+      "exports": [
+        "runChangesetAsync"
       ]
     },
     {
@@ -2033,6 +2044,138 @@
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
         "line": 79,
+        "column": 1
+      }
+    },
+    {
+      "name": "runChangesetAsync",
+      "description": "Run Changesets with rename-aware status validation for a renamed root package.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 27,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveChangesetInvocationAsync",
+      "description": "Omit the base comparison only when it compares a renamed root package identity.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "runRenamedPackageStatusAsync",
+      "description": "Run renamed-package status with a release-plan check for the current identity.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageNamesAsync",
+      "description": "Read the package identities being compared by a Changesets status command.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageName",
+      "description": "Read one package name from a package manifest.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 105,
+        "column": 1
+      }
+    },
+    {
+      "name": "readGitFileAsync",
+      "description": "Read the base revision package manifest through Git.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "getStatusBaseReference",
+      "description": "Return the comparison ref from a Changesets status invocation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 120,
+        "column": 1
+      }
+    },
+    {
+      "name": "removeStatusBaseReference",
+      "description": "Remove the base comparison arguments after verifying the root package identity changed.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 131,
+        "column": 1
+      }
+    },
+    {
+      "name": "withoutStatusOutput",
+      "description": "Remove user output arguments before reserving the status-plan output path.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 139,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasReleaseForPackage",
+      "description": "Confirm that Changesets planned a release for the current renamed root package.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 149,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": "Render an unknown error as a deterministic diagnostic.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 156,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": "Narrow an unknown JSON value to a plain record.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runChangesetAsync.ts",
+        "line": 161,
         "column": 1
       }
     },
@@ -4941,6 +5084,16 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
+        "fromPath": "src/cli/runChangesetAsync.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/runChangesetAsync.ts",
+        "toPath": "src/cli/runExternalTool.ts",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
         "fromPath": "src/cli/runExternalTool.ts",
         "toPath": "src/cli/commands.ts",
         "sourcePath": "src/cli/runExternalTool.ts"
@@ -5112,7 +5265,7 @@
       },
       {
         "fromPath": "src/cli/bin/changeset.ts",
-        "toPath": "src/cli/runStandaloneTool.ts",
+        "toPath": "src/cli/runChangesetAsync.ts",
         "sourcePath": "src/cli/bin/changeset.ts"
       },
       {
@@ -5584,6 +5737,162 @@
         "toSymbol": "isNonEmptyString",
         "callExpression": "isNonEmptyString",
         "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runChangesetAsync.ts",
+        "toSymbol": "promisify",
+        "callExpression": "promisify",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "readCurrentPackageManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runExternalToolAsync",
+        "toSymbol": "runExternalTool",
+        "callExpression": "runExternalTool",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runExternalToolAsync",
+        "toSymbol": "getDevtoolsToolCommand",
+        "callExpression": "getDevtoolsToolCommand",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runChangesetAsync",
+        "toSymbol": "resolveChangesetInvocationAsync",
+        "callExpression": "resolveChangesetInvocationAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runChangesetAsync",
+        "toSymbol": "runExternalToolAsync",
+        "callExpression": "dependencies.runExternalToolAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runChangesetAsync",
+        "toSymbol": "runRenamedPackageStatusAsync",
+        "callExpression": "runRenamedPackageStatusAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveChangesetInvocationAsync",
+        "toSymbol": "getStatusBaseReference",
+        "callExpression": "getStatusBaseReference",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveChangesetInvocationAsync",
+        "toSymbol": "readPackageNamesAsync",
+        "callExpression": "readPackageNamesAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveChangesetInvocationAsync",
+        "toSymbol": "removeStatusBaseReference",
+        "callExpression": "removeStatusBaseReference",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "mkdtemp",
+        "callExpression": "mkdtemp",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "tmpdir",
+        "callExpression": "tmpdir",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "runExternalToolAsync",
+        "callExpression": "dependencies.runExternalToolAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "withoutStatusOutput",
+        "callExpression": "withoutStatusOutput",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "hasReleaseForPackage",
+        "callExpression": "hasReleaseForPackage",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "runRenamedPackageStatusAsync",
+        "toSymbol": "rm",
+        "callExpression": "rm",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageNamesAsync",
+        "toSymbol": "readPackageName",
+        "callExpression": "readPackageName",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageNamesAsync",
+        "toSymbol": "readCurrentPackageManifestAsync",
+        "callExpression": "dependencies.readCurrentPackageManifestAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageNamesAsync",
+        "toSymbol": "readGitFileAsync",
+        "callExpression": "dependencies.readGitFileAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageName",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitFileAsync",
+        "toSymbol": "execFileAsync",
+        "callExpression": "execFileAsync",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "hasReleaseForPackage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
+      },
+      {
+        "fromSymbol": "src/cli/runChangesetAsync.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/cli/runChangesetAsync.ts"
       },
       {
         "fromSymbol": "src/cli/runExternalTool.ts",
@@ -6139,8 +6448,8 @@
       },
       {
         "fromSymbol": "src/cli/bin/changeset.ts",
-        "toSymbol": "runStandaloneTool",
-        "callExpression": "runStandaloneTool",
+        "toSymbol": "runChangesetAsync",
+        "callExpression": "runChangesetAsync",
         "sourcePath": "src/cli/bin/changeset.ts"
       },
       {

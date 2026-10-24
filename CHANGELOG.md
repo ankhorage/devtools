@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.28
+
+### Patch Changes
+
+- dcc0956: Support Changesets status validation when a repository renames its root package identity.
+
 ## 2.3.27
 
 ### Patch Changes

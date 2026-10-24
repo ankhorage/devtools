@@ -18,7 +18,7 @@ graph TD
   module_src_cli_bin_apm_release_ts --> module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts["src/cli/bin/changeset.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_changeset_ts
-  module_src_cli_bin_changeset_ts --> module_src_cli_runStandaloneTool_ts
+  module_src_cli_bin_changeset_ts --> module_src_cli_runChangesetAsync_ts
   module_src_cli_bin_eslint_ts["src/cli/bin/eslint.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_eslint_ts
   module_src_cli_bin_eslint_ts --> module_src_cli_runStandaloneTool_ts
@@ -65,6 +65,10 @@ graph TD
   module_src_cli_index_ts --> module_src_capabilities_index_ts
   module_src_cli_index_ts --> module_src_cli_commands_ts
   module_src_cli_index_ts --> module_src_cli_runProviderCommand_ts
+  module_src_cli_runChangesetAsync_ts["src/cli/runChangesetAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_runChangesetAsync_ts
+  module_src_cli_runChangesetAsync_ts --> module_src_cli_commands_ts
+  module_src_cli_runChangesetAsync_ts --> module_src_cli_runExternalTool_ts
   module_src_cli_runExternalTool_ts["src/cli/runExternalTool.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runExternalTool_ts
   module_src_cli_runExternalTool_ts --> module_src_cli_commands_ts
