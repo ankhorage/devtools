@@ -219,6 +219,7 @@ describe('managed CI Changesets contract', () => {
     );
     expect(ci).toContain('No pull-request-owned Changeset files; no release requested.');
     expect(ci).toContain('Empty Changesets are not supported. Remove ');
+    expect(ci).toContain('git branch --force main "$base_sha"');
     expect(ci).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.status);
     expect(REPOSITORY_RULE_METADATA.changesets.packageScripts['changeset:status']).toContain(
       '--since=origin/main',

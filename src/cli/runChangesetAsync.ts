@@ -8,20 +8,38 @@ import { runExternalTool } from './runExternalTool.js';
 
 const execFileAsync = promisify(execFile);
 
+interface RunChangesetDependencies {
+  readonly readCurrentPackageManifestAsync: () => Promise<string>;
+  readonly readGitFileAsync: (baseReference: string) => Promise<string>;
+  readonly runExternalToolAsync: (argv: readonly string[]) => Promise<DevtoolsRunResult>;
+}
+
+const defaultRunChangesetDependencies: RunChangesetDependencies = {
+  readCurrentPackageManifestAsync: async () => await readFile('package.json', 'utf8'),
+  readGitFileAsync,
+  runExternalToolAsync: async (argv) =>
+    await runExternalTool(getDevtoolsToolCommand('changeset'), argv),
+};
+
 /*** Run Changesets with rename-aware status validation for a renamed root package. */
-export async function runChangesetAsync(argv: readonly string[]): Promise<DevtoolsRunResult> {
-  return await runExternalTool(
-    getDevtoolsToolCommand('changeset'),
-    await resolveChangesetArgumentsAsync(argv),
+export async function runChangesetAsync(
+  argv: readonly string[],
+  dependencies: RunChangesetDependencies = defaultRunChangesetDependencies,
+): Promise<DevtoolsRunResult> {
+  return await dependencies.runExternalToolAsync(
+    await resolveChangesetArgumentsAsync(argv, dependencies),
   );
 }
 
 /*** Omit the base comparison only when it compares a renamed root package identity. */
-async function resolveChangesetArgumentsAsync(argv: readonly string[]): Promise<readonly string[]> {
+async function resolveChangesetArgumentsAsync(
+  argv: readonly string[],
+  dependencies: RunChangesetDependencies,
+): Promise<readonly string[]> {
   const baseReference = getStatusBaseReference(argv);
   if (baseReference === undefined) return argv;
 
-  const packageNames = await readPackageNamesAsync(baseReference);
+  const packageNames = await readPackageNamesAsync(baseReference, dependencies);
   if (packageNames === undefined || packageNames.current === packageNames.base) return argv;
 
   return removeStatusBaseReference(argv);
@@ -30,10 +48,11 @@ async function resolveChangesetArgumentsAsync(argv: readonly string[]): Promise<
 /*** Read the package identities being compared by a Changesets status command. */
 async function readPackageNamesAsync(
   baseReference: string,
+  dependencies: RunChangesetDependencies,
 ): Promise<{ readonly base: string; readonly current: string } | undefined> {
   try {
-    const current = readPackageName(await readFile('package.json', 'utf8'));
-    const base = await readGitFileAsync(baseReference);
+    const current = readPackageName(await dependencies.readCurrentPackageManifestAsync());
+    const base = readPackageName(await dependencies.readGitFileAsync(baseReference));
     return { base, current };
   } catch {
     return undefined;
