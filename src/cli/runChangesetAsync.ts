@@ -1,5 +1,7 @@
 import { execFile } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { promisify } from 'node:util';
 
 import { getDevtoolsToolCommand } from './commands.js';
@@ -26,23 +28,63 @@ export async function runChangesetAsync(
   argv: readonly string[],
   dependencies: RunChangesetDependencies = defaultRunChangesetDependencies,
 ): Promise<DevtoolsRunResult> {
-  return await dependencies.runExternalToolAsync(
-    await resolveChangesetArgumentsAsync(argv, dependencies),
+  const invocation = await resolveChangesetInvocationAsync(argv, dependencies);
+  if (invocation.renamedPackageName === undefined) {
+    return await dependencies.runExternalToolAsync(invocation.argv);
+  }
+
+  return await runRenamedPackageStatusAsync(
+    { argv: invocation.argv, renamedPackageName: invocation.renamedPackageName },
+    dependencies,
   );
 }
 
 /*** Omit the base comparison only when it compares a renamed root package identity. */
-async function resolveChangesetArgumentsAsync(
+async function resolveChangesetInvocationAsync(
   argv: readonly string[],
   dependencies: RunChangesetDependencies,
-): Promise<readonly string[]> {
+): Promise<{ readonly argv: readonly string[]; readonly renamedPackageName?: string }> {
   const baseReference = getStatusBaseReference(argv);
-  if (baseReference === undefined) return argv;
+  if (baseReference === undefined) return { argv };
 
   const packageNames = await readPackageNamesAsync(baseReference, dependencies);
-  if (packageNames === undefined || packageNames.current === packageNames.base) return argv;
+  if (packageNames === undefined || packageNames.current === packageNames.base) return { argv };
 
-  return removeStatusBaseReference(argv);
+  return {
+    argv: removeStatusBaseReference(argv),
+    renamedPackageName: packageNames.current,
+  };
+}
+
+/*** Run renamed-package status with a release-plan check for the current identity. */
+async function runRenamedPackageStatusAsync(
+  invocation: { readonly argv: readonly string[]; readonly renamedPackageName: string },
+  dependencies: RunChangesetDependencies,
+): Promise<DevtoolsRunResult> {
+  const directory = await mkdtemp(join(tmpdir(), 'ankhorage-changeset-status-'));
+  const outputPath = join(directory, 'status.json');
+
+  try {
+    const result = await dependencies.runExternalToolAsync([
+      ...withoutStatusOutput(invocation.argv),
+      '--output',
+      outputPath,
+    ]);
+    if (result.exitCode !== 0) return result;
+
+    const releasePlan = JSON.parse(await readFile(outputPath, 'utf8')) as unknown;
+    if (hasReleaseForPackage(releasePlan, invocation.renamedPackageName)) return result;
+
+    console.error(
+      `Changesets did not declare release intent for renamed package ${invocation.renamedPackageName}.`,
+    );
+    return { exitCode: 1 };
+  } catch (error) {
+    console.error(`Failed to validate renamed package Changeset: ${getErrorMessage(error)}`);
+    return { exitCode: 1 };
+  } finally {
+    await rm(directory, { force: true, recursive: true });
+  }
 }
 
 /*** Read the package identities being compared by a Changesets status command. */
@@ -91,6 +133,28 @@ function removeStatusBaseReference(argv: readonly string[]): readonly string[] {
     (argument, index) =>
       !argument.startsWith('--since=') && argument !== '--since' && argv[index - 1] !== '--since',
   );
+}
+
+/*** Remove user output arguments before reserving the status-plan output path. */
+function withoutStatusOutput(argv: readonly string[]): readonly string[] {
+  return argv.filter(
+    (argument, index) =>
+      !argument.startsWith('--output=') &&
+      argument !== '--output' &&
+      argv[index - 1] !== '--output',
+  );
+}
+
+/*** Confirm that Changesets planned a release for the current renamed root package. */
+function hasReleaseForPackage(value: unknown, packageName: string): boolean {
+  if (!isRecord(value) || !Array.isArray(value.releases)) return false;
+
+  return value.releases.some((release) => isRecord(release) && release.name === packageName);
+}
+
+/*** Render an unknown error as a deterministic diagnostic. */
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 /*** Narrow an unknown JSON value to a plain record. */
