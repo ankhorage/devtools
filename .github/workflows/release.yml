@@ -117,13 +117,15 @@ jobs:
               stable.sort((left, right) => compare(parse(left), parse(right)));
               process.stdout.write(stable.at(-1) ?? "");
             ' "$registry_evidence")"
-          elif node -e '
+          elif PACKAGE_NAME="$package_name" node -e '
             const { readFileSync } = require("node:fs");
             const error = readFileSync(process.argv[1], "utf8");
+            const packageName = process.env.PACKAGE_NAME;
+            const notFoundRequest = /^npm error 404 Not Found - GET (https:\/\/registry\.npmjs\.org\/[^\s?#]+) - Not found$/mu.exec(error);
+            const requestedPackage = notFoundRequest === null ? undefined : decodeURIComponent(new URL(notFoundRequest[1]).pathname.slice(1));
             const packageNotFound =
               /^npm error code E404$/mu.test(error) &&
-              /^npm error 404 Not Found - GET https:\/\/registry\.npmjs\.org\/.+ - Not found$/mu.test(error) &&
-              /^npm error 404 .+ is not in this registry\.$/mu.test(error);
+              requestedPackage === packageName;
             process.exit(packageNotFound ? 0 : 1);
           ' "$registry_error"; then
             highest_published_version=""
