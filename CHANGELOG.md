@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.24
+
+### Patch Changes
+
+- 028d74f: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/doctor`.
+
 ## 2.3.23
 
 ### Patch Changes
