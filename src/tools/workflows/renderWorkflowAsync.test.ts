@@ -51,7 +51,7 @@ test('skips patch-only Renovate PR validation but retains all main and regular P
   expect(ci).toContain("startsWith(github.head_ref, 'renovate/patch-')");
   expect(ci).toContain("contains(github.event.pull_request.labels.*.name, 'renovate:patch')");
   expect(ci).toContain('  validate:');
-  expect(ci).toContain('cancel-in-progress: ${{ github.event_name == \'pull_request\' }}');
+  expect(ci).toContain("cancel-in-progress: ${{ github.event_name == 'pull_request' }}");
   expect(ci).toContain('github.event.pull_request.number || github.ref');
   expect(ci).toContain('    branches:\n      - main');
 });
