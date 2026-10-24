@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.26
+
+### Patch Changes
+
+- 186781d: Align React DOM with the installed React version during managed standalone packed-consumer release verification to prevent mismatched React runtime dependencies.
+
 ## 2.3.25
 
 ### Patch Changes
