@@ -38,3 +38,9 @@ test('coding rules prohibit embedded code and fake config surfaces', async () =>
   expect(contents).toContain('canonical schema');
   expect(contents).toContain('`src/types/config.ts`');
 });
+
+test('coding rules prevent agents from contaminating Renovate-owned branches', async () => {
+  const contents = await readFile(canonicalSkillUrl, 'utf8');
+  expect(contents).toContain('Never commit, push, rebase, reset, or otherwise mutate a `renovate/*` branch');
+  expect(contents).toContain('separate task branch and PR');
+});
