@@ -21,6 +21,9 @@ exceptions or replaced by generic preferences from this skill.
 - For a new task, fetch the latest `origin/main` and create a fresh task branch from it. Never
   implement directly on `main`.
 - Continue existing pull-request work on its existing branch. Do not create a nested task branch.
+- Never commit, push, rebase, reset, or otherwise mutate a `renovate/*` branch. These branches are
+  exclusively owned by the Renovate Sync GitHub App. If a Renovate update needs a fix, use a
+  separate task branch and PR; never reuse its head branch.
 - Preserve unrelated or dirty user work. Use an isolated worktree when changing branches would
   disturb it.
 - Keep the diff within the requested issue. Do not mix opportunistic cleanup into the change.
