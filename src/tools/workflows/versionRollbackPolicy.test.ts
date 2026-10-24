@@ -27,7 +27,7 @@ test('managed CI executes stable SemVer rollback checks against rendered Node po
   await expectVersionPolicy(policy, '2.3.14', '2.3.14-beta.1', 1);
 });
 
-test('managed release baseline executes only proven first-publish E404 cases without a version', async () => {
+test('managed release baseline permits only the exact first-publish package-not-found response', async () => {
   const release = await renderWorkflowAsync(1);
   const baseline = extractWorkflowStep(release, 'Verify npm release baseline');
 
@@ -41,7 +41,7 @@ test('managed release baseline executes only proven first-publish E404 cases wit
 
   expect((await runReleaseBaseline(baseline, 'published', '10.11.99')).exitCode).toBe(1);
 
-  for (const scenario of ['network', 'auth', 'invalid'] as const) {
+  for (const scenario of ['auth', 'mismatched-404', 'network', 'invalid'] as const) {
     const result = await runReleaseBaseline(baseline, scenario, '1.0.0');
     expect(result.exitCode).toBe(1);
   }
@@ -130,7 +130,7 @@ function extractWorkflowStep(workflow: string, name: string): string {
 /*** Execute the rendered release-baseline shell step against a deterministic npm fixture. */
 async function runReleaseBaseline(
   baseline: string,
-  scenario: 'auth' | 'first-publish' | 'invalid' | 'network' | 'published',
+  scenario: 'auth' | 'first-publish' | 'invalid' | 'mismatched-404' | 'network' | 'published',
   version: string,
 ): Promise<{ readonly exitCode: number; readonly output: string }> {
   const directory = await mkdtemp('/tmp/devtools-release-baseline-');
@@ -145,7 +145,7 @@ async function runReleaseBaseline(
   await Bun.write(join(directory, 'baseline.sh'), `set -euo pipefail\n${baseline}\n`);
   await Bun.write(
     join(binDirectory, 'npm'),
-    `#!/usr/bin/env bash\ncase "${'$'}NPM_SCENARIO" in\n  first-publish) printf '%s\\n' 'npm error code E404' 'npm error 404 Not Found - GET https://registry.npmjs.org/%40scope%2Ffixture - Not found' "npm error 404  '@scope/fixture@*' is not in this registry." >&2; exit 1 ;;\n  published) printf '%s' '["2.3.14","10.12.0","2.9.99"]' ;;\n  network) printf '%s\\n' 'npm error code ECONNRESET' 'npm error network reset' >&2; exit 1 ;;\n  auth) printf '%s\\n' 'npm error code E401' 'npm error Unable to authenticate' >&2; exit 1 ;;\n  invalid) printf '%s' '{"error":{"code":"E404"}}' ;;\nesac\n`,
+    `#!/usr/bin/env bash\ncase "${'$'}NPM_SCENARIO" in\n  first-publish) printf '%s\\n' 'npm error code E404' 'npm error 404 Not Found - GET https://registry.npmjs.org/%40scope%2Ffixture - Not found' "npm error 404  The requested resource '@scope/fixture@*' could not be found or you do not have permission to access it." >&2; exit 1 ;;\n  published) printf '%s' '["2.3.14","10.12.0","2.9.99"]' ;;\n  mismatched-404) printf '%s\\n' 'npm error code E404' 'npm error 404 Not Found - GET https://registry.npmjs.org/%40scope%2Fother - Not found' "npm error 404  The requested resource '@scope/other@*' could not be found or you do not have permission to access it." >&2; exit 1 ;;\n  network) printf '%s\\n' 'npm error code ECONNRESET' 'npm error network reset' >&2; exit 1 ;;\n  auth) printf '%s\\n' 'npm error code E401' 'npm error Unable to authenticate' >&2; exit 1 ;;\n  invalid) printf '%s' '{"error":{"code":"E404"}}' ;;\nesac\n`,
   );
   await chmod(join(binDirectory, 'npm'), 0o755);
   const subprocess = Bun.spawn(['bash', join(directory, 'baseline.sh')], {
