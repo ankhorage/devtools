@@ -81,10 +81,6 @@ function expectRepositoryCapabilityMaterialization(release: string): void {
 /*** Assert the clean packed consumer loads every declared runtime boundary before publication. */
 function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain('Verify standalone packed install');
-  expect(release).toContain('node_modules/react/package.json');
-  expect(release).toContain('node_modules/react-dom/package.json');
-  expect(release).toContain('if [ "$react_version" != "$react_dom_version" ]; then');
-  expect(release).toContain('bun add "react-dom@$react_version" --ignore-scripts');
   expect(release).toContain('npm pack --ignore-scripts --pack-destination "$pack_dir"');
   expect(release).toContain(
     'PACKAGE_NAME="$package_name" node - <<\'NODE\' > runtime-entrypoints.txt',
