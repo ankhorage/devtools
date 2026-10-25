@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.30
+
+### Patch Changes
+
+- 292b0a5: Configure the npm registry for managed OIDC publishing without restoring static authentication.
+
 ## 2.3.29
 
 ### Patch Changes
