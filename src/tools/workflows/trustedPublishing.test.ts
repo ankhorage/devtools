@@ -12,10 +12,10 @@ test('managed release publishes through OIDC without generated registry authenti
 
   const release = await releaseDefinition.render('.');
   expect(release.match(/actions\/setup-node@v7/gu)).toHaveLength(2);
+  expect(release.match(/registry-url: https:\/\/registry\.npmjs\.org/gu)).toHaveLength(2);
   expect(release).toContain('package-manager-cache: false');
   expect(release).toContain('npm install -g npm@11.5.1');
   expect(release).not.toContain('actions/setup-node@v4');
-  expect(release).not.toContain('registry-url: https://registry.npmjs.org');
   expect(release).not.toContain('NODE_AUTH_TOKEN');
   expect(release).toContain('id-token: write');
 });
