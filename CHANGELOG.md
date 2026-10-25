@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.29
+
+### Patch Changes
+
+- fa91b9a: Fix managed npm publishing workflows to use GitHub OIDC without generated registry authentication.
+
 ## 2.3.28
 
 ### Patch Changes
