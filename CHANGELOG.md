@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.31
+
+### Patch Changes
+
+- ed12b9c: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
 ## 2.3.30
 
 ### Patch Changes
