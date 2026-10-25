@@ -20,6 +20,8 @@ test('managed CI executes stable SemVer rollback checks against rendered Node po
   const policy = extractNodePolicy(ci, 'BASE_VERSION="$base_version"');
 
   expect(ci).toContain('Reject package version rollback');
+  expect(ci).toContain('git cat-file -e "${base_sha}:package.json"');
+  expect(ci).toContain('accepting initial package manifest');
   await expectVersionPolicy(policy, '2.3.14', '2.3.14', 0);
   await expectVersionPolicy(policy, '2.3.14', '2.3.15', 0);
   await expectVersionPolicy(policy, '2.3.14', '2.3.13', 1);
