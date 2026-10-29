@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.3.35",
+      "value": "v2.3.36",
       "color": "cb3837"
     },
     {
@@ -596,11 +596,11 @@
       ]
     },
     {
-      "path": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+      "path": "src/policy/resolveAtlasAuditPolicyAsync.ts",
       "isEntrypoint": false,
       "dependencies": [],
       "exports": [
-        "resolvePkgvizAuditPolicyAsync"
+        "resolveAtlasAuditPolicyAsync"
       ]
     },
     {
@@ -872,7 +872,7 @@
         "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "src/features/managed-files/managedFiles.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
-        "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "src/policy/resolveAtlasAuditPolicyAsync.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/renderRenovateConfigAsync.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
@@ -3533,23 +3533,23 @@
       }
     },
     {
-      "name": "resolvePkgvizAuditPolicyAsync",
-      "description": "Resolve the central PKGViz CI audit for repositories with analyzable source.",
+      "name": "resolveAtlasAuditPolicyAsync",
+      "description": "Resolve the central Atlas CI audit for repositories with analyzable source.",
       "see": [],
       "security": [],
       "sourceLocation": {
-        "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "filePath": "src/policy/resolveAtlasAuditPolicyAsync.ts",
         "line": 7,
         "column": 1
       }
     },
     {
       "name": "hasSourceDirectoryAsync",
-      "description": "Detect whether the managed repository has a source tree that PKGViz can inspect.",
+      "description": "Detect whether the managed repository has a source tree that Atlas can inspect.",
       "see": [],
       "security": [],
       "sourceLocation": {
-        "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "filePath": "src/policy/resolveAtlasAuditPolicyAsync.ts",
         "line": 23,
         "column": 1
       }
@@ -3560,7 +3560,7 @@
       "see": [],
       "security": [],
       "sourceLocation": {
-        "filePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "filePath": "src/policy/resolveAtlasAuditPolicyAsync.ts",
         "line": 33,
         "column": 1
       }
@@ -4985,8 +4985,8 @@
       }
     },
     {
-      "name": "renderPkgvizAuditSteps",
-      "description": "Render the centrally managed PKGViz audit steps only for applicable repositories.",
+      "name": "renderAtlasAuditSteps",
+      "description": "Render the centrally managed Atlas audit steps only for applicable repositories.",
       "see": [],
       "security": [],
       "sourceLocation": {
@@ -5435,7 +5435,7 @@
       },
       {
         "fromPath": "src/tools/workflows/index.ts",
-        "toPath": "src/policy/resolvePkgvizAuditPolicyAsync.ts",
+        "toPath": "src/policy/resolveAtlasAuditPolicyAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -6417,28 +6417,28 @@
         "sourcePath": "src/policy/renderBunPolicyDocumentation.ts"
       },
       {
-        "fromSymbol": "resolvePkgvizAuditPolicyAsync",
+        "fromSymbol": "resolveAtlasAuditPolicyAsync",
         "toSymbol": "hasSourceDirectoryAsync",
         "callExpression": "hasSourceDirectoryAsync",
-        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+        "sourcePath": "src/policy/resolveAtlasAuditPolicyAsync.ts"
       },
       {
         "fromSymbol": "hasSourceDirectoryAsync",
         "toSymbol": "stat",
         "callExpression": "stat",
-        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+        "sourcePath": "src/policy/resolveAtlasAuditPolicyAsync.ts"
       },
       {
         "fromSymbol": "hasSourceDirectoryAsync",
         "toSymbol": "join",
         "callExpression": "join",
-        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+        "sourcePath": "src/policy/resolveAtlasAuditPolicyAsync.ts"
       },
       {
         "fromSymbol": "hasSourceDirectoryAsync",
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
-        "sourcePath": "src/policy/resolvePkgvizAuditPolicyAsync.ts"
+        "sourcePath": "src/policy/resolveAtlasAuditPolicyAsync.ts"
       },
       {
         "fromSymbol": "src/cli/bin/apm-release.ts",
@@ -8068,8 +8068,8 @@
       },
       {
         "fromSymbol": "render",
-        "toSymbol": "resolvePkgvizAuditPolicyAsync",
-        "callExpression": "resolvePkgvizAuditPolicyAsync",
+        "toSymbol": "resolveAtlasAuditPolicyAsync",
+        "callExpression": "resolveAtlasAuditPolicyAsync",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -8146,8 +8146,8 @@
       },
       {
         "fromSymbol": "renderWorkflowAsync",
-        "toSymbol": "renderPkgvizAuditSteps",
-        "callExpression": "renderPkgvizAuditSteps",
+        "toSymbol": "renderAtlasAuditSteps",
+        "callExpression": "renderAtlasAuditSteps",
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
       },
       {

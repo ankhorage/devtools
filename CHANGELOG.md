@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.36
+
+### Patch Changes
+
+- cbade7c: Replace the managed PKGViz cycle audit workflow contract with the published Atlas audit.
+
 ## 2.3.35
 
 ### Patch Changes
