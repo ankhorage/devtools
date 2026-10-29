@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.34
+
+### Patch Changes
+
+- 58b13ad: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@types/node`.
+
 ## 2.3.33
 
 ### Patch Changes
