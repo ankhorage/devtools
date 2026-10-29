@@ -3,23 +3,23 @@ import { join } from 'node:path';
 
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
-/*** Resolve the central PKGViz CI audit for repositories with analyzable source. */
-export async function resolvePkgvizAuditPolicyAsync(
+/*** Resolve the central Atlas CI audit for repositories with analyzable source. */
+export async function resolveAtlasAuditPolicyAsync(
   targetDirectory: string,
-): Promise<PkgvizAuditPolicy | undefined> {
+): Promise<AtlasAuditPolicy | undefined> {
   if (!(await hasSourceDirectoryAsync(targetDirectory))) return undefined;
 
-  const { artifactName, artifactPath, command } = REPOSITORY_RULE_METADATA.pkgvizAudit;
+  const { artifactName, artifactPath, command } = REPOSITORY_RULE_METADATA.atlasAudit;
   return { artifactName, artifactPath, command };
 }
 
-interface PkgvizAuditPolicy {
+interface AtlasAuditPolicy {
   readonly artifactName: string;
   readonly artifactPath: string;
   readonly command: string;
 }
 
-/*** Detect whether the managed repository has a source tree that PKGViz can inspect. */
+/*** Detect whether the managed repository has a source tree that Atlas can inspect. */
 async function hasSourceDirectoryAsync(targetDirectory: string): Promise<boolean> {
   try {
     return (await stat(join(targetDirectory, 'src'))).isDirectory();

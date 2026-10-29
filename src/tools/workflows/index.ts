@@ -6,7 +6,7 @@ import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { resolveApmReleaseCommandAsync } from '../../features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.js';
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
-import { resolvePkgvizAuditPolicyAsync } from '../../policy/resolvePkgvizAuditPolicyAsync.js';
+import { resolveAtlasAuditPolicyAsync } from '../../policy/resolveAtlasAuditPolicyAsync.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
 import { renderRenovateConfigAsync } from './renderRenovateConfigAsync.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
@@ -45,7 +45,7 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
         bunVersion: REPOSITORY_RULE_METADATA.runtime.bun.version,
         doctorVersion: readCurrentDoctorVersion(),
         nodeVersion: REPOSITORY_RULE_METADATA.runtime.node.setupVersion,
-        pkgvizAudit: await resolvePkgvizAuditPolicyAsync(targetDirectory),
+        atlasAudit: await resolveAtlasAuditPolicyAsync(targetDirectory),
       }),
   };
 }
