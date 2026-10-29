@@ -516,7 +516,7 @@
     "typescript-eslint": "^8.72.1"
   },
   "devDependencies": {
-    "@ankhorage/paradox": "^0.3.5",
+    "@ankhorage/paradox": "^0.3.6",
     "@ankhorage/ankh": "^0.13.3",
     "@ankhorage/doctor": "0.14.26",
     "@techstark/opencv-js": "^5.0.0-release.1",
