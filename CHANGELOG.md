@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.35
+
+### Patch Changes
+
+- 7b83576: Update Devtools-owned dependencies: `knip`.
+
 ## 2.3.34
 
 ### Patch Changes
