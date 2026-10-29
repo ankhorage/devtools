@@ -179,19 +179,21 @@ test('managed release synchronizes main before build and recovers a matching his
   expect(release).toContain('echo "versioned=false" >> "$GITHUB_OUTPUT"');
 });
 
-describe('managed PKGViz audit', () => {
+describe('managed Atlas audit', () => {
   test('renders the pinned blocking audit and diagnostic artifact for source repositories', async () => {
     const target = await createWorkflowTarget();
     await mkdir(join(target, 'src'));
 
     const ci = await workflowManagedFiles[0].render?.(target);
 
-    expect(ci).toContain(REPOSITORY_RULE_METADATA.pkgvizAudit.command);
+    expect(ci).toContain(REPOSITORY_RULE_METADATA.atlasAudit.command);
     expect(ci).toContain(
-      `if: always() && hashFiles('${REPOSITORY_RULE_METADATA.pkgvizAudit.artifactPath}') != ''`,
+      `if: always() && hashFiles('${REPOSITORY_RULE_METADATA.atlasAudit.artifactPath}') != ''`,
     );
-    expect(ci).toContain(`name: ${REPOSITORY_RULE_METADATA.pkgvizAudit.artifactName}`);
-    expect(ci).toContain(`path: ${REPOSITORY_RULE_METADATA.pkgvizAudit.artifactPath}`);
+    expect(ci).toContain(`name: ${REPOSITORY_RULE_METADATA.atlasAudit.artifactName}`);
+    expect(ci).toContain(`path: ${REPOSITORY_RULE_METADATA.atlasAudit.artifactPath}`);
+    expect(ci).not.toContain('PKGViz');
+    expect(ci).not.toContain('__ANKH_PKGVIZ_AUDIT_STEPS__');
   });
 
   test('omits the audit from repositories without analyzable source', async () => {
@@ -199,8 +201,8 @@ describe('managed PKGViz audit', () => {
 
     const ci = await workflowManagedFiles[0].render?.(target);
 
-    expect(ci).not.toContain('Enforce PKGViz cyclic-dependencies rule');
-    expect(ci).not.toContain('pkgviz-audit.json');
+    expect(ci).not.toContain('Enforce Atlas cyclic-dependencies rule');
+    expect(ci).not.toContain('atlas-audit.json');
     expect(ci?.endsWith('\n')).toBe(true);
     expect(ci?.endsWith('\n\n')).toBe(false);
   });

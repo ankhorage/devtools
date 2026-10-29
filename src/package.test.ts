@@ -76,9 +76,8 @@ function testManagedPackageMetadata(): void {
   expect(scripts).toMatchObject({ 'knip:check': 'knip' });
   expect(scripts).not.toHaveProperty('knip');
 
-  const repositoryRulesRange = dependencies['@ankhorage/rules-repository'];
-  expect(repositoryRulesRange).toBeString();
-  expect(repositoryRulesRange).toMatch(CARET_SEMVER_RANGE);
+  const repositoryRulesVersion = dependencies['@ankhorage/rules-repository'];
+  expect(repositoryRulesVersion).toBe('0.2.3');
   expect(existsSync(new URL('../bun.lock', import.meta.url))).toBe(true);
   expect(existsSync(new URL('../package-lock.json', import.meta.url))).toBe(false);
 }

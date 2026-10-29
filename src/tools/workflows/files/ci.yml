@@ -146,4 +146,4 @@ jobs:
             echo "No changeset:status script found; skipping validation."
           fi
 
-      # __ANKH_PKGVIZ_AUDIT_STEPS__
+      # __ANKH_ATLAS_AUDIT_STEPS__

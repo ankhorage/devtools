@@ -30,7 +30,7 @@ src/
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
 - `vscode`: canonical `.vscode/settings.json` and `extensions.json`
 
-The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/PKGViz repository-rule values are owned by `@ankhorage/rules-repository` and rendered by Devtools.
+The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/Atlas repository-rule values are owned by `@ankhorage/rules-repository` and rendered by Devtools.
 
 ## Bootstrap
 

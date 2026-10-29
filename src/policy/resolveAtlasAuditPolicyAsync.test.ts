@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 import { afterEach, describe, expect, test } from 'bun:test';
 
-import { resolvePkgvizAuditPolicyAsync } from './resolvePkgvizAuditPolicyAsync.js';
+import { resolveAtlasAuditPolicyAsync } from './resolveAtlasAuditPolicyAsync.js';
 
 const temporaryDirectories: string[] = [];
 
@@ -14,24 +14,24 @@ afterEach(async () => {
   );
 });
 
-describe('PKGViz audit policy', () => {
+describe('Atlas audit policy', () => {
   test('pins the blocking cycle audit for repositories with source', async () => {
     const target = await createTarget();
     await mkdir(join(target, 'src'));
 
-    const policy = await resolvePkgvizAuditPolicyAsync(target);
+    const policy = await resolveAtlasAuditPolicyAsync(target);
 
     expect(policy).toEqual({
-      artifactName: REPOSITORY_RULE_METADATA.pkgvizAudit.artifactName,
-      artifactPath: REPOSITORY_RULE_METADATA.pkgvizAudit.artifactPath,
-      command: REPOSITORY_RULE_METADATA.pkgvizAudit.command,
+      artifactName: REPOSITORY_RULE_METADATA.atlasAudit.artifactName,
+      artifactPath: REPOSITORY_RULE_METADATA.atlasAudit.artifactPath,
+      command: REPOSITORY_RULE_METADATA.atlasAudit.command,
     });
   });
 
-  test('does not enable PKGViz for repositories without a source tree', async () => {
+  test('does not enable Atlas for repositories without a source tree', async () => {
     const target = await createTarget();
 
-    const policy = await resolvePkgvizAuditPolicyAsync(target);
+    const policy = await resolveAtlasAuditPolicyAsync(target);
 
     expect(policy).toBeUndefined();
   });
@@ -39,7 +39,7 @@ describe('PKGViz audit policy', () => {
 
 /*** Create an isolated managed-repository fixture. */
 async function createTarget(): Promise<string> {
-  const target = await mkdtemp('/tmp/devtools-pkgviz-audit-');
+  const target = await mkdtemp('/tmp/devtools-atlas-audit-');
   temporaryDirectories.push(target);
   return target;
 }

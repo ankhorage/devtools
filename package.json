@@ -494,7 +494,7 @@
     "@ankhorage/capability": "^0.2.2",
     "@ankhorage/contracts": "^26.3.0",
     "@ankhorage/project-detector": "^0.3.5",
-    "@ankhorage/rules-repository": "^0.2.0",
+    "@ankhorage/rules-repository": "0.2.3",
     "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
     "@eslint/compat": "^2.1.1",
