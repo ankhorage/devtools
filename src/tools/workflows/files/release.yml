@@ -573,7 +573,7 @@ jobs:
                 const metadata = require(process.argv[1]);
                 const fields = [metadata.name, metadata.version, metadata["dist.tarball"], metadata["dist.integrity"]];
                 if (fields.some((field) => typeof field !== "string" || field.length === 0)) process.exit(1);
-                process.stdout.write(`${fields.join("\\n")}\\n`);
+                for (const field of fields) console.log(field);
               ' "$registry_evidence" >"$metadata_values"; then
                 echo "::error title=Invalid npm registry metadata::${package_spec} returned incomplete metadata."
                 cat "$registry_evidence"
