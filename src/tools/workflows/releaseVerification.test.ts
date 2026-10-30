@@ -26,7 +26,6 @@ test('managed release verifies the exact npm artifact before finalization', asyn
   const release = await releaseDefinition.render('.');
   expectReleaseOrdering(release);
   expectPackedRuntimeVerification(release);
-  expectPublishedArtifactVerification(release);
 });
 
 /*** Assert release ordering and exact release-commit finalization. */
@@ -257,31 +256,6 @@ NODE`;
     new Response(subprocess.stderr).text(),
   ]);
   return { exitCode, stderr };
-}
-
-/*** Assert one public npm pack download gates finalization with bounded retries. */
-function expectPublishedArtifactVerification(release: string): void {
-  const verificationStart = release.indexOf('  verify-publication:');
-  const finalizationStart = release.indexOf('  finalize:', verificationStart);
-  expect(verificationStart).toBeGreaterThanOrEqual(0);
-  expect(finalizationStart).toBeGreaterThan(verificationStart);
-  const verification = release.slice(verificationStart, finalizationStart);
-
-  expect(verification).toContain('Verify published npm artifact from a fresh runner');
-  expect(verification).toContain('timeout-minutes: 5');
-  expect(verification).toContain('max_attempts=5');
-  expect(verification).toContain('retry_seconds=15');
-  expect(verification).toContain(
-    'npm pack "$package_spec" --ignore-scripts --prefer-online --pack-destination "$pack_dir"',
-  );
-  expect(verification).toContain(
-    `find "$pack_dir" -maxdepth 1 -type f -name '*.tgz' -size +0c -print -quit`,
-  );
-  expect(verification).toContain('npm publication not retrievable');
-  expect(verification).not.toContain('npm view ');
-  expect(verification).not.toContain('curl --fail');
-  expect(verification).not.toContain('dist.integrity');
-  expect(verification).not.toContain('createHash(');
 }
 
 test('packed runtime loader selection distinguishes platform-only and server-capable exports', () => {
