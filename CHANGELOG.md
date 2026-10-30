@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.38
+
+### Patch Changes
+
+- 0fbb675: Restore frozen initial workflow installs and robust independent npm publication verification.
+
 ## 2.3.37
 
 ### Patch Changes
