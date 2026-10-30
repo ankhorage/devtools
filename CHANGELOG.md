@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.37
+
+### Patch Changes
+
+- 515ca4e: Update Devtools-owned dependencies: `eslint-plugin-security`.
+
 ## 2.3.36
 
 ### Patch Changes
