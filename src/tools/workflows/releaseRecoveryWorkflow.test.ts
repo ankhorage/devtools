@@ -23,11 +23,13 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   assertRecoveryWorkflow(release);
 
   const directory = await mkdtemp('/tmp/devtools-release-recovery-');
+  const outputDirectory = await mkdtemp('/tmp/devtools-release-output-');
   temporaryDirectories.push(directory);
-  const outputPath = join(directory, 'github-output');
+  temporaryDirectories.push(outputDirectory);
+  const outputPath = join(outputDirectory, 'github-output');
   const releaseCommit = 'chore(release): version packages [skip ci]';
 
-  await createReleaseFixture(directory, outputPath, releaseCommit);
+  await createReleaseFixture(directory, releaseCommit);
   const releaseSha = runGit(directory, ['rev-parse', 'HEAD']).trim();
   runGit(directory, ['tag', 'v1.0.0']);
   await writeFile(join(directory, 'workflow-update'), 'current main\n');
@@ -38,13 +40,20 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   runRecoveryScript(directory, outputPath, recoveryScript);
 
   expect(runGit(directory, ['rev-parse', 'HEAD']).trim()).toBe(releaseSha);
+  expect(runGit(directory, ['status', '--short'])).toBe('');
   expect(await readFile(outputPath, 'utf8')).toContain('versioned=true');
   expect(await readFile(outputPath, 'utf8')).toContain(`release_sha=${releaseSha}`);
 
   await writeFile(join(directory, 'bun.lock'), 'unexpected mutation\n');
-  expect(() => runRecoveryScript(directory, outputPath, recoveryScript)).toThrow();
+  expectRecoveryFailure(directory, outputPath, recoveryScript);
   expect(await readFile(join(directory, 'bun.lock'), 'utf8')).toBe('unexpected mutation\n');
   expect(runGit(directory, ['status', '--short'])).toContain(' M bun.lock');
+
+  await writeFile(join(directory, 'bun.lock'), 'staged mutation\n');
+  runGit(directory, ['add', 'bun.lock']);
+  expectRecoveryFailure(directory, outputPath, recoveryScript);
+  expect(await readFile(join(directory, 'bun.lock'), 'utf8')).toBe('staged mutation\n');
+  expect(runGit(directory, ['status', '--short'])).toContain('M  bun.lock');
 });
 
 function assertRecoveryWorkflow(release: string): void {
@@ -61,6 +70,7 @@ function assertRecoveryWorkflow(release: string): void {
   expect(release).toContain('Release tag mismatch');
   expect(release).toContain('resuming idempotent finalization');
   expect(release).toContain('git diff --quiet');
+  expect(release).toContain('git diff --cached --quiet');
   expect(release).toContain('git ls-files --others --exclude-standard');
   expect(release).toContain('Release recovery requires a clean worktree');
   expect(release).toContain(
@@ -74,17 +84,12 @@ function assertRecoveryWorkflow(release: string): void {
   expect(release).toContain('echo "release_sha=$release_sha" >> "$GITHUB_OUTPUT"');
 }
 
-async function createReleaseFixture(
-  directory: string,
-  outputPath: string,
-  releaseCommit: string,
-): Promise<void> {
+async function createReleaseFixture(directory: string, releaseCommit: string): Promise<void> {
   await mkdir(join(directory, '.changeset'), { recursive: true });
   await writeFile(join(directory, '.changeset', 'config.json'), '{}\n');
   await writeFile(join(directory, '.changeset', 'README.md'), '# Changesets\n');
   await writeFile(join(directory, 'package.json'), '{"name":"fixture","version":"1.0.0"}\n');
   await writeFile(join(directory, 'bun.lock'), 'baseline\n');
-  await writeFile(outputPath, '');
   runGit(directory, ['init', '--initial-branch=main']);
   runGit(directory, ['config', 'user.name', 'fixture']);
   runGit(directory, ['config', 'user.email', 'fixture@example.test']);
@@ -123,4 +128,20 @@ function runRecoveryScript(directory: string, outputPath: string, script: string
     encoding: 'utf8',
     env: { ...process.env, GITHUB_OUTPUT: outputPath },
   });
+}
+
+function expectRecoveryFailure(directory: string, outputPath: string, script: string): void {
+  try {
+    runRecoveryScript(directory, outputPath, script);
+  } catch (error) {
+    if (!(error instanceof Error)) throw error;
+
+    const commandError = error as Error & { stdout?: string; stderr?: string };
+    expect(`${commandError.stdout ?? ''}${commandError.stderr ?? ''}`).toContain(
+      'Release recovery requires a clean worktree',
+    );
+    return;
+  }
+
+  throw new Error('Expected recovery to reject a dirty worktree.');
 }
