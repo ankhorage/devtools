@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.40
+
+### Patch Changes
+
+- 51bb533: Fix managed release recovery after lockfile mutation and use the frozen-installed repository command.
+
 ## 2.3.39
 
 ### Patch Changes
