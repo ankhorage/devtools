@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.39
+
+### Patch Changes
+
+- 783d3e1: Update Devtools-owned dependencies: `eslint`.
+
 ## 2.3.38
 
 ### Patch Changes
