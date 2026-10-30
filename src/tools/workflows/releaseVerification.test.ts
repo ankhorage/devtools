@@ -64,7 +64,7 @@ function expectReleaseMonotonicity(release: string): void {
   );
 }
 
-/*** Assert release materialization uses Bun without assuming Devtools installs itself. */
+/*** Assert release materialization uses the frozen-install repository command. */
 function expectRepositoryCapabilityMaterialization(release: string): void {
   expect(release).toContain('Synchronize package capability metadata');
   expect(release)
@@ -72,8 +72,8 @@ function expectRepositoryCapabilityMaterialization(release: string): void {
               bun ./dist/cli/bin/repository.js package sync .
               bun ./dist/cli/bin/repository.js package status .
             else
-              bunx --bun --no-install ankhorage-repository package sync .
-              bunx --bun --no-install ankhorage-repository package status .
+              ./node_modules/.bin/ankhorage-repository package sync .
+              ./node_modules/.bin/ankhorage-repository package status .
             fi`);
 }
 
