@@ -72,8 +72,8 @@ function expectRepositoryCapabilityMaterialization(release: string): void {
               bun ./dist/cli/bin/repository.js package sync .
               bun ./dist/cli/bin/repository.js package status .
             else
-              bunx --bun --no-install ankhorage-repository package sync .
-              bunx --bun --no-install ankhorage-repository package status .
+              bun ./node_modules/.bin/ankhorage-repository package sync .
+              bun ./node_modules/.bin/ankhorage-repository package status .
             fi`);
 }
 
