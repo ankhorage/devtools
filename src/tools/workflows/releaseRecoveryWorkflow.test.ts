@@ -36,7 +36,10 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   runGit(directory, ['add', 'workflow-update']);
   runGit(directory, ['commit', '-m', 'chore: update managed workflow']);
 
+  const detectionScript = extractPublishedRecoveryDetectionScript(release);
   const recoveryScript = extractReleaseScript(release);
+  runPublishedRecoveryDetectionScript(directory, outputPath, detectionScript);
+  expect(await readFile(outputPath, 'utf8')).toContain('recovery=true');
   runRecoveryScript(directory, outputPath, recoveryScript);
 
   expect(runGit(directory, ['rev-parse', 'HEAD']).trim()).toBe(releaseSha);
@@ -63,38 +66,27 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   expect(runGit(directory, ['status', '--short'])).toContain('?? unexpected-untracked-file');
 });
 
-test('runs the installed repository binary with Bun without changing the frozen lockfile', async () => {
+test('rejects a mismatched published recovery tag before sync can be skipped', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
-  const directory = await mkdtemp('/tmp/devtools-release-repository-runtime-');
-  const outputDirectory = await mkdtemp('/tmp/devtools-release-repository-output-');
+  const directory = await mkdtemp('/tmp/devtools-release-recovery-tag-mismatch-');
+  const outputDirectory = await mkdtemp('/tmp/devtools-release-recovery-tag-output-');
   temporaryDirectories.push(directory, outputDirectory);
-  const lockPath = join(directory, 'bun.lock');
-  const invocationPath = join(outputDirectory, 'repository-invocations');
+  const outputPath = join(outputDirectory, 'github-output');
 
-  await mkdir(join(directory, 'node_modules/.bin'), { recursive: true });
-  await writeFile(join(directory, 'package.json'), '{"name":"fixture","ankh":{}}\n');
-  await writeFile(lockPath, 'frozen lockfile\n');
-  await writeFile(
-    join(directory, 'node_modules/.bin/ankhorage-repository'),
-    `#!/usr/bin/env node
-if (typeof Bun === 'undefined') throw new Error('Bun is not defined');
-require('node:fs').appendFileSync(process.env.REPOSITORY_INVOCATIONS, \`\${process.argv.slice(2).join(' ')}|\${Bun.version}\\n\`);
-`,
-  );
+  await createReleaseFixture(directory, 'chore(release): version packages [skip ci]');
+  await writeFile(join(directory, 'workflow-update'), 'current main\n');
+  runGit(directory, ['add', 'workflow-update']);
+  runGit(directory, ['commit', '-m', 'chore: update managed workflow']);
+  runGit(directory, ['tag', 'v1.0.0']);
 
-  runRepositoryMaterializationScript(
+  expectPublishedRecoveryDetectionFailure(
     directory,
-    invocationPath,
-    extractRepositoryMaterializationScript(release),
+    outputPath,
+    extractPublishedRecoveryDetectionScript(release),
   );
-
-  expect(await readFile(invocationPath, 'utf8')).toMatch(
-    /^package sync \.[|].+\npackage status \.[|].+\n$/u,
-  );
-  expect(await readFile(lockPath, 'utf8')).toBe('frozen lockfile\n');
-  expect(release).toContain('bun install --frozen-lockfile');
+  expect(await readFile(outputPath, 'utf8')).toContain('recovery=false');
 });
 
 function assertRecoveryWorkflow(release: string): void {
@@ -110,6 +102,11 @@ function assertRecoveryWorkflow(release: string): void {
   expect(release).not.toContain('bunx --bun --no-install ankhorage-repository');
   expect(release).toContain('Release tag mismatch');
   expect(release).toContain('resuming idempotent finalization');
+  expect(release).toContain('Detect published release recovery');
+  expect(release).toContain("if: steps.published-release-recovery.outputs.recovery != 'true'");
+  expect(release.indexOf('Detect published release recovery')).toBeLessThan(
+    release.indexOf('Synchronize package capability metadata'),
+  );
   expect(release).toContain('git diff --quiet');
   expect(release).toContain('git diff --cached --quiet');
   expect(release).toContain('git ls-files --others --exclude-standard');
@@ -159,15 +156,18 @@ function extractReleaseScript(release: string): string {
     .join('\n');
 }
 
-function extractRepositoryMaterializationScript(release: string): string {
-  const stepStart = release.indexOf('      - name: Synchronize package capability metadata');
+function extractPublishedRecoveryDetectionScript(release: string): string {
+  const stepStart = release.indexOf('      - name: Detect published release recovery');
   const scriptMarker = '        run: |\n';
   const scriptStartIndex = release.indexOf(scriptMarker, stepStart);
   const scriptStart = scriptStartIndex + scriptMarker.length;
-  const scriptEnd = release.indexOf('\n      - name: Verify npm release baseline', scriptStart);
+  const scriptEnd = release.indexOf(
+    '\n      - name: Synchronize package capability metadata',
+    scriptStart,
+  );
 
   if (stepStart === -1 || scriptStartIndex === -1 || scriptEnd === -1) {
-    throw new Error('Expected the rendered release workflow package materialization step.');
+    throw new Error('Expected the rendered published release recovery detector.');
   }
 
   return release
@@ -189,16 +189,41 @@ function runRecoveryScript(directory: string, outputPath: string, script: string
   });
 }
 
-function runRepositoryMaterializationScript(
+function runPublishedRecoveryDetectionScript(
   directory: string,
-  invocationPath: string,
+  outputPath: string,
   script: string,
+  highestPublishedVersion = '1.0.0',
 ): void {
   execFileSync('bash', ['-e', '-c', script], {
     cwd: directory,
     encoding: 'utf8',
-    env: { ...process.env, REPOSITORY_INVOCATIONS: invocationPath },
+    env: {
+      ...process.env,
+      GITHUB_OUTPUT: outputPath,
+      HIGHEST_PUBLISHED_VERSION: highestPublishedVersion,
+    },
   });
+}
+
+function expectPublishedRecoveryDetectionFailure(
+  directory: string,
+  outputPath: string,
+  script: string,
+): void {
+  try {
+    runPublishedRecoveryDetectionScript(directory, outputPath, script);
+  } catch (error) {
+    if (!(error instanceof Error)) throw error;
+
+    const commandError = error as Error & { stdout?: string; stderr?: string };
+    expect(`${commandError.stdout ?? ''}${commandError.stderr ?? ''}`).toContain(
+      'Release tag mismatch',
+    );
+    return;
+  }
+
+  throw new Error('Expected published recovery detection to reject a mismatched tag.');
 }
 
 function expectRecoveryFailure(directory: string, outputPath: string, script: string): void {
