@@ -64,9 +64,9 @@ function assertRecoveryWorkflow(release: string): void {
   expect(syncIndex).toBeLessThan(installIndex);
   expect(syncIndex).toBeLessThan(buildIndex);
   expect(release.match(/git checkout -B main origin\/main/gu)).toHaveLength(1);
-  expect(release).toContain('./node_modules/.bin/ankhorage-repository package sync .');
-  expect(release).toContain('./node_modules/.bin/ankhorage-repository package status .');
-  expect(release).not.toContain('bunx --bun --no-install ankhorage-repository');
+  expect(release).toContain('bunx --bun --no-install ankhorage-repository package sync .');
+  expect(release).toContain('bunx --bun --no-install ankhorage-repository package status .');
+  expect(release).not.toContain('./node_modules/.bin/ankhorage-repository');
   expect(release).toContain('Release tag mismatch');
   expect(release).toContain('resuming idempotent finalization');
   expect(release).toContain('git diff --quiet');
