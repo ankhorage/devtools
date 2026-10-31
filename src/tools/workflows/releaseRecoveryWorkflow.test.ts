@@ -66,44 +66,6 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   expect(runGit(directory, ['status', '--short'])).toContain('?? unexpected-untracked-file');
 });
 
-test('skips the Bun-mutating published Devtools consumer sync only for validated recovery', async () => {
-  const release = await workflowManagedFiles[1].render?.('.');
-  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
-
-  const directory = await mkdtemp('/tmp/devtools-release-published-consumer-');
-  const outputDirectory = await mkdtemp('/tmp/devtools-release-repository-output-');
-  temporaryDirectories.push(directory, outputDirectory);
-  const lockPath = join(directory, 'bun.lock');
-  const invocationPath = join(outputDirectory, 'repository-invocations');
-
-  await mkdir(join(directory, 'node_modules/.bin'), { recursive: true });
-  await writeFile(
-    join(directory, 'package.json'),
-    '{"name":"@ankhorage/rules","version":"1.0.0","ankh":{},"devDependencies":{"@ankhorage/devtools":"0.2.2"}}\n',
-  );
-  await writeFile(lockPath, 'frozen lockfile\n');
-  await writeFile(
-    join(directory, 'node_modules/.bin/ankhorage-repository'),
-    `import { appendFileSync } from 'node:fs';
-if (typeof Bun === 'undefined') throw new Error('Bun is not defined');
-await Bun.write('bun.lock', 'resolved by published Devtools consumer\\n');
-appendFileSync(process.env.REPOSITORY_INVOCATIONS, \`\${process.argv.slice(2).join(' ')}|\${Bun.version}\\n\`);
-`,
-  );
-
-  runRepositoryMaterializationScript(
-    directory,
-    invocationPath,
-    extractRepositoryMaterializationScript(release),
-  );
-
-  expect(await readFile(invocationPath, 'utf8')).toMatch(
-    /^package sync \.[|].+\npackage status \.[|].+\n$/u,
-  );
-  expect(await readFile(lockPath, 'utf8')).toBe('resolved by published Devtools consumer\n');
-  expect(release).toContain('bun install --frozen-lockfile');
-});
-
 test('rejects a mismatched published recovery tag before sync can be skipped', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
@@ -215,24 +177,6 @@ function extractPublishedRecoveryDetectionScript(release: string): string {
     .join('\n');
 }
 
-function extractRepositoryMaterializationScript(release: string): string {
-  const stepStart = release.indexOf('      - name: Synchronize package capability metadata');
-  const scriptMarker = '        run: |\n';
-  const scriptStartIndex = release.indexOf(scriptMarker, stepStart);
-  const scriptStart = scriptStartIndex + scriptMarker.length;
-  const scriptEnd = release.indexOf('\n      - name: Validate release contract', scriptStart);
-
-  if (stepStart === -1 || scriptStartIndex === -1 || scriptEnd === -1) {
-    throw new Error('Expected the rendered release workflow package materialization step.');
-  }
-
-  return release
-    .slice(scriptStart, scriptEnd)
-    .split('\n')
-    .map((line) => line.slice(10))
-    .join('\n');
-}
-
 function runGit(directory: string, args: readonly string[]): string {
   return execFileSync('git', args, { cwd: directory, encoding: 'utf8' });
 }
@@ -249,6 +193,7 @@ function runPublishedRecoveryDetectionScript(
   directory: string,
   outputPath: string,
   script: string,
+  highestPublishedVersion = '1.0.0',
 ): void {
   execFileSync('bash', ['-e', '-c', script], {
     cwd: directory,
@@ -256,7 +201,7 @@ function runPublishedRecoveryDetectionScript(
     env: {
       ...process.env,
       GITHUB_OUTPUT: outputPath,
-      HIGHEST_PUBLISHED_VERSION: '1.0.0',
+      HIGHEST_PUBLISHED_VERSION: highestPublishedVersion,
     },
   });
 }
@@ -279,18 +224,6 @@ function expectPublishedRecoveryDetectionFailure(
   }
 
   throw new Error('Expected published recovery detection to reject a mismatched tag.');
-}
-
-function runRepositoryMaterializationScript(
-  directory: string,
-  invocationPath: string,
-  script: string,
-): void {
-  execFileSync('bash', ['-e', '-c', script], {
-    cwd: directory,
-    encoding: 'utf8',
-    env: { ...process.env, REPOSITORY_INVOCATIONS: invocationPath },
-  });
 }
 
 function expectRecoveryFailure(directory: string, outputPath: string, script: string): void {

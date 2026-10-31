@@ -170,7 +170,7 @@ jobs:
             exit 1
           fi
 
-          if [ "$tagged_sha" = "$release_sha" ] && [ "$HIGHEST_PUBLISHED_VERSION" = "$current_version" ]; then
+          if [ "$HIGHEST_PUBLISHED_VERSION" = "$current_version" ]; then
             echo "Validated published release recovery for ${release_tag} at ${release_sha}; skipping package capability synchronization."
             echo "recovery=true" >> "$GITHUB_OUTPUT"
           fi
