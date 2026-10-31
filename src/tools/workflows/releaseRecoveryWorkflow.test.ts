@@ -54,6 +54,47 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   expectRecoveryFailure(directory, outputPath, recoveryScript);
   expect(await readFile(join(directory, 'bun.lock'), 'utf8')).toBe('staged mutation\n');
   expect(runGit(directory, ['status', '--short'])).toContain('M  bun.lock');
+
+  runGit(directory, ['restore', '--staged', 'bun.lock']);
+  runGit(directory, ['restore', 'bun.lock']);
+  await writeFile(join(directory, 'unexpected-untracked-file'), 'retain me\n');
+  expectRecoveryFailure(directory, outputPath, recoveryScript);
+  expect(await readFile(join(directory, 'unexpected-untracked-file'), 'utf8')).toBe('retain me\n');
+  expect(runGit(directory, ['status', '--short'])).toContain('?? unexpected-untracked-file');
+});
+
+test('runs the installed repository binary with Bun without changing the frozen lockfile', async () => {
+  const release = await workflowManagedFiles[1].render?.('.');
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+  const directory = await mkdtemp('/tmp/devtools-release-repository-runtime-');
+  const outputDirectory = await mkdtemp('/tmp/devtools-release-repository-output-');
+  temporaryDirectories.push(directory, outputDirectory);
+  const lockPath = join(directory, 'bun.lock');
+  const invocationPath = join(outputDirectory, 'repository-invocations');
+
+  await mkdir(join(directory, 'node_modules/.bin'), { recursive: true });
+  await writeFile(join(directory, 'package.json'), '{"name":"fixture","ankh":{}}\n');
+  await writeFile(lockPath, 'frozen lockfile\n');
+  await writeFile(
+    join(directory, 'node_modules/.bin/ankhorage-repository'),
+    `#!/usr/bin/env node
+if (typeof Bun === 'undefined') throw new Error('Bun is not defined');
+require('node:fs').appendFileSync(process.env.REPOSITORY_INVOCATIONS, \`\${process.argv.slice(2).join(' ')}|\${Bun.version}\\n\`);
+`,
+  );
+
+  runRepositoryMaterializationScript(
+    directory,
+    invocationPath,
+    extractRepositoryMaterializationScript(release),
+  );
+
+  expect(await readFile(invocationPath, 'utf8')).toMatch(
+    /^package sync \.[|].+\npackage status \.[|].+\n$/u,
+  );
+  expect(await readFile(lockPath, 'utf8')).toBe('frozen lockfile\n');
+  expect(release).toContain('bun install --frozen-lockfile');
 });
 
 function assertRecoveryWorkflow(release: string): void {
@@ -64,8 +105,8 @@ function assertRecoveryWorkflow(release: string): void {
   expect(syncIndex).toBeLessThan(installIndex);
   expect(syncIndex).toBeLessThan(buildIndex);
   expect(release.match(/git checkout -B main origin\/main/gu)).toHaveLength(1);
-  expect(release).toContain('./node_modules/.bin/ankhorage-repository package sync .');
-  expect(release).toContain('./node_modules/.bin/ankhorage-repository package status .');
+  expect(release).toContain('bun ./node_modules/.bin/ankhorage-repository package sync .');
+  expect(release).toContain('bun ./node_modules/.bin/ankhorage-repository package status .');
   expect(release).not.toContain('bunx --bun --no-install ankhorage-repository');
   expect(release).toContain('Release tag mismatch');
   expect(release).toContain('resuming idempotent finalization');
@@ -118,6 +159,24 @@ function extractReleaseScript(release: string): string {
     .join('\n');
 }
 
+function extractRepositoryMaterializationScript(release: string): string {
+  const stepStart = release.indexOf('      - name: Synchronize package capability metadata');
+  const scriptMarker = '        run: |\n';
+  const scriptStartIndex = release.indexOf(scriptMarker, stepStart);
+  const scriptStart = scriptStartIndex + scriptMarker.length;
+  const scriptEnd = release.indexOf('\n      - name: Verify npm release baseline', scriptStart);
+
+  if (stepStart === -1 || scriptStartIndex === -1 || scriptEnd === -1) {
+    throw new Error('Expected the rendered release workflow package materialization step.');
+  }
+
+  return release
+    .slice(scriptStart, scriptEnd)
+    .split('\n')
+    .map((line) => line.slice(10))
+    .join('\n');
+}
+
 function runGit(directory: string, args: readonly string[]): string {
   return execFileSync('git', args, { cwd: directory, encoding: 'utf8' });
 }
@@ -127,6 +186,18 @@ function runRecoveryScript(directory: string, outputPath: string, script: string
     cwd: directory,
     encoding: 'utf8',
     env: { ...process.env, GITHUB_OUTPUT: outputPath },
+  });
+}
+
+function runRepositoryMaterializationScript(
+  directory: string,
+  invocationPath: string,
+  script: string,
+): void {
+  execFileSync('bash', ['-e', '-c', script], {
+    cwd: directory,
+    encoding: 'utf8',
+    env: { ...process.env, REPOSITORY_INVOCATIONS: invocationPath },
   });
 }
 
