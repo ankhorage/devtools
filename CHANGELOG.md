@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.43
+
+### Patch Changes
+
+- 5e063c5: Run the installed repository capability synchronizer with Bun in managed release workflows.
+
 ## 2.3.42
 
 ### Patch Changes
