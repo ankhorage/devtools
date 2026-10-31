@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.42
+
+### Patch Changes
+
+- 8199a58: Run managed release capability synchronization with Bun without resolving dependencies or changing the lockfile.
+
 ## 2.3.41
 
 ### Patch Changes
