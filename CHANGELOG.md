@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.41
+
+### Patch Changes
+
+- e324311: Grant the managed finalization token workflow-write access so releases that change workflows can create their canonical tag.
+
 ## 2.3.40
 
 ### Patch Changes
