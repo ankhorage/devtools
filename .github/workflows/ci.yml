@@ -145,3 +145,13 @@ jobs:
           else
             echo "No changeset:status script found; skipping validation."
           fi
+
+      - name: Enforce Atlas cyclic-dependencies rule
+        run: cd src && bunx @ankhorage/atlas@0.14.1 --out atlas-audit.json --rule cyclic-dependencies=block
+
+      - name: Upload Atlas audit
+        if: always() && hashFiles('src/atlas-audit.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-audit
+          path: src/atlas-audit.json
