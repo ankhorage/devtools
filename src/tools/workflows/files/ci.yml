@@ -7,11 +7,20 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: read
 
 jobs:
   validate:
+    if: >-
+      github.event_name != 'pull_request' ||
+      !contains(fromJSON('["renovate[bot]","ankhorage-renovate-sync[bot]"]'), github.event.pull_request.user.login) ||
+      !startsWith(github.head_ref, 'renovate/patch-') ||
+      !contains(github.event.pull_request.labels.*.name, 'renovate:patch')
     runs-on: ubuntu-latest
 
     steps:
