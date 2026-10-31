@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.44
+
+### Patch Changes
+
+- ed5e76a: Skip mutating package synchronization when release recovery has verified the published version and canonical release commit, with either its exact tag or no finalized tag. A conflicting tag remains an error.
+
 ## 2.3.43
 
 ### Patch Changes
