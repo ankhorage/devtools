@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.46
+
+### Patch Changes
+
+- b1ff0fa: Update Devtools-owned dependencies: `@next/eslint-plugin-next`.
+
 ## 2.3.45
 
 ### Patch Changes
