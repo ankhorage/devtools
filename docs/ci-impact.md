@@ -20,7 +20,7 @@ The plan and reasons are published in the GitHub Actions run summary.
 ## E2E and Smoke
 
 By default, declared `test:e2e`, `test:smoke` and `test:standalone` scripts run in full
-on non-documentation PRs. To enable *suite-level* selection, opt into explicit and complete
+on non-documentation PRs. To enable _suite-level_ selection, opt into explicit and complete
 ownership of every E2E/Smoke suite in `package.json`:
 
 ```json
@@ -29,8 +29,16 @@ ownership of every E2E/Smoke suite in `package.json`:
     "ciImpact": {
       "complete": { "e2e": true, "smoke": true },
       "suites": [
-        { "kind": "e2e", "script": "test:e2e:auth", "paths": ["src/features/auth/**", "e2e/auth/**"] },
-        { "kind": "e2e", "script": "test:e2e:checkout", "paths": ["src/features/checkout/**", "e2e/checkout/**"] },
+        {
+          "kind": "e2e",
+          "script": "test:e2e:auth",
+          "paths": ["src/features/auth/**", "e2e/auth/**"]
+        },
+        {
+          "kind": "e2e",
+          "script": "test:e2e:checkout",
+          "paths": ["src/features/checkout/**", "e2e/checkout/**"]
+        },
         { "kind": "smoke", "script": "test:smoke:auth", "paths": ["src/features/auth/**"] }
       ]
     }
