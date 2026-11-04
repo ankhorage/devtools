@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0
+
+### Minor Changes
+
+- b5dba9f: Add centrally managed impact-aware CI for Bun unit tests and explicitly scoped E2E/Smoke suites, with conservative full-suite fallbacks.
+
 ## 2.3.47
 
 ### Patch Changes
