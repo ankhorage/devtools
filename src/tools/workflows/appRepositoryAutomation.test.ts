@@ -25,6 +25,7 @@ test('bootstraps app repository dependency automation without package release wo
   expect(results.map(({ relativePath }) => relativePath)).toEqual([
     '.github/workflows/ci.yml',
     '.github/workflows/renovate.yml',
+    '.github/scripts/ci-impact.ts',
     'renovate.json5',
   ]);
   expect(await Bun.file(join(target, '.github/workflows/release.yml')).exists()).toBe(false);
