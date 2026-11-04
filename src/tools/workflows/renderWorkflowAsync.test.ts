@@ -42,6 +42,25 @@ test('synchronizes CI and release as shared-Prettier-stable YAML', async () => {
   ]);
 });
 
+test('synchronizes the managed impact runner as an owned CI dependency', async () => {
+  const target = await createWorkflowTarget();
+  const runner = workflowManagedFiles.find(
+    (definition) => definition.relativePath === '.github/scripts/ci-impact.ts',
+  );
+  if (runner === undefined) throw new Error('Missing managed CI impact runner');
+
+  expect(await syncManagedFiles(target, [runner], { dryRun: false })).toEqual([
+    { relativePath: '.github/scripts/ci-impact.ts', action: 'created' },
+  ]);
+  expect(await readFile(join(target, runner.relativePath), 'utf8')).toContain(
+    'export function planCiImpact(',
+  );
+  expect(await inspectManagedFiles(target, [runner])).toEqual([
+    { relativePath: '.github/scripts/ci-impact.ts', state: 'current' },
+  ]);
+});
+
+
 /*** Create a consumer fixture that opts into managed release workflows. */
 async function createWorkflowTarget(): Promise<string> {
   const target = await mkdtemp('/tmp/devtools-workflow-render-');
