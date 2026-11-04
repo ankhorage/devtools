@@ -30,7 +30,9 @@ test('documentation-only changes skip unit, E2E and smoke suites', () => {
 test('isolated source changes select Bun graph and explicitly owned E2E and smoke suites', () => {
   const result = planCiImpact(['src/features/auth/login.ts'], scripts, config, base);
   expect(result.unit).toEqual({
-    mode: 'changed', scripts: ['test'], reason: 'Bun transitive import graph',
+    mode: 'changed',
+    scripts: ['test'],
+    reason: 'Bun transitive import graph',
   });
   expect(result.e2e.scripts).toEqual(['test:e2e:auth']);
   expect(result.e2e.mode).toBe('scoped');
@@ -39,9 +41,12 @@ test('isolated source changes select Bun graph and explicitly owned E2E and smok
 });
 
 test('source shared by several suites schedules all dependent E2E suites', () => {
-  const result = planCiImpact([
-    'src/features/auth/login.ts', 'src/features/catalog/search.ts',
-  ], scripts, config, base);
+  const result = planCiImpact(
+    ['src/features/auth/login.ts', 'src/features/catalog/search.ts'],
+    scripts,
+    config,
+    base,
+  );
   expect(result.e2e.mode).toBe('scoped');
   expect(result.e2e.scripts).toEqual(['test:e2e:auth', 'test:e2e:catalog']);
   expect(result.smoke.mode).toBe('full');
@@ -51,14 +56,21 @@ test('unknown source impact triggers complete E2E and smoke suites', () => {
   const result = planCiImpact(['src/utils/shared.ts'], scripts, config, base);
   expect(result.unit.mode).toBe('changed');
   expect(result.e2e).toEqual({
-    mode: 'full', scripts: ['test:e2e'], reason: 'Unmapped changed file',
+    mode: 'full',
+    scripts: ['test:e2e'],
+    reason: 'Unmapped changed file',
   });
   expect(result.smoke.scripts).toEqual(['test:smoke']);
 });
 
 test('global metadata, setup and workflow changes trigger complete suites', () => {
-  for (const path of ['package.json', 'bun.lock', '.github/workflows/ci.yml',
-    '.agents/skills/ankhorage-coding-rules/SKILL.md', 'scripts/setup.ts']) {
+  for (const path of [
+    'package.json',
+    'bun.lock',
+    '.github/workflows/ci.yml',
+    '.agents/skills/ankhorage-coding-rules/SKILL.md',
+    'scripts/setup.ts',
+  ]) {
     const result = planCiImpact([path], scripts, config, base);
     expect(result.unit.mode).toBe('full');
     expect(result.e2e.mode).toBe('full');
@@ -76,13 +88,22 @@ test('missing or invalid diff fails closed and runs all declared suites', () => 
 test('absent or incomplete mapping never prunes E2E and smoke suites', () => {
   const file = ['src/features/auth/login.ts'];
   expect(planCiImpact(file, scripts, undefined, base).e2e.mode).toBe('full');
-  expect(planCiImpact(file, scripts, { ...config, complete: { e2e: false, smoke: false } }, base).smoke.mode).toBe('full');
+  expect(
+    planCiImpact(file, scripts, { ...config, complete: { e2e: false, smoke: false } }, base).smoke
+      .mode,
+  ).toBe('full');
 });
 
 test('other unit runners are not silently interpreted as Bun tests', () => {
-  const result = planCiImpact(['src/features/auth/login.ts'], {
-    ...scripts, test: 'vitest run',
-  }, config, base);
+  const result = planCiImpact(
+    ['src/features/auth/login.ts'],
+    {
+      ...scripts,
+      test: 'vitest run',
+    },
+    config,
+    base,
+  );
   expect(result.unit.mode).toBe('full');
 });
 
