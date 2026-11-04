@@ -85,6 +85,13 @@ async function createManagedDefinitionsAsync(
       ),
     },
     {
+      relativePath: '.github/scripts/ci-impact.ts',
+      contents: await readFile(
+        new URL('../tools/workflows/files/ci-impact.ts', import.meta.url),
+        'utf8',
+      ),
+    },
+    {
       relativePath: '.github/workflows/release.yml',
       contents: await renderWorkflowAsync(
         new URL('../tools/workflows/files/release.yml', import.meta.url),
