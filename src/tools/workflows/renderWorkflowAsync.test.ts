@@ -60,7 +60,6 @@ test('synchronizes the managed impact runner as an owned CI dependency', async (
   ]);
 });
 
-
 /*** Create a consumer fixture that opts into managed release workflows. */
 async function createWorkflowTarget(): Promise<string> {
   const target = await mkdtemp('/tmp/devtools-workflow-render-');
