@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.1
+
+### Patch Changes
+
+- a365b0e: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
 ## 2.4.0
 
 ### Minor Changes
