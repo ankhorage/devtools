@@ -28,6 +28,10 @@ export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
   },
   createRenovateWorkflowDefinition(),
   {
+    relativePath: '.github/scripts/ci-impact.ts',
+    sourceUrl: new URL('./files/ci-impact.ts', import.meta.url),
+  },
+  {
     relativePath: 'renovate.json5',
     render: renderRenovateConfigAsync,
   },
