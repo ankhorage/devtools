@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.2
+
+### Patch Changes
+
+- dc4ff8a: Preserve managed workflow templates at their canonical runtime paths when TypeScript creates the destination directory before build asset copying.
+
 ## 2.4.1
 
 ### Patch Changes
