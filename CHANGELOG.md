@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.3
+
+### Patch Changes
+
+- d6428c5: Roll the published Doctor 0.14.35 first-release CHANGELOG bootstrap fix and Ankh 0.13.5 exact-installed provider selection into the canonical managed toolchain.
+
 ## 2.4.2
 
 ### Patch Changes
