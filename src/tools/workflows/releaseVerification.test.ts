@@ -3,6 +3,10 @@ import { rm } from 'node:fs/promises';
 import { afterEach, expect, test } from 'bun:test';
 
 import { createPackedCapabilityFixtureAsync } from './createPackedCapabilityFixtureAsync.test.js';
+import {
+  createPackedOptionalDependencyFixtureAsync,
+  importPackedRootWithoutOptionalDependenciesAsync,
+} from './createPackedOptionalDependencyFixtureAsync.test.js';
 import { workflowManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
@@ -190,6 +194,18 @@ test('managed release fails closed when the Devtools validator boundary is unava
 
     expect(result.exitCode).not.toBe(0);
   }
+});
+
+test('managed release verifies that the packed root does not load optional dependencies', async () => {
+  const release = await renderReleaseWorkflowAsync();
+  expect(release).toContain('bun add "$artifact" --ignore-scripts --omit optional');
+
+  const safeFixture = await createPackedOptionalDependencyFixtureAsync(false);
+  const unsafeFixture = await createPackedOptionalDependencyFixtureAsync(true);
+  temporaryDirectories.push(safeFixture.directory, unsafeFixture.directory);
+
+  expect(await importPackedRootWithoutOptionalDependenciesAsync(safeFixture)).toBe(0);
+  expect(await importPackedRootWithoutOptionalDependenciesAsync(unsafeFixture)).not.toBe(0);
 });
 /*** Render the managed release workflow used as the executable probe source. */
 async function renderReleaseWorkflowAsync(): Promise<string> {

@@ -314,6 +314,7 @@ jobs:
           fi
           pack_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-pack.XXXXXX")"
           install_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-install.XXXXXX")"
+          optional_install_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-optional-install.XXXXXX")"
           npm pack --ignore-scripts --pack-destination "$pack_dir" >/dev/null
           artifact="$(find "$pack_dir" -maxdepth 1 -type f -name '*.tgz' -print -quit)"
           if [ -z "$artifact" ]; then
@@ -399,6 +400,28 @@ jobs:
           const output = records.sort();
           process.stdout.write(output.length === 0 ? '' : `${output.join('\n')}\n`);
           NODE
+
+            root_runtime_entrypoint="$(awk -F '|' -v package_name="$package_name" '$2 == package_name { print; exit }' runtime-entrypoints.txt)"
+            if [ -n "$root_runtime_entrypoint" ]; then
+              root_runtime_loader="${root_runtime_entrypoint%%|*}"
+              (
+                cd "$optional_install_dir"
+                printf '{"name":"standalone-optional-consumer","private":true,"version":"0.0.0"}\n' > package.json
+                bun add "$artifact" --ignore-scripts --omit optional
+                case "$root_runtime_loader" in
+                  import)
+                    PACKAGE_SPECIFIER="$package_name" bun -e 'await import(process.env.PACKAGE_SPECIFIER)'
+                    ;;
+                  require)
+                    PACKAGE_SPECIFIER="$package_name" node -e 'require(process.env.PACKAGE_SPECIFIER)'
+                    ;;
+                  *)
+                    echo "::error title=Unsupported packed root loader::Unexpected loader '$root_runtime_loader' for $package_name."
+                    exit 1
+                    ;;
+                esac
+              )
+            fi
 
             PACKAGE_NAME="$package_name" CAPABILITY_MODULE_PATH="$capability_module_path" node --input-type=module - <<'NODE'
           import { readFileSync } from 'node:fs';
