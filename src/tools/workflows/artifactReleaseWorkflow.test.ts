@@ -45,6 +45,10 @@ test('renders an artifact-only lane for a private non-npm consumer', async () =>
   expect(release).toContain('rm -rf remote-artifact');
   expect(release).toContain('gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false');
   expect(release).toContain('release_draft');
+  expect(release).toContain('releases/tags/${tag}" --jq .id');
+  expect(release).toContain('releases/${release_id}/assets?per_page=100');
+  expect(release).toContain('Duplicate release asset name');
+  expect(release).not.toContain('releases/tags/${tag}/assets');
 });
 
 test('does not manage a release workflow without Changesets or an artifact descriptor', async () => {

@@ -84,15 +84,15 @@ jobs:
           if (!/^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/u.test(version)) fail('The descriptor version command must print one stable semantic version.');
           const tuple = (value) => value.replace(/^v/u, '').split('.').map(Number);
           const compare = (left, right) => tuple(left).find((part, index) => part !== tuple(right)[index]) === undefined ? 0 : tuple(left)[tuple(left).findIndex((part, index) => part !== tuple(right)[index])] - tuple(right)[tuple(left).findIndex((part, index) => part !== tuple(right)[index])];
-          const tags = execFileSync('git', ['tag', '--list', 'v*'], { encoding: 'utf8' }).split(/\r?\n/u).filter((tag) => /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.test(tag)).sort(compare);
-          const highest = tags.at(-1);
-          if (highest && compare(version, highest) < 0) fail(`Artifact release version regression: ${version} is lower than existing tag ${highest}.`);
           const tag = `v${version}`;
           if (recoveryTag !== undefined && recoveryTag !== '' && recoveryTag !== tag) fail(`Recovery tag ${recoveryTag} does not match descriptor version ${version}.`);
           const tagged = spawnSync('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}^{commit}`], { encoding: 'utf8' });
-          if (highest === tag && tagged.status !== 0) fail(`Release tag conflict: ${tag} is not a commit tag.`);
           if (tagged.status === 0 && sourceSha !== undefined && tagged.stdout.trim() !== sourceSha) fail(`Release tag conflict: ${tag} resolved to a different commit.`);
-          if (highest && compare(version, highest) === 0 && tagged.status !== 0) process.exit(0);
+          if (sourceSha === undefined) {
+            const tags = execFileSync('git', ['tag', '--list', 'v*'], { encoding: 'utf8' }).split(/\r?\n/u).filter((candidate) => /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.test(candidate)).sort(compare);
+            const highest = tags.at(-1);
+            if (highest && compare(version, highest) < 0 && tagged.status !== 0) fail(`Artifact release version regression: ${version} is lower than existing tag ${highest}.`);
+          }
           if (tagged.status === 0 && sourceSha === undefined) {
             execFileSync('git', ['checkout', '--detach', tagged.stdout.trim()], { stdio: 'inherit' });
             descriptor = JSON.parse(readFileSync('.ankh/release-distribution.json', 'utf8'));
@@ -248,7 +248,15 @@ jobs:
             exit 1
           fi
           if [ -z "$remote_sha" ]; then git tag "$tag" "$RELEASE_SHA"; git push origin "refs/tags/$tag"; fi
-          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then gh release create "$tag" --repo "$GITHUB_REPOSITORY" --draft --generate-notes --target "$RELEASE_SHA"; fi
+          release_lookup_error="$(mktemp)"
+          if ! gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" >/dev/null 2>"$release_lookup_error"; then
+            if ! grep -q 'HTTP 404' "$release_lookup_error"; then
+              cat "$release_lookup_error" >&2
+              exit 1
+            fi
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --draft --generate-notes --target "$RELEASE_SHA"
+          fi
+          rm -f "$release_lookup_error"
           release_target="$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json targetCommitish --jq .targetCommitish)"
           release_draft="$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft)"
           release_target_sha="$(git rev-parse -q --verify "${release_target}^{commit}" 2>/dev/null || true)"
@@ -256,9 +264,22 @@ jobs:
             echo "::error title=Release target mismatch::${tag} targets ${release_target}, expected ${RELEASE_SHA}."
             exit 1
           fi
-          assets_json="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}/assets?per_page=100")"
+          release_id="$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .id)"
+          if ! [[ "$release_id" =~ ^[0-9]+$ ]]; then
+            echo "::error title=Invalid release API response::Release ${tag} did not provide a numeric release ID."
+            exit 1
+          fi
+          assets_json="$(gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?per_page=100")"
+          ASSETS_JSON="$assets_json" ASSET_NAME="$ASSET_NAME" node - <<'NODE'
+          const pages = JSON.parse(process.env.ASSETS_JSON);
+          if (!Array.isArray(pages) || pages.some((page) => !Array.isArray(page))) throw new Error('Invalid release-assets API response.');
+          const expected = [process.env.ASSET_NAME, `${process.env.ASSET_NAME}.sha256`, `${process.env.ASSET_NAME}.provenance.json`];
+          const names = pages.flat().map((asset) => asset?.name);
+          if (names.some((name) => typeof name !== 'string')) throw new Error('Invalid release asset entry.');
+          for (const name of expected) if (names.filter((candidate) => candidate === name).length > 1) throw new Error(`Duplicate release asset name: ${name}.`);
+          NODE
           for companion in "$ASSET_NAME" "${ASSET_NAME}.sha256" "${ASSET_NAME}.provenance.json"; do
-            if ASSETS_JSON="$assets_json" COMPANION="$companion" node -e 'const assets=JSON.parse(process.env.ASSETS_JSON); process.exit(assets.some((asset) => asset.name === process.env.COMPANION) ? 0 : 1)'; then
+            if ASSETS_JSON="$assets_json" COMPANION="$companion" node -e 'const pages=JSON.parse(process.env.ASSETS_JSON); process.exit(pages.flat().some((asset) => asset.name === process.env.COMPANION) ? 0 : 1)'; then
               mkdir -p remote-artifact
               gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$companion" --dir remote-artifact
               cmp "release-artifact/${companion}" "remote-artifact/${companion}"
