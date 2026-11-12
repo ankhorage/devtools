@@ -91,9 +91,9 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain("const platformConditions = new Set(['browser', 'react-native']);");
   expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
   expect(release).toContain('const isPlatformOnlyRuntimeTarget = (target) =>');
-  expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return undefined;');
-  expect(release).toContain("if (supportsLoader(target, importConditions)) return 'import';");
-  expect(release).toContain("if (supportsLoader(target, requireConditions)) return 'require';");
+  expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return [];');
+  expect(release).toContain("['import', importConditions],");
+  expect(release).toContain("['require', requireConditions],");
   expect(release).toContain('if (exportsMap === undefined)');
   expect(release).toContain("!Object.keys(exportsMap).some((key) => key.startsWith('.'))");
   expect(release).toContain('records.push(`${loader}|${specifier}`);');
@@ -191,6 +191,7 @@ test('managed release fails closed when the Devtools validator boundary is unava
     expect(result.exitCode).not.toBe(0);
   }
 });
+
 /*** Render the managed release workflow used as the executable probe source. */
 async function renderReleaseWorkflowAsync(): Promise<string> {
   const releaseDefinition = workflowManagedFiles.find(
@@ -258,27 +259,33 @@ NODE`;
   return { exitCode, stderr };
 }
 
-test('packed runtime loader selection distinguishes platform-only and server-capable exports', () => {
-  expect(selectPackedRuntimeLoader({ import: './dist/index.js' })).toBe('import');
+test('packed runtime loader selection retains every server-compatible export condition', () => {
+  expect(selectPackedRuntimeLoaders({ import: './dist/index.js' })).toEqual(['import']);
   expect(
-    selectPackedRuntimeLoader({
+    selectPackedRuntimeLoaders({
+      import: './dist/index.js',
+      require: './dist/index.cjs',
+    }),
+  ).toEqual(['import', 'require']);
+  expect(
+    selectPackedRuntimeLoaders({
       'react-native': './src/index.ts',
       browser: './src/index.ts',
       import: './dist/index.js',
       default: './dist/index.js',
     }),
-  ).toBeUndefined();
+  ).toEqual([]);
   expect(
-    selectPackedRuntimeLoader({
+    selectPackedRuntimeLoaders({
       browser: './dist/browser.js',
       node: './dist/node.js',
       import: './dist/index.js',
     }),
-  ).toBe('import');
+  ).toEqual(['import', 'require']);
 });
 
-/*** Mirror the managed workflow's environment-aware packed runtime loader decision. */
-function selectPackedRuntimeLoader(target: unknown): 'import' | 'require' | undefined {
+/*** Mirror the managed workflow's environment-aware packed runtime loader decisions. */
+function selectPackedRuntimeLoaders(target: unknown): ('import' | 'require')[] {
   const importConditions = new Set(['bun', 'default', 'import', 'node']);
   const requireConditions = new Set(['default', 'node', 'require']);
   const platformConditions = new Set(['browser', 'react-native']);
@@ -303,11 +310,11 @@ function selectPackedRuntimeLoader(target: unknown): 'import' | 'require' | unde
     declaresCondition(target, platformConditions) &&
     !declaresCondition(target, explicitServerConditions)
   ) {
-    return undefined;
+    return [];
   }
-  if (supportsLoader(target, importConditions)) return 'import';
-  if (supportsLoader(target, requireConditions)) return 'require';
-  return undefined;
+  return [['import', importConditions] as const, ['require', requireConditions] as const].flatMap(
+    ([loader, conditions]) => (supportsLoader(target, conditions) ? [loader] : []),
+  );
 }
 
 /*** Narrow conditional export maps used by the workflow contract fixture. */
