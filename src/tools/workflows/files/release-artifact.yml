@@ -183,11 +183,12 @@ jobs:
             if (!Array.isArray(checks)) throw new Error('Invalid GitHub Check Runs response.');
             if (!Number.isSafeInteger(response.total_count) || response.total_count > checks.length) throw new Error('Incomplete GitHub Check Runs response; refusing to publish.');
             const required = descriptor.requiredChecks.map((name) => ({ name, runs: checks.filter((check) => check.name === name) }));
+            if (required.some(({ runs }) => runs.some((run) => run.head_sha !== process.env.RELEASE_SHA))) throw new Error('Required CI checks must belong to the exact release commit.');
             const failed = required.filter(({ runs }) => runs.some((run) => run.status === 'completed' && run.conclusion !== 'success'));
             if (failed.length > 0) throw new Error(`Required CI checks failed, cancelled, skipped, or were blocked: ${failed.map(({ name }) => name).join(', ')}.`);
             if (required.some(({ runs }) => runs.length !== 1 || runs[0].status !== 'completed')) process.exit(2);
             if (required.some(({ runs }) => runs[0].conclusion !== 'success')) throw new Error('Required CI checks did not successfully execute.');
-            NODE
+          NODE
             then exit 0; else status=$?; fi
             if [ "$status" -ne 2 ] || [ "$attempt" -eq 18 ]; then
               echo "::error title=Required CI checks unavailable::The exact release commit did not complete all declared Check Runs successfully."
