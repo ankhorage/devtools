@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.4
+
+### Patch Changes
+
+- ff38731: Verify packed package roots without optional dependencies before publication.
+
 ## 2.4.3
 
 ### Patch Changes
