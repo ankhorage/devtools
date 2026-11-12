@@ -1,30 +1,49 @@
-import { mkdir, mkdtemp, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-/*** Create a packed package whose root either is or is not isolated from an optional dependency. */
-export async function createPackedOptionalDependencyFixtureAsync(unsafe: boolean): Promise<{
+type RuntimeSafety = 'safe' | 'unsafe';
+
+interface PackedOptionalDependencyFixtureInput {
+  readonly import?: RuntimeSafety | 'missing';
+  readonly isolatedProviderSubpath?: boolean;
+  readonly mandatoryDependency?: boolean;
+  readonly platformOnly?: boolean;
+  readonly require?: RuntimeSafety;
+}
+
+/*** Create a packed package with independently controlled root runtime conditions. */
+export async function createPackedOptionalDependencyFixtureAsync(
+  input: PackedOptionalDependencyFixtureInput,
+): Promise<{
   readonly artifact: string;
   readonly directory: string;
+  readonly packageName: string;
 }> {
   const directory = await mkdtemp(join(tmpdir(), 'devtools-optional-dependency-'));
   const packageDirectory = join(directory, 'package');
+  const packageName = '@example/optional-boundary';
   await mkdir(packageDirectory);
+  await writeRuntimeSourcesAsync(packageDirectory, input);
+  if (input.isolatedProviderSubpath) {
+    await writeFile(
+      join(packageDirectory, 'provider.js'),
+      "export const loadOptionalProvider = async () => await import('@example/optional-sdk');\n",
+    );
+  }
+  const dependencies = input.mandatoryDependency
+    ? { 'is-number': await readInstalledIsNumberVersionAsync() }
+    : undefined;
   await writeFile(
     join(packageDirectory, 'package.json'),
     `${JSON.stringify({
-      exports: { '.': './index.js' },
-      name: '@example/optional-boundary',
+      dependencies,
+      exports: createExports(input),
+      name: packageName,
       optionalDependencies: { '@example/optional-sdk': '1.0.0' },
       type: 'module',
       version: '1.0.0',
     })}\n`,
-  );
-  await writeFile(
-    join(packageDirectory, 'index.js'),
-    unsafe
-      ? "import '@example/optional-sdk';\nexport const value = 'unsafe';\n"
-      : "export const value = 'safe';\n",
   );
   const packing = Bun.spawn(['bun', 'pm', 'pack', '--destination', directory], {
     cwd: packageDirectory,
@@ -34,38 +53,76 @@ export async function createPackedOptionalDependencyFixtureAsync(unsafe: boolean
   await requireSuccessfulBunCommandAsync(packing);
   const artifact = (await readdir(directory)).find((entry) => entry.endsWith('.tgz'));
   if (artifact === undefined) throw new Error('Expected an optional-dependency fixture artifact.');
-  return { artifact: join(directory, artifact), directory };
+  return { artifact: join(directory, artifact), directory, packageName };
 }
 
-/*** Install a packed fixture without optional dependencies and load its root export. */
-export async function importPackedRootWithoutOptionalDependenciesAsync(fixture: {
-  readonly artifact: string;
-  readonly directory: string;
-}): Promise<number> {
-  const consumerDirectory = join(fixture.directory, 'consumer');
-  await mkdir(consumerDirectory);
-  await writeFile(
-    join(consumerDirectory, 'package.json'),
-    '{"name":"optional-consumer","private":true,"version":"1.0.0"}\n',
-  );
-  const temporaryDirectory = join(fixture.directory, 'tmp');
-  const cacheDirectory = join(fixture.directory, 'cache');
-  await Promise.all([mkdir(temporaryDirectory), mkdir(cacheDirectory)]);
-  const installation = Bun.spawn(
-    ['bun', 'add', fixture.artifact, '--ignore-scripts', '--omit', 'optional'],
-    {
-      cwd: consumerDirectory,
-      env: { ...process.env, BUN_INSTALL_CACHE_DIR: cacheDirectory, TMPDIR: temporaryDirectory },
-      stderr: 'pipe',
-      stdout: 'pipe',
+/*** Write the independently selected ESM and CommonJS fixture runtime sources. */
+async function writeRuntimeSourcesAsync(
+  packageDirectory: string,
+  input: PackedOptionalDependencyFixtureInput,
+): Promise<void> {
+  await Promise.all([
+    writeFile(
+      join(packageDirectory, 'esm.js'),
+      sourceForRuntime(input.import, 'esm', input.mandatoryDependency),
+    ),
+    writeFile(
+      join(packageDirectory, 'cjs.cjs'),
+      sourceForRuntime(input.require, 'cjs', input.mandatoryDependency),
+    ),
+  ]);
+}
+
+/*** Read the lockfile-owned version used for the mandatory-dependency fixture. */
+async function readInstalledIsNumberVersionAsync(): Promise<string> {
+  const manifest = JSON.parse(
+    await readFile(join(process.cwd(), 'node_modules', 'is-number', 'package.json'), 'utf8'),
+  ) as { readonly version?: unknown };
+  if (typeof manifest.version !== 'string') {
+    throw new Error('The mandatory fixture dependency must have an installed version.');
+  }
+  return manifest.version;
+}
+
+/*** Create the public export map used by a packed optional-dependency fixture. */
+function createExports(input: PackedOptionalDependencyFixtureInput): Record<string, unknown> {
+  if (input.platformOnly) {
+    return {
+      '.': {
+        browser: './esm.js',
+        'react-native': './esm.js',
+      },
+    };
+  }
+  return {
+    '.': {
+      ...(input.import === undefined
+        ? {}
+        : { import: input.import === 'missing' ? './missing.js' : './esm.js' }),
+      ...(input.require === undefined ? {} : { require: './cjs.cjs' }),
     },
-  );
-  await requireSuccessfulBunCommandAsync(installation);
-  return Bun.spawn(['bun', '-e', "await import('@example/optional-boundary')"], {
-    cwd: consumerDirectory,
-    stderr: 'pipe',
-    stdout: 'pipe',
-  }).exited;
+    ...(input.isolatedProviderSubpath ? { './provider': './provider.js' } : {}),
+  };
+}
+
+/*** Write the source used by one ESM or CommonJS root condition. */
+function sourceForRuntime(
+  runtime: RuntimeSafety | 'missing' | undefined,
+  moduleKind: 'cjs' | 'esm',
+  mandatoryDependency: boolean | undefined,
+): string {
+  if (runtime === 'missing') return "export const missing = 'missing';\n";
+  if (runtime === 'unsafe') {
+    return moduleKind === 'esm'
+      ? "import '@example/optional-sdk';\nexport const value = 'unsafe';\n"
+      : "require('@example/optional-sdk');\nexports.value = 'unsafe';\n";
+  }
+  if (mandatoryDependency) {
+    return moduleKind === 'esm'
+      ? "import 'is-number';\nexport const value = 'safe';\n"
+      : "require('is-number');\nexports.value = 'safe';\n";
+  }
+  return moduleKind === 'esm' ? "export const value = 'safe';\n" : "exports.value = 'safe';\n";
 }
 
 /*** Surface a packed-fixture command failure with its actual stderr. */
