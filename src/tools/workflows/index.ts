@@ -8,24 +8,17 @@ import type { ManagedFileDefinition } from '../../features/managed-files/managed
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { resolveAtlasAuditPolicyAsync } from '../../policy/resolveAtlasAuditPolicyAsync.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
+import {
+  hasGitHubArtifactReleaseDescriptorAsync,
+  readGitHubArtifactReleaseDescriptorAsync,
+} from './readGitHubArtifactReleaseDescriptorAsync.js';
 import { renderRenovateConfigAsync } from './renderRenovateConfigAsync.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
 export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
   createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
-  {
-    ...createWorkflowDefinition('.github/workflows/release.yml', './files/release.yml'),
-    isApplicable: async (targetDirectory) => {
-      try {
-        await access(join(targetDirectory, '.changeset/config.json'));
-        return true;
-      } catch (error) {
-        if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
-        throw error;
-      }
-    },
-  },
+  createReleaseWorkflowDefinition(),
   createRenovateWorkflowDefinition(),
   {
     relativePath: '.github/scripts/ci-impact.ts',
@@ -52,6 +45,45 @@ function createWorkflowDefinition(relativePath: string, sourcePath: string): Man
         atlasAudit: await resolveAtlasAuditPolicyAsync(targetDirectory),
       }),
   };
+}
+
+/*** Render the legacy npm lane unchanged unless a repository explicitly opts into artifact-only release. */
+function createReleaseWorkflowDefinition(): ManagedFileDefinition {
+  return {
+    relativePath: '.github/workflows/release.yml',
+    isApplicable: async (targetDirectory) =>
+      (await hasGitHubArtifactReleaseDescriptorAsync(targetDirectory)) ||
+      (await hasChangesetsConfigAsync(targetDirectory)),
+    render: async (targetDirectory) => {
+      const artifactRelease = await readGitHubArtifactReleaseDescriptorAsync(targetDirectory);
+      return await renderWorkflowAsync(
+        new URL(
+          artifactRelease === undefined ? './files/release.yml' : './files/release-artifact.yml',
+          import.meta.url,
+        ),
+        {
+          apmReleaseCommand: await resolveApmReleaseCommandAsync(targetDirectory),
+          structureReleaseCommand: await resolveStructureReleaseCommandAsync(targetDirectory),
+          bunVersion: REPOSITORY_RULE_METADATA.runtime.bun.version,
+          doctorVersion: readCurrentDoctorVersion(),
+          nodeVersion: REPOSITORY_RULE_METADATA.runtime.node.setupVersion,
+          atlasAudit: await resolveAtlasAuditPolicyAsync(targetDirectory),
+          artifactRelease,
+        },
+      );
+    },
+  };
+}
+
+/*** Check the established Changesets opt-in without treating any read failure as absence. */
+async function hasChangesetsConfigAsync(targetDirectory: string): Promise<boolean> {
+  try {
+    await access(join(targetDirectory, '.changeset/config.json'));
+    return true;
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return false;
+    throw error;
+  }
 }
 
 /*** Creates the managed workflow whose immutable digest remains Renovate-owned. */

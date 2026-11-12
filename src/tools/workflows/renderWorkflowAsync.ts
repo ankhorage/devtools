@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
 
 import { formatYamlAsync } from '../prettier/formatYamlAsync.js';
+import type { GitHubArtifactReleaseDescriptor } from './readGitHubArtifactReleaseDescriptorAsync.js';
 
 export interface WorkflowPolicy {
   readonly bunVersion: string;
@@ -15,6 +16,7 @@ export interface WorkflowPolicy {
     readonly command: string;
   };
   readonly structureReleaseCommand?: string;
+  readonly artifactRelease?: GitHubArtifactReleaseDescriptor;
 }
 
 /*** Renders one workflow template with the canonical runtime, Doctor, and Changesets policy. */
@@ -45,7 +47,14 @@ export async function renderWorkflowAsync(sourceUrl: URL, policy: WorkflowPolicy
       policy.structureReleaseCommand ?? './node_modules/.bin/ankhorage-structure',
     )
     .replaceAll(NODE_VERSION_TOKEN, policy.nodeVersion);
-  return await formatYamlAsync(`${rendered.trimEnd()}\n`);
+  const artifactRendered = rendered
+    .replaceAll(ARTIFACT_ASSET_NAME_TOKEN, policy.artifactRelease?.assetName ?? '')
+    .replaceAll(ARTIFACT_ASSET_PATH_TOKEN, policy.artifactRelease?.assetPath ?? '')
+    .replaceAll(ARTIFACT_BUILD_COMMAND_TOKEN, policy.artifactRelease?.buildCommand ?? '')
+    .replaceAll(ARTIFACT_REQUIRED_CHECKS_TOKEN, policy.artifactRelease?.requiredChecks ?? '')
+    .replaceAll(ARTIFACT_VERIFY_COMMAND_TOKEN, policy.artifactRelease?.verifyCommand ?? '')
+    .replaceAll(ARTIFACT_VERSION_COMMAND_TOKEN, policy.artifactRelease?.versionCommand ?? '');
+  return await formatYamlAsync(`${artifactRendered.trimEnd()}\n`);
 }
 
 const BUN_VERSION_TOKEN = '__ANKH_BUN_VERSION__';
@@ -72,3 +81,9 @@ function renderAtlasAuditSteps(policy: WorkflowPolicy): string {
 }
 
 const ATLAS_AUDIT_STEPS_TOKEN = '      # __ANKH_ATLAS_AUDIT_STEPS__';
+const ARTIFACT_ASSET_NAME_TOKEN = '__ANKH_ARTIFACT_ASSET_NAME__';
+const ARTIFACT_ASSET_PATH_TOKEN = '__ANKH_ARTIFACT_ASSET_PATH__';
+const ARTIFACT_BUILD_COMMAND_TOKEN = '__ANKH_ARTIFACT_BUILD_COMMAND__';
+const ARTIFACT_REQUIRED_CHECKS_TOKEN = '__ANKH_ARTIFACT_REQUIRED_CHECKS__';
+const ARTIFACT_VERIFY_COMMAND_TOKEN = '__ANKH_ARTIFACT_VERIFY_COMMAND__';
+const ARTIFACT_VERSION_COMMAND_TOKEN = '__ANKH_ARTIFACT_VERSION_COMMAND__';
