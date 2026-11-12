@@ -36,6 +36,15 @@ test('renders an artifact-only lane for a private non-npm consumer', async () =>
   expect(release).not.toContain('package-release');
   expect(release).toContain('for attempt in $(seq 1 18)');
   expect(release).toContain('Checkout canonical release commit for recovery');
+  expect(release).toContain('workflow_dispatch:');
+  expect(release).toContain('release_tag:');
+  expect(release).toContain('refs/tags/${tag}^{commit}');
+  expect(release).toContain('Incomplete GitHub Check Runs response; refusing to publish.');
+  expect(release).toContain('gh release create "$tag" --repo "$GITHUB_REPOSITORY" --draft');
+  expect(release).toContain('cmp "release-artifact/${companion}" "remote-artifact/${companion}"');
+  expect(release).toContain('rm -rf remote-artifact');
+  expect(release).toContain('gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false');
+  expect(release).toContain('release_draft');
 });
 
 test('does not manage a release workflow without Changesets or an artifact descriptor', async () => {
