@@ -4,15 +4,15 @@ import { join, relative, resolve } from 'node:path';
 export interface GitHubArtifactReleaseDescriptor {
   readonly assetName: string;
   readonly assetPath: string;
-  readonly buildCommand: string;
-  readonly requiredChecks: string;
-  readonly verifyCommand: string;
-  readonly versionCommand: string;
+  readonly buildCommand: readonly string[];
+  readonly requiredChecks: readonly string[];
+  readonly verifyCommand: readonly string[];
+  readonly versionCommand: readonly string[];
 }
 
 const DESCRIPTOR_PATH = '.ankh/release-distribution.json';
 
-/*** Read the opted-in artifact release contract and reject values unsafe for the managed shell boundary. */
+/*** Read the opted-in artifact release contract before rendering its static workflow. */
 export async function readGitHubArtifactReleaseDescriptorAsync(
   targetDirectory: string,
 ): Promise<GitHubArtifactReleaseDescriptor | undefined> {
@@ -57,21 +57,23 @@ export async function hasGitHubArtifactReleaseDescriptorAsync(
   }
 }
 
-/*** Require a command array so checked-in values cannot become a shell program through rendering. */
-function readCommand(value: unknown, field: string): string {
-  if (
-    !Array.isArray(value) ||
-    value.length === 0 ||
-    value.some((part) => typeof part !== 'string' || part.length === 0)
-  ) {
+/*** Require a command argv so workflow execution never evaluates descriptor data as a shell program. */
+function readCommand(value: unknown, field: string): readonly string[] {
+  if (!isNonEmptyStringArray(value)) {
     throw new Error(`${DESCRIPTOR_PATH} ${field} must be a non-empty array of command arguments.`);
   }
-  return value.map(shellQuote).join(' ');
+  return value;
 }
 
 /*** Keep artifact paths repository-relative and make traversal impossible before workflow rendering. */
 function readRelativePath(value: unknown, field: string, targetDirectory: string): string {
-  if (typeof value !== 'string' || value.length === 0 || value.includes('\\')) {
+  if (
+    typeof value !== 'string' ||
+    value.length === 0 ||
+    value.includes('\\') ||
+    value.includes('\n') ||
+    value.includes('\r')
+  ) {
     throw new Error(
       `${DESCRIPTOR_PATH} ${field} must be a non-empty slash-separated relative path.`,
     );
@@ -93,29 +95,26 @@ function readAssetName(value: unknown): string {
 }
 
 /*** Require named successful CI gates so an unexecuted or blocked check can never publish an artifact. */
-function readRequiredChecks(value: unknown): string {
+function readRequiredChecks(value: unknown): readonly string[] {
   if (
-    !Array.isArray(value) ||
-    value.length === 0 ||
-    value.some(
-      (check) =>
-        typeof check !== 'string' ||
-        check.length === 0 ||
-        check.length > 200 ||
-        !/^[A-Za-z0-9 ._:/()-]+$/u.test(check),
-    )
+    !isNonEmptyStringArray(value) ||
+    value.some((check) => check.length > 200 || !/^[A-Za-z0-9 ._:/()-]+$/u.test(check))
   ) {
     throw new Error(`${DESCRIPTOR_PATH} requiredChecks must name one or more required CI checks.`);
   }
-  return JSON.stringify(value);
-}
-
-/*** Quote one argv value for POSIX shell without granting descriptor data shell syntax. */
-function shellQuote(value: string): string {
-  return `'${value.replaceAll("'", "'\\\"'\\\"'")}'`;
+  return value;
 }
 
 /*** Narrow unknown JSON values before reading descriptor fields. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/*** Narrow a checked-in command or check-name list to safe non-empty string values. */
+function isNonEmptyStringArray(value: unknown): value is readonly string[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every((part) => typeof part === 'string' && part.length > 0)
+  );
 }

@@ -21,7 +21,7 @@ test('reads an explicit artifact-only descriptor without using package identity'
     assetPath: 'dist/plugin.zip',
     buildCommand: ['python3', 'build.py'],
     kind: 'github-artifact',
-    requiredChecks: ['CI'],
+    requiredChecks: ['CI / validate'],
     verifyCommand: ['python3', 'check.py'],
     versionCommand: ['python3', 'version.py'],
   });
@@ -29,10 +29,10 @@ test('reads an explicit artifact-only descriptor without using package identity'
   expect(readGitHubArtifactReleaseDescriptorAsync(directory)).resolves.toEqual({
     assetName: 'plugin.zip',
     assetPath: 'dist/plugin.zip',
-    buildCommand: "'python3' 'build.py'",
-    requiredChecks: '["CI"]',
-    verifyCommand: "'python3' 'check.py'",
-    versionCommand: "'python3' 'version.py'",
+    buildCommand: ['python3', 'build.py'],
+    requiredChecks: ['CI / validate'],
+    verifyCommand: ['python3', 'check.py'],
+    versionCommand: ['python3', 'version.py'],
   });
 });
 
@@ -50,6 +50,24 @@ test('rejects path traversal and executable shell syntax in artifact descriptors
   expect(readGitHubArtifactReleaseDescriptorAsync(directory)).rejects.toThrow(
     'buildCommand must be a non-empty array of command arguments',
   );
+});
+
+test.each([
+  ['assetPath', 'dist/plugin\n.zip'],
+  ['assetName', 'plugin\n.zip'],
+])('rejects descriptor injection in %s', async (field, value) => {
+  const directory = await createDescriptorFixtureAsync({
+    assetName: 'plugin.zip',
+    assetPath: 'dist/plugin.zip',
+    buildCommand: ['node', '-e', 'process.exit(0)'],
+    kind: 'github-artifact',
+    requiredChecks: ['validate'],
+    verifyCommand: ['node', '-e', 'process.exit(0)'],
+    versionCommand: ['node', '-e', 'console.log("1.0.0")'],
+    [field]: value,
+  });
+
+  expect(readGitHubArtifactReleaseDescriptorAsync(directory)).rejects.toThrow();
 });
 
 /*** Create one checked-in descriptor fixture without requiring a package manifest or Changesets. */

@@ -68,7 +68,6 @@ function createReleaseWorkflowDefinition(): ManagedFileDefinition {
           doctorVersion: readCurrentDoctorVersion(),
           nodeVersion: REPOSITORY_RULE_METADATA.runtime.node.setupVersion,
           atlasAudit: await resolveAtlasAuditPolicyAsync(targetDirectory),
-          artifactRelease,
         },
       );
     },

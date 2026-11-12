@@ -2,11 +2,12 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
+# The default token reads only exact-commit Check Runs. A scoped App token performs release mutation.
 permissions:
-  contents: write
+  checks: read
+  contents: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -20,7 +21,6 @@ jobs:
       package_version: ${{ steps.release.outputs.package_version }}
       release_sha: ${{ steps.release.outputs.release_sha }}
       versioned: ${{ steps.release.outputs.versioned }}
-
     steps:
       - name: Create the scoped release token
         id: release-token
@@ -31,130 +31,142 @@ jobs:
           private-key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}
           owner: ankhorage
           repositories: ${{ github.event.repository.name }}
-          permission-contents: write
-
+          permission-checks: read
+          permission-contents: read
       - name: Diagnose unavailable scoped release token
         if: steps.release-token.outcome == 'failure'
         run: |
-          echo "::error title=Release App repository access required::Could not create the scoped Ankhorage release token for ${GITHUB_REPOSITORY}."
+          echo "::error title=Release App repository access required::The Release App needs Checks: Read and Contents: Read for ${GITHUB_REPOSITORY}."
           exit 1
-
       - name: Checkout exact trusted main commit
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ steps.release-token.outputs.token }}
-
       - name: Synchronize latest main
         run: |
-          git fetch origin main
+          git fetch origin main --tags
           git checkout -B main origin/main
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: '__ANKH_BUN_VERSION__'
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
       - name: Select explicit artifact release intent
         id: release
         run: |
           set -euo pipefail
-          candidate_version="$(__ANKH_ARTIFACT_VERSION_COMMAND__)"
-          if ! [[ "$candidate_version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
-            echo "::error title=Invalid artifact release version::The descriptor version command must print one stable semantic version."
-            exit 1
-          fi
-
-          highest_tag="$(git tag --list 'v*' | node -e '
-            let text = "";
-            process.stdin.on("data", (chunk) => (text += chunk));
-            process.stdin.on("end", () => {
-              const parse = (tag) => /^v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$/u.exec(tag)?.slice(1).map(Number);
-              const compare = (left, right) => left.find((part, index) => part !== right[index]) === undefined ? 0 : left[left.findIndex((part, index) => part !== right[index])] - right[left.findIndex((part, index) => part !== right[index])];
-              const tags = text.split(/\\r?\\n/u).filter(Boolean).filter((tag) => parse(tag));
-              tags.sort((left, right) => compare(parse(left), parse(right)));
-              process.stdout.write(tags.at(-1) ?? "");
-            });
-          ')"
-          if [ -n "$highest_tag" ]; then
-            highest_version="${highest_tag#v}"
-            comparison="$(CANDIDATE="$candidate_version" HIGHEST="$highest_version" node -e '
-              const parse = (value) => value.split(".").map(Number);
-              const candidate = parse(process.env.CANDIDATE);
-              const highest = parse(process.env.HIGHEST);
-              const index = candidate.findIndex((part, candidateIndex) => part !== highest[candidateIndex]);
-              process.stdout.write(index === -1 ? "equal" : candidate[index] > highest[index] ? "greater" : "less");
-            ')"
-            if [ "$comparison" = less ]; then
-              echo "::error title=Artifact release version regression::${candidate_version} is lower than existing tag ${highest_tag}."
-              exit 1
-            fi
-            if [ "$comparison" = equal ]; then
-              expected_sha="$(git rev-parse HEAD)"
-              tagged_sha="$(git rev-parse -q --verify "refs/tags/v${candidate_version}^{commit}" 2>/dev/null || true)"
-              if [ "$tagged_sha" = "$expected_sha" ]; then
-                echo "Resuming artifact finalization for v${candidate_version} at ${expected_sha}."
-                echo "versioned=true" >> "$GITHUB_OUTPUT"
-                echo "package_version=$candidate_version" >> "$GITHUB_OUTPUT"
-                echo "release_sha=$expected_sha" >> "$GITHUB_OUTPUT"
-                echo "asset_name=__ANKH_ARTIFACT_ASSET_NAME__" >> "$GITHUB_OUTPUT"
-                exit 0
-              fi
-              echo "No artifact release intent: ${candidate_version} is already represented by ${highest_tag}."
-              echo "versioned=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          fi
-          echo "versioned=true" >> "$GITHUB_OUTPUT"
-          echo "package_version=$candidate_version" >> "$GITHUB_OUTPUT"
-          echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          echo "asset_name=__ANKH_ARTIFACT_ASSET_NAME__" >> "$GITHUB_OUTPUT"
-
+          node - <<'NODE'
+          const { appendFileSync, readFileSync } = require('node:fs');
+          const { execFileSync, spawnSync } = require('node:child_process');
+          const fail = (message) => { throw new Error(message); };
+          const descriptor = JSON.parse(readFileSync('.ankh/release-distribution.json', 'utf8'));
+          const command = (value, field) => {
+            if (!Array.isArray(value) || value.length === 0 || value.some((part) => typeof part !== 'string' || part.length === 0)) fail(`${field} must be a non-empty argv array.`);
+            return value;
+          };
+          if (!descriptor || descriptor.kind !== 'github-artifact') fail('Expected github-artifact descriptor.');
+          const versionArgv = command(descriptor.versionCommand, 'versionCommand');
+          const versionResult = spawnSync(versionArgv[0], versionArgv.slice(1), { encoding: 'utf8' });
+          if (versionResult.error || versionResult.status !== 0) fail(`versionCommand failed: ${versionResult.error?.message ?? versionResult.stderr}`);
+          const version = versionResult.stdout.trim();
+          if (!/^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/u.test(version)) fail('The descriptor version command must print one stable semantic version.');
+          const tuple = (value) => value.replace(/^v/u, '').split('.').map(Number);
+          const compare = (left, right) => tuple(left).find((part, index) => part !== tuple(right)[index]) === undefined ? 0 : tuple(left)[tuple(left).findIndex((part, index) => part !== tuple(right)[index])] - tuple(right)[tuple(left).findIndex((part, index) => part !== tuple(right)[index])];
+          const tags = execFileSync('git', ['tag', '--list', 'v*'], { encoding: 'utf8' }).split(/\r?\n/u).filter((tag) => /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/u.test(tag)).sort(compare);
+          const highest = tags.at(-1);
+          if (highest && compare(version, highest) < 0) fail(`Artifact release version regression: ${version} is lower than existing tag ${highest}.`);
+          const tag = `v${version}`;
+          const tagged = spawnSync('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}^{commit}`], { encoding: 'utf8' });
+          if (highest === tag && tagged.status !== 0) fail(`Release tag conflict: ${tag} is not a commit tag.`);
+          if (highest && compare(version, highest) === 0 && tagged.status !== 0) process.exit(0);
+          const releaseSha = tagged.status === 0 ? tagged.stdout.trim() : execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+          if (typeof descriptor.assetName !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(descriptor.assetName)) fail('assetName must be a plain safe filename.');
+          appendFileSync(process.env.GITHUB_OUTPUT, `versioned=true\npackage_version=${version}\nrelease_sha=${releaseSha}\nasset_name=${descriptor.assetName}\n`);
+          NODE
+      - name: Checkout canonical release commit for recovery
+        if: steps.release.outputs.versioned == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.release.outputs.release_sha }}
+          token: ${{ steps.release-token.outputs.token }}
+      - name: Setup Bun
+        if: steps.release.outputs.versioned == 'true'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '__ANKH_BUN_VERSION__'
+      - name: Install dependencies
+        if: steps.release.outputs.versioned == 'true'
+        run: bun install --frozen-lockfile
       - name: Build and verify exact artifact
         if: steps.release.outputs.versioned == 'true'
+        env:
+          ASSET_NAME: ${{ steps.release.outputs.asset_name }}
+          RELEASE_SHA: ${{ steps.release.outputs.release_sha }}
+          RELEASE_VERSION: ${{ steps.release.outputs.package_version }}
         run: |
           set -euo pipefail
-          __ANKH_ARTIFACT_BUILD_COMMAND__
-          __ANKH_ARTIFACT_VERIFY_COMMAND__
-          root="$(realpath .)"
-          asset="$(realpath '__ANKH_ARTIFACT_ASSET_PATH__')"
-          case "$asset" in
-            "$root"/*) ;;
-            *) echo "::error title=Artifact path escapes repository::Configured artifact resolves outside the checked-out repository."; exit 1 ;;
-          esac
-          [ -f "$asset" ] && [ ! -L "$asset" ] || { echo "::error title=Missing artifact::Configured artifact must be a regular in-repository file."; exit 1; }
-          cp "$asset" "${RUNNER_TEMP}/__ANKH_ARTIFACT_ASSET_NAME__"
-          sha256sum "${RUNNER_TEMP}/__ANKH_ARTIFACT_ASSET_NAME__" > "${RUNNER_TEMP}/__ANKH_ARTIFACT_ASSET_NAME__.sha256"
-          RELEASE_VERSION="${{ steps.release.outputs.package_version }}" RELEASE_SHA="${{ steps.release.outputs.release_sha }}" ASSET_NAME="__ANKH_ARTIFACT_ASSET_NAME__" node -e '
-            const { createHash } = require("node:crypto");
-            const { readFileSync, writeFileSync } = require("node:fs");
-            const { join } = require("node:path");
-            const asset = join(process.env.RUNNER_TEMP, process.env.ASSET_NAME);
-            const provenance = { version: process.env.RELEASE_VERSION, commit: process.env.RELEASE_SHA, asset: process.env.ASSET_NAME, sha256: createHash("sha256").update(readFileSync(asset)).digest("hex") };
-            writeFileSync(`${asset}.provenance.json`, `${JSON.stringify(provenance)}\\n`);
-          '
-
+          node - <<'NODE'
+          const { createHash } = require('node:crypto');
+          const { copyFileSync, lstatSync, mkdirSync, readFileSync, realpathSync, writeFileSync } = require('node:fs');
+          const { relative, resolve, sep } = require('node:path');
+          const { spawnSync } = require('node:child_process');
+          const fail = (message) => { throw new Error(message); };
+          const descriptor = JSON.parse(readFileSync('.ankh/release-distribution.json', 'utf8'));
+          const command = (value, field) => {
+            if (!Array.isArray(value) || value.length === 0 || value.some((part) => typeof part !== 'string' || part.length === 0)) fail(`${field} must be a non-empty argv array.`);
+            return value;
+          };
+          for (const field of ['buildCommand', 'verifyCommand']) {
+            const argv = command(descriptor[field], field);
+            const result = spawnSync(argv[0], argv.slice(1), { stdio: 'inherit' });
+            if (result.error || result.status !== 0) fail(`${field} failed.`);
+          }
+          if (typeof descriptor.assetPath !== 'string' || descriptor.assetPath.includes('\\') || descriptor.assetPath.includes('\n') || descriptor.assetPath.includes('\r')) fail('assetPath must be a slash-separated relative path.');
+          const root = realpathSync('.');
+          const declared = resolve(root, descriptor.assetPath);
+          const declaredFromRoot = relative(root, declared);
+          if (declaredFromRoot === '' || declaredFromRoot === '..' || declaredFromRoot.startsWith(`..${sep}`)) fail('Configured artifact path escapes the repository root.');
+          const segments = declaredFromRoot.split(sep);
+          for (let index = 0; index < segments.length; index += 1) {
+            if (lstatSync(resolve(root, ...segments.slice(0, index + 1))).isSymbolicLink()) fail('Configured artifact path must not traverse a symbolic link.');
+          }
+          const asset = realpathSync(declared);
+          const pathFromRoot = relative(root, asset);
+          if (pathFromRoot === '' || pathFromRoot === '..' || pathFromRoot.startsWith(`..${sep}`) || !lstatSync(asset).isFile()) fail('Configured artifact must be a regular file below the repository root.');
+          const name = process.env.ASSET_NAME;
+          if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(name)) fail('Invalid managed asset name.');
+          mkdirSync(process.env.RUNNER_TEMP, { recursive: true });
+          const output = resolve(process.env.RUNNER_TEMP, name);
+          copyFileSync(asset, output);
+          const sha256 = createHash('sha256').update(readFileSync(output)).digest('hex');
+          writeFileSync(`${output}.sha256`, `${sha256}  ${name}\n`);
+          writeFileSync(`${output}.provenance.json`, `${JSON.stringify({ asset: name, commit: process.env.RELEASE_SHA, sha256, version: process.env.RELEASE_VERSION })}\n`);
+          NODE
       - name: Require successful declared CI gates
         if: steps.release.outputs.versioned == 'true'
         env:
           GH_TOKEN: ${{ steps.release-token.outputs.token }}
-          REQUIRED_CHECKS: '__ANKH_ARTIFACT_REQUIRED_CHECKS__'
           RELEASE_SHA: ${{ steps.release.outputs.release_sha }}
         run: |
           set -euo pipefail
-          gh api "repos/${GITHUB_REPOSITORY}/commits/${RELEASE_SHA}/check-runs?per_page=100" > "${RUNNER_TEMP}/release-checks.json"
-          REQUIRED_CHECKS="$REQUIRED_CHECKS" CHECKS_FILE="${RUNNER_TEMP}/release-checks.json" node -e '
-            const { readFileSync } = require("node:fs");
-            const required = JSON.parse(process.env.REQUIRED_CHECKS);
-            const checks = JSON.parse(readFileSync(process.env.CHECKS_FILE, "utf8")).check_runs;
-            if (!Array.isArray(required) || !Array.isArray(checks)) throw new Error("Invalid required CI gate evidence.");
-            const blocked = required.filter((name) => !checks.some((check) => check.name === name && check.status === "completed" && check.conclusion === "success"));
-            if (blocked.length > 0) throw new Error(`Required CI checks are missing, blocked, or unsuccessful: ${blocked.join(", ")}.`);
-          '
-
+          for attempt in $(seq 1 18); do
+            gh api "repos/${GITHUB_REPOSITORY}/commits/${RELEASE_SHA}/check-runs?filter=latest&per_page=100" > "${RUNNER_TEMP}/release-checks.json"
+            if CHECKS_FILE="${RUNNER_TEMP}/release-checks.json" node - <<'NODE'
+            const { readFileSync } = require('node:fs');
+            const descriptor = JSON.parse(readFileSync('.ankh/release-distribution.json', 'utf8'));
+            const checks = JSON.parse(readFileSync(process.env.CHECKS_FILE, 'utf8')).check_runs;
+            if (!Array.isArray(descriptor.requiredChecks) || descriptor.requiredChecks.length === 0 || descriptor.requiredChecks.some((name) => typeof name !== 'string' || !name)) throw new Error('requiredChecks must name one or more GitHub Check Run names.');
+            if (!Array.isArray(checks)) throw new Error('Invalid GitHub Check Runs response.');
+            const required = descriptor.requiredChecks.map((name) => ({ name, runs: checks.filter((check) => check.name === name) }));
+            const failed = required.filter(({ runs }) => runs.some((run) => run.status === 'completed' && run.conclusion !== 'success'));
+            if (failed.length > 0) throw new Error(`Required CI checks failed, cancelled, skipped, or were blocked: ${failed.map(({ name }) => name).join(', ')}.`);
+            if (required.some(({ runs }) => runs.length !== 1 || runs[0].status !== 'completed')) process.exit(2);
+            if (required.some(({ runs }) => runs[0].conclusion !== 'success')) throw new Error('Required CI checks did not successfully execute.');
+            NODE
+            then exit 0; else status=$?; fi
+            if [ "$status" -ne 2 ] || [ "$attempt" -eq 18 ]; then
+              echo "::error title=Required CI checks unavailable::The exact release commit did not complete all declared Check Runs successfully."
+              exit "$status"
+            fi
+            sleep 10
+          done
       - name: Retain exact artifact for finalization
         if: steps.release.outputs.versioned == 'true'
         uses: actions/upload-artifact@v4
@@ -165,12 +177,10 @@ jobs:
             ${{ runner.temp }}/${{ steps.release.outputs.asset_name }}
             ${{ runner.temp }}/${{ steps.release.outputs.asset_name }}.sha256
             ${{ runner.temp }}/${{ steps.release.outputs.asset_name }}.provenance.json
-
   finalize:
     needs: release
     if: needs.release.outputs.versioned == 'true'
     runs-on: ubuntu-latest
-
     steps:
       - name: Create the scoped release token
         id: release-token
@@ -181,20 +191,17 @@ jobs:
           owner: ankhorage
           repositories: ${{ github.event.repository.name }}
           permission-contents: write
-
       - name: Checkout exact release commit
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ needs.release.outputs.release_sha }}
           token: ${{ steps.release-token.outputs.token }}
-
       - name: Download exact artifact
         uses: actions/download-artifact@v4
         with:
           name: release-${{ needs.release.outputs.package_version }}
           path: release-artifact
-
       - name: Finalize immutable artifact release
         env:
           ASSET_NAME: ${{ needs.release.outputs.asset_name }}
@@ -205,38 +212,22 @@ jobs:
           set -euo pipefail
           tag="v${RELEASE_VERSION}"
           asset="release-artifact/${ASSET_NAME}"
-          expected_sha="$(sha256sum "$asset" | cut -d ' ' -f1)"
+          expected_sha="$(cut -d ' ' -f1 "${asset}.sha256")"
           remote_sha="$(git ls-remote --tags origin "refs/tags/$tag" | cut -f1)"
           if [ -n "$remote_sha" ] && [ "$remote_sha" != "$RELEASE_SHA" ]; then
             echo "::error title=Release tag mismatch::${tag} points to ${remote_sha}, expected ${RELEASE_SHA}."
             exit 1
           fi
-          if [ -z "$remote_sha" ]; then
-            git tag "$tag" "$RELEASE_SHA"
-            git push origin "refs/tags/$tag"
-          fi
-          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"
-          fi
-          asset_metadata="$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json assets)"
-          if ASSET_METADATA="$asset_metadata" ASSET_NAME="$ASSET_NAME" node -e '
-            const assets = JSON.parse(process.env.ASSET_METADATA).assets;
-            process.exit(assets.some((asset) => asset.name === process.env.ASSET_NAME) ? 0 : 1);
-          '; then
-            gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET_NAME" --dir remote-artifact
-            actual_sha="$(sha256sum "remote-artifact/${ASSET_NAME}" | cut -d ' ' -f1)"
-            [ "$actual_sha" = "$expected_sha" ] || { echo "::error title=Release asset mismatch::Existing ${ASSET_NAME} bytes differ from the exact validated artifact."; exit 1; }
-          else
-            gh release upload "$tag" "$asset#${ASSET_NAME}" --repo "$GITHUB_REPOSITORY"
-          fi
-          for companion in "${ASSET_NAME}.sha256" "${ASSET_NAME}.provenance.json"; do
-            if ! ASSET_METADATA="$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json assets)" ASSET_NAME="$companion" node -e '
-              const assets = JSON.parse(process.env.ASSET_METADATA).assets;
-              process.exit(assets.some((asset) => asset.name === process.env.ASSET_NAME) ? 0 : 1);
-            '; then
-              gh release upload "$tag" "release-artifact/${companion}#${companion}" --repo "$GITHUB_REPOSITORY"
-            fi
+          if [ -z "$remote_sha" ]; then git tag "$tag" "$RELEASE_SHA"; git push origin "refs/tags/$tag"; fi
+          if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then gh release create "$tag" --repo "$GITHUB_REPOSITORY" --generate-notes --target "$RELEASE_SHA"; fi
+          for companion in "$ASSET_NAME" "${ASSET_NAME}.sha256" "${ASSET_NAME}.provenance.json"; do
+            gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$companion" --dir remote-artifact >/dev/null 2>&1 || gh release upload "$tag" "release-artifact/${companion}#${companion}" --repo "$GITHUB_REPOSITORY"
           done
-          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET_NAME" --dir verified-artifact
-          actual_sha="$(sha256sum "verified-artifact/${ASSET_NAME}" | cut -d ' ' -f1)"
-          [ "$actual_sha" = "$expected_sha" ] || { echo "::error title=Remote artifact verification failed::GitHub Release returned bytes with a different SHA-256."; exit 1; }
+          EXPECTED_SHA="$expected_sha" ASSET_NAME="$ASSET_NAME" RELEASE_SHA="$RELEASE_SHA" RELEASE_VERSION="$RELEASE_VERSION" node - <<'NODE'
+          const { createHash } = require('node:crypto'); const { readFileSync } = require('node:fs');
+          const asset = readFileSync(`remote-artifact/${process.env.ASSET_NAME}`); const sha = createHash('sha256').update(asset).digest('hex');
+          if (sha !== process.env.EXPECTED_SHA) throw new Error('Existing release asset bytes differ from the exact validated artifact.');
+          if (readFileSync(`remote-artifact/${process.env.ASSET_NAME}.sha256`, 'utf8') !== `${sha}  ${process.env.ASSET_NAME}\n`) throw new Error('Existing release checksum companion differs from the expected portable content.');
+          const expected = `${JSON.stringify({ asset: process.env.ASSET_NAME, commit: process.env.RELEASE_SHA, sha256: sha, version: process.env.RELEASE_VERSION })}\n`;
+          if (readFileSync(`remote-artifact/${process.env.ASSET_NAME}.provenance.json`, 'utf8') !== expected) throw new Error('Existing release provenance companion differs from the expected content.');
+          NODE
