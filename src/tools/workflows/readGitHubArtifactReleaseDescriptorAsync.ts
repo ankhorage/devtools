@@ -6,6 +6,7 @@ export interface GitHubArtifactReleaseDescriptor {
   readonly assetPath: string;
   readonly buildCommand: readonly string[];
   readonly requiredChecks: readonly string[];
+  readonly requiredWorkflow: string;
   readonly verifyCommand: readonly string[];
   readonly versionCommand: readonly string[];
 }
@@ -38,10 +39,19 @@ export async function readGitHubArtifactReleaseDescriptorAsync(
   const versionCommand = readCommand(value.versionCommand, 'versionCommand');
   const buildCommand = readCommand(value.buildCommand, 'buildCommand');
   const requiredChecks = readRequiredChecks(value.requiredChecks);
+  const requiredWorkflow = readRequiredWorkflow(value.requiredWorkflow);
   const verifyCommand = readCommand(value.verifyCommand, 'verifyCommand');
   const assetPath = readRelativePath(value.assetPath, 'assetPath', targetDirectory);
   const assetName = readAssetName(value.assetName);
-  return { assetName, assetPath, buildCommand, requiredChecks, verifyCommand, versionCommand };
+  return {
+    assetName,
+    assetPath,
+    buildCommand,
+    requiredChecks,
+    requiredWorkflow,
+    verifyCommand,
+    versionCommand,
+  };
 }
 
 /*** Determine whether the explicitly named artifact contract exists without interpreting its contents. */
@@ -101,6 +111,19 @@ function readRequiredChecks(value: unknown): readonly string[] {
     value.some((check) => check.length > 200 || !/^[A-Za-z0-9 ._:/()-]+$/u.test(check))
   ) {
     throw new Error(`${DESCRIPTOR_PATH} requiredChecks must name one or more required CI checks.`);
+  }
+  return value;
+}
+
+/*** Require one checked-in workflow file so check names cannot be satisfied by another workflow. */
+function readRequiredWorkflow(value: unknown): string {
+  if (
+    typeof value !== 'string' ||
+    !/^\.github\/workflows\/[A-Za-z0-9][A-Za-z0-9._-]*\.ya?ml$/u.test(value)
+  ) {
+    throw new Error(
+      `${DESCRIPTOR_PATH} requiredWorkflow must name one GitHub Actions workflow file.`,
+    );
   }
   return value;
 }

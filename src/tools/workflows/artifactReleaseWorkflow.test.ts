@@ -22,7 +22,9 @@ test('renders an artifact-only lane for a private non-npm consumer', async () =>
   expect(release).toContain('spawnSync(argv[0], argv.slice(1)');
   expect(release).not.toContain('python3');
   expect(release).toContain('permission-checks: read');
+  expect(release).toContain('permission-actions: read');
   expect(release).toContain('checks: read');
+  expect(release).toContain('actions: read');
   expect(release).toContain('permission-contents: read');
   expect(release.slice(release.indexOf('  finalize:'))).toContain('permission-contents: write');
   expect(release).toContain('Existing release asset bytes differ');
@@ -119,6 +121,7 @@ async function createArtifactConsumerAsync(input: { readonly assetPath: string }
       buildCommand: ['python3', 'build.py'],
       kind: 'github-artifact',
       requiredChecks: ['validate'],
+      requiredWorkflow: '.github/workflows/ci.yml',
       verifyCommand: ['python3', 'verify.py'],
       versionCommand: ['python3', 'version.py'],
     })}\n`,

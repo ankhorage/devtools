@@ -6,6 +6,7 @@ Repositories that do not publish an npm package may opt into the managed artifac
 {
   "kind": "github-artifact",
   "requiredChecks": ["validate"],
+  "requiredWorkflow": ".github/workflows/ci.yml",
   "versionCommand": ["python3", "scripts/release-version.py"],
   "buildCommand": ["python3", "scripts/build-release.py"],
   "verifyCommand": ["python3", "scripts/check-release.py"],
@@ -14,7 +15,7 @@ Repositories that do not publish an npm package may opt into the managed artifac
 }
 ```
 
-Each command is an argument array, never a shell string: the workflow reads the checked-in descriptor at runtime and executes the arrays with argv semantics. `requiredChecks` contains actual GitHub Check Run names, not workflow names. In the managed CI template the job Check Run is `validate`, whereas `CI` is only the workflow name. A WordPress repository must list the concrete Check Run names it actually protects (for example its `validate` and WordPress integration job names), rather than a generic workflow label. Missing, pending, failed, cancelled, skipped, billing-blocked, incomplete, or otherwise unsuccessful checks for the exact release commit fail closed after bounded polling.
+Each command is an argument array, never a shell string: the workflow reads the checked-in descriptor at runtime and executes the arrays with argv semantics. `requiredChecks` contains actual GitHub Check Run names, not workflow names. `requiredWorkflow` names the checked-in workflow file that owns those checks. In the managed CI template the job Check Run is `validate`, whereas `CI` is only the workflow name. A WordPress repository must list the concrete Check Run names it actually protects (for example its `validate` and WordPress integration job names), rather than a generic workflow label. Every required check must link through its Check Suite to exactly one successful run of `requiredWorkflow`, triggered by a `push` to `refs/heads/main` for the exact release commit. Missing, pending, failed, cancelled, skipped, billing-blocked, ambiguous, incomplete, or otherwise untrusted provenance fails closed after bounded polling.
 
 The version command must print one stable semantic version. A release is created only when that version is greater than the latest stable `v<version>` tag; unchanged versions do not upload or replace correct assets. Tags are resolved to commits, so both lightweight and annotated tags are supported. A tag or release target pointing at a different commit is a hard conflict.
 

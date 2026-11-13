@@ -108,9 +108,16 @@ test.each([
   'stale-success',
   'ambiguous',
   'incomplete-pagination',
+  'incomplete-workflow-pagination',
   'api-403',
+  'api-404',
   'api-500',
   'invalid-response',
+  'invalid-workflow-response',
+  'foreign-workflow',
+  'missing-workflow-provenance',
+  'pr-ci-success',
+  'pr-ci-billing-blocked',
 ] as const)('executes declared CI gate case %s without publishing on failure', async (mode) => {
   const scripts = extractScripts(await renderArtifactWorkflowAsync());
   const fixture = await createFixtureAsync({ initialRelease: false, tagged: false });

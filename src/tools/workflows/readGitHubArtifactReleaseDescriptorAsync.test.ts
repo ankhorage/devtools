@@ -22,6 +22,7 @@ test('reads an explicit artifact-only descriptor without using package identity'
     buildCommand: ['python3', 'build.py'],
     kind: 'github-artifact',
     requiredChecks: ['CI / validate'],
+    requiredWorkflow: '.github/workflows/ci.yml',
     verifyCommand: ['python3', 'check.py'],
     versionCommand: ['python3', 'version.py'],
   });
@@ -31,6 +32,7 @@ test('reads an explicit artifact-only descriptor without using package identity'
     assetPath: 'dist/plugin.zip',
     buildCommand: ['python3', 'build.py'],
     requiredChecks: ['CI / validate'],
+    requiredWorkflow: '.github/workflows/ci.yml',
     verifyCommand: ['python3', 'check.py'],
     versionCommand: ['python3', 'version.py'],
   });
@@ -43,6 +45,7 @@ test('rejects path traversal and executable shell syntax in artifact descriptors
     buildCommand: 'python3 build.py',
     kind: 'github-artifact',
     requiredChecks: ['CI'],
+    requiredWorkflow: '.github/workflows/ci.yml',
     verifyCommand: [],
     versionCommand: ['sh', '-c', 'echo 1.0.0'],
   });
@@ -62,6 +65,7 @@ test.each([
     buildCommand: ['node', '-e', 'process.exit(0)'],
     kind: 'github-artifact',
     requiredChecks: ['validate'],
+    requiredWorkflow: '.github/workflows/ci.yml',
     verifyCommand: ['node', '-e', 'process.exit(0)'],
     versionCommand: ['node', '-e', 'console.log("1.0.0")'],
     [field]: value,
@@ -69,6 +73,26 @@ test.each([
 
   expect(readGitHubArtifactReleaseDescriptorAsync(directory)).rejects.toThrow();
 });
+
+test.each(['ci.yml', '.github/workflows/../ci.yml', '.github/workflows/ci.txt'])(
+  'rejects an unsafe required workflow path: %s',
+  async (requiredWorkflow) => {
+    const directory = await createDescriptorFixtureAsync({
+      assetName: 'plugin.zip',
+      assetPath: 'dist/plugin.zip',
+      buildCommand: ['node', '-e', 'process.exit(0)'],
+      kind: 'github-artifact',
+      requiredChecks: ['validate'],
+      requiredWorkflow,
+      verifyCommand: ['node', '-e', 'process.exit(0)'],
+      versionCommand: ['node', '-e', 'console.log("1.0.0")'],
+    });
+
+    expect(readGitHubArtifactReleaseDescriptorAsync(directory)).rejects.toThrow(
+      'requiredWorkflow must name one GitHub Actions workflow file',
+    );
+  },
+);
 
 /*** Create one checked-in descriptor fixture without requiring a package manifest or Changesets. */
 async function createDescriptorFixtureAsync(descriptor: unknown): Promise<string> {

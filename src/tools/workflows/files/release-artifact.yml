@@ -12,6 +12,7 @@ on:
 
 # The default token reads only exact-commit Check Runs. A scoped App token performs release mutation.
 permissions:
+  actions: read
   checks: read
   contents: read
 
@@ -37,6 +38,7 @@ jobs:
           private-key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}
           owner: ankhorage
           repositories: ${{ github.event.repository.name }}
+          permission-actions: read
           permission-checks: read
           permission-contents: read
       - name: Diagnose unavailable scoped release token
@@ -172,22 +174,51 @@ jobs:
           RELEASE_SHA: ${{ steps.release.outputs.release_sha }}
         run: |
           set -euo pipefail
+          gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/actions/workflows?per_page=100" > "${RUNNER_TEMP}/release-workflows.json"
           for attempt in $(seq 1 18); do
-            gh api "repos/${GITHUB_REPOSITORY}/commits/${RELEASE_SHA}/check-runs?filter=latest&per_page=100" > "${RUNNER_TEMP}/release-checks.json"
-            if CHECKS_FILE="${RUNNER_TEMP}/release-checks.json" node - <<'NODE'
+            gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/commits/${RELEASE_SHA}/check-runs?filter=latest&per_page=100" > "${RUNNER_TEMP}/release-checks.json"
+            gh api --paginate --slurp "repos/${GITHUB_REPOSITORY}/actions/runs?head_sha=${RELEASE_SHA}&event=push&branch=main&per_page=100" > "${RUNNER_TEMP}/release-workflow-runs.json"
+            if CHECKS_FILE="${RUNNER_TEMP}/release-checks.json" RUNS_FILE="${RUNNER_TEMP}/release-workflow-runs.json" WORKFLOWS_FILE="${RUNNER_TEMP}/release-workflows.json" node - <<'NODE'
             const { readFileSync } = require('node:fs');
             const descriptor = JSON.parse(readFileSync('.ankh/release-distribution.json', 'utf8'));
-            const response = JSON.parse(readFileSync(process.env.CHECKS_FILE, 'utf8'));
-            const checks = response.check_runs;
+            const checkPages = JSON.parse(readFileSync(process.env.CHECKS_FILE, 'utf8'));
             if (!Array.isArray(descriptor.requiredChecks) || descriptor.requiredChecks.length === 0 || descriptor.requiredChecks.some((name) => typeof name !== 'string' || !name)) throw new Error('requiredChecks must name one or more GitHub Check Run names.');
-            if (!Array.isArray(checks)) throw new Error('Invalid GitHub Check Runs response.');
-            if (!Number.isSafeInteger(response.total_count) || response.total_count > checks.length) throw new Error('Incomplete GitHub Check Runs response; refusing to publish.');
+            if (typeof descriptor.requiredWorkflow !== 'string' || !/^\.github\/workflows\/[A-Za-z0-9][A-Za-z0-9._-]*\.ya?ml$/u.test(descriptor.requiredWorkflow)) throw new Error('requiredWorkflow must name one GitHub Actions workflow file.');
+            if (!Array.isArray(checkPages) || checkPages.some((page) => !page || !Array.isArray(page.check_runs))) throw new Error('Invalid GitHub Check Runs response.');
+            const checks = checkPages.flatMap((page) => page.check_runs);
+            if (!checkPages.every((page) => Number.isSafeInteger(page.total_count)) || checks.length !== checkPages[0].total_count) throw new Error('Incomplete GitHub Check Runs response; refusing to publish.');
+            const workflowPages = JSON.parse(readFileSync(process.env.WORKFLOWS_FILE, 'utf8'));
+            if (!Array.isArray(workflowPages) || workflowPages.some((page) => !page || !Array.isArray(page.workflows))) throw new Error('Invalid GitHub Actions Workflows response.');
+            const workflows = workflowPages.flatMap((page) => page.workflows);
+            if (!workflowPages.every((page) => Number.isSafeInteger(page.total_count)) || workflows.length !== workflowPages[0].total_count) throw new Error('Incomplete GitHub Actions Workflows response; refusing to publish.');
+            const workflow = workflows.filter((candidate) => candidate.path === descriptor.requiredWorkflow);
+            if (workflow.length !== 1 || !Number.isSafeInteger(workflow[0].id)) throw new Error('Trusted CI workflow provenance is missing or ambiguous.');
             const required = descriptor.requiredChecks.map((name) => ({ name, runs: checks.filter((check) => check.name === name) }));
             if (required.some(({ runs }) => runs.some((run) => run.head_sha !== process.env.RELEASE_SHA))) throw new Error('Required CI checks must belong to the exact release commit.');
             const failed = required.filter(({ runs }) => runs.some((run) => run.status === 'completed' && run.conclusion !== 'success'));
             if (failed.length > 0) throw new Error(`Required CI checks failed, cancelled, skipped, or were blocked: ${failed.map(({ name }) => name).join(', ')}.`);
             if (required.some(({ runs }) => runs.length !== 1 || runs[0].status !== 'completed')) process.exit(2);
             if (required.some(({ runs }) => runs[0].conclusion !== 'success')) throw new Error('Required CI checks did not successfully execute.');
+            const workflowId = workflow[0].id;
+            const runResponse = JSON.parse(readFileSync(process.env.RUNS_FILE, 'utf8'));
+            if (!Array.isArray(runResponse) || runResponse.some((page) => !page || !Array.isArray(page.workflow_runs))) throw new Error('Invalid GitHub Actions Workflow Runs response.');
+            const workflowRuns = runResponse.flatMap((page) => page.workflow_runs);
+            if (!runResponse.every((page) => Number.isSafeInteger(page.total_count)) || workflowRuns.length !== runResponse[0].total_count) throw new Error('Incomplete GitHub Actions Workflow Runs response; refusing to publish.');
+            const trusted = workflowRuns.filter((run) => run.workflow_id === workflowId && run.event === 'push' && run.head_branch === 'main' && run.head_sha === process.env.RELEASE_SHA);
+            const incomplete = trusted.some((run) => run.status !== 'completed');
+            const failedRuns = trusted.filter((run) => run.status === 'completed' && run.conclusion !== 'success');
+            if (failedRuns.length > 0) throw new Error('Trusted main CI workflow failed, was cancelled, skipped, or was blocked.');
+            if (incomplete) process.exit(2);
+            const requiredSuites = required.map(({ name, runs }) => {
+              const suiteId = runs[0].check_suite?.id;
+              if (!Number.isSafeInteger(suiteId)) throw new Error(`Required CI check ${name} has no Check Suite provenance.`);
+              return { name, suiteId };
+            });
+            const provenance = requiredSuites.map(({ name, suiteId }) => ({ name, runs: trusted.filter((run) => run.check_suite_id === suiteId) }));
+            if (provenance.some(({ runs }) => runs.length === 0)) process.exit(2);
+            if (provenance.some(({ runs }) => runs.length !== 1)) throw new Error('Required CI check provenance is ambiguous.');
+            if (provenance.some(({ runs }) => runs[0].status !== 'completed')) process.exit(2);
+            if (provenance.some(({ runs }) => runs[0].conclusion !== 'success')) throw new Error('Trusted main CI workflow did not successfully execute.');
           NODE
             then exit 0; else status=$?; fi
             if [ "$status" -ne 2 ] || [ "$attempt" -eq 18 ]; then
