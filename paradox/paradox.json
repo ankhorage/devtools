@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.4.4",
+      "value": "v2.5.0",
       "color": "cb3837"
     },
     {
@@ -882,6 +882,7 @@
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/resolveAtlasAuditPolicyAsync.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
+        "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
         "src/tools/workflows/renderRenovateConfigAsync.ts",
         "src/tools/workflows/renderRenovateWorkflowAsync.ts",
         "src/tools/workflows/renderWorkflowAsync.ts"
@@ -896,6 +897,16 @@
       "dependencies": [],
       "exports": [
         "readCurrentDoctorVersion"
+      ]
+    },
+    {
+      "path": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "GitHubArtifactReleaseDescriptor",
+        "hasGitHubArtifactReleaseDescriptorAsync",
+        "readGitHubArtifactReleaseDescriptorAsync"
       ]
     },
     {
@@ -5010,7 +5021,29 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 41,
+        "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "createReleaseWorkflowDefinition",
+      "description": "Render the legacy npm lane unchanged unless a repository explicitly opts into artifact-only release.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/index.ts",
+        "line": 51,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasChangesetsConfigAsync",
+      "description": "Check the established Changesets opt-in without treating any read failure as absence.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/index.ts",
+        "line": 78,
         "column": 1
       }
     },
@@ -5021,7 +5054,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/workflows/index.ts",
-        "line": 58,
+        "line": 89,
         "column": 1
       }
     },
@@ -5033,6 +5066,105 @@
       "sourceLocation": {
         "filePath": "src/tools/workflows/readCurrentDoctorVersion.ts",
         "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "readGitHubArtifactReleaseDescriptorAsync",
+      "description": "Read the opted-in artifact release contract before rendering its static workflow.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 17,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasGitHubArtifactReleaseDescriptorAsync",
+      "description": "Determine whether the explicitly named artifact contract exists without interpreting its contents.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "readCommand",
+      "description": "Require a command argv so workflow execution never evaluates descriptor data as a shell program.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 71,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRelativePath",
+      "description": "Keep artifact paths repository-relative and make traversal impossible before workflow rendering.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 79,
+        "column": 1
+      }
+    },
+    {
+      "name": "readAssetName",
+      "description": "Restrict the release label to one plain filename, never a path interpreted by GitHub CLI.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRequiredChecks",
+      "description": "Require named successful CI gates so an unexecuted or blocked check can never publish an artifact.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "readRequiredWorkflow",
+      "description": "Require one checked-in workflow file so check names cannot be satisfied by another workflow.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": "Narrow unknown JSON values before reading descriptor fields.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNonEmptyStringArray",
+      "description": "Narrow a checked-in command or check-name list to safe non-empty string values.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
+        "line": 137,
         "column": 1
       }
     },
@@ -5559,6 +5691,11 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/tools/workflows/readCurrentDoctorVersion.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -8143,15 +8280,9 @@
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
-        "fromSymbol": "isApplicable",
-        "toSymbol": "access",
-        "callExpression": "access",
-        "sourcePath": "src/tools/workflows/index.ts"
-      },
-      {
-        "fromSymbol": "isApplicable",
-        "toSymbol": "join",
-        "callExpression": "join",
+        "fromSymbol": "src/tools/workflows/index.ts",
+        "toSymbol": "createReleaseWorkflowDefinition",
+        "callExpression": "createReleaseWorkflowDefinition",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -8191,6 +8322,36 @@
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
+        "fromSymbol": "isApplicable",
+        "toSymbol": "hasGitHubArtifactReleaseDescriptorAsync",
+        "callExpression": "hasGitHubArtifactReleaseDescriptorAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "isApplicable",
+        "toSymbol": "hasChangesetsConfigAsync",
+        "callExpression": "hasChangesetsConfigAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "render",
+        "toSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "callExpression": "readGitHubArtifactReleaseDescriptorAsync",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "hasChangesetsConfigAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "hasChangesetsConfigAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
         "fromSymbol": "render",
         "toSymbol": "renderRenovateWorkflowAsync",
         "callExpression": "renderRenovateWorkflowAsync",
@@ -8207,6 +8368,90 @@
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/tools/workflows/readCurrentDoctorVersion.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readCommand",
+        "callExpression": "readCommand",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readRequiredChecks",
+        "callExpression": "readRequiredChecks",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readRequiredWorkflow",
+        "callExpression": "readRequiredWorkflow",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readRelativePath",
+        "callExpression": "readRelativePath",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readAssetName",
+        "callExpression": "readAssetName",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "hasGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "hasGitHubArtifactReleaseDescriptorAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readCommand",
+        "toSymbol": "isNonEmptyStringArray",
+        "callExpression": "isNonEmptyStringArray",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readRelativePath",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readRelativePath",
+        "toSymbol": "relative",
+        "callExpression": "relative",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
+      },
+      {
+        "fromSymbol": "readRequiredChecks",
+        "toSymbol": "isNonEmptyStringArray",
+        "callExpression": "isNonEmptyStringArray",
+        "sourcePath": "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts"
       },
       {
         "fromSymbol": "renderRenovateConfigAsync",

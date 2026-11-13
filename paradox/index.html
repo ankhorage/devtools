@@ -419,12 +419,17 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/workflows/index.ts">
       src/tools/workflows/index.ts
-      <small>2 functions</small>
+      <small>4 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/workflows/readCurrentDoctorVersion.ts">
       src/tools/workflows/readCurrentDoctorVersion.ts
       <small>1 function</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts">
+      src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts
+      <small>9 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/workflows/renderRenovateConfigAsync.ts">
@@ -453,7 +458,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>80</strong><span class="muted">modules</span></div>
+        <div><strong>81</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -844,16 +849,21 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>planCiImpact</code></p>
-  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/managed-files/managedFiles.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/resolveAtlasAuditPolicyAsync.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/renderRenovateConfigAsync.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
+  </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/managed-files/managedFiles.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/resolveAtlasAuditPolicyAsync.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts src/tools/workflows/renderRenovateConfigAsync.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
     <h3>src/tools/workflows/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/managed-files/managedFiles.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/resolveAtlasAuditPolicyAsync.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/renderRenovateConfigAsync.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts</code>, <code>src/features/managed-files/managedFiles.ts</code>, <code>src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts</code>, <code>src/policy/resolveAtlasAuditPolicyAsync.ts</code>, <code>src/tools/workflows/readCurrentDoctorVersion.ts</code>, <code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts</code>, <code>src/tools/workflows/renderRenovateConfigAsync.ts</code>, <code>src/tools/workflows/renderRenovateWorkflowAsync.ts</code>, <code>src/tools/workflows/renderWorkflowAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>workflowManagedFiles</code></p>
   </article><article class="item" data-search="src/tools/workflows/readCurrentDoctorVersion.ts readCurrentDoctorVersion">
     <h3>src/tools/workflows/readCurrentDoctorVersion.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>readCurrentDoctorVersion</code></p>
+  </article><article class="item" data-search="src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts GitHubArtifactReleaseDescriptor hasGitHubArtifactReleaseDescriptorAsync readGitHubArtifactReleaseDescriptorAsync">
+    <h3>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>GitHubArtifactReleaseDescriptor</code>, <code>hasGitHubArtifactReleaseDescriptorAsync</code>, <code>readGitHubArtifactReleaseDescriptorAsync</code></p>
   </article><article class="item" data-search="src/tools/workflows/renderRenovateConfigAsync.ts renderRenovateConfigAsync">
     <h3>src/tools/workflows/renderRenovateConfigAsync.ts</h3>
     <p class="muted">Referenced module</p>
@@ -1834,11 +1844,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolveAtlasAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts[&quot;src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
@@ -2127,11 +2140,14 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolveAtlasAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts[&quot;src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
@@ -2227,6 +2243,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_files_ci_impact_ts[&quot;src/tools/workflows/files/ci-impact.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts[&quot;src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
@@ -2351,6 +2368,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolveAtlasAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2434,6 +2452,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_files_ci_impact_ts[&quot;src/tools/workflows/files/ci-impact.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts[&quot;src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
@@ -2558,6 +2577,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_policy_resolveAtlasAuditPolicyAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readCurrentDoctorVersion_ts
+  module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateConfigAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
@@ -2643,6 +2663,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_files_ci_impact_ts[&quot;src/tools/workflows/files/ci-impact.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts[&quot;src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
@@ -2780,6 +2801,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_files_ci_impact_ts[&quot;src/tools/workflows/files/ci-impact.ts&quot;]
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   module_src_tools_workflows_readCurrentDoctorVersion_ts[&quot;src/tools/workflows/readCurrentDoctorVersion.ts&quot;]
+  module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts[&quot;src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
@@ -4644,12 +4666,22 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/workflows/index.ts</h2>
       <article class="item" data-search="createWorkflowDefinition src/tools/workflows/index.ts Create a managed workflow definition rendered from current shared runtime policies.">
     <h3>createWorkflowDefinition</h3>
-    <p class="muted"><code>src/tools/workflows/index.ts:41:1</code></p>
+    <p class="muted"><code>src/tools/workflows/index.ts:34:1</code></p>
     <p>Create a managed workflow definition rendered from current shared runtime policies.</p>
+    
+  </article><article class="item" data-search="createReleaseWorkflowDefinition src/tools/workflows/index.ts Render the legacy npm lane unchanged unless a repository explicitly opts into artifact-only release.">
+    <h3>createReleaseWorkflowDefinition</h3>
+    <p class="muted"><code>src/tools/workflows/index.ts:51:1</code></p>
+    <p>Render the legacy npm lane unchanged unless a repository explicitly opts into artifact-only release.</p>
+    
+  </article><article class="item" data-search="hasChangesetsConfigAsync src/tools/workflows/index.ts Check the established Changesets opt-in without treating any read failure as absence.">
+    <h3>hasChangesetsConfigAsync</h3>
+    <p class="muted"><code>src/tools/workflows/index.ts:78:1</code></p>
+    <p>Check the established Changesets opt-in without treating any read failure as absence.</p>
     
   </article><article class="item" data-search="createRenovateWorkflowDefinition src/tools/workflows/index.ts Creates the managed workflow whose immutable digest remains Renovate-owned.">
     <h3>createRenovateWorkflowDefinition</h3>
-    <p class="muted"><code>src/tools/workflows/index.ts:58:1</code></p>
+    <p class="muted"><code>src/tools/workflows/index.ts:89:1</code></p>
     <p>Creates the managed workflow whose immutable digest remains Renovate-owned.</p>
     
   </article>
@@ -4661,6 +4693,56 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>readCurrentDoctorVersion</h3>
     <p class="muted"><code>src/tools/workflows/readCurrentDoctorVersion.ts:8:1</code></p>
     <p>Read the exact Doctor version owned by the current Devtools package release.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-tools-workflows-readgithubartifactreleasedescriptorasync-ts" class="view" data-view="src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts</h2>
+      <article class="item" data-search="readGitHubArtifactReleaseDescriptorAsync src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Read the opted-in artifact release contract before rendering its static workflow.">
+    <h3>readGitHubArtifactReleaseDescriptorAsync</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:17:1</code></p>
+    <p>Read the opted-in artifact release contract before rendering its static workflow.</p>
+    
+  </article><article class="item" data-search="hasGitHubArtifactReleaseDescriptorAsync src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Determine whether the explicitly named artifact contract exists without interpreting its contents.">
+    <h3>hasGitHubArtifactReleaseDescriptorAsync</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:58:1</code></p>
+    <p>Determine whether the explicitly named artifact contract exists without interpreting its contents.</p>
+    
+  </article><article class="item" data-search="readCommand src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Require a command argv so workflow execution never evaluates descriptor data as a shell program.">
+    <h3>readCommand</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:71:1</code></p>
+    <p>Require a command argv so workflow execution never evaluates descriptor data as a shell program.</p>
+    
+  </article><article class="item" data-search="readRelativePath src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Keep artifact paths repository-relative and make traversal impossible before workflow rendering.">
+    <h3>readRelativePath</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:79:1</code></p>
+    <p>Keep artifact paths repository-relative and make traversal impossible before workflow rendering.</p>
+    
+  </article><article class="item" data-search="readAssetName src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Restrict the release label to one plain filename, never a path interpreted by GitHub CLI.">
+    <h3>readAssetName</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:100:1</code></p>
+    <p>Restrict the release label to one plain filename, never a path interpreted by GitHub CLI.</p>
+    
+  </article><article class="item" data-search="readRequiredChecks src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Require named successful CI gates so an unexecuted or blocked check can never publish an artifact.">
+    <h3>readRequiredChecks</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:108:1</code></p>
+    <p>Require named successful CI gates so an unexecuted or blocked check can never publish an artifact.</p>
+    
+  </article><article class="item" data-search="readRequiredWorkflow src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Require one checked-in workflow file so check names cannot be satisfied by another workflow.">
+    <h3>readRequiredWorkflow</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:119:1</code></p>
+    <p>Require one checked-in workflow file so check names cannot be satisfied by another workflow.</p>
+    
+  </article><article class="item" data-search="isRecord src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Narrow unknown JSON values before reading descriptor fields.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:132:1</code></p>
+    <p>Narrow unknown JSON values before reading descriptor fields.</p>
+    
+  </article><article class="item" data-search="isNonEmptyStringArray src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts Narrow a checked-in command or check-name list to safe non-empty string values.">
+    <h3>isNonEmptyStringArray</h3>
+    <p class="muted"><code>src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts:137:1</code></p>
+    <p>Narrow a checked-in command or check-name list to safe non-empty string values.</p>
     
   </article>
     </section>

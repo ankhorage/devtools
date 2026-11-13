@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.5.0
+
+### Minor Changes
+
+- 5ca0fd9: Add an opt-in managed GitHub artifact-only release workflow for non-npm distributions.
+
 ## 2.4.4
 
 ### Patch Changes
