@@ -48,12 +48,7 @@ test('executes recovery selection with a frozen packed Devtools consumer', async
   const initialLockfile = await readFile(join(newRelease.directory, 'bun.lock'), 'utf8');
   runDetection(newRelease.directory, newRelease.outputPath, scripts.detection, '0.9.0');
   expect(await readFile(newRelease.outputPath, 'utf8')).toContain('recovery=false');
-  await runSelectedPathAsync(
-    newRelease.directory,
-    newRelease.outputPath,
-    scripts,
-    '0.9.0',
-  );
+  await runSelectedPathAsync(newRelease.directory, newRelease.outputPath, scripts, '0.9.0');
   expect(await readFile(join(newRelease.directory, 'bun.lock'), 'utf8')).not.toBe(initialLockfile);
   expect(release).toContain('bun install --frozen-lockfile');
 }, 60_000);
