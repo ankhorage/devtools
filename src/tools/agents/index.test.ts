@@ -1,4 +1,4 @@
-import { lstat, mkdtemp, readFile, readlink, rm, writeFile } from 'node:fs/promises';
+import { lstat, mkdir, mkdtemp, readFile, readlink, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
@@ -81,6 +81,84 @@ bun run format
   expect(contents).toContain('`.js`, `.mjs`, or `.cjs` are not allowed');
 });
 
+test('managed AGENTS.md renders validated source metadata without consulting README content', async () => {
+  const target = await createTarget({
+    name: '@ankhorage/example',
+    description: 'Generic manifest description.',
+  });
+  await writeRepositoryMetadata(target, 'source', {
+    ...validMetadata,
+    title: 'Example `tool`',
+    summary: 'Coordinates *trusted* <tasks>.',
+    audience: ['Maintainers [and] integrators.'],
+    boundaries: ['Does not own _deployment_.'],
+    responsibilities: ['Render canonical agent guidance.'],
+    architecture: {
+      role: 'Tooling edge over authored metadata.',
+      invariants: ['Never execute repository-owned code.'],
+    },
+  });
+  await writeFile(join(target, 'README.md'), 'README content must not become agent guidance.\n');
+
+  await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });
+  const contents = await readFile(join(target, 'AGENTS.md'), 'utf8');
+
+  expect(contents).toMatch(/Title: Example \\`tool\\`/u);
+  expect(contents).toContain('Coordinates \\*trusted\\* \\<tasks\\>.');
+  expect(contents).toContain('- Maintainers \\[and\\] integrators.');
+  expect(contents).toContain('## Scope and boundaries');
+  expect(contents).toContain('- Does not own \\_deployment\\_.');
+  expect(contents).toContain('Architecture role: Tooling edge over authored metadata.');
+  expect(contents).toContain('- Never execute repository-owned code.');
+  expect(contents).not.toContain('Generic manifest description.');
+  expect(contents).not.toContain('README content must not become agent guidance.');
+  expect(await syncManagedFiles(target, agentsManagedFiles, { dryRun: false })).toEqual([
+    { relativePath: 'AGENTS.md', action: 'unchanged' },
+    { relativePath: 'CLAUDE.md', action: 'unchanged' },
+    { relativePath: 'GEMINI.md', action: 'unchanged' },
+  ]);
+});
+
+test('managed AGENTS.md supports the canonical non-source metadata profile', async () => {
+  const target = await createTarget({ name: 'configuration-repository' });
+  await writeRepositoryMetadata(target, 'non-source', {
+    ...validMetadata,
+    kind: 'configuration',
+    title: 'Configuration repository',
+  });
+
+  await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });
+  expect(await readFile(join(target, 'AGENTS.md'), 'utf8')).toContain(
+    'Title: Configuration repository',
+  );
+});
+
+test('managed AGENTS.md rejects invalid present metadata instead of using the fallback', async () => {
+  const target = await createTarget({
+    name: '@ankhorage/example',
+    description: 'Fallback must not hide invalid metadata.',
+  });
+  await mkdir(join(target, 'src/metadata'), { recursive: true });
+  await writeFile(
+    join(target, 'src/metadata/repository.json'),
+    JSON.stringify({ ...validMetadata, boundaries: 'not-an-array' }),
+  );
+
+  let thrownError: unknown;
+  try {
+    await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });
+  } catch (error) {
+    thrownError = error;
+  }
+  if (!(thrownError instanceof Error)) {
+    throw new Error('Expected invalid present metadata to fail managed AGENTS rendering.');
+  }
+  expect(thrownError.message).toContain(
+    'Invalid repository metadata at src/metadata/repository.json',
+  );
+  expect(await Bun.file(join(target, 'AGENTS.md')).exists()).toBe(false);
+});
+
 test('managed AGENTS.md updates package identity and handles missing identity truthfully', async () => {
   const target = await createTarget({});
   await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });
@@ -105,3 +183,21 @@ async function createTarget(manifest: Record<string, unknown>): Promise<string> 
   await writeFile(join(target, 'package.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   return target;
 }
+
+async function writeRepositoryMetadata(
+  target: string,
+  profile: 'non-source' | 'source',
+  metadata: Record<string, unknown>,
+): Promise<void> {
+  const directory = profile === 'source' ? join(target, 'src/metadata') : join(target, 'metadata');
+  await mkdir(directory, { recursive: true });
+  await writeFile(join(directory, 'repository.json'), `${JSON.stringify(metadata, null, 2)}\n`);
+}
+
+const validMetadata = {
+  schemaVersion: 1,
+  kind: 'tooling',
+  title: 'Example tooling',
+  summary: 'Coordinates repository automation.',
+  purpose: 'Provide deterministic managed agent guidance.',
+};

@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
+import { renderRepositorySectionsAsync } from './renderRepositorySectionsAsync.js';
 
 export const agentsManagedFiles = [
   {
@@ -24,6 +25,10 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
   const packageName = readNonEmptyString(manifest.name) ?? 'Package name not declared';
   const description =
     readNonEmptyString(manifest.description) ?? 'No package description is declared.';
+  const repositorySections = await renderRepositorySectionsAsync(targetDirectory, {
+    description,
+    packageName,
+  });
   const sections = [
     renderCurrentArchitectureInstructions(),
     renderStandaloneRepositoryInstructions(),
@@ -37,12 +42,7 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
 
 <!-- This file is managed by @ankhorage/devtools. -->
 
-## Repository
-
-Package: \`${escapeInlineCode(packageName)}\`
-
-${description}
-
+${repositorySections}
 ${sections}`;
 }
 
@@ -170,11 +170,6 @@ async function readPackageManifest(targetDirectory: string): Promise<Record<stri
     }
     throw error;
   }
-}
-
-/*** Escape inline-code delimiters before interpolating repository metadata into Markdown. */
-function escapeInlineCode(value: string): string {
-  return value.replaceAll('`', '\\`');
 }
 
 /*** Check whether an unknown failure carries a Node.js error code. */
