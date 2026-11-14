@@ -4,7 +4,9 @@ import { getReadmeDocumentationErrors } from './readmeDocs.js';
 
 describe('README documentation validation', () => {
   it('accepts a README that documents the canonical generated surface', () => {
-    expect(getReadmeDocumentationErrors(createCanonicalReadmeFixture(), 'Ankhorage Devtools')).toEqual([]);
+    expect(
+      getReadmeDocumentationErrors(createCanonicalReadmeFixture(), 'Ankhorage Devtools'),
+    ).toEqual([]);
   });
 
   it('reports missing canonical usage references', () => {
