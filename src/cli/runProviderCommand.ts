@@ -2,6 +2,7 @@ import type { DevtoolsProviderCommandContext } from '../types/provider-command.j
 import type { DevtoolsCommandDefinition } from './commands.js';
 import { sync } from './commands/apm/sync.js';
 import { validate } from './commands/apm/validate.js';
+import { runMetadataCommandAsync } from './commands/metadata/runMetadataCommandAsync.js';
 import { build } from './commands/structure/build.js';
 import { check } from './commands/structure/check.js';
 import { runExternalTool } from './runExternalTool.js';
@@ -17,6 +18,9 @@ export async function runProviderCommand(
   }
   if (command.kind === 'structure') {
     return command.operation === 'build' ? build(argv, context) : check(argv, context);
+  }
+  if (command.kind === 'metadata') {
+    return await runMetadataCommandAsync(command.operation, argv, context);
   }
   if (command.kind === 'external') {
     return await runExternalTool(command, argv, {

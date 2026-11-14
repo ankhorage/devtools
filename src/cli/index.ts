@@ -8,6 +8,8 @@
  * `prettier`, `knip`, `package`, `workflows`, and `vscode` sync/status subcommands.
  * Owner packages can opt into deterministic structural metadata with
  * `ankh devtools structure build` and verify committed evidence with `ankh devtools structure check`.
+ * Repository metadata authoring is available through `ankh devtools metadata init` and
+ * `ankh devtools metadata status`; it is advisory and never enables Doctor enforcement.
  *
  * Sync commands accept an optional target directory and `--dry-run`. Aggregate sync is
  * deterministic and idempotent: canonical managed files and skill trees are created or updated,

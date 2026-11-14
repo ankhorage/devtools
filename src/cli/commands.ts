@@ -34,11 +34,17 @@ interface DevtoolsStructureCommandDefinition extends DevtoolsCommandBase {
   readonly operation: 'build' | 'check';
 }
 
+interface DevtoolsMetadataCommandDefinition extends DevtoolsCommandBase {
+  readonly kind: 'metadata';
+  readonly operation: 'init' | 'status';
+}
+
 export type DevtoolsCommandDefinition =
   | DevtoolsExternalCommandDefinition
   | DevtoolsRepositoryCommandDefinition
   | DevtoolsApmReleaseCommandDefinition
-  | DevtoolsStructureCommandDefinition;
+  | DevtoolsStructureCommandDefinition
+  | DevtoolsMetadataCommandDefinition;
 
 const DEVTOOLS_COMMANDS = [
   {
@@ -68,6 +74,20 @@ const DEVTOOLS_COMMANDS = [
     path: ['structure', 'check'],
     capability: 'devtools.structure.check',
     summary: 'Verify structural descriptor evidence is current.',
+  },
+  {
+    kind: 'metadata',
+    operation: 'init',
+    path: ['metadata', 'init'],
+    capability: 'devtools.metadata.init',
+    summary: 'Create only missing repository metadata templates.',
+  },
+  {
+    kind: 'metadata',
+    operation: 'status',
+    path: ['metadata', 'status'],
+    capability: 'devtools.metadata.status',
+    summary: 'Report advisory authored repository metadata status.',
   },
   externalCommand(
     'changeset',

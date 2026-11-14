@@ -80,6 +80,36 @@
         "description": "Verify structural descriptor evidence is current."
       },
       {
+        "id": "devtools.metadata.init",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Initialize repository metadata",
+        "description": "Create only missing repository metadata templates."
+      },
+      {
+        "id": "devtools.metadata.status",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Check repository metadata",
+        "description": "Report advisory authored repository metadata status."
+      },
+      {
         "id": "devtools.changeset",
         "owner": "@ankhorage/devtools",
         "access": [
@@ -497,9 +527,9 @@
   "dependencies": {
     "@ankhorage/apm": "^0.8.15",
     "@ankhorage/capability": "^0.2.2",
-    "@ankhorage/contracts": "^26.4.0",
+    "@ankhorage/contracts": "^26.11.0",
     "@ankhorage/project-detector": "^0.3.5",
-    "@ankhorage/rules-repository": "0.2.3",
+    "@ankhorage/rules-repository": "^0.4.0",
     "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
     "@eslint/compat": "^2.1.1",

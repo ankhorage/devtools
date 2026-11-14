@@ -9,6 +9,8 @@ const EXPECTED_COMMAND_PATHS = [
   'apm validate',
   'structure build',
   'structure check',
+  'metadata init',
+  'metadata status',
   'changeset',
   'lint',
   'format',

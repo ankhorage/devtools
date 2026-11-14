@@ -35,6 +35,22 @@ export const CAPABILITIES = [
     description: 'Verify structural descriptor evidence is current.',
   },
   {
+    id: 'devtools.metadata.init',
+    owner: '@ankhorage/devtools',
+    access: ['invoke'],
+    binding: { kind: 'action', bindableAs: ['target'] },
+    label: 'Initialize repository metadata',
+    description: 'Create only missing repository metadata templates.',
+  },
+  {
+    id: 'devtools.metadata.status',
+    owner: '@ankhorage/devtools',
+    access: ['invoke'],
+    binding: { kind: 'action', bindableAs: ['target'] },
+    label: 'Check repository metadata',
+    description: 'Report advisory authored repository metadata status.',
+  },
+  {
     id: 'devtools.changeset',
     owner: '@ankhorage/devtools',
     access: ['invoke'],
