@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.0
+
+### Minor Changes
+
+- 442b95f: Expose the canonical CI impact planner through the `@ankhorage/devtools/ci-impact` public subpath and `ankhorage-ci-impact` binary, with machine-readable per-suite GitHub Actions decisions and fail-closed fallbacks.
+
 ## 2.5.0
 
 ### Minor Changes

@@ -242,6 +242,16 @@
       <small>1 function</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/features/ci-impact/ciImpact.ts">
+      src/features/ci-impact/ciImpact.ts
+      <small>16 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/ci-impact/ciImpactGitHub.ts">
+      src/features/ci-impact/ciImpactGitHub.ts
+      <small>2 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/features/managed-files/managedFiles.ts">
       src/features/managed-files/managedFiles.ts
       <small>13 functions</small>
@@ -412,11 +422,6 @@
       <small>1 function</small>
     </button>
   </li><li>
-    <button class="nav-button" type="button" data-target="src/tools/workflows/files/ci-impact.ts">
-      src/tools/workflows/files/ci-impact.ts
-      <small>10 functions</small>
-    </button>
-  </li><li>
     <button class="nav-button" type="button" data-target="src/tools/workflows/index.ts">
       src/tools/workflows/index.ts
       <small>4 functions</small>
@@ -458,7 +463,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>81</strong><span class="muted">modules</span></div>
+        <div><strong>85</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -504,6 +509,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>CAPABILITIES</code></p>
+  </article><article class="item" data-search="src/ci-impact.ts CiImpactConfiguration CiImpactJobDecision CiImpactKind CiImpactMode CiImpactPlan CiImpactSelection CiImpactSuite CiImpactWorkflowOutput createCiImpactWorkflowOutput planCiImpact runCiImpact">
+    <h3>src/ci-impact.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>CiImpactConfiguration</code>, <code>CiImpactJobDecision</code>, <code>CiImpactKind</code>, <code>CiImpactMode</code>, <code>CiImpactPlan</code>, <code>CiImpactSelection</code>, <code>CiImpactSuite</code>, <code>CiImpactWorkflowOutput</code>, <code>createCiImpactWorkflowOutput</code>, <code>planCiImpact</code>, <code>runCiImpact</code></p>
   </article><article class="item" data-search="src/cli/bin/apm-release.ts src/cli/commands/apm/runApmReleaseCommandAsync.ts">
     <h3>src/cli/bin/apm-release.ts</h3>
     <p class="muted">Referenced module</p>
@@ -513,6 +523,11 @@
     <h3>src/cli/bin/changeset.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/runChangesetAsync.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
+  </article><article class="item" data-search="src/cli/bin/ci-impact.ts src/ci-impact.ts">
+    <h3>src/cli/bin/ci-impact.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/ci-impact.ts</code></p>
     <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/cli/bin/eslint.ts src/cli/runStandaloneTool.ts">
     <h3>src/cli/bin/eslint.ts</h3>
@@ -659,6 +674,16 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>readApmReleaseMetadata</code></p>
+  </article><article class="item" data-search="src/features/ci-impact/ciImpact.ts src/features/ci-impact/ciImpactGitHub.ts CiImpactConfiguration CiImpactJobDecision CiImpactKind CiImpactMode CiImpactPlan CiImpactSelection CiImpactSuite CiImpactWorkflowOutput createCiImpactWorkflowOutput planCiImpact runCiImpact">
+    <h3>src/features/ci-impact/ciImpact.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/ci-impact/ciImpactGitHub.ts</code></p>
+    <p><strong>Exports:</strong> <code>CiImpactConfiguration</code>, <code>CiImpactJobDecision</code>, <code>CiImpactKind</code>, <code>CiImpactMode</code>, <code>CiImpactPlan</code>, <code>CiImpactSelection</code>, <code>CiImpactSuite</code>, <code>CiImpactWorkflowOutput</code>, <code>createCiImpactWorkflowOutput</code>, <code>planCiImpact</code>, <code>runCiImpact</code></p>
+  </article><article class="item" data-search="src/features/ci-impact/ciImpactGitHub.ts src/features/ci-impact/ciImpact.ts writeCiImpactGitHubOutputs writeCiImpactGitHubSummary">
+    <h3>src/features/ci-impact/ciImpactGitHub.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/ci-impact/ciImpact.ts</code></p>
+    <p><strong>Exports:</strong> <code>writeCiImpactGitHubOutputs</code>, <code>writeCiImpactGitHubSummary</code></p>
   </article><article class="item" data-search="src/features/managed-files/managedFiles.ts inspectManagedFiles ManagedFileDefinition ManagedFileStatus ManagedFileSyncAction ManagedFileSyncResult resolveManagedTargetDirectory syncManagedFiles">
     <h3>src/features/managed-files/managedFiles.ts</h3>
     <p class="muted">Referenced module</p>
@@ -844,11 +869,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code></p>
     <p><strong>Exports:</strong> <code>vscodeManagedFiles</code></p>
-  </article><article class="item" data-search="src/tools/workflows/files/ci-impact.ts planCiImpact">
+  </article><article class="item" data-search="src/tools/workflows/files/ci-impact.ts src/ci-impact.ts">
     <h3>src/tools/workflows/files/ci-impact.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-    <p><strong>Exports:</strong> <code>planCiImpact</code></p>
+    <p><strong>Dependencies:</strong> <code>src/ci-impact.ts</code></p>
+    <p><strong>Exports:</strong> <span class="empty">None</span></p>
   </article><article class="item" data-search="src/tools/workflows/index.ts src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts src/features/managed-files/managedFiles.ts src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts src/policy/resolveAtlasAuditPolicyAsync.ts src/tools/workflows/readCurrentDoctorVersion.ts src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts src/tools/workflows/renderRenovateConfigAsync.ts src/tools/workflows/renderRenovateWorkflowAsync.ts src/tools/workflows/renderWorkflowAsync.ts workflowManagedFiles">
     <h3>src/tools/workflows/index.ts</h3>
     <p class="muted">Referenced module</p>
@@ -1590,12 +1615,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_capabilities_index_ts
+  module_src_ci_impact_ts[&quot;src/ci-impact.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_ci_impact_ts
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_apm_release_ts
   module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_changeset_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runChangesetAsync_ts
+  module_src_cli_bin_ci_impact_ts[&quot;src/cli/bin/ci-impact.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_bin_ci_impact_ts
+  module_src_cli_bin_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_eslint_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -1717,6 +1747,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
+  module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_ci_impact_ciImpact_ts
+  module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_managed_files_managedFiles_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
@@ -1837,6 +1873,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_vscode_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_files_ci_impact_ts[&quot;src/tools/workflows/files/ci-impact.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_files_ci_impact_ts
+  module_src_tools_workflows_files_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
@@ -1886,12 +1923,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_capabilities_index_ts
+  module_src_ci_impact_ts[&quot;src/ci-impact.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_ci_impact_ts
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_apm_release_ts
   module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_changeset_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runChangesetAsync_ts
+  module_src_cli_bin_ci_impact_ts[&quot;src/cli/bin/ci-impact.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_bin_ci_impact_ts
+  module_src_cli_bin_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_bin_eslint_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -2013,6 +2055,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
+  module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_ci_impact_ciImpact_ts
+  module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_managed_files_managedFiles_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
@@ -2133,6 +2181,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_vscode_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_files_ci_impact_ts[&quot;src/tools/workflows/files/ci-impact.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_files_ci_impact_ts
+  module_src_tools_workflows_files_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_tools_workflows_index_ts[&quot;src/tools/workflows/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
@@ -2172,8 +2221,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <div class="mermaid">graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
+  module_src_ci_impact_ts[&quot;src/ci-impact.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
+  module_src_cli_bin_ci_impact_ts[&quot;src/cli/bin/ci-impact.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
@@ -2203,6 +2254,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
+  module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2253,6 +2306,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runChangesetAsync_ts
+  module_src_cli_bin_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -2317,6 +2371,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts --&gt; module_src_features_apm_release_validation_application_synchronizeApmReleaseMetadataAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
+  module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
@@ -2363,6 +2419,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_manifest_ts
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_selection_ts
   module_src_tools_vscode_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_workflows_files_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
@@ -2381,8 +2438,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <pre>graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
+  module_src_ci_impact_ts[&quot;src/ci-impact.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
+  module_src_cli_bin_ci_impact_ts[&quot;src/cli/bin/ci-impact.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
@@ -2412,6 +2471,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
+  module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2462,6 +2523,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_types_structure_generation_ts[&quot;src/types/structure-generation.ts&quot;]
   module_src_cli_bin_apm_release_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts --&gt; module_src_cli_runChangesetAsync_ts
+  module_src_cli_bin_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_cli_bin_eslint_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_knip_ts --&gt; module_src_cli_runStandaloneTool_ts
   module_src_cli_bin_prettier_ts --&gt; module_src_cli_runStandaloneTool_ts
@@ -2526,6 +2588,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts --&gt; module_src_features_apm_release_validation_application_synchronizeApmReleaseMetadataAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_inspectPackedApmReleaseCandidateAsync_ts
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
+  module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
@@ -2572,6 +2636,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_manifest_ts
   module_src_tools_skills_managed_ts --&gt; module_src_tools_skills_selection_ts
   module_src_tools_vscode_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_workflows_files_ci_impact_ts --&gt; module_src_ci_impact_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_index_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
@@ -2592,8 +2657,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <div class="mermaid">graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
+  module_src_ci_impact_ts[&quot;src/ci-impact.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
+  module_src_cli_bin_ci_impact_ts[&quot;src/cli/bin/ci-impact.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
@@ -2623,6 +2690,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
+  module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2730,8 +2799,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <pre>graph LR
   module_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   module_src_capabilities_index_ts[&quot;src/capabilities/index.ts&quot;]
+  module_src_ci_impact_ts[&quot;src/ci-impact.ts&quot;]
   module_src_cli_bin_apm_release_ts[&quot;src/cli/bin/apm-release.ts&quot;]
   module_src_cli_bin_changeset_ts[&quot;src/cli/bin/changeset.ts&quot;]
+  module_src_cli_bin_ci_impact_ts[&quot;src/cli/bin/ci-impact.ts&quot;]
   module_src_cli_bin_eslint_ts[&quot;src/cli/bin/eslint.ts&quot;]
   module_src_cli_bin_knip_ts[&quot;src/cli/bin/knip.ts&quot;]
   module_src_cli_bin_prettier_ts[&quot;src/cli/bin/prettier.ts&quot;]
@@ -2761,6 +2832,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_synchronizeApmReleaseDescriptorAsync_ts[&quot;src/features/apm-release-validation/composition/synchronizeApmReleaseDescriptorAsync.ts&quot;]
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts[&quot;src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts&quot;]
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts[&quot;src/features/apm-release-validation/utils/readApmReleaseMetadata.ts&quot;]
+  module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
+  module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -3408,6 +3481,106 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>readApmReleaseMetadata</h3>
     <p class="muted"><code>src/features/apm-release-validation/utils/readApmReleaseMetadata.ts:4:1</code></p>
     <p>Read opt-in owner metadata without copying the APM discovery schema.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-features-ci-impact-ciimpact-ts" class="view" data-view="src/features/ci-impact/ciImpact.ts" hidden>
+    <section class="panel">
+      <h2>src/features/ci-impact/ciImpact.ts</h2>
+      <article class="item" data-search="planCiImpact src/features/ci-impact/ciImpact.ts Select safe CI checks, using explicit suite ownership and Bun&#39;s dependency graph.">
+    <h3>planCiImpact</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:59:1</code></p>
+    <p>Select safe CI checks, using explicit suite ownership and Bun&#39;s dependency graph.</p>
+    
+  </article><article class="item" data-search="createCiImpactWorkflowOutput src/features/ci-impact/ciImpact.ts Create safe, per-script GitHub Actions decisions from the canonical aggregate plan.">
+    <h3>createCiImpactWorkflowOutput</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:92:1</code></p>
+    <p>Create safe, per-script GitHub Actions decisions from the canonical aggregate plan.</p>
+    
+  </article><article class="item" data-search="runCiImpact src/features/ci-impact/ciImpact.ts Run the published CI impact command without evaluating repository values as shell commands.">
+    <h3>runCiImpact</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:109:1</code></p>
+    <p>Run the published CI impact command without evaluating repository values as shell commands.</p>
+    
+  </article><article class="item" data-search="selectSuites src/features/ci-impact/ciImpact.ts Select scoped suites only when an exhaustive and unambiguous repository declaration is valid.">
+    <h3>selectSuites</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:130:1</code></p>
+    <p>Select scoped suites only when an exhaustive and unambiguous repository declaration is valid.</p>
+    
+  </article><article class="item" data-search="suitesForKind src/features/ci-impact/ciImpact.ts Read only well-formed suite declarations from untrusted package metadata.">
+    <h3>suitesForKind</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:177:1</code></p>
+    <p>Read only well-formed suite declarations from untrusted package metadata.</p>
+    
+  </article><article class="item" data-search="createJobDecision src/features/ci-impact/ciImpact.ts Classify a declared script from the aggregate selection without allowing an implied pass.">
+    <h3>createJobDecision</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:185:1</code></p>
+    <p>Classify a declared script from the aggregate selection without allowing an implied pass.</p>
+    
+  </article><article class="item" data-search="isUnsafeChange src/features/ci-impact/ciImpact.ts Conservatively identify changes that invalidate impact pruning.">
+    <h3>isUnsafeChange</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:198:1</code></p>
+    <p>Conservatively identify changes that invalidate impact pruning.</p>
+    
+  </article><article class="item" data-search="isDocumentation src/features/ci-impact/ciImpact.ts Classify files whose changes cannot influence runtime test execution.">
+    <h3>isDocumentation</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:212:1</code></p>
+    <p>Classify files whose changes cannot influence runtime test execution.</p>
+    
+  </article><article class="item" data-search="isSafePattern src/features/ci-impact/ciImpact.ts Keep mapping syntax deliberately restricted to exact paths and directory descendants.">
+    <h3>isSafePattern</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:222:1</code></p>
+    <p>Keep mapping syntax deliberately restricted to exact paths and directory descendants.</p>
+    
+  </article><article class="item" data-search="matchesPath src/features/ci-impact/ciImpact.ts Match one declared path or its explicit recursive directory ownership.">
+    <h3>matchesPath</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:232:1</code></p>
+    <p>Match one declared path or its explicit recursive directory ownership.</p>
+    
+  </article><article class="item" data-search="readChangedFiles src/features/ci-impact/ciImpact.ts Read Git&#39;s binary-safe status output, failing closed for removals, renames, and invalid refs.">
+    <h3>readChangedFiles</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:237:1</code></p>
+    <p>Read Git&#39;s binary-safe status output, failing closed for removals, renames, and invalid refs.</p>
+    
+  </article><article class="item" data-search="createPlan src/features/ci-impact/ciImpact.ts Produce a full plan when the workflow cannot prove a trustworthy PR delta.">
+    <h3>createPlan</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:261:1</code></p>
+    <p>Produce a full plan when the workflow cannot prove a trustworthy PR delta.</p>
+    
+  </article><article class="item" data-search="parseCiImpactConfiguration src/features/ci-impact/ciImpact.ts Reject malformed package metadata before it can become a scoped ownership declaration.">
+    <h3>parseCiImpactConfiguration</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:277:1</code></p>
+    <p>Reject malformed package metadata before it can become a scoped ownership declaration.</p>
+    
+  </article><article class="item" data-search="isCiImpactSuite src/features/ci-impact/ciImpact.ts Validate untrusted JSON suite data before constructing the typed configuration.">
+    <h3>isCiImpactSuite</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:295:1</code></p>
+    <p>Validate untrusted JSON suite data before constructing the typed configuration.</p>
+    
+  </article><article class="item" data-search="runPlan src/features/ci-impact/ciImpact.ts Execute an already saved CI plan without shell interpolation.">
+    <h3>runPlan</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:311:1</code></p>
+    <p>Execute an already saved CI plan without shell interpolation.</p>
+    
+  </article><article class="item" data-search="parseOperation src/features/ci-impact/ciImpact.ts Restrict the public command to known operations before it reads or executes repository state.">
+    <h3>parseOperation</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpact.ts:324:1</code></p>
+    <p>Restrict the public command to known operations before it reads or executes repository state.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-features-ci-impact-ciimpactgithub-ts" class="view" data-view="src/features/ci-impact/ciImpactGitHub.ts" hidden>
+    <section class="panel">
+      <h2>src/features/ci-impact/ciImpactGitHub.ts</h2>
+      <article class="item" data-search="writeCiImpactGitHubOutputs src/features/ci-impact/ciImpactGitHub.ts Write JSON-safe records so external workflows can address arbitrary script identifiers.">
+    <h3>writeCiImpactGitHubOutputs</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpactGitHub.ts:6:1</code></p>
+    <p>Write JSON-safe records so external workflows can address arbitrary script identifiers.</p>
+    
+  </article><article class="item" data-search="writeCiImpactGitHubSummary src/features/ci-impact/ciImpactGitHub.ts Render the existing aggregate plan in the GitHub Actions step summary.">
+    <h3>writeCiImpactGitHubSummary</h3>
+    <p class="muted"><code>src/features/ci-impact/ciImpactGitHub.ts:24:1</code></p>
+    <p>Render the existing aggregate plan in the GitHub Actions step summary.</p>
     
   </article>
     </section>
@@ -4603,61 +4776,6 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>createThemeConfig</h3>
     <p class="muted"><code>src/tools/skills/zoraDesignerOwnerFixtures.ts:1:1</code></p>
     <p class="empty">No description available.</p>
-    
-  </article>
-    </section>
-  </section><section id="view-src-tools-workflows-files-ci-impact-ts" class="view" data-view="src/tools/workflows/files/ci-impact.ts" hidden>
-    <section class="panel">
-      <h2>src/tools/workflows/files/ci-impact.ts</h2>
-      <article class="item" data-search="planCiImpact src/tools/workflows/files/ci-impact.ts Select safe CI checks, using explicit suite ownership and Bun&#39;s dependency graph.">
-    <h3>planCiImpact</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:29:1</code></p>
-    <p>Select safe CI checks, using explicit suite ownership and Bun&#39;s dependency graph.</p>
-    
-  </article><article class="item" data-search="selectSuites src/tools/workflows/files/ci-impact.ts Select scoped suites only when an exhaustive repository declaration is valid.">
-    <h3>selectSuites</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:62:1</code></p>
-    <p>Select scoped suites only when an exhaustive repository declaration is valid.</p>
-    
-  </article><article class="item" data-search="isUnsafeChange src/tools/workflows/files/ci-impact.ts Conservatively identify changes that invalidate impact pruning.">
-    <h3>isUnsafeChange</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:106:1</code></p>
-    <p>Conservatively identify changes that invalidate impact pruning.</p>
-    
-  </article><article class="item" data-search="isDocumentation src/tools/workflows/files/ci-impact.ts Classify files whose changes cannot influence runtime test execution.">
-    <h3>isDocumentation</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:116:1</code></p>
-    <p>Classify files whose changes cannot influence runtime test execution.</p>
-    
-  </article><article class="item" data-search="isSafePattern src/tools/workflows/files/ci-impact.ts Keep mapping syntax deliberately restricted to exact paths and directory descendants.">
-    <h3>isSafePattern</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:126:1</code></p>
-    <p>Keep mapping syntax deliberately restricted to exact paths and directory descendants.</p>
-    
-  </article><article class="item" data-search="matchesPath src/tools/workflows/files/ci-impact.ts Match one declared path or its explicit recursive directory ownership.">
-    <h3>matchesPath</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:136:1</code></p>
-    <p>Match one declared path or its explicit recursive directory ownership.</p>
-    
-  </article><article class="item" data-search="readChangedFiles src/tools/workflows/files/ci-impact.ts Read Git&#39;s binary-safe status output, failing closed for removals and invalid refs.">
-    <h3>readChangedFiles</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:141:1</code></p>
-    <p>Read Git&#39;s binary-safe status output, failing closed for removals and invalid refs.</p>
-    
-  </article><article class="item" data-search="createPlan src/tools/workflows/files/ci-impact.ts Produce a full plan when the workflow cannot prove a trustworthy PR delta.">
-    <h3>createPlan</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:165:1</code></p>
-    <p>Produce a full plan when the workflow cannot prove a trustworthy PR delta.</p>
-    
-  </article><article class="item" data-search="runPlan src/tools/workflows/files/ci-impact.ts Execute an already saved CI plan without shell interpolation.">
-    <h3>runPlan</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:177:1</code></p>
-    <p>Execute an already saved CI plan without shell interpolation.</p>
-    
-  </article><article class="item" data-search="main src/tools/workflows/files/ci-impact.ts Expose test decisions in GitHub outputs and a human-readable step summary.">
-    <h3>main</h3>
-    <p class="muted"><code>src/tools/workflows/files/ci-impact.ts:190:1</code></p>
-    <p>Expose test decisions in GitHub outputs and a human-readable step summary.</p>
     
   </article>
     </section>

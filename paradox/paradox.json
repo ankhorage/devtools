@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.5.0",
+      "value": "v2.6.0",
       "color": "cb3837"
     },
     {
@@ -118,6 +118,24 @@
       ]
     },
     {
+      "path": "src/ci-impact.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "CiImpactConfiguration",
+        "CiImpactJobDecision",
+        "CiImpactKind",
+        "CiImpactMode",
+        "CiImpactPlan",
+        "CiImpactSelection",
+        "CiImpactSuite",
+        "CiImpactWorkflowOutput",
+        "createCiImpactWorkflowOutput",
+        "planCiImpact",
+        "runCiImpact"
+      ]
+    },
+    {
       "path": "src/cli/bin/apm-release.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -130,6 +148,14 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/runChangesetAsync.ts"
+      ],
+      "exports": []
+    },
+    {
+      "path": "src/cli/bin/ci-impact.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/ci-impact.ts"
       ],
       "exports": []
     },
@@ -452,6 +478,37 @@
       "dependencies": [],
       "exports": [
         "readApmReleaseMetadata"
+      ]
+    },
+    {
+      "path": "src/features/ci-impact/ciImpact.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/ci-impact/ciImpactGitHub.ts"
+      ],
+      "exports": [
+        "CiImpactConfiguration",
+        "CiImpactJobDecision",
+        "CiImpactKind",
+        "CiImpactMode",
+        "CiImpactPlan",
+        "CiImpactSelection",
+        "CiImpactSuite",
+        "CiImpactWorkflowOutput",
+        "createCiImpactWorkflowOutput",
+        "planCiImpact",
+        "runCiImpact"
+      ]
+    },
+    {
+      "path": "src/features/ci-impact/ciImpactGitHub.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/ci-impact/ciImpact.ts"
+      ],
+      "exports": [
+        "writeCiImpactGitHubOutputs",
+        "writeCiImpactGitHubSummary"
       ]
     },
     {
@@ -868,10 +925,10 @@
     {
       "path": "src/tools/workflows/files/ci-impact.ts",
       "isEntrypoint": false,
-      "dependencies": [],
-      "exports": [
-        "planCiImpact"
-      ]
+      "dependencies": [
+        "src/ci-impact.ts"
+      ],
+      "exports": []
     },
     {
       "path": "src/tools/workflows/index.ts",
@@ -2646,6 +2703,204 @@
       "sourceLocation": {
         "filePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts",
         "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "planCiImpact",
+      "description": "Select safe CI checks, using explicit suite ownership and Bun's dependency graph.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 59,
+        "column": 1
+      }
+    },
+    {
+      "name": "createCiImpactWorkflowOutput",
+      "description": "Create safe, per-script GitHub Actions decisions from the canonical aggregate plan.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 92,
+        "column": 1
+      }
+    },
+    {
+      "name": "runCiImpact",
+      "description": "Run the published CI impact command without evaluating repository values as shell commands.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "selectSuites",
+      "description": "Select scoped suites only when an exhaustive and unambiguous repository declaration is valid.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 130,
+        "column": 1
+      }
+    },
+    {
+      "name": "suitesForKind",
+      "description": "Read only well-formed suite declarations from untrusted package metadata.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 177,
+        "column": 1
+      }
+    },
+    {
+      "name": "createJobDecision",
+      "description": "Classify a declared script from the aggregate selection without allowing an implied pass.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 185,
+        "column": 1
+      }
+    },
+    {
+      "name": "isUnsafeChange",
+      "description": "Conservatively identify changes that invalidate impact pruning.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 198,
+        "column": 1
+      }
+    },
+    {
+      "name": "isDocumentation",
+      "description": "Classify files whose changes cannot influence runtime test execution.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 212,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSafePattern",
+      "description": "Keep mapping syntax deliberately restricted to exact paths and directory descendants.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 222,
+        "column": 1
+      }
+    },
+    {
+      "name": "matchesPath",
+      "description": "Match one declared path or its explicit recursive directory ownership.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 232,
+        "column": 1
+      }
+    },
+    {
+      "name": "readChangedFiles",
+      "description": "Read Git's binary-safe status output, failing closed for removals, renames, and invalid refs.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 237,
+        "column": 1
+      }
+    },
+    {
+      "name": "createPlan",
+      "description": "Produce a full plan when the workflow cannot prove a trustworthy PR delta.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 261,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseCiImpactConfiguration",
+      "description": "Reject malformed package metadata before it can become a scoped ownership declaration.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 277,
+        "column": 1
+      }
+    },
+    {
+      "name": "isCiImpactSuite",
+      "description": "Validate untrusted JSON suite data before constructing the typed configuration.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 295,
+        "column": 1
+      }
+    },
+    {
+      "name": "runPlan",
+      "description": "Execute an already saved CI plan without shell interpolation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 311,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseOperation",
+      "description": "Restrict the public command to known operations before it reads or executes repository state.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpact.ts",
+        "line": 324,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeCiImpactGitHubOutputs",
+      "description": "Write JSON-safe records so external workflows can address arbitrary script identifiers.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpactGitHub.ts",
+        "line": 6,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeCiImpactGitHubSummary",
+      "description": "Render the existing aggregate plan in the GitHub Actions step summary.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/ci-impact/ciImpactGitHub.ts",
+        "line": 24,
         "column": 1
       }
     },
@@ -4905,116 +5160,6 @@
       }
     },
     {
-      "name": "planCiImpact",
-      "description": "Select safe CI checks, using explicit suite ownership and Bun's dependency graph.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 29,
-        "column": 1
-      }
-    },
-    {
-      "name": "selectSuites",
-      "description": "Select scoped suites only when an exhaustive repository declaration is valid.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 62,
-        "column": 1
-      }
-    },
-    {
-      "name": "isUnsafeChange",
-      "description": "Conservatively identify changes that invalidate impact pruning.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 106,
-        "column": 1
-      }
-    },
-    {
-      "name": "isDocumentation",
-      "description": "Classify files whose changes cannot influence runtime test execution.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 116,
-        "column": 1
-      }
-    },
-    {
-      "name": "isSafePattern",
-      "description": "Keep mapping syntax deliberately restricted to exact paths and directory descendants.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 126,
-        "column": 1
-      }
-    },
-    {
-      "name": "matchesPath",
-      "description": "Match one declared path or its explicit recursive directory ownership.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 136,
-        "column": 1
-      }
-    },
-    {
-      "name": "readChangedFiles",
-      "description": "Read Git's binary-safe status output, failing closed for removals and invalid refs.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 141,
-        "column": 1
-      }
-    },
-    {
-      "name": "createPlan",
-      "description": "Produce a full plan when the workflow cannot prove a trustworthy PR delta.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 165,
-        "column": 1
-      }
-    },
-    {
-      "name": "runPlan",
-      "description": "Execute an already saved CI plan without shell interpolation.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 177,
-        "column": 1
-      }
-    },
-    {
-      "name": "main",
-      "description": "Expose test decisions in GitHub outputs and a human-readable step summary.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/workflows/files/ci-impact.ts",
-        "line": 190,
-        "column": 1
-      }
-    },
-    {
       "name": "createWorkflowDefinition",
       "description": "Create a managed workflow definition rendered from current shared runtime policies.",
       "see": [],
@@ -5319,6 +5464,11 @@
         "sourcePath": "src/apmRelease.ts"
       },
       {
+        "fromPath": "src/ci-impact.ts",
+        "toPath": "src/features/ci-impact/ciImpact.ts",
+        "sourcePath": "src/ci-impact.ts"
+      },
+      {
         "fromPath": "src/cli/index.ts",
         "toPath": "src/capabilities/index.ts",
         "sourcePath": "src/cli/index.ts"
@@ -5519,6 +5669,11 @@
         "sourcePath": "src/cli/bin/changeset.ts"
       },
       {
+        "fromPath": "src/cli/bin/ci-impact.ts",
+        "toPath": "src/ci-impact.ts",
+        "sourcePath": "src/cli/bin/ci-impact.ts"
+      },
+      {
         "fromPath": "src/cli/bin/eslint.ts",
         "toPath": "src/cli/runStandaloneTool.ts",
         "sourcePath": "src/cli/bin/eslint.ts"
@@ -5547,6 +5702,16 @@
         "fromPath": "src/cli/bin/structure.ts",
         "toPath": "src/cli/commands/structure/runStructureGenerationCommandAsync.ts",
         "sourcePath": "src/cli/bin/structure.ts"
+      },
+      {
+        "fromPath": "src/features/ci-impact/ciImpact.ts",
+        "toPath": "src/features/ci-impact/ciImpactGitHub.ts",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromPath": "src/features/ci-impact/ciImpactGitHub.ts",
+        "toPath": "src/features/ci-impact/ciImpact.ts",
+        "sourcePath": "src/features/ci-impact/ciImpactGitHub.ts"
       },
       {
         "fromPath": "src/tools/agents/index.ts",
@@ -5867,6 +6032,11 @@
         "fromPath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts",
         "toPath": "src/features/structure-descriptor-generation/utils/resolveStructureSymbolPackage.ts",
         "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/files/ci-impact.ts",
+        "toPath": "src/ci-impact.ts",
+        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
       },
       {
         "fromPath": "src/features/apm-release-validation/adapters/outbound/createApmReleaseDescriptorPort.ts",
@@ -6708,6 +6878,12 @@
         "sourcePath": "src/cli/bin/changeset.ts"
       },
       {
+        "fromSymbol": "src/cli/bin/ci-impact.ts",
+        "toSymbol": "runCiImpact",
+        "callExpression": "runCiImpact",
+        "sourcePath": "src/cli/bin/ci-impact.ts"
+      },
+      {
         "fromSymbol": "src/cli/bin/eslint.ts",
         "toSymbol": "runStandaloneTool",
         "callExpression": "runStandaloneTool",
@@ -6742,6 +6918,150 @@
         "toSymbol": "runStructureGenerationCommandAsync",
         "callExpression": "runStructureGenerationCommandAsync",
         "sourcePath": "src/cli/bin/structure.ts"
+      },
+      {
+        "fromSymbol": "planCiImpact",
+        "toSymbol": "selectSuites",
+        "callExpression": "selectSuites",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "src/features/ci-impact/ciImpact.ts",
+        "toSymbol": "suitesForKind",
+        "callExpression": "suitesForKind",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "src/features/ci-impact/ciImpact.ts",
+        "toSymbol": "createJobDecision",
+        "callExpression": "createJobDecision",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "parseOperation",
+        "callExpression": "parseOperation",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "createPlan",
+        "callExpression": "createPlan",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "writeFileSync",
+        "callExpression": "writeFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "createCiImpactWorkflowOutput",
+        "callExpression": "createCiImpactWorkflowOutput",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "writeCiImpactGitHubOutputs",
+        "callExpression": "writeCiImpactGitHubOutputs",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "writeCiImpactGitHubSummary",
+        "callExpression": "writeCiImpactGitHubSummary",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runCiImpact",
+        "toSymbol": "runPlan",
+        "callExpression": "runPlan",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "selectSuites",
+        "toSymbol": "suitesForKind",
+        "callExpression": "suitesForKind",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "src/features/ci-impact/ciImpact.ts",
+        "toSymbol": "matchesPath",
+        "callExpression": "matchesPath",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "isDocumentation",
+        "toSymbol": "isUnsafeChange",
+        "callExpression": "isUnsafeChange",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "readChangedFiles",
+        "toSymbol": "execFileSync",
+        "callExpression": "execFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "createPlan",
+        "toSymbol": "readFileSync",
+        "callExpression": "readFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "createPlan",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "createPlan",
+        "toSymbol": "readChangedFiles",
+        "callExpression": "readChangedFiles",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "createPlan",
+        "toSymbol": "parseCiImpactConfiguration",
+        "callExpression": "parseCiImpactConfiguration",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "createPlan",
+        "toSymbol": "planCiImpact",
+        "callExpression": "planCiImpact",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "runPlan",
+        "toSymbol": "execFileSync",
+        "callExpression": "execFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpact.ts"
+      },
+      {
+        "fromSymbol": "writeCiImpactGitHubOutputs",
+        "toSymbol": "appendFileSync",
+        "callExpression": "appendFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpactGitHub.ts"
+      },
+      {
+        "fromSymbol": "writeCiImpactGitHubSummary",
+        "toSymbol": "appendFileSync",
+        "callExpression": "appendFileSync",
+        "sourcePath": "src/features/ci-impact/ciImpactGitHub.ts"
       },
       {
         "fromSymbol": "resolveManagedTargetDirectory",
@@ -9078,99 +9398,9 @@
         "sourcePath": "src/features/structure-descriptor-generation/utils/resolveStructureType.ts"
       },
       {
-        "fromSymbol": "planCiImpact",
-        "toSymbol": "selectSuites",
-        "callExpression": "selectSuites",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
         "fromSymbol": "src/tools/workflows/files/ci-impact.ts",
-        "toSymbol": "isSafePattern",
-        "callExpression": "isSafePattern",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "src/tools/workflows/files/ci-impact.ts",
-        "toSymbol": "matchesPath",
-        "callExpression": "matchesPath",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "isDocumentation",
-        "toSymbol": "isUnsafeChange",
-        "callExpression": "isUnsafeChange",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "readChangedFiles",
-        "toSymbol": "execFileSync",
-        "callExpression": "execFileSync",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "createPlan",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "createPlan",
-        "toSymbol": "readChangedFiles",
-        "callExpression": "readChangedFiles",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "createPlan",
-        "toSymbol": "planCiImpact",
-        "callExpression": "planCiImpact",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "runPlan",
-        "toSymbol": "execFileSync",
-        "callExpression": "execFileSync",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "main",
-        "toSymbol": "join",
-        "callExpression": "join",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "main",
-        "toSymbol": "createPlan",
-        "callExpression": "createPlan",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "main",
-        "toSymbol": "writeFileSync",
-        "callExpression": "writeFileSync",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "main",
-        "toSymbol": "appendFileSync",
-        "callExpression": "appendFileSync",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "main",
-        "toSymbol": "readFileSync",
-        "callExpression": "readFileSync",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "main",
-        "toSymbol": "runPlan",
-        "callExpression": "runPlan",
-        "sourcePath": "src/tools/workflows/files/ci-impact.ts"
-      },
-      {
-        "fromSymbol": "src/tools/workflows/files/ci-impact.ts",
-        "toSymbol": "main",
-        "callExpression": "main",
+        "toSymbol": "runCiImpact",
+        "callExpression": "runCiImpact",
         "sourcePath": "src/tools/workflows/files/ci-impact.ts"
       },
       {

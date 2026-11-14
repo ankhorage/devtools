@@ -13,12 +13,17 @@ graph TD
   module_src_apmRelease_ts["src/apmRelease.ts"]
   module_src_capabilities_index_ts["src/capabilities/index.ts"]
   package__ankhorage_devtools -.-> module_src_capabilities_index_ts
+  module_src_ci_impact_ts["src/ci-impact.ts"]
+  package__ankhorage_devtools -.-> module_src_ci_impact_ts
   module_src_cli_bin_apm_release_ts["src/cli/bin/apm-release.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_apm_release_ts
   module_src_cli_bin_apm_release_ts --> module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_bin_changeset_ts["src/cli/bin/changeset.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_changeset_ts
   module_src_cli_bin_changeset_ts --> module_src_cli_runChangesetAsync_ts
+  module_src_cli_bin_ci_impact_ts["src/cli/bin/ci-impact.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_bin_ci_impact_ts
+  module_src_cli_bin_ci_impact_ts --> module_src_ci_impact_ts
   module_src_cli_bin_eslint_ts["src/cli/bin/eslint.ts"]
   package__ankhorage_devtools -.-> module_src_cli_bin_eslint_ts
   module_src_cli_bin_eslint_ts --> module_src_cli_runStandaloneTool_ts
@@ -140,6 +145,12 @@ graph TD
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --> module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts["src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"]
   package__ankhorage_devtools -.-> module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
+  module_src_features_ci_impact_ciImpact_ts["src/features/ci-impact/ciImpact.ts"]
+  package__ankhorage_devtools -.-> module_src_features_ci_impact_ciImpact_ts
+  module_src_features_ci_impact_ciImpact_ts --> module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts["src/features/ci-impact/ciImpactGitHub.ts"]
+  package__ankhorage_devtools -.-> module_src_features_ci_impact_ciImpactGitHub_ts
+  module_src_features_ci_impact_ciImpactGitHub_ts --> module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts["src/features/managed-files/managedFiles.ts"]
   package__ankhorage_devtools -.-> module_src_features_managed_files_managedFiles_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts["src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts"]
@@ -260,6 +271,7 @@ graph TD
   module_src_tools_vscode_index_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_files_ci_impact_ts["src/tools/workflows/files/ci-impact.ts"]
   package__ankhorage_devtools -.-> module_src_tools_workflows_files_ci_impact_ts
+  module_src_tools_workflows_files_ci_impact_ts --> module_src_ci_impact_ts
   module_src_tools_workflows_index_ts["src/tools/workflows/index.ts"]
   package__ankhorage_devtools -.-> module_src_tools_workflows_index_ts
   module_src_tools_workflows_index_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
