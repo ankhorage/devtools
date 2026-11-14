@@ -48,7 +48,7 @@ test('executes recovery selection with a frozen packed Devtools consumer', async
   const initialLockfile = await readFile(join(newRelease.directory, 'bun.lock'), 'utf8');
   runDetection(newRelease.directory, newRelease.outputPath, scripts.detection, '0.9.0');
   expect(await readFile(newRelease.outputPath, 'utf8')).toContain('recovery=false');
-  await runSelectedPathAsync(newRelease.directory, newRelease.outputPath, scripts);
+  await runSelectedPathAsync(newRelease.directory, newRelease.outputPath, scripts, '0.9.0');
   expect(await readFile(join(newRelease.directory, 'bun.lock'), 'utf8')).not.toBe(initialLockfile);
   expect(release).toContain('bun install --frozen-lockfile');
 }, 60_000);
@@ -121,12 +121,17 @@ async function runSelectedPathAsync(
   directory: string,
   outputPath: string,
   scripts: ReturnType<typeof extractReleaseScripts>,
+  highestPublishedVersion = '1.0.0',
 ): Promise<void> {
   if ((await readFile(outputPath, 'utf8')).includes('recovery=true')) {
     execFileSync('bash', ['-e', '-c', scripts.recovery], {
       cwd: directory,
       encoding: 'utf8',
-      env: { ...process.env, GITHUB_OUTPUT: outputPath },
+      env: {
+        ...process.env,
+        GITHUB_OUTPUT: outputPath,
+        HIGHEST_PUBLISHED_VERSION: highestPublishedVersion,
+      },
     });
     return;
   }
@@ -160,7 +165,7 @@ function expectRecoveryFailure(directory: string, outputPath: string, script: st
     execFileSync('bash', ['-e', '-c', script], {
       cwd: directory,
       encoding: 'utf8',
-      env: { ...process.env, GITHUB_OUTPUT: outputPath },
+      env: { ...process.env, GITHUB_OUTPUT: outputPath, HIGHEST_PUBLISHED_VERSION: '1.0.0' },
     });
   } catch (error) {
     if (error instanceof Error) {
