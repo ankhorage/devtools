@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.7.0
+
+### Minor Changes
+
+- 553645f: Add advisory repository metadata init and status commands backed by published metadata policy.
+
 ## 2.6.0
 
 ### Minor Changes

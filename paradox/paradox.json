@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.6.0",
+      "value": "v2.7.0",
       "color": "cb3837"
     },
     {
@@ -249,6 +249,17 @@
       ]
     },
     {
+      "path": "src/cli/commands/metadata/runMetadataCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "src/types/provider-command.ts"
+      ],
+      "exports": [
+        "runMetadataCommandAsync"
+      ]
+    },
+    {
       "path": "src/cli/commands/structure/build.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -322,6 +333,7 @@
         "src/cli/commands.ts",
         "src/cli/commands/apm/sync.ts",
         "src/cli/commands/apm/validate.ts",
+        "src/cli/commands/metadata/runMetadataCommandAsync.ts",
         "src/cli/commands/structure/build.ts",
         "src/cli/commands/structure/check.ts",
         "src/cli/runExternalTool.ts",
@@ -523,6 +535,16 @@
         "ManagedFileSyncResult",
         "resolveManagedTargetDirectory",
         "syncManagedFiles"
+      ]
+    },
+    {
+      "path": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/provider-command.ts"
+      ],
+      "exports": [
+        "runRepositoryMetadataCommandAsync"
       ]
     },
     {
@@ -1736,7 +1758,7 @@
       "modulePath": "src/cli/index.ts",
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 43,
+        "line": 45,
         "column": 7
       },
       "exportPaths": [
@@ -1943,7 +1965,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 216,
+        "line": 236,
         "column": 1
       }
     },
@@ -1954,7 +1976,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 220,
+        "line": 240,
         "column": 1
       }
     },
@@ -1965,7 +1987,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 232,
+        "line": 252,
         "column": 1
       }
     },
@@ -1976,7 +1998,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 244,
+        "line": 264,
         "column": 1
       }
     },
@@ -1987,7 +2009,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/commands.ts",
-        "line": 262,
+        "line": 282,
         "column": 1
       }
     },
@@ -2047,6 +2069,17 @@
       }
     },
     {
+      "name": "runMetadataCommandAsync",
+      "description": "Adapt the public metadata CLI command to the repository-metadata application boundary.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/commands/metadata/runMetadataCommandAsync.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
       "name": "build",
       "description": "Adapt the public structure build command to deterministic owner artifact generation.",
       "see": [],
@@ -2097,7 +2130,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 63,
+        "line": 65,
         "column": 1
       }
     },
@@ -2108,7 +2141,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 75,
+        "line": 77,
         "column": 1
       }
     },
@@ -2119,7 +2152,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/index.ts",
-        "line": 79,
+        "line": 81,
         "column": 1
       }
     },
@@ -2361,7 +2394,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runProviderCommand.ts",
-        "line": 10,
+        "line": 11,
         "column": 1
       }
     },
@@ -3044,6 +3077,226 @@
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
         "line": 273,
+        "column": 1
+      }
+    },
+    {
+      "name": "runRepositoryMetadataCommandAsync",
+      "description": "Initialize or inspect authored repository metadata without turning it into an enforcement gate.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseMetadataArguments",
+      "description": "Parse deterministic metadata command arguments without consulting network or ambient configuration.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertDirectoryAsync",
+      "description": "Require a local directory before any metadata inspection or initialization.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 86,
+        "column": 1
+      }
+    },
+    {
+      "name": "readMetadataFactAsync",
+      "description": "Discover the profile-owned metadata location and parse only structurally recognizable JSON.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 91,
+        "column": 1
+      }
+    },
+    {
+      "name": "initializeMetadataAsync",
+      "description": "Create an intentionally incomplete authored template only when metadata is absent.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "metadataTemplateAsync",
+      "description": "Build a template from only independently verifiable local repository facts.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 125,
+        "column": 1
+      }
+    },
+    {
+      "name": "readManifestAsync",
+      "description": "Read package metadata defensively; absence never fabricates author-owned content.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 136,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseRepositoryMetadata",
+      "description": "Decode a document enough for Rules to produce diagnostic findings without claiming semantic truth.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 144,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalMetadataFields",
+      "description": "Preserve recognizable optional Contract fields so Rules can report their semantic findings.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 166,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalTextCollections",
+      "description": "Read optional authored text collections without widening untrusted JSON values.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 179,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalArchitectureField",
+      "description": "Read an optional architecture fact only when all recognized subfields are safely shaped.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 195,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalImplementsField",
+      "description": "Read implementation references so their public-shape rules remain observable to authors.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 210,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseImplementationReference",
+      "description": "Decode one Contract-shaped implementation reference from authored JSON.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 219,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalConstraintsField",
+      "description": "Read optional platform and operational constraints without accepting malformed child lists.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 231,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStringArray",
+      "description": "Read one Contract-compatible string-array shape from authored JSON.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 253,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMetadataKind",
+      "description": "Recognize the portable Contract's closed metadata-kind vocabulary.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "authoredTasks",
+      "description": "Identify human-authored fields that deliberately remain absent from the bootstrap template.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 277,
+        "column": 1
+      }
+    },
+    {
+      "name": "writeMetadataStatus",
+      "description": "Render preflight findings and ownership tasks as deterministic actionable CLI output.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 286,
+        "column": 1
+      }
+    },
+    {
+      "name": "pathExistsAsync",
+      "description": "Test one local path without shelling out or consulting external state.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 302,
+        "column": 1
+      }
+    },
+    {
+      "name": "getErrorMessage",
+      "description": "Normalize any boundary error for the CLI adapter.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "line": 310,
         "column": 1
       }
     },
@@ -5520,6 +5773,11 @@
       },
       {
         "fromPath": "src/cli/runProviderCommand.ts",
+        "toPath": "src/cli/commands/metadata/runMetadataCommandAsync.ts",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runProviderCommand.ts",
         "toPath": "src/cli/commands/structure/build.ts",
         "sourcePath": "src/cli/runProviderCommand.ts"
       },
@@ -5924,6 +6182,16 @@
         "sourcePath": "src/cli/commands/apm/validate.ts"
       },
       {
+        "fromPath": "src/cli/commands/metadata/runMetadataCommandAsync.ts",
+        "toPath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "sourcePath": "src/cli/commands/metadata/runMetadataCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/commands/metadata/runMetadataCommandAsync.ts",
+        "toPath": "src/types/provider-command.ts",
+        "sourcePath": "src/cli/commands/metadata/runMetadataCommandAsync.ts"
+      },
+      {
         "fromPath": "src/cli/commands/structure/build.ts",
         "toPath": "src/types/provider-command.ts",
         "sourcePath": "src/cli/commands/structure/build.ts"
@@ -5987,6 +6255,11 @@
         "fromPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromPath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "toPath": "src/types/provider-command.ts",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
       },
       {
         "fromPath": "src/features/structure-descriptor-generation/composition/synchronizeStructureArtifactForDirectoryAsync.ts",
@@ -6485,6 +6758,12 @@
         "fromSymbol": "runProviderCommand",
         "toSymbol": "check",
         "callExpression": "check",
+        "sourcePath": "src/cli/runProviderCommand.ts"
+      },
+      {
+        "fromSymbol": "runProviderCommand",
+        "toSymbol": "runMetadataCommandAsync",
+        "callExpression": "runMetadataCommandAsync",
         "sourcePath": "src/cli/runProviderCommand.ts"
       },
       {
@@ -8894,6 +9173,12 @@
         "sourcePath": "src/cli/commands/apm/validate.ts"
       },
       {
+        "fromSymbol": "runMetadataCommandAsync",
+        "toSymbol": "runRepositoryMetadataCommandAsync",
+        "callExpression": "runRepositoryMetadataCommandAsync",
+        "sourcePath": "src/cli/commands/metadata/runMetadataCommandAsync.ts"
+      },
+      {
         "fromSymbol": "build",
         "toSymbol": "runStructureGenerationCommandAsync",
         "callExpression": "runStructureGenerationCommandAsync",
@@ -9078,6 +9363,246 @@
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "parseMetadataArguments",
+        "callExpression": "parseMetadataArguments",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "assertDirectoryAsync",
+        "callExpression": "assertDirectoryAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "readMetadataFactAsync",
+        "callExpression": "readMetadataFactAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "initializeMetadataAsync",
+        "callExpression": "initializeMetadataAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "evaluateRepositoryMetadataPreflight",
+        "callExpression": "evaluateRepositoryMetadataPreflight",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "authoredTasks",
+        "callExpression": "authoredTasks",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "writeMetadataStatus",
+        "callExpression": "writeMetadataStatus",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "writeStderr",
+        "callExpression": "context.writeStderr",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryMetadataCommandAsync",
+        "toSymbol": "getErrorMessage",
+        "callExpression": "getErrorMessage",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "assertDirectoryAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readMetadataFactAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readMetadataFactAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readMetadataFactAsync",
+        "toSymbol": "parseRepositoryMetadata",
+        "callExpression": "parseRepositoryMetadata",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readMetadataFactAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "initializeMetadataAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "initializeMetadataAsync",
+        "toSymbol": "mkdir",
+        "callExpression": "mkdir",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "initializeMetadataAsync",
+        "toSymbol": "dirname",
+        "callExpression": "dirname",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "initializeMetadataAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "initializeMetadataAsync",
+        "toSymbol": "metadataTemplateAsync",
+        "callExpression": "metadataTemplateAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "metadataTemplateAsync",
+        "toSymbol": "readManifestAsync",
+        "callExpression": "readManifestAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readManifestAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readManifestAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "readManifestAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "isMetadataKind",
+        "callExpression": "isMetadataKind",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "optionalMetadataFields",
+        "callExpression": "optionalMetadataFields",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalTextCollections",
+        "callExpression": "optionalTextCollections",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalArchitectureField",
+        "callExpression": "optionalArchitectureField",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalImplementsField",
+        "callExpression": "optionalImplementsField",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalConstraintsField",
+        "callExpression": "optionalConstraintsField",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalTextCollections",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalArchitectureField",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "parseImplementationReference",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalConstraintsField",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalConstraintsField",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "writeMetadataStatus",
+        "toSymbol": "writeStdout",
+        "callExpression": "context.writeStdout",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromSymbol": "pathExistsAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
       },
       {
         "fromSymbol": "synchronizeStructureArtifactForDirectoryAsync",

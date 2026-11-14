@@ -147,6 +147,11 @@
       <small>1 function</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/cli/commands/metadata/runMetadataCommandAsync.ts">
+      src/cli/commands/metadata/runMetadataCommandAsync.ts
+      <small>1 function</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/cli/commands/structure/build.ts">
       src/cli/commands/structure/build.ts
       <small>1 function</small>
@@ -255,6 +260,11 @@
     <button class="nav-button" type="button" data-target="src/features/managed-files/managedFiles.ts">
       src/features/managed-files/managedFiles.ts
       <small>13 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts">
+      src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts
+      <small>20 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts">
@@ -463,7 +473,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>85</strong><span class="muted">modules</span></div>
+        <div><strong>87</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -574,6 +584,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands/apm/runApmReleaseCommandAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>validate</code></p>
+  </article><article class="item" data-search="src/cli/commands/metadata/runMetadataCommandAsync.ts src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts src/types/provider-command.ts runMetadataCommandAsync">
+    <h3>src/cli/commands/metadata/runMetadataCommandAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
+    <p><strong>Exports:</strong> <code>runMetadataCommandAsync</code></p>
   </article><article class="item" data-search="src/cli/commands/structure/build.ts src/cli/commands/structure/runStructureGenerationCommandAsync.ts src/types/provider-command.ts build">
     <h3>src/cli/commands/structure/build.ts</h3>
     <p class="muted">Referenced module</p>
@@ -604,10 +619,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code></p>
     <p><strong>Exports:</strong> <code>DevtoolsRunResult</code>, <code>runExternalTool</code>, <code>runExternalToolWithDependencies</code></p>
-  </article><article class="item" data-search="src/cli/runProviderCommand.ts src/cli/commands.ts src/cli/commands/apm/sync.ts src/cli/commands/apm/validate.ts src/cli/commands/structure/build.ts src/cli/commands/structure/check.ts src/cli/runExternalTool.ts src/cli/runRepositoryCommand.ts src/types/provider-command.ts runProviderCommand">
+  </article><article class="item" data-search="src/cli/runProviderCommand.ts src/cli/commands.ts src/cli/commands/apm/sync.ts src/cli/commands/apm/validate.ts src/cli/commands/metadata/runMetadataCommandAsync.ts src/cli/commands/structure/build.ts src/cli/commands/structure/check.ts src/cli/runExternalTool.ts src/cli/runRepositoryCommand.ts src/types/provider-command.ts runProviderCommand">
     <h3>src/cli/runProviderCommand.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/commands/structure/build.ts</code>, <code>src/cli/commands/structure/check.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code>, <code>src/types/provider-command.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/commands/metadata/runMetadataCommandAsync.ts</code>, <code>src/cli/commands/structure/build.ts</code>, <code>src/cli/commands/structure/check.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>runProviderCommand</code></p>
   </article><article class="item" data-search="src/cli/runRepositoryCommand.ts src/cli/commands.ts src/features/managed-files/managedFiles.ts src/tools/agents/index.ts src/tools/eslint/managed.ts src/tools/gitignore/index.ts src/tools/knip/managed.ts src/tools/package/index.ts src/tools/package/syncBunDependencies.ts src/tools/prettier/managed.ts src/tools/skills/managed.ts src/tools/vscode/index.ts src/tools/workflows/index.ts src/types/provider-command.ts DevtoolsRepositoryCommandResult parseRepositoryArguments runRepositoryCommand">
     <h3>src/cli/runRepositoryCommand.ts</h3>
@@ -689,6 +704,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>inspectManagedFiles</code>, <code>ManagedFileDefinition</code>, <code>ManagedFileStatus</code>, <code>ManagedFileSyncAction</code>, <code>ManagedFileSyncResult</code>, <code>resolveManagedTargetDirectory</code>, <code>syncManagedFiles</code></p>
+  </article><article class="item" data-search="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts src/types/provider-command.ts runRepositoryMetadataCommandAsync">
+    <h3>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/types/provider-command.ts</code></p>
+    <p><strong>Exports:</strong> <code>runRepositoryMetadataCommandAsync</code></p>
   </article><article class="item" data-search="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts src/types/structure-generation.ts createStructureGenerationWorkspacePort">
     <h3>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts</h3>
     <p class="muted">Referenced module</p>
@@ -934,7 +954,7 @@
               <article class="item" id="symbol-provider" data-search="provider  value src/cli/index.ts ">
     <h4>provider</h4>
     
-    <p class="muted">value • <code>src/cli/index.ts:43:7</code></p>
+    <p class="muted">value • <code>src/cli/index.ts:45:7</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/cli/index.ts</code></p>
@@ -1657,6 +1677,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_validate_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts[&quot;src/cli/commands/metadata/runMetadataCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_metadata_runMetadataCommandAsync_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_build_ts
   module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
@@ -1684,6 +1708,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_metadata_runMetadataCommandAsync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
@@ -1755,6 +1780,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
@@ -1965,6 +1993,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_apm_validate_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts[&quot;src/cli/commands/metadata/runMetadataCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_cli_commands_metadata_runMetadataCommandAsync_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_commands_structure_build_ts
   module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
@@ -1992,6 +2024,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_metadata_runMetadataCommandAsync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
@@ -2063,6 +2096,9 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
@@ -2234,6 +2270,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts[&quot;src/cli/commands/metadata/runMetadataCommandAsync.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
@@ -2257,6 +2294,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
@@ -2320,6 +2358,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_sync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_structure_build_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
@@ -2334,6 +2374,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_metadata_runMetadataCommandAsync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
@@ -2373,6 +2414,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
@@ -2451,6 +2493,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts[&quot;src/cli/commands/metadata/runMetadataCommandAsync.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
@@ -2474,6 +2517,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
@@ -2537,6 +2581,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_sync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_cli_commands_apm_runApmReleaseCommandAsync_ts
   module_src_cli_commands_apm_validate_ts --&gt; module_src_types_provider_command_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_build_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
   module_src_cli_commands_structure_build_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_commands_structure_check_ts --&gt; module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts
@@ -2551,6 +2597,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_sync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_apm_validate_ts
+  module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_metadata_runMetadataCommandAsync_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_build_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_commands_structure_check_ts
   module_src_cli_runProviderCommand_ts --&gt; module_src_cli_runExternalTool_ts
@@ -2590,6 +2637,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts --&gt; module_src_features_structure_descriptor_generation_utils_resolveSemanticStructureWrapper_ts
@@ -2670,6 +2718,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts[&quot;src/cli/commands/metadata/runMetadataCommandAsync.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
@@ -2693,6 +2742,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
@@ -2812,6 +2862,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_commands_apm_runApmReleaseCommandAsync_ts[&quot;src/cli/commands/apm/runApmReleaseCommandAsync.ts&quot;]
   module_src_cli_commands_apm_sync_ts[&quot;src/cli/commands/apm/sync.ts&quot;]
   module_src_cli_commands_apm_validate_ts[&quot;src/cli/commands/apm/validate.ts&quot;]
+  module_src_cli_commands_metadata_runMetadataCommandAsync_ts[&quot;src/cli/commands/metadata/runMetadataCommandAsync.ts&quot;]
   module_src_cli_commands_structure_build_ts[&quot;src/cli/commands/structure/build.ts&quot;]
   module_src_cli_commands_structure_check_ts[&quot;src/cli/commands/structure/check.ts&quot;]
   module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts[&quot;src/cli/commands/structure/runStructureGenerationCommandAsync.ts&quot;]
@@ -2835,6 +2886,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts&quot;]
@@ -3011,27 +3063,27 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/commands.ts</h2>
       <article class="item" data-search="getDevtoolsCommands src/cli/commands.ts ">
     <h3>getDevtoolsCommands</h3>
-    <p class="muted"><code>src/cli/commands.ts:216:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:236:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="findDevtoolsCommandByPath src/cli/commands.ts ">
     <h3>findDevtoolsCommandByPath</h3>
-    <p class="muted"><code>src/cli/commands.ts:220:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:240:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="getDevtoolsToolCommand src/cli/commands.ts ">
     <h3>getDevtoolsToolCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:232:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:252:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="externalCommand src/cli/commands.ts ">
     <h3>externalCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:244:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:264:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="repositoryCommand src/cli/commands.ts ">
     <h3>repositoryCommand</h3>
-    <p class="muted"><code>src/cli/commands.ts:262:1</code></p>
+    <p class="muted"><code>src/cli/commands.ts:282:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -3076,6 +3128,16 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article>
     </section>
+  </section><section id="view-src-cli-commands-metadata-runmetadatacommandasync-ts" class="view" data-view="src/cli/commands/metadata/runMetadataCommandAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/cli/commands/metadata/runMetadataCommandAsync.ts</h2>
+      <article class="item" data-search="runMetadataCommandAsync src/cli/commands/metadata/runMetadataCommandAsync.ts Adapt the public metadata CLI command to the repository-metadata application boundary.">
+    <h3>runMetadataCommandAsync</h3>
+    <p class="muted"><code>src/cli/commands/metadata/runMetadataCommandAsync.ts:5:1</code></p>
+    <p>Adapt the public metadata CLI command to the repository-metadata application boundary.</p>
+    
+  </article>
+    </section>
   </section><section id="view-src-cli-commands-structure-build-ts" class="view" data-view="src/cli/commands/structure/build.ts" hidden>
     <section class="panel">
       <h2>src/cli/commands/structure/build.ts</h2>
@@ -3116,17 +3178,17 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/index.ts</h2>
       <article class="item" data-search="readPackageVersion src/cli/index.ts ">
     <h3>readPackageVersion</h3>
-    <p class="muted"><code>src/cli/index.ts:63:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:65:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="isNonEmptyString src/cli/index.ts ">
     <h3>isNonEmptyString</h3>
-    <p class="muted"><code>src/cli/index.ts:75:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:77:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="isRecord src/cli/index.ts ">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/cli/index.ts:79:1</code></p>
+    <p class="muted"><code>src/cli/index.ts:81:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -3251,7 +3313,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/runProviderCommand.ts</h2>
       <article class="item" data-search="runProviderCommand src/cli/runProviderCommand.ts ">
     <h3>runProviderCommand</h3>
-    <p class="muted"><code>src/cli/runProviderCommand.ts:10:1</code></p>
+    <p class="muted"><code>src/cli/runProviderCommand.ts:11:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -3651,6 +3713,111 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>isNodeError</h3>
     <p class="muted"><code>src/features/managed-files/managedFiles.ts:273:1</code></p>
     <p>Check whether an unknown failure carries a Node.js error code.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-features-repository-metadata-application-runrepositorymetadatacommandasync-ts" class="view" data-view="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts</h2>
+      <article class="item" data-search="runRepositoryMetadataCommandAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Initialize or inspect authored repository metadata without turning it into an enforcement gate.">
+    <h3>runRepositoryMetadataCommandAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:20:1</code></p>
+    <p>Initialize or inspect authored repository metadata without turning it into an enforcement gate.</p>
+    
+  </article><article class="item" data-search="parseMetadataArguments src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Parse deterministic metadata command arguments without consulting network or ambient configuration.">
+    <h3>parseMetadataArguments</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:67:1</code></p>
+    <p>Parse deterministic metadata command arguments without consulting network or ambient configuration.</p>
+    
+  </article><article class="item" data-search="assertDirectoryAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Require a local directory before any metadata inspection or initialization.">
+    <h3>assertDirectoryAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:86:1</code></p>
+    <p>Require a local directory before any metadata inspection or initialization.</p>
+    
+  </article><article class="item" data-search="readMetadataFactAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Discover the profile-owned metadata location and parse only structurally recognizable JSON.">
+    <h3>readMetadataFactAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:91:1</code></p>
+    <p>Discover the profile-owned metadata location and parse only structurally recognizable JSON.</p>
+    
+  </article><article class="item" data-search="initializeMetadataAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Create an intentionally incomplete authored template only when metadata is absent.">
+    <h3>initializeMetadataAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:109:1</code></p>
+    <p>Create an intentionally incomplete authored template only when metadata is absent.</p>
+    
+  </article><article class="item" data-search="metadataTemplateAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Build a template from only independently verifiable local repository facts.">
+    <h3>metadataTemplateAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:125:1</code></p>
+    <p>Build a template from only independently verifiable local repository facts.</p>
+    
+  </article><article class="item" data-search="readManifestAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read package metadata defensively; absence never fabricates author-owned content.">
+    <h3>readManifestAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:136:1</code></p>
+    <p>Read package metadata defensively; absence never fabricates author-owned content.</p>
+    
+  </article><article class="item" data-search="parseRepositoryMetadata src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Decode a document enough for Rules to produce diagnostic findings without claiming semantic truth.">
+    <h3>parseRepositoryMetadata</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:144:1</code></p>
+    <p>Decode a document enough for Rules to produce diagnostic findings without claiming semantic truth.</p>
+    
+  </article><article class="item" data-search="optionalMetadataFields src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Preserve recognizable optional Contract fields so Rules can report their semantic findings.">
+    <h3>optionalMetadataFields</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:166:1</code></p>
+    <p>Preserve recognizable optional Contract fields so Rules can report their semantic findings.</p>
+    
+  </article><article class="item" data-search="optionalTextCollections src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read optional authored text collections without widening untrusted JSON values.">
+    <h3>optionalTextCollections</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:179:1</code></p>
+    <p>Read optional authored text collections without widening untrusted JSON values.</p>
+    
+  </article><article class="item" data-search="optionalArchitectureField src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read an optional architecture fact only when all recognized subfields are safely shaped.">
+    <h3>optionalArchitectureField</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:195:1</code></p>
+    <p>Read an optional architecture fact only when all recognized subfields are safely shaped.</p>
+    
+  </article><article class="item" data-search="optionalImplementsField src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read implementation references so their public-shape rules remain observable to authors.">
+    <h3>optionalImplementsField</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:210:1</code></p>
+    <p>Read implementation references so their public-shape rules remain observable to authors.</p>
+    
+  </article><article class="item" data-search="parseImplementationReference src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Decode one Contract-shaped implementation reference from authored JSON.">
+    <h3>parseImplementationReference</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:219:1</code></p>
+    <p>Decode one Contract-shaped implementation reference from authored JSON.</p>
+    
+  </article><article class="item" data-search="optionalConstraintsField src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read optional platform and operational constraints without accepting malformed child lists.">
+    <h3>optionalConstraintsField</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:231:1</code></p>
+    <p>Read optional platform and operational constraints without accepting malformed child lists.</p>
+    
+  </article><article class="item" data-search="readStringArray src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read one Contract-compatible string-array shape from authored JSON.">
+    <h3>readStringArray</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:253:1</code></p>
+    <p>Read one Contract-compatible string-array shape from authored JSON.</p>
+    
+  </article><article class="item" data-search="isMetadataKind src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Recognize the portable Contract&#39;s closed metadata-kind vocabulary.">
+    <h3>isMetadataKind</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:260:1</code></p>
+    <p>Recognize the portable Contract&#39;s closed metadata-kind vocabulary.</p>
+    
+  </article><article class="item" data-search="authoredTasks src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Identify human-authored fields that deliberately remain absent from the bootstrap template.">
+    <h3>authoredTasks</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:277:1</code></p>
+    <p>Identify human-authored fields that deliberately remain absent from the bootstrap template.</p>
+    
+  </article><article class="item" data-search="writeMetadataStatus src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Render preflight findings and ownership tasks as deterministic actionable CLI output.">
+    <h3>writeMetadataStatus</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:286:1</code></p>
+    <p>Render preflight findings and ownership tasks as deterministic actionable CLI output.</p>
+    
+  </article><article class="item" data-search="pathExistsAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Test one local path without shelling out or consulting external state.">
+    <h3>pathExistsAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:302:1</code></p>
+    <p>Test one local path without shelling out or consulting external state.</p>
+    
+  </article><article class="item" data-search="getErrorMessage src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Normalize any boundary error for the CLI adapter.">
+    <h3>getErrorMessage</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:310:1</code></p>
+    <p>Normalize any boundary error for the CLI adapter.</p>
     
   </article>
     </section>
