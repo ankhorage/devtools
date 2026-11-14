@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "tooling",
+  "title": "Ankhorage Devtools",
+  "summary": "Owns shared repository automation, managed development tooling, workflows, and agent standards for Ankhorage TypeScript projects.",
+  "purpose": "Keep standalone repositories aligned through released, reusable tooling instead of copied project-specific automation.",
+  "domain": "developer tooling and repository automation",
+  "responsibilities": [
+    "Publish managed ESLint, Prettier, Knip, workflow, editor, agent, and repository-file policies.",
+    "Expose CLI commands for repository synchronization, package maintenance, structure checks, changesets, and CI impact planning.",
+    "Distribute canonical agent instructions and skills to independently versioned repositories.",
+    "Provide advisory metadata initialization and status tooling backed by the published repository rules."
+  ],
+  "boundaries": [
+    "Does not own portable contracts, repository rule semantics, or Doctor's final blocking validation.",
+    "Does not own application or package domain behavior in managed repositories.",
+    "Does not require sibling source checkouts or unpublished organization-local dependencies."
+  ],
+  "audience": [
+    "Maintainers of standalone Ankhorage TypeScript repositories.",
+    "Automation and CI workflows that consume managed repository policy."
+  ],
+  "useCases": [
+    "Synchronize managed repository files and development-tool configuration.",
+    "Run canonical lint, formatting, Knip, changeset, and structure tooling.",
+    "Plan impact-aware CI suites and publish reusable workflow templates.",
+    "Initialize and inspect canonical repository metadata in report-only mode."
+  ],
+  "architecture": {
+    "role": "Tooling package and CLI composition layer over released contracts, rules, project detection, and reusable utilities.",
+    "invariants": [
+      "Managed repositories remain independently installable and usable.",
+      "Canonical policy is consumed from its owning published package instead of duplicated.",
+      "Repository synchronization is deterministic and reviewable."
+    ]
+  },
+  "constraints": {
+    "limitations": [
+      "Managed updates can only cover files and profiles explicitly owned by Devtools.",
+      "Repository-specific domain choices remain the responsibility of each repository."
+    ]
+  }
+}
