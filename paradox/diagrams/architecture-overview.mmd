@@ -1,5 +1,5 @@
 graph TD
-  package__ankhorage_devtools["@ankhorage/devtools"]
+  package__ankhorage_devtools["Ankhorage Devtools"]
   entrypoint_src_apmRelease_ts["src/apmRelease.ts"]
   package__ankhorage_devtools --> entrypoint_src_apmRelease_ts
   entrypoint_src_cli_index_ts["src/cli/index.ts"]
@@ -158,8 +158,11 @@ graph TD
   module_src_features_ci_impact_ciImpactGitHub_ts --> module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts["src/features/managed-files/managedFiles.ts"]
   package__ankhorage_devtools -.-> module_src_features_managed_files_managedFiles_ts
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts["src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts["src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"]
   package__ankhorage_devtools -.-> module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --> module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --> module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts["src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts"]
   package__ankhorage_devtools -.-> module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
@@ -212,6 +215,10 @@ graph TD
   module_src_tools_agents_index_ts["src/tools/agents/index.ts"]
   package__ankhorage_devtools -.-> module_src_tools_agents_index_ts
   module_src_tools_agents_index_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_tools_agents_index_ts --> module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts["src/tools/agents/renderRepositorySectionsAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts --> module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_tools_eslint_index_ts["src/tools/eslint/index.ts"]
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --> module_src_tools_eslint_types_ts

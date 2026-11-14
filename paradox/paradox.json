@@ -1,9 +1,12 @@
 {
-  "packageName": "@ankhorage/devtools",
+  "packageName": "Ankhorage Devtools",
   "packageId": "@ankhorage/devtools",
-  "description": "Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects",
-  "collaborators": null,
-  "donation": null,
+  "description": "Owns shared repository automation, managed development tooling, workflows, and agent standards for Ankhorage TypeScript projects.",
+  "purpose": "Keep standalone repositories aligned through released, reusable tooling instead of copied project-specific automation.",
+  "collaborators": true,
+  "donation": {
+    "account": "ankhorage"
+  },
   "badges": [
     {
       "id": "license",
@@ -14,7 +17,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.7.0",
+      "value": "v2.8.0",
       "color": "cb3837"
     },
     {
@@ -538,9 +541,19 @@
       ]
     },
     {
+      "path": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "readRepositoryMetadataFactAsync",
+        "RepositoryMetadataFact"
+      ]
+    },
+    {
       "path": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
+        "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
         "src/types/provider-command.ts"
       ],
       "exports": [
@@ -686,10 +699,21 @@
       "path": "src/tools/agents/index.ts",
       "isEntrypoint": false,
       "dependencies": [
-        "src/features/managed-files/managedFiles.ts"
+        "src/features/managed-files/managedFiles.ts",
+        "src/tools/agents/renderRepositorySectionsAsync.ts"
       ],
       "exports": [
         "agentsManagedFiles"
+      ]
+    },
+    {
+      "path": "src/tools/agents/renderRepositorySectionsAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      ],
+      "exports": [
+        "renderRepositorySectionsAsync"
       ]
     },
     {
@@ -3081,13 +3105,200 @@
       }
     },
     {
+      "name": "readRepositoryMetadataFactAsync",
+      "description": "Read canonical repository metadata as inert JSON from the profile-owned local path.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseRepositoryMetadata",
+      "description": "Decode a complete portable metadata document without executing repository-owned code.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseJsonDocument",
+      "description": "Parse authored JSON without leaking parser-specific failures across the metadata boundary.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidOptionalFields",
+      "description": "Reject malformed recognized fields instead of silently discarding authored facts.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 76,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalMetadataFields",
+      "description": "Preserve optional Contract fields after their complete shape has been verified.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalTextCollections",
+      "description": "Read optional authored text collections from a previously validated document.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalArchitectureField",
+      "description": "Read an optional architecture fact from a previously validated document.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 119,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalImplementsField",
+      "description": "Read implementation references from a previously validated document.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseImplementationReference",
+      "description": "Decode one validated portable implementation reference.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 143,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalConstraintsField",
+      "description": "Read optional operational constraints from a previously validated document.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 155,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasOptionalStringArray",
+      "description": "Check whether an optional value is absent or a complete Contract-compatible string array.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 177,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidArchitecture",
+      "description": "Check an optional architecture field without accepting malformed child values.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 182,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidImplementations",
+      "description": "Check optional implementation references without losing malformed entries.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 192,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidConstraints",
+      "description": "Check optional constraint fields without accepting malformed child values.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 201,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStringArray",
+      "description": "Read one Contract-compatible string-array shape from authored JSON.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 213,
+        "column": 1
+      }
+    },
+    {
+      "name": "isMetadataKind",
+      "description": "Recognize the portable Contract's closed metadata-kind vocabulary.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 220,
+        "column": 1
+      }
+    },
+    {
+      "name": "pathExistsAsync",
+      "description": "Test one local path without shelling out or consulting external state.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 237,
+        "column": 1
+      }
+    },
+    {
       "name": "runRepositoryMetadataCommandAsync",
       "description": "Initialize or inspect authored repository metadata without turning it into an enforcement gate.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 20,
+        "line": 12,
         "column": 1
       }
     },
@@ -3098,7 +3309,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 67,
+        "line": 52,
         "column": 1
       }
     },
@@ -3109,18 +3320,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 86,
-        "column": 1
-      }
-    },
-    {
-      "name": "readMetadataFactAsync",
-      "description": "Discover the profile-owned metadata location and parse only structurally recognizable JSON.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 91,
+        "line": 71,
         "column": 1
       }
     },
@@ -3131,7 +3331,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 109,
+        "line": 76,
         "column": 1
       }
     },
@@ -3142,7 +3342,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 125,
+        "line": 92,
         "column": 1
       }
     },
@@ -3153,106 +3353,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 136,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseRepositoryMetadata",
-      "description": "Decode a document enough for Rules to produce diagnostic findings without claiming semantic truth.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 144,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionalMetadataFields",
-      "description": "Preserve recognizable optional Contract fields so Rules can report their semantic findings.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 166,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionalTextCollections",
-      "description": "Read optional authored text collections without widening untrusted JSON values.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 179,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionalArchitectureField",
-      "description": "Read an optional architecture fact only when all recognized subfields are safely shaped.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 195,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionalImplementsField",
-      "description": "Read implementation references so their public-shape rules remain observable to authors.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 210,
-        "column": 1
-      }
-    },
-    {
-      "name": "parseImplementationReference",
-      "description": "Decode one Contract-shaped implementation reference from authored JSON.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 219,
-        "column": 1
-      }
-    },
-    {
-      "name": "optionalConstraintsField",
-      "description": "Read optional platform and operational constraints without accepting malformed child lists.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 231,
-        "column": 1
-      }
-    },
-    {
-      "name": "readStringArray",
-      "description": "Read one Contract-compatible string-array shape from authored JSON.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 253,
-        "column": 1
-      }
-    },
-    {
-      "name": "isMetadataKind",
-      "description": "Recognize the portable Contract's closed metadata-kind vocabulary.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 260,
+        "line": 103,
         "column": 1
       }
     },
@@ -3263,7 +3364,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 277,
+        "line": 111,
         "column": 1
       }
     },
@@ -3274,7 +3375,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 286,
+        "line": 120,
         "column": 1
       }
     },
@@ -3285,7 +3386,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 302,
+        "line": 136,
         "column": 1
       }
     },
@@ -3296,7 +3397,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
-        "line": 310,
+        "line": 144,
         "column": 1
       }
     },
@@ -3885,7 +3986,7 @@
     },
     {
       "name": "getReadmeDocumentationErrors",
-      "description": null,
+      "description": "Checks generated README markers using the title owned by repository metadata.",
       "see": [],
       "security": [],
       "sourceLocation": {
@@ -4099,7 +4200,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 22,
+        "line": 23,
         "column": 1
       }
     },
@@ -4181,24 +4282,13 @@
       }
     },
     {
-      "name": "escapeInlineCode",
-      "description": "Escape inline-code delimiters before interpolating repository metadata into Markdown.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/agents/index.ts",
-        "line": 176,
-        "column": 1
-      }
-    },
-    {
       "name": "isNodeError",
       "description": "Check whether an unknown failure carries a Node.js error code.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 181,
+        "line": 176,
         "column": 1
       }
     },
@@ -4209,7 +4299,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 186,
+        "line": 181,
         "column": 1
       }
     },
@@ -4220,7 +4310,84 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 191,
+        "line": 186,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderRepositorySectionsAsync",
+      "description": "Render curated repository scope when valid metadata exists, preserving the manifest fallback.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 12,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderFallbackRepositorySection",
+      "description": "Render the transition-safe package-manifest fallback when canonical metadata is absent.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 40,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderCuratedRepositorySections",
+      "description": "Render authored purpose, ownership, boundaries, audience, and architectural invariants.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 51,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderList",
+      "description": "Render one optional authored collection as a deterministic Markdown list.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 87,
+        "column": 1
+      }
+    },
+    {
+      "name": "escapeInlineCode",
+      "description": "Escape inline-code delimiters and backslashes inside a managed Markdown code span.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "escapeMarkdownText",
+      "description": "Flatten authored prose and escape Markdown control characters before interpolation.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 100,
+        "column": 1
+      }
+    },
+    {
+      "name": "normalizeText",
+      "description": "Normalize authored prose to one managed Markdown line without changing its words.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "line": 107,
         "column": 1
       }
     },
@@ -5977,6 +6144,16 @@
         "sourcePath": "src/tools/agents/index.ts"
       },
       {
+        "fromPath": "src/tools/agents/index.ts",
+        "toPath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromPath": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "toPath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
         "fromPath": "src/tools/eslint/index.ts",
         "toPath": "src/tools/eslint/resolveEslintProfile.ts",
         "sourcePath": "src/tools/eslint/index.ts"
@@ -6259,6 +6436,11 @@
       {
         "fromPath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
         "toPath": "src/types/provider-command.ts",
+        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
+      },
+      {
+        "fromPath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
+        "toPath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
         "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
       },
       {
@@ -7542,6 +7724,12 @@
       },
       {
         "fromSymbol": "renderAgentsFile",
+        "toSymbol": "renderRepositorySectionsAsync",
+        "callExpression": "renderRepositorySectionsAsync",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderAgentsFile",
         "toSymbol": "renderCurrentArchitectureInstructions",
         "callExpression": "renderCurrentArchitectureInstructions",
         "sourcePath": "src/tools/agents/index.ts"
@@ -7577,12 +7765,6 @@
         "sourcePath": "src/tools/agents/index.ts"
       },
       {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "escapeInlineCode",
-        "callExpression": "escapeInlineCode",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
         "fromSymbol": "readPackageManifest",
         "toSymbol": "readFile",
         "callExpression": "readFile",
@@ -7605,6 +7787,78 @@
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
         "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderRepositorySectionsAsync",
+        "toSymbol": "readRepositoryMetadataFactAsync",
+        "callExpression": "readRepositoryMetadataFactAsync",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRepositorySectionsAsync",
+        "toSymbol": "renderFallbackRepositorySection",
+        "callExpression": "renderFallbackRepositorySection",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRepositorySectionsAsync",
+        "toSymbol": "evaluateRepositoryMetadataPreflight",
+        "callExpression": "evaluateRepositoryMetadataPreflight",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderRepositorySectionsAsync",
+        "toSymbol": "renderCuratedRepositorySections",
+        "callExpression": "renderCuratedRepositorySections",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderFallbackRepositorySection",
+        "toSymbol": "escapeInlineCode",
+        "callExpression": "escapeInlineCode",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderFallbackRepositorySection",
+        "toSymbol": "escapeMarkdownText",
+        "callExpression": "escapeMarkdownText",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderCuratedRepositorySections",
+        "toSymbol": "escapeInlineCode",
+        "callExpression": "escapeInlineCode",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderCuratedRepositorySections",
+        "toSymbol": "escapeMarkdownText",
+        "callExpression": "escapeMarkdownText",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "renderCuratedRepositorySections",
+        "toSymbol": "renderList",
+        "callExpression": "renderList",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "src/tools/agents/renderRepositorySectionsAsync.ts",
+        "toSymbol": "escapeMarkdownText",
+        "callExpression": "escapeMarkdownText",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "escapeInlineCode",
+        "toSymbol": "normalizeText",
+        "callExpression": "normalizeText",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
+      },
+      {
+        "fromSymbol": "escapeMarkdownText",
+        "toSymbol": "normalizeText",
+        "callExpression": "normalizeText",
+        "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
       },
       {
         "fromSymbol": "createConfig",
@@ -9365,6 +9619,186 @@
         "sourcePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"
       },
       {
+        "fromSymbol": "readRepositoryMetadataFactAsync",
+        "toSymbol": "pathExistsAsync",
+        "callExpression": "pathExistsAsync",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "readRepositoryMetadataFactAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "readRepositoryMetadataFactAsync",
+        "toSymbol": "parseRepositoryMetadata",
+        "callExpression": "parseRepositoryMetadata",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "readRepositoryMetadataFactAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "parseJsonDocument",
+        "callExpression": "parseJsonDocument",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "isMetadataKind",
+        "callExpression": "isMetadataKind",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "hasValidOptionalFields",
+        "callExpression": "hasValidOptionalFields",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseRepositoryMetadata",
+        "toSymbol": "optionalMetadataFields",
+        "callExpression": "optionalMetadataFields",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidOptionalFields",
+        "toSymbol": "hasOptionalStringArray",
+        "callExpression": "hasOptionalStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidOptionalFields",
+        "toSymbol": "hasValidArchitecture",
+        "callExpression": "hasValidArchitecture",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidOptionalFields",
+        "toSymbol": "hasValidImplementations",
+        "callExpression": "hasValidImplementations",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidOptionalFields",
+        "toSymbol": "hasValidConstraints",
+        "callExpression": "hasValidConstraints",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalTextCollections",
+        "callExpression": "optionalTextCollections",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalArchitectureField",
+        "callExpression": "optionalArchitectureField",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalImplementsField",
+        "callExpression": "optionalImplementsField",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalConstraintsField",
+        "callExpression": "optionalConstraintsField",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalTextCollections",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalArchitectureField",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalArchitectureField",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "toSymbol": "parseImplementationReference",
+        "callExpression": "parseImplementationReference",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseImplementationReference",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalConstraintsField",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalConstraintsField",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasOptionalStringArray",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidArchitecture",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidArchitecture",
+        "toSymbol": "hasOptionalStringArray",
+        "callExpression": "hasOptionalStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidConstraints",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidConstraints",
+        "toSymbol": "hasOptionalStringArray",
+        "callExpression": "hasOptionalStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "pathExistsAsync",
+        "toSymbol": "access",
+        "callExpression": "access",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
         "fromSymbol": "runRepositoryMetadataCommandAsync",
         "toSymbol": "parseMetadataArguments",
         "callExpression": "parseMetadataArguments",
@@ -9384,8 +9818,8 @@
       },
       {
         "fromSymbol": "runRepositoryMetadataCommandAsync",
-        "toSymbol": "readMetadataFactAsync",
-        "callExpression": "readMetadataFactAsync",
+        "toSymbol": "readRepositoryMetadataFactAsync",
+        "callExpression": "readRepositoryMetadataFactAsync",
         "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
       },
       {
@@ -9434,30 +9868,6 @@
         "fromSymbol": "assertDirectoryAsync",
         "toSymbol": "access",
         "callExpression": "access",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "readMetadataFactAsync",
-        "toSymbol": "pathExistsAsync",
-        "callExpression": "pathExistsAsync",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "readMetadataFactAsync",
-        "toSymbol": "join",
-        "callExpression": "join",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "readMetadataFactAsync",
-        "toSymbol": "parseRepositoryMetadata",
-        "callExpression": "parseRepositoryMetadata",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "readMetadataFactAsync",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
         "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
       },
       {
@@ -9518,78 +9928,6 @@
         "fromSymbol": "readManifestAsync",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseRepositoryMetadata",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseRepositoryMetadata",
-        "toSymbol": "isMetadataKind",
-        "callExpression": "isMetadataKind",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseRepositoryMetadata",
-        "toSymbol": "optionalMetadataFields",
-        "callExpression": "optionalMetadataFields",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalMetadataFields",
-        "toSymbol": "optionalTextCollections",
-        "callExpression": "optionalTextCollections",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalMetadataFields",
-        "toSymbol": "optionalArchitectureField",
-        "callExpression": "optionalArchitectureField",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalMetadataFields",
-        "toSymbol": "optionalImplementsField",
-        "callExpression": "optionalImplementsField",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalMetadataFields",
-        "toSymbol": "optionalConstraintsField",
-        "callExpression": "optionalConstraintsField",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalTextCollections",
-        "toSymbol": "readStringArray",
-        "callExpression": "readStringArray",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalArchitectureField",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "parseImplementationReference",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalConstraintsField",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
-      },
-      {
-        "fromSymbol": "optionalConstraintsField",
-        "toSymbol": "readStringArray",
-        "callExpression": "readStringArray",
         "sourcePath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts"
       },
       {

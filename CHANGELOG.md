@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.8.0
+
+### Minor Changes
+
+- c4b278d: Render managed AGENTS guidance from validated repository metadata while preserving the package-description fallback when metadata is absent.
+
+### Patch Changes
+
+- 100692f: Preserve fixed source on main when completing an already-versioned but unpublished release.
+- 944259d: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+- 0d6926f: Update Devtools-owned dependencies: `@ankhorage/ankh`, `@ankhorage/paradox`, `@next/eslint-plugin-next`, `eslint`, `knip`, `prettier`, `typescript-eslint`.
+- 633f401: Update Devtools-owned dependencies: `@ankhorage/rules-repository`.
+
 ## 2.7.0
 
 ### Minor Changes

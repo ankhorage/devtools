@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ankhorage/devtools • Paradox</title>
+    <title>Ankhorage Devtools • Paradox</title>
     <style>
       :root {
         color-scheme: light;
@@ -115,8 +115,9 @@
     <div class="layout">
       <aside class="sidebar">
         <p class="muted">Generated with Paradox</p>
-        <h1>@ankhorage/devtools</h1>
-        <p>Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects</p>
+        <h1>Ankhorage Devtools</h1>
+        <p>Owns shared repository automation, managed development tooling, workflows, and agent standards for Ankhorage TypeScript projects.</p>
+        <p>Keep standalone repositories aligned through released, reusable tooling instead of copied project-specific automation.</p>
         <input id="search" class="search" type="search" placeholder="Search current view" />
         <nav aria-label="Documentation sections">
           <ul class="nav-list">
@@ -262,9 +263,14 @@
       <small>13 functions</small>
     </button>
   </li><li>
+    <button class="nav-button" type="button" data-target="src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts">
+      src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts
+      <small>17 functions</small>
+    </button>
+  </li><li>
     <button class="nav-button" type="button" data-target="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts">
       src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts
-      <small>20 functions</small>
+      <small>10 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts">
@@ -334,7 +340,12 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/agents/index.ts">
       src/tools/agents/index.ts
-      <small>12 functions</small>
+      <small>11 functions</small>
+    </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/agents/renderRepositorySectionsAsync.ts">
+      src/tools/agents/renderRepositorySectionsAsync.ts
+      <small>7 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/eslint/index.ts">
@@ -473,7 +484,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>87</strong><span class="muted">modules</span></div>
+        <div><strong>89</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -704,10 +715,15 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>inspectManagedFiles</code>, <code>ManagedFileDefinition</code>, <code>ManagedFileStatus</code>, <code>ManagedFileSyncAction</code>, <code>ManagedFileSyncResult</code>, <code>resolveManagedTargetDirectory</code>, <code>syncManagedFiles</code></p>
-  </article><article class="item" data-search="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts src/types/provider-command.ts runRepositoryMetadataCommandAsync">
+  </article><article class="item" data-search="src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts readRepositoryMetadataFactAsync RepositoryMetadataFact">
+    <h3>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>readRepositoryMetadataFactAsync</code>, <code>RepositoryMetadataFact</code></p>
+  </article><article class="item" data-search="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts src/types/provider-command.ts runRepositoryMetadataCommandAsync">
     <h3>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/types/provider-command.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>runRepositoryMetadataCommandAsync</code></p>
   </article><article class="item" data-search="src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts src/types/structure-generation.ts createStructureGenerationWorkspacePort">
     <h3>src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts</h3>
@@ -774,11 +790,16 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
     <p><strong>Exports:</strong> <code>resolveAtlasAuditPolicyAsync</code></p>
-  </article><article class="item" data-search="src/tools/agents/index.ts src/features/managed-files/managedFiles.ts agentsManagedFiles">
+  </article><article class="item" data-search="src/tools/agents/index.ts src/features/managed-files/managedFiles.ts src/tools/agents/renderRepositorySectionsAsync.ts agentsManagedFiles">
     <h3>src/tools/agents/index.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/agents/renderRepositorySectionsAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>agentsManagedFiles</code></p>
+  </article><article class="item" data-search="src/tools/agents/renderRepositorySectionsAsync.ts src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts renderRepositorySectionsAsync">
+    <h3>src/tools/agents/renderRepositorySectionsAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts</code></p>
+    <p><strong>Exports:</strong> <code>renderRepositorySectionsAsync</code></p>
   </article><article class="item" data-search="src/tools/eslint/index.ts src/tools/eslint/resolveEslintProfile.ts src/tools/eslint/types.ts createConfig defaultIgnores defaultRestrictedImports DevtoolsConfigOptions DevtoolsEslintProfile FlatConfigItem ResolvedDevtoolsEslintProfile RestrictedImport">
     <h3>src/tools/eslint/index.ts</h3>
     <p class="muted">Configured entrypoint</p>
@@ -1621,7 +1642,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>Architecture overview</h3>
     <p class="muted"><code>diagrams/architecture-overview.mmd</code></p>
     <div class="mermaid">graph TD
-  package__ankhorage_devtools[&quot;@ankhorage/devtools&quot;]
+  package__ankhorage_devtools[&quot;Ankhorage Devtools&quot;]
   entrypoint_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   package__ankhorage_devtools --&gt; entrypoint_src_apmRelease_ts
   entrypoint_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
@@ -1780,8 +1801,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts[&quot;src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
@@ -1834,6 +1858,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_agents_index_ts
   module_src_tools_agents_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_agents_index_ts --&gt; module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts[&quot;src/tools/agents/renderRepositorySectionsAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
@@ -1937,7 +1965,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <details>
       <summary>View Mermaid source</summary>
       <pre>graph TD
-  package__ankhorage_devtools[&quot;@ankhorage/devtools&quot;]
+  package__ankhorage_devtools[&quot;Ankhorage Devtools&quot;]
   entrypoint_src_apmRelease_ts[&quot;src/apmRelease.ts&quot;]
   package__ankhorage_devtools --&gt; entrypoint_src_apmRelease_ts
   entrypoint_src_cli_index_ts[&quot;src/cli/index.ts&quot;]
@@ -2096,8 +2124,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts[&quot;src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts
@@ -2150,6 +2181,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_agents_index_ts
   module_src_tools_agents_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_agents_index_ts --&gt; module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts[&quot;src/tools/agents/renderRepositorySectionsAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
@@ -2294,6 +2329,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts[&quot;src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts&quot;]
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2309,6 +2345,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   module_src_policy_resolveAtlasAuditPolicyAsync_ts[&quot;src/policy/resolveAtlasAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
+  module_src_tools_agents_renderRepositorySectionsAsync_ts[&quot;src/tools/agents/renderRepositorySectionsAsync.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
   module_src_tools_eslint_packageJsonPath_ts[&quot;src/tools/eslint/packageJsonPath.ts&quot;]
@@ -2414,6 +2451,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
@@ -2438,6 +2476,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_agents_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_agents_index_ts --&gt; module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_managed_ts --&gt; module_src_constants_eslint_ts
@@ -2517,6 +2557,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts[&quot;src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts&quot;]
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2532,6 +2573,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   module_src_policy_resolveAtlasAuditPolicyAsync_ts[&quot;src/policy/resolveAtlasAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
+  module_src_tools_agents_renderRepositorySectionsAsync_ts[&quot;src/tools/agents/renderRepositorySectionsAsync.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
   module_src_tools_eslint_packageJsonPath_ts[&quot;src/tools/eslint/packageJsonPath.ts&quot;]
@@ -2637,6 +2679,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --&gt; module_src_types_apm_release_validation_ts
   module_src_features_ci_impact_ciImpact_ts --&gt; module_src_features_ci_impact_ciImpactGitHub_ts
   module_src_features_ci_impact_ciImpactGitHub_ts --&gt; module_src_features_ci_impact_ciImpact_ts
+  module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts --&gt; module_src_types_provider_command_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts --&gt; module_src_types_structure_generation_ts
@@ -2661,6 +2704,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderRenovateWorkflowAsync_ts
   module_src_owner_synchronizeRenovateOwnerAsync_ts --&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_agents_index_ts --&gt; module_src_features_managed_files_managedFiles_ts
+  module_src_tools_agents_index_ts --&gt; module_src_tools_agents_renderRepositorySectionsAsync_ts
+  module_src_tools_agents_renderRepositorySectionsAsync_ts --&gt; module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_resolveEslintProfile_ts
   module_src_tools_eslint_index_ts --&gt; module_src_tools_eslint_types_ts
   module_src_tools_eslint_managed_ts --&gt; module_src_constants_eslint_ts
@@ -2742,6 +2787,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts[&quot;src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts&quot;]
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2757,6 +2803,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   module_src_policy_resolveAtlasAuditPolicyAsync_ts[&quot;src/policy/resolveAtlasAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
+  module_src_tools_agents_renderRepositorySectionsAsync_ts[&quot;src/tools/agents/renderRepositorySectionsAsync.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
   module_src_tools_eslint_packageJsonPath_ts[&quot;src/tools/eslint/packageJsonPath.ts&quot;]
@@ -2886,6 +2933,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_features_ci_impact_ciImpact_ts[&quot;src/features/ci-impact/ciImpact.ts&quot;]
   module_src_features_ci_impact_ciImpactGitHub_ts[&quot;src/features/ci-impact/ciImpactGitHub.ts&quot;]
   module_src_features_managed_files_managedFiles_ts[&quot;src/features/managed-files/managedFiles.ts&quot;]
+  module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts[&quot;src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts&quot;]
   module_src_features_repository_metadata_application_runRepositoryMetadataCommandAsync_ts[&quot;src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_createStructureGenerationWorkspacePort_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/createStructureGenerationWorkspacePort.ts&quot;]
   module_src_features_structure_descriptor_generation_adapters_outbound_generateStructureArtifactFromTypescriptAsync_ts[&quot;src/features/structure-descriptor-generation/adapters/outbound/generateStructureArtifactFromTypescriptAsync.ts&quot;]
@@ -2901,6 +2949,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_policy_renderBunPolicyDocumentation_ts[&quot;src/policy/renderBunPolicyDocumentation.ts&quot;]
   module_src_policy_resolveAtlasAuditPolicyAsync_ts[&quot;src/policy/resolveAtlasAuditPolicyAsync.ts&quot;]
   module_src_tools_agents_index_ts[&quot;src/tools/agents/index.ts&quot;]
+  module_src_tools_agents_renderRepositorySectionsAsync_ts[&quot;src/tools/agents/renderRepositorySectionsAsync.ts&quot;]
   module_src_tools_eslint_index_ts[&quot;src/tools/eslint/index.ts&quot;]
   module_src_tools_eslint_managed_ts[&quot;src/tools/eslint/managed.ts&quot;]
   module_src_tools_eslint_packageJsonPath_ts[&quot;src/tools/eslint/packageJsonPath.ts&quot;]
@@ -3057,6 +3106,11 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     </details>
   </article>
     </section>
+          <section class="panel" data-search="donation sponsor support">
+            <h2>Donation</h2>
+            <p>If this project is useful to you, you can support its continued development.</p>
+            <p><a href="https://github.com/sponsors/ankhorage">Support @ankhorage</a></p>
+          </section>
         </section>
         <section id="view-src-cli-commands-ts" class="view" data-view="src/cli/commands.ts" hidden>
     <section class="panel">
@@ -3716,107 +3770,147 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     
   </article>
     </section>
+  </section><section id="view-src-features-repository-metadata-application-readrepositorymetadatafactasync-ts" class="view" data-view="src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts</h2>
+      <article class="item" data-search="readRepositoryMetadataFactAsync src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Read canonical repository metadata as inert JSON from the profile-owned local path.">
+    <h3>readRepositoryMetadataFactAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:22:1</code></p>
+    <p>Read canonical repository metadata as inert JSON from the profile-owned local path.</p>
+    
+  </article><article class="item" data-search="parseRepositoryMetadata src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Decode a complete portable metadata document without executing repository-owned code.">
+    <h3>parseRepositoryMetadata</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:43:1</code></p>
+    <p>Decode a complete portable metadata document without executing repository-owned code.</p>
+    
+  </article><article class="item" data-search="parseJsonDocument src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Parse authored JSON without leaking parser-specific failures across the metadata boundary.">
+    <h3>parseJsonDocument</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:67:1</code></p>
+    <p>Parse authored JSON without leaking parser-specific failures across the metadata boundary.</p>
+    
+  </article><article class="item" data-search="hasValidOptionalFields src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Reject malformed recognized fields instead of silently discarding authored facts.">
+    <h3>hasValidOptionalFields</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:76:1</code></p>
+    <p>Reject malformed recognized fields instead of silently discarding authored facts.</p>
+    
+  </article><article class="item" data-search="optionalMetadataFields src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Preserve optional Contract fields after their complete shape has been verified.">
+    <h3>optionalMetadataFields</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:90:1</code></p>
+    <p>Preserve optional Contract fields after their complete shape has been verified.</p>
+    
+  </article><article class="item" data-search="optionalTextCollections src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Read optional authored text collections from a previously validated document.">
+    <h3>optionalTextCollections</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:103:1</code></p>
+    <p>Read optional authored text collections from a previously validated document.</p>
+    
+  </article><article class="item" data-search="optionalArchitectureField src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Read an optional architecture fact from a previously validated document.">
+    <h3>optionalArchitectureField</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:119:1</code></p>
+    <p>Read an optional architecture fact from a previously validated document.</p>
+    
+  </article><article class="item" data-search="optionalImplementsField src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Read implementation references from a previously validated document.">
+    <h3>optionalImplementsField</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:132:1</code></p>
+    <p>Read implementation references from a previously validated document.</p>
+    
+  </article><article class="item" data-search="parseImplementationReference src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Decode one validated portable implementation reference.">
+    <h3>parseImplementationReference</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:143:1</code></p>
+    <p>Decode one validated portable implementation reference.</p>
+    
+  </article><article class="item" data-search="optionalConstraintsField src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Read optional operational constraints from a previously validated document.">
+    <h3>optionalConstraintsField</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:155:1</code></p>
+    <p>Read optional operational constraints from a previously validated document.</p>
+    
+  </article><article class="item" data-search="hasOptionalStringArray src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Check whether an optional value is absent or a complete Contract-compatible string array.">
+    <h3>hasOptionalStringArray</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:177:1</code></p>
+    <p>Check whether an optional value is absent or a complete Contract-compatible string array.</p>
+    
+  </article><article class="item" data-search="hasValidArchitecture src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Check an optional architecture field without accepting malformed child values.">
+    <h3>hasValidArchitecture</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:182:1</code></p>
+    <p>Check an optional architecture field without accepting malformed child values.</p>
+    
+  </article><article class="item" data-search="hasValidImplementations src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Check optional implementation references without losing malformed entries.">
+    <h3>hasValidImplementations</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:192:1</code></p>
+    <p>Check optional implementation references without losing malformed entries.</p>
+    
+  </article><article class="item" data-search="hasValidConstraints src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Check optional constraint fields without accepting malformed child values.">
+    <h3>hasValidConstraints</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:201:1</code></p>
+    <p>Check optional constraint fields without accepting malformed child values.</p>
+    
+  </article><article class="item" data-search="readStringArray src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Read one Contract-compatible string-array shape from authored JSON.">
+    <h3>readStringArray</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:213:1</code></p>
+    <p>Read one Contract-compatible string-array shape from authored JSON.</p>
+    
+  </article><article class="item" data-search="isMetadataKind src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Recognize the portable Contract&#39;s closed metadata-kind vocabulary.">
+    <h3>isMetadataKind</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:220:1</code></p>
+    <p>Recognize the portable Contract&#39;s closed metadata-kind vocabulary.</p>
+    
+  </article><article class="item" data-search="pathExistsAsync src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts Test one local path without shelling out or consulting external state.">
+    <h3>pathExistsAsync</h3>
+    <p class="muted"><code>src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts:237:1</code></p>
+    <p>Test one local path without shelling out or consulting external state.</p>
+    
+  </article>
+    </section>
   </section><section id="view-src-features-repository-metadata-application-runrepositorymetadatacommandasync-ts" class="view" data-view="src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts" hidden>
     <section class="panel">
       <h2>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts</h2>
       <article class="item" data-search="runRepositoryMetadataCommandAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Initialize or inspect authored repository metadata without turning it into an enforcement gate.">
     <h3>runRepositoryMetadataCommandAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:20:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:12:1</code></p>
     <p>Initialize or inspect authored repository metadata without turning it into an enforcement gate.</p>
     
   </article><article class="item" data-search="parseMetadataArguments src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Parse deterministic metadata command arguments without consulting network or ambient configuration.">
     <h3>parseMetadataArguments</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:67:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:52:1</code></p>
     <p>Parse deterministic metadata command arguments without consulting network or ambient configuration.</p>
     
   </article><article class="item" data-search="assertDirectoryAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Require a local directory before any metadata inspection or initialization.">
     <h3>assertDirectoryAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:86:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:71:1</code></p>
     <p>Require a local directory before any metadata inspection or initialization.</p>
-    
-  </article><article class="item" data-search="readMetadataFactAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Discover the profile-owned metadata location and parse only structurally recognizable JSON.">
-    <h3>readMetadataFactAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:91:1</code></p>
-    <p>Discover the profile-owned metadata location and parse only structurally recognizable JSON.</p>
     
   </article><article class="item" data-search="initializeMetadataAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Create an intentionally incomplete authored template only when metadata is absent.">
     <h3>initializeMetadataAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:109:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:76:1</code></p>
     <p>Create an intentionally incomplete authored template only when metadata is absent.</p>
     
   </article><article class="item" data-search="metadataTemplateAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Build a template from only independently verifiable local repository facts.">
     <h3>metadataTemplateAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:125:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:92:1</code></p>
     <p>Build a template from only independently verifiable local repository facts.</p>
     
   </article><article class="item" data-search="readManifestAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read package metadata defensively; absence never fabricates author-owned content.">
     <h3>readManifestAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:136:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:103:1</code></p>
     <p>Read package metadata defensively; absence never fabricates author-owned content.</p>
-    
-  </article><article class="item" data-search="parseRepositoryMetadata src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Decode a document enough for Rules to produce diagnostic findings without claiming semantic truth.">
-    <h3>parseRepositoryMetadata</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:144:1</code></p>
-    <p>Decode a document enough for Rules to produce diagnostic findings without claiming semantic truth.</p>
-    
-  </article><article class="item" data-search="optionalMetadataFields src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Preserve recognizable optional Contract fields so Rules can report their semantic findings.">
-    <h3>optionalMetadataFields</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:166:1</code></p>
-    <p>Preserve recognizable optional Contract fields so Rules can report their semantic findings.</p>
-    
-  </article><article class="item" data-search="optionalTextCollections src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read optional authored text collections without widening untrusted JSON values.">
-    <h3>optionalTextCollections</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:179:1</code></p>
-    <p>Read optional authored text collections without widening untrusted JSON values.</p>
-    
-  </article><article class="item" data-search="optionalArchitectureField src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read an optional architecture fact only when all recognized subfields are safely shaped.">
-    <h3>optionalArchitectureField</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:195:1</code></p>
-    <p>Read an optional architecture fact only when all recognized subfields are safely shaped.</p>
-    
-  </article><article class="item" data-search="optionalImplementsField src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read implementation references so their public-shape rules remain observable to authors.">
-    <h3>optionalImplementsField</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:210:1</code></p>
-    <p>Read implementation references so their public-shape rules remain observable to authors.</p>
-    
-  </article><article class="item" data-search="parseImplementationReference src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Decode one Contract-shaped implementation reference from authored JSON.">
-    <h3>parseImplementationReference</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:219:1</code></p>
-    <p>Decode one Contract-shaped implementation reference from authored JSON.</p>
-    
-  </article><article class="item" data-search="optionalConstraintsField src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read optional platform and operational constraints without accepting malformed child lists.">
-    <h3>optionalConstraintsField</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:231:1</code></p>
-    <p>Read optional platform and operational constraints without accepting malformed child lists.</p>
-    
-  </article><article class="item" data-search="readStringArray src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Read one Contract-compatible string-array shape from authored JSON.">
-    <h3>readStringArray</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:253:1</code></p>
-    <p>Read one Contract-compatible string-array shape from authored JSON.</p>
-    
-  </article><article class="item" data-search="isMetadataKind src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Recognize the portable Contract&#39;s closed metadata-kind vocabulary.">
-    <h3>isMetadataKind</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:260:1</code></p>
-    <p>Recognize the portable Contract&#39;s closed metadata-kind vocabulary.</p>
     
   </article><article class="item" data-search="authoredTasks src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Identify human-authored fields that deliberately remain absent from the bootstrap template.">
     <h3>authoredTasks</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:277:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:111:1</code></p>
     <p>Identify human-authored fields that deliberately remain absent from the bootstrap template.</p>
     
   </article><article class="item" data-search="writeMetadataStatus src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Render preflight findings and ownership tasks as deterministic actionable CLI output.">
     <h3>writeMetadataStatus</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:286:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:120:1</code></p>
     <p>Render preflight findings and ownership tasks as deterministic actionable CLI output.</p>
     
   </article><article class="item" data-search="pathExistsAsync src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Test one local path without shelling out or consulting external state.">
     <h3>pathExistsAsync</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:302:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:136:1</code></p>
     <p>Test one local path without shelling out or consulting external state.</p>
     
   </article><article class="item" data-search="getErrorMessage src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts Normalize any boundary error for the CLI adapter.">
     <h3>getErrorMessage</h3>
-    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:310:1</code></p>
+    <p class="muted"><code>src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts:144:1</code></p>
     <p>Normalize any boundary error for the CLI adapter.</p>
     
   </article>
@@ -4129,10 +4223,10 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </section><section id="view-src-internal-readmedocs-ts" class="view" data-view="src/internal/readmeDocs.ts" hidden>
     <section class="panel">
       <h2>src/internal/readmeDocs.ts</h2>
-      <article class="item" data-search="getReadmeDocumentationErrors src/internal/readmeDocs.ts ">
+      <article class="item" data-search="getReadmeDocumentationErrors src/internal/readmeDocs.ts Checks generated README markers using the title owned by repository metadata.">
     <h3>getReadmeDocumentationErrors</h3>
     <p class="muted"><code>src/internal/readmeDocs.ts:12:1</code></p>
-    <p class="empty">No description available.</p>
+    <p>Checks generated README markers using the title owned by repository metadata.</p>
     
   </article>
     </section>
@@ -4251,7 +4345,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/agents/index.ts</h2>
       <article class="item" data-search="renderAgentsFile src/tools/agents/index.ts Render mandatory repository instructions from the target package identity.">
     <h3>renderAgentsFile</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:22:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:23:1</code></p>
     <p>Render mandatory repository instructions from the target package identity.</p>
     
   </article><article class="item" data-search="renderCurrentArchitectureInstructions src/tools/agents/index.ts Render the current-architecture policy shared by every managed repository.">
@@ -4289,25 +4383,60 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p class="muted"><code>src/tools/agents/index.ts:159:1</code></p>
     <p>Read the target package manifest used to personalize managed repository instructions.</p>
     
-  </article><article class="item" data-search="escapeInlineCode src/tools/agents/index.ts Escape inline-code delimiters before interpolating repository metadata into Markdown.">
-    <h3>escapeInlineCode</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:176:1</code></p>
-    <p>Escape inline-code delimiters before interpolating repository metadata into Markdown.</p>
-    
   </article><article class="item" data-search="isNodeError src/tools/agents/index.ts Check whether an unknown failure carries a Node.js error code.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:181:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:176:1</code></p>
     <p>Check whether an unknown failure carries a Node.js error code.</p>
     
   </article><article class="item" data-search="isRecord src/tools/agents/index.ts Check whether an unknown value is a plain record-shaped object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:186:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:181:1</code></p>
     <p>Check whether an unknown value is a plain record-shaped object.</p>
     
   </article><article class="item" data-search="readNonEmptyString src/tools/agents/index.ts Read and trim a non-empty string value from package metadata.">
     <h3>readNonEmptyString</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:191:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:186:1</code></p>
     <p>Read and trim a non-empty string value from package metadata.</p>
+    
+  </article>
+    </section>
+  </section><section id="view-src-tools-agents-renderrepositorysectionsasync-ts" class="view" data-view="src/tools/agents/renderRepositorySectionsAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/agents/renderRepositorySectionsAsync.ts</h2>
+      <article class="item" data-search="renderRepositorySectionsAsync src/tools/agents/renderRepositorySectionsAsync.ts Render curated repository scope when valid metadata exists, preserving the manifest fallback.">
+    <h3>renderRepositorySectionsAsync</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:12:1</code></p>
+    <p>Render curated repository scope when valid metadata exists, preserving the manifest fallback.</p>
+    
+  </article><article class="item" data-search="renderFallbackRepositorySection src/tools/agents/renderRepositorySectionsAsync.ts Render the transition-safe package-manifest fallback when canonical metadata is absent.">
+    <h3>renderFallbackRepositorySection</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:40:1</code></p>
+    <p>Render the transition-safe package-manifest fallback when canonical metadata is absent.</p>
+    
+  </article><article class="item" data-search="renderCuratedRepositorySections src/tools/agents/renderRepositorySectionsAsync.ts Render authored purpose, ownership, boundaries, audience, and architectural invariants.">
+    <h3>renderCuratedRepositorySections</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:51:1</code></p>
+    <p>Render authored purpose, ownership, boundaries, audience, and architectural invariants.</p>
+    
+  </article><article class="item" data-search="renderList src/tools/agents/renderRepositorySectionsAsync.ts Render one optional authored collection as a deterministic Markdown list.">
+    <h3>renderList</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:87:1</code></p>
+    <p>Render one optional authored collection as a deterministic Markdown list.</p>
+    
+  </article><article class="item" data-search="escapeInlineCode src/tools/agents/renderRepositorySectionsAsync.ts Escape inline-code delimiters and backslashes inside a managed Markdown code span.">
+    <h3>escapeInlineCode</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:95:1</code></p>
+    <p>Escape inline-code delimiters and backslashes inside a managed Markdown code span.</p>
+    
+  </article><article class="item" data-search="escapeMarkdownText src/tools/agents/renderRepositorySectionsAsync.ts Flatten authored prose and escape Markdown control characters before interpolation.">
+    <h3>escapeMarkdownText</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:100:1</code></p>
+    <p>Flatten authored prose and escape Markdown control characters before interpolation.</p>
+    
+  </article><article class="item" data-search="normalizeText src/tools/agents/renderRepositorySectionsAsync.ts Normalize authored prose to one managed Markdown line without changing its words.">
+    <h3>normalizeText</h3>
+    <p class="muted"><code>src/tools/agents/renderRepositorySectionsAsync.ts:107:1</code></p>
+    <p>Normalize authored prose to one managed Markdown line without changing its words.</p>
     
   </article>
     </section>
