@@ -227,19 +227,24 @@ jobs:
                 exit 1
               fi
 
-              if [ -n "$tagged_sha" ]; then
+              if [ "$HIGHEST_PUBLISHED_VERSION" != "$current_version" ]; then
+                release_sha="$(git rev-parse HEAD)"
+                echo "Completing unpublished ${release_tag} from current main ${release_sha} without another version bump."
+              elif [ -n "$tagged_sha" ]; then
                 echo "Release tag ${release_tag} already points to ${release_sha}; resuming idempotent finalization."
               else
                 echo "Recovering canonical release commit $release_sha for version $current_version without another version bump."
               fi
 
-              if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+              if [ "$HIGHEST_PUBLISHED_VERSION" = "$current_version" ] && (! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]); then
                 git status --short
                 echo "::error title=Release recovery requires a clean worktree::A release preparation step modified the checkout before recovery. Refusing to discard changes while switching to canonical release commit $release_sha."
                 exit 1
               fi
 
-              git checkout --detach "$release_sha"
+              if [ "$HIGHEST_PUBLISHED_VERSION" = "$current_version" ]; then
+                git checkout --detach "$release_sha"
+              fi
               echo "versioned=true" >> "$GITHUB_OUTPUT"
               echo "package_name=$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
               echo "package_version=$current_version" >> "$GITHUB_OUTPUT"
