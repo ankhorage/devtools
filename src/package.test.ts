@@ -17,6 +17,7 @@ function testPackageEntrypoints(): void {
   expect(packageJson.bin).toEqual({
     'ankhorage-apm-release': './dist/cli/bin/apm-release.js',
     'ankhorage-changeset': './dist/cli/bin/changeset.js',
+    'ankhorage-ci-impact': './dist/cli/bin/ci-impact.js',
     'ankhorage-eslint': './dist/cli/bin/eslint.js',
     'ankhorage-knip': './dist/cli/bin/knip.js',
     'ankhorage-prettier': './dist/cli/bin/prettier.js',
@@ -52,6 +53,10 @@ function testPackageEntrypoints(): void {
     './capabilities': {
       types: './dist/capabilities/index.d.ts',
       import: './dist/capabilities/index.js',
+    },
+    './ci-impact': {
+      types: './dist/ci-impact.d.ts',
+      import: './dist/ci-impact.js',
     },
   });
 }
