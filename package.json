@@ -528,7 +528,7 @@
     "@ankhorage/apm": "^0.8.15",
     "@ankhorage/capability": "^0.2.3",
     "@ankhorage/contracts": "^26.11.1",
-    "@ankhorage/project-detector": "^0.3.5",
+    "@ankhorage/project-detector": "^0.3.6",
     "@ankhorage/rules-repository": "^0.4.1",
     "@ankhorage/utility": "^0.5.5",
     "@changesets/cli": "^3.0.3",
@@ -552,7 +552,7 @@
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.4.1",
-    "@ankhorage/ankh": "^0.13.6",
+    "@ankhorage/ankh": "^0.13.7",
     "@ankhorage/doctor": "0.14.36",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.2",
