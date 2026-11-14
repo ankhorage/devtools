@@ -66,6 +66,35 @@ test('recovers a tagged release without discarding a modified lockfile', async (
   expect(runGit(directory, ['status', '--short'])).toContain('?? unexpected-untracked-file');
 });
 
+test('releases the current main source when an unpublishable version has been fixed', async () => {
+  const release = await workflowManagedFiles[1].render?.('.');
+  if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
+
+  const directory = await mkdtemp('/tmp/devtools-unpublished-release-recovery-');
+  const outputDirectory = await mkdtemp('/tmp/devtools-unpublished-release-output-');
+  temporaryDirectories.push(directory, outputDirectory);
+  const outputPath = join(outputDirectory, 'github-output');
+
+  await createReleaseFixture(directory, 'chore(release): version packages [skip ci]');
+  await writeFile(join(directory, 'source-fix'), 'preserve this source fix\n');
+  runGit(directory, ['add', 'source-fix']);
+  runGit(directory, ['commit', '-m', 'fix: preserve the unpublished release source']);
+  const fixedSourceSha = runGit(directory, ['rev-parse', 'HEAD']).trim();
+
+  runPublishedRecoveryDetectionScript(
+    directory,
+    outputPath,
+    extractPublishedRecoveryDetectionScript(release),
+    '0.9.0',
+  );
+  expect(await readFile(outputPath, 'utf8')).toContain('recovery=false');
+  runRecoveryScript(directory, outputPath, extractReleaseScript(release), '0.9.0');
+
+  expect(runGit(directory, ['rev-parse', 'HEAD']).trim()).toBe(fixedSourceSha);
+  expect(await readFile(join(directory, 'source-fix'), 'utf8')).toBe('preserve this source fix\n');
+  expect(await readFile(outputPath, 'utf8')).toContain(`release_sha=${fixedSourceSha}`);
+});
+
 test('rejects a mismatched published recovery tag before sync can be skipped', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
@@ -181,11 +210,20 @@ function runGit(directory: string, args: readonly string[]): string {
   return execFileSync('git', args, { cwd: directory, encoding: 'utf8' });
 }
 
-function runRecoveryScript(directory: string, outputPath: string, script: string): void {
+function runRecoveryScript(
+  directory: string,
+  outputPath: string,
+  script: string,
+  highestPublishedVersion = '1.0.0',
+): void {
   execFileSync('bash', ['-e', '-c', script], {
     cwd: directory,
     encoding: 'utf8',
-    env: { ...process.env, GITHUB_OUTPUT: outputPath },
+    env: {
+      ...process.env,
+      GITHUB_OUTPUT: outputPath,
+      HIGHEST_PUBLISHED_VERSION: highestPublishedVersion,
+    },
   });
 }
 
