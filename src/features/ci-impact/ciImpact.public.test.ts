@@ -17,6 +17,11 @@ afterEach(async () => {
 
 test('packed consumers can typecheck the public interface and receive GitHub Actions decisions', async () => {
   const consumerDirectory = await createPackedConsumer();
+  const parentRunnerTemp = await createTemporaryDirectory('devtools-ci-impact-parent-runner-');
+  const parentPlanPath = join(parentRunnerTemp, 'ankh-ci-impact-plan.json');
+  const parentPlan = '{"parent":true}\n';
+  const consumerRunnerTemp = await createTemporaryDirectory('devtools-ci-impact-consumer-runner-');
+  await writeFile(parentPlanPath, parentPlan);
   exec(consumerDirectory, ['install']);
   typecheckConsumer(consumerDirectory);
 
@@ -28,6 +33,7 @@ test('packed consumers can typecheck the public interface and receive GitHub Act
   exec(consumerDirectory, ['./node_modules/.bin/ankhorage-ci-impact', 'plan'], {
     GITHUB_EVENT_NAME: 'push',
     GITHUB_OUTPUT: outputPath,
+    RUNNER_TEMP: consumerRunnerTemp,
   });
   const githubOutput = await readFile(outputPath, 'utf8');
   const impact = JSON.parse(
@@ -38,12 +44,12 @@ test('packed consumers can typecheck the public interface and receive GitHub Act
     reason: 'Unsafe or unavailable diff',
     fallback: true,
   });
+  expect(await readFile(parentPlanPath, 'utf8')).toBe(parentPlan);
 }, 120_000);
 
 async function createPackedConsumer(): Promise<string> {
-  const packageDirectory = await mkdtemp(join(tmpdir(), 'devtools-ci-impact-package-'));
-  const consumerDirectory = await mkdtemp(join(tmpdir(), 'devtools-ci-impact-consumer-'));
-  directories.push(packageDirectory, consumerDirectory);
+  const packageDirectory = await createTemporaryDirectory('devtools-ci-impact-package-');
+  const consumerDirectory = await createTemporaryDirectory('devtools-ci-impact-consumer-');
   exec(process.cwd(), ['pm', 'pack', '--destination', packageDirectory]);
   const archive = (await readdir(packageDirectory)).find((entry) => entry.endsWith('.tgz'));
   if (archive === undefined) throw new Error('Expected a packed Devtools archive.');
@@ -53,6 +59,12 @@ async function createPackedConsumer(): Promise<string> {
   );
   await writeFile(join(consumerDirectory, 'consumer.ts'), consumerSource);
   return consumerDirectory;
+}
+
+async function createTemporaryDirectory(prefix: string): Promise<string> {
+  const directory = await mkdtemp(join(tmpdir(), prefix));
+  directories.push(directory);
+  return directory;
 }
 
 function consumerManifest(packageDirectory: string, archive: string): string {
