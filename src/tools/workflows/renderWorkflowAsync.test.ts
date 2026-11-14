@@ -53,7 +53,7 @@ test('synchronizes the managed impact runner as an owned CI dependency', async (
     { relativePath: '.github/scripts/ci-impact.ts', action: 'created' },
   ]);
   expect(await readFile(join(target, runner.relativePath), 'utf8')).toContain(
-    'export function planCiImpact(',
+    "import { runCiImpact } from '@ankhorage/devtools/ci-impact';",
   );
   expect(await inspectManagedFiles(target, [runner])).toEqual([
     { relativePath: '.github/scripts/ci-impact.ts', state: 'current' },

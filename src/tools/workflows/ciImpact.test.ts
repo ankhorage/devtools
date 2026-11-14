@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 
-import { planCiImpact } from './files/ci-impact.js';
+import { createCiImpactWorkflowOutput, planCiImpact } from '../../ci-impact.js';
 
 const base = 'a'.repeat(40);
 const scripts = {
@@ -58,9 +58,75 @@ test('unknown source impact triggers complete E2E and smoke suites', () => {
   expect(result.e2e).toEqual({
     mode: 'full',
     scripts: ['test:e2e'],
-    reason: 'Unmapped changed file',
+    reason: 'Ambiguous or unmapped changed file',
   });
   expect(result.smoke.scripts).toEqual(['test:smoke']);
+});
+
+test('public workflow output selects individual scripts without an inferred pass', () => {
+  const output = createCiImpactWorkflowOutput(
+    planCiImpact(['src/features/auth/login.ts'], scripts, config, base),
+    config,
+  );
+
+  expect(output).toMatchObject({
+    version: 1,
+    jobs: {
+      'test:e2e:auth': {
+        state: 'selected',
+        reason: 'Explicit complete suite mapping',
+        fallback: false,
+      },
+      'test:e2e:catalog': {
+        state: 'skipped',
+        reason: 'Explicit complete suite mapping',
+        fallback: false,
+      },
+      'test:smoke:auth': {
+        state: 'selected',
+        reason: 'Explicit complete suite mapping',
+        fallback: false,
+      },
+    },
+  });
+});
+
+test('public workflow output marks every declared script as a full fallback when mapping is unsafe', () => {
+  const output = createCiImpactWorkflowOutput(planCiImpact(null, scripts, config, ''), config);
+
+  expect(output.jobs).toEqual({
+    'test:e2e:auth': {
+      state: 'full',
+      reason: 'Unsafe or unavailable diff',
+      fallback: true,
+    },
+    'test:e2e:catalog': {
+      state: 'full',
+      reason: 'Unsafe or unavailable diff',
+      fallback: true,
+    },
+    'test:smoke:auth': {
+      state: 'full',
+      reason: 'Unsafe or unavailable diff',
+      fallback: true,
+    },
+  });
+});
+
+test('ambiguous suite ownership and configuration files retain the complete fallback', () => {
+  const ambiguous = {
+    ...config,
+    suites: [
+      ...config.suites,
+      { kind: 'e2e' as const, script: 'test:e2e:catalog', paths: ['src/features/auth/**'] },
+    ],
+  };
+
+  expect(planCiImpact(['src/features/auth/login.ts'], scripts, ambiguous, base).e2e.mode).toBe(
+    'full',
+  );
+  expect(planCiImpact(['src/runtime.config.ts'], scripts, config, base).smoke.mode).toBe('full');
+  expect(planCiImpact(['yarn.lock'], scripts, config, base).e2e.mode).toBe('full');
 });
 
 test('global metadata, setup and workflow changes trigger complete suites', () => {

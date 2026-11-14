@@ -58,6 +58,49 @@ Do not automatically run only changed E2E test files as a release gate.
 The workflow keeps one `validate` job. Individual test steps show skipped or passed status;
 the planner prints the reason, mode, and selected scripts for each family.
 
+## External workflow jobs
+
+`@ankhorage/devtools` publishes the planner as both the `@ankhorage/devtools/ci-impact`
+subpath and the `ankhorage-ci-impact` binary. Separate workflows use the binary after their
+normal frozen dependency installation; they do not copy the planner or import Devtools source:
+
+```yaml
+jobs:
+  impact:
+    runs-on: ubuntu-latest
+    outputs:
+      impact: ${{ steps.plan.outputs.impact }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bun install --frozen-lockfile
+      - id: plan
+        env:
+          ANKH_CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: ankhorage-ci-impact plan
+
+  acceptance-account:
+    needs: impact
+    if: fromJSON(needs.impact.outputs.impact).jobs['test:e2e:account'].state != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - run: bun run test:e2e:account
+```
+
+The `impact` output is one JSON line that cannot interpolate repository values into a shell.
+Its versioned shape is `{ version, plan, jobs }`; each key in `jobs` is a fully declared
+`ankh.ciImpact.suites[].script` and has `state` (`selected`, `skipped`, or `full`), `reason`,
+and `fallback`. A `full` decision always has `fallback: true`; it is emitted for unavailable
+or unsafe diffs, global/tooling/configuration/lockfile changes, invalid declarations, and
+unmapped or overlapping ownership. The existing `unit`, `e2e`, and `smoke` scalar outputs remain
+available to the managed workflow.
+
+A skipped conditional job is neither an implicit successful test nor a suitable required branch
+check. Keep an always-running, non-pruned validation or aggregation job as the required check;
+make individual conditional suite jobs informational. This preserves a visible status for every
+intentional skip and prevents branch protection from treating a missing job as evidence.
+
 ## Rollout
 
 After a Devtools release, repository synchronization installs both
