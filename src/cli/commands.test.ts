@@ -11,6 +11,8 @@ const repositoryCommandPaths = [
   'apm validate',
   'structure build',
   'structure check',
+  'metadata init',
+  'metadata status',
   'changeset',
   'lint',
   'format',
@@ -58,6 +60,9 @@ describe('devtools command table', () => {
     );
     expect(findDevtoolsCommandByPath(['structure', 'check'])?.capability).toBe(
       'devtools.structure.check',
+    );
+    expect(findDevtoolsCommandByPath(['metadata', 'init'])?.capability).toBe(
+      'devtools.metadata.init',
     );
     expect(findDevtoolsCommandByPath(['eslint', 'sync'])?.capability).toBe('devtools.eslint.sync');
     expect(findDevtoolsCommandByPath(['package', 'status'])?.capability).toBe(
