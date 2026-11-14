@@ -9,7 +9,10 @@ const REQUIRED_README_SNIPPETS = [
 ] as const;
 
 /*** Checks generated README markers using the title owned by repository metadata. */
-export function getReadmeDocumentationErrors(readmeContents: string, expectedTitle: string): string[] {
+export function getReadmeDocumentationErrors(
+  readmeContents: string,
+  expectedTitle: string,
+): string[] {
   return [`# ${expectedTitle}`, ...REQUIRED_README_SNIPPETS].flatMap((snippet) =>
     readmeContents.includes(snippet)
       ? []
