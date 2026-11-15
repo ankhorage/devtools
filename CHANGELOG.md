@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.8.1
+
+### Patch Changes
+
+- ab338b5: Run declared packed-consumer acceptance before publishing managed package releases.
+
 ## 2.8.0
 
 ### Minor Changes
