@@ -78,6 +78,14 @@ jobs:
             echo "No build script found; skipping."
           fi
 
+      - name: Validate owner-defined packed consumer
+        run: |
+          if node -e "const p=require('./package.json'); process.exit(p.scripts?.['test:packed-consumer'] ? 0 : 1)"; then
+            bun run test:packed-consumer
+          else
+            echo "No packed consumer test declared; skipping."
+          fi
+
       - name: Verify npm release baseline
         id: release-baseline
         if: hashFiles('.changeset/config.json') != ''

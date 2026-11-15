@@ -79,6 +79,7 @@ function expectRepositoryCapabilityMaterialization(release: string): void {
 
 /*** Assert the clean packed consumer loads every declared runtime boundary before publication. */
 function expectPackedRuntimeVerification(release: string): void {
+  expectOwnerPackedConsumerValidation(release);
   expect(release).toContain('Verify standalone packed install');
   expect(release).toContain('npm pack --ignore-scripts --pack-destination "$pack_dir"');
   expect(release).toContain(
@@ -123,6 +124,16 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain('Packed binary runtime dependency missing');
   expect(release).not.toContain('pathToFileURL(process.env.BINARY_PATH)');
   expect(release).not.toContain('--help');
+}
+
+/*** Assert UI-capable packages run their declared consumer proof before standalone validation. */
+function expectOwnerPackedConsumerValidation(release: string): void {
+  expect(release).toContain('Validate owner-defined packed consumer');
+  expect(release).toContain("p.scripts?.['test:packed-consumer']");
+  expect(release).toContain('bun run test:packed-consumer');
+  expect(release.indexOf('Validate owner-defined packed consumer')).toBeLessThan(
+    release.indexOf('Verify standalone packed install'),
+  );
 }
 
 /*** Assert React Native Flow parse failures are compiled with Expo rather than ignored. */
