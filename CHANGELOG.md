@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.8.2
+
+### Patch Changes
+
+- 528884f: Update Devtools-owned dependencies: `@ankhorage/rules-repository`.
+
 ## 2.8.1
 
 ### Patch Changes
