@@ -40,6 +40,20 @@ test('managed AGENTS.md renders package identity and current architecture policy
   expect(await readlink(join(target, 'GEMINI.md'))).toBe('AGENTS.md');
 });
 
+test('managed AGENTS.md preserves Next.js-owned instructions idempotently', async () => {
+  const target = await createTarget({ name: 'next-fixture', dependencies: { next: '16.4.6' } });
+  const nextBlock = `<!-- BEGIN:nextjs-agent-rules -->\n\n## Next.js guidance\n\n<!-- END:nextjs-agent-rules -->`;
+  await writeFile(join(target, 'AGENTS.md'), `${nextBlock}\n`);
+
+  await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });
+  expect(await readFile(join(target, 'AGENTS.md'), 'utf8')).toContain(nextBlock);
+  expect(await syncManagedFiles(target, agentsManagedFiles, { dryRun: false })).toEqual([
+    { relativePath: 'AGENTS.md', action: 'unchanged' },
+    { relativePath: 'CLAUDE.md', action: 'unchanged' },
+    { relativePath: 'GEMINI.md', action: 'unchanged' },
+  ]);
+});
+
 test('managed AGENTS.md renders contextual skill, documentation, and delivery instructions', async () => {
   const target = await createTarget({ name: '@ankhorage/example' });
   await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });

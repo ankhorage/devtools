@@ -4,20 +4,35 @@ import { resolve } from 'node:path';
 import { EXAMPLES_ESLINT_OWNERSHIP_MARKER } from '../../constants/eslint.js';
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 
-const ESLINT_CONFIG = `import { createConfig } from '@ankhorage/devtools/eslint';
+const DEFAULT_SOURCE_GLOBS = ['src/**/*.{ts,tsx}'];
+const NEXT_SOURCE_GLOBS = [
+  ...DEFAULT_SOURCE_GLOBS,
+  'app/**/*.{ts,tsx}',
+  'components/**/*.{ts,tsx}',
+  'lib/**/*.{ts,tsx}',
+  'worker/**/*.{ts,tsx}',
+  'scripts/**/*.{ts,tsx}',
+  'tests/**/*.{ts,tsx}',
+];
+
+function renderEslintConfig(sourceGlobs: readonly string[]): string {
+  return `import { createConfig } from '@ankhorage/devtools/eslint';
 import localConfig from './eslint.local.config.mjs';
 
 const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
 
 export default [
   ...createConfig({
-    files: ['src/**/*.{ts,tsx}'],
+    files: ${JSON.stringify(sourceGlobs)},
     project: ['./tsconfig.json'],
     tsconfigRootDir: import.meta.dirname,
   }),
   ...localEntries,
 ];
 `;
+}
+
+const ESLINT_CONFIG = renderEslintConfig(DEFAULT_SOURCE_GLOBS);
 
 const EMPTY_LOCAL_CONFIG = `export default [];
 `;
@@ -63,7 +78,7 @@ export const eslintManagedFiles = [
   },
   {
     relativePath: 'eslint.config.mjs',
-    contents: ESLINT_CONFIG,
+    render: renderManagedEslintConfigAsync,
   },
   {
     relativePath: 'eslint.examples.config.mjs',
@@ -84,8 +99,36 @@ async function renderInitialLocalConfig(targetDirectory: string): Promise<string
   }
 }
 
+/*** Render canonical TypeScript scopes for the target's application profile. */
+async function renderManagedEslintConfigAsync(targetDirectory: string): Promise<string> {
+  const manifest = await readPackageManifestAsync(targetDirectory);
+  return renderEslintConfig(isNextApplication(manifest) ? NEXT_SOURCE_GLOBS : DEFAULT_SOURCE_GLOBS);
+}
+
+/*** Read the optional target manifest without changing the default source profile. */
+async function readPackageManifestAsync(targetDirectory: string): Promise<unknown> {
+  try {
+    return JSON.parse(await readFile(resolve(targetDirectory, 'package.json'), 'utf8')) as unknown;
+  } catch (error) {
+    if (isNodeError(error) && error.code === 'ENOENT') return undefined;
+    throw error;
+  }
+}
+
+/*** Report whether a manifest directly declares Next.js. */
+function isNextApplication(manifest: unknown): boolean {
+  if (!isRecord(manifest)) return false;
+  return [manifest.dependencies, manifest.devDependencies].some(
+    (dependencies) => isRecord(dependencies) && typeof dependencies.next === 'string',
+  );
+}
+
 function isNodeError(error: unknown): error is NodeJS.ErrnoException {
   return error instanceof Error && 'code' in error;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /*** Report whether the target repository owns TypeScript source examples at its root. */
