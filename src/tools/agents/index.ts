@@ -43,10 +43,8 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
   return `# AGENTS.md
 
 <!-- This file is managed by @ankhorage/devtools. -->
-
 ${nextAgentsBlock}
-${repositorySections}
-${sections}`;
+${repositorySections}${sections}`;
 }
 
 /*** Preserve Next.js's complete managed instruction block when Next owns the target. */
@@ -163,11 +161,13 @@ function renderGitHubTaskLifecycleInstructions(): string {
   GitHub has the intended commit on the correct remote branch. Report the exact HEAD, checks, CI,
   findings, and blockers. Report acceptance that was not run as unverified. Read-only reviews hand
   off their findings without creating a commit. Merge requires explicit authorization.
-- **Cleanup.** After handoff, remove only directories created and owned by the task whose resolved
-  paths are strictly under \`/tmp\`. Use Git-aware removal for worktrees. Preserve workspaces outside
-  \`/tmp\`, shared directories, other tasks' directories, uncommitted changes, and unpushed commits.
-  If blocked, persist recoverable work first and document what must be retained. Report whether
-  cleanup succeeded, was skipped, or was blocked.
+- **Cleanup.** After handoff, resolve every candidate path and remove only task-owned directories
+  whose resolved paths are strictly under the resolved system path for \`/tmp\` (\`/private/tmp\` on
+  macOS). Refuse candidates that resolve outside that boundary, including through a symlink. Use
+  Git-aware removal for worktrees. Preserve workspaces outside the boundary, shared directories,
+  other tasks' directories, uncommitted changes, and unpushed commits. If blocked, persist
+  recoverable work first and document what must be retained. Report whether cleanup succeeded, was
+  skipped, or was blocked.
 
 `;
 }

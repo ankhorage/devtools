@@ -2,7 +2,6 @@
 
 <!-- This file is managed by @ankhorage/devtools. -->
 
-
 ## Repository
 
 Package: `@ankhorage/devtools`
@@ -40,7 +39,6 @@ Architectural invariants:
 - Managed repositories remain independently installable and usable.
 - Canonical policy is consumed from its owning published package instead of duplicated.
 - Repository synchronization is deterministic and reviewable.
-
 
 ## Current architecture only
 
@@ -111,11 +109,13 @@ and commits the regenerated artifacts in the release commit.
   GitHub has the intended commit on the correct remote branch. Report the exact HEAD, checks, CI,
   findings, and blockers. Report acceptance that was not run as unverified. Read-only reviews hand
   off their findings without creating a commit. Merge requires explicit authorization.
-- **Cleanup.** After handoff, remove only directories created and owned by the task whose resolved
-  paths are strictly under `/tmp`. Use Git-aware removal for worktrees. Preserve workspaces outside
-  `/tmp`, shared directories, other tasks' directories, uncommitted changes, and unpushed commits.
-  If blocked, persist recoverable work first and document what must be retained. Report whether
-  cleanup succeeded, was skipped, or was blocked.
+- **Cleanup.** After handoff, resolve every candidate path and remove only task-owned directories
+  whose resolved paths are strictly under the resolved system path for `/tmp` (`/private/tmp` on
+  macOS). Refuse candidates that resolve outside that boundary, including through a symlink. Use
+  Git-aware removal for worktrees. Preserve workspaces outside the boundary, shared directories,
+  other tasks' directories, uncommitted changes, and unpushed commits. If blocked, persist
+  recoverable work first and document what must be retained. Report whether cleanup succeeded, was
+  skipped, or was blocked.
 
 ## Pull requests
 
