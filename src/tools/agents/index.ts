@@ -37,13 +37,38 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
     renderPullRequestInstructions(),
     renderSkillScriptInstructions(),
   ].join('');
+  const nextAgentsBlock = await readNextAgentsBlockAsync(targetDirectory, manifest);
 
   return `# AGENTS.md
 
 <!-- This file is managed by @ankhorage/devtools. -->
 
+${nextAgentsBlock}
 ${repositorySections}
 ${sections}`;
+}
+
+/*** Preserve Next.js's complete managed instruction block when Next owns the target. */
+async function readNextAgentsBlockAsync(
+  targetDirectory: string,
+  manifest: Record<string, unknown>,
+): Promise<string> {
+  if (!hasNextDependency(manifest)) return '';
+  try {
+    const contents = await readFile(resolve(targetDirectory, 'AGENTS.md'), 'utf8');
+    const match = NEXT_AGENTS_BLOCK_PATTERN.exec(contents);
+    return match === null ? '' : `${match[0]}\n`;
+  } catch (error) {
+    if (isNodeError(error) && error.code === 'ENOENT') return '';
+    throw error;
+  }
+}
+
+/*** Report whether the manifest directly declares Next.js. */
+function hasNextDependency(manifest: Record<string, unknown>): boolean {
+  return [manifest.dependencies, manifest.devDependencies].some(
+    (dependencies) => isRecord(dependencies) && typeof dependencies.next === 'string',
+  );
 }
 
 /*** Render the current-architecture policy shared by every managed repository. */
@@ -186,3 +211,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function readNonEmptyString(value: unknown): string | null {
   return typeof value === 'string' && value.trim() !== '' ? value.trim() : null;
 }
+
+const NEXT_AGENTS_BLOCK_PATTERN =
+  /<!-- BEGIN:nextjs-agent-rules -->\r?\n[\s\S]*?<!-- END:nextjs-agent-rules -->/u;

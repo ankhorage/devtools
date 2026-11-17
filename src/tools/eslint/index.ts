@@ -67,6 +67,7 @@ interface NormalizedConfigOptions {
   readonly tsconfigRootDir: string;
   readonly project: string[];
   readonly files: string[];
+  readonly javascriptFiles: string[];
   readonly allowDefaultProject: string[];
   readonly additionalIgnores: string[];
   readonly restrictedImports: RestrictedImport[];
@@ -80,10 +81,11 @@ export function createConfig(options: DevtoolsConfigOptions): Linter.Config[] {
 
   return defineConfig(
     { ignores: [...defaultIgnores, ...normalized.additionalIgnores] },
-    { ...js.configs.recommended, files: normalized.files },
+    { ...js.configs.recommended, files: [...normalized.files, ...normalized.javascriptFiles] },
     ...createTypeCheckedConfigs(normalized),
-    createBaseConfig(normalized),
-    ...createProfileConfigs(profile, normalized.files),
+    createTypeScriptBaseConfig(normalized),
+    ...createJavaScriptConfigs(normalized),
+    ...createProfileConfigs(profile, [...normalized.files, ...normalized.javascriptFiles]),
     ...normalized.overrides,
     ...(normalized.includePrettier ? [prettierConfig] : []),
   );
@@ -94,6 +96,7 @@ function normalizeOptions(options: DevtoolsConfigOptions): NormalizedConfigOptio
     tsconfigRootDir: options.tsconfigRootDir,
     project: options.project,
     files: options.files,
+    javascriptFiles: options.javascriptFiles ?? [],
     allowDefaultProject: options.allowDefaultProject ?? [],
     additionalIgnores: options.additionalIgnores ?? [],
     restrictedImports: [...(options.restrictedImports ?? [])],
@@ -110,7 +113,7 @@ function createTypeCheckedConfigs(options: NormalizedConfigOptions): FlatConfigI
   return configs.map((config) => ({ ...config, files: options.files }));
 }
 
-function createBaseConfig(options: NormalizedConfigOptions): FlatConfigItem {
+function createTypeScriptBaseConfig(options: NormalizedConfigOptions): FlatConfigItem {
   return {
     files: options.files,
     languageOptions: {
@@ -136,6 +139,28 @@ function createBaseConfig(options: NormalizedConfigOptions): FlatConfigItem {
       ...createSecurityRules(),
     },
   };
+}
+
+/*** Create the shared JavaScript policy without TypeScript project parsing. */
+function createJavaScriptConfigs(options: NormalizedConfigOptions): FlatConfigItem[] {
+  if (options.javascriptFiles.length === 0) return [];
+  return [
+    {
+      files: options.javascriptFiles,
+      plugins: {
+        import: importPlugin,
+        prettier: prettierPlugin,
+        security: securityPlugin,
+        'simple-import-sort': simpleImportSort,
+        'unused-imports': unusedImports,
+      },
+      rules: {
+        ...createImportRules(options),
+        ...createQualityRules(),
+        ...createSecurityRules(),
+      },
+    },
+  ];
 }
 
 function createTypeScriptRules(): NonNullable<FlatConfigItem['rules']> {
