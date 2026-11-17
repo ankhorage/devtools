@@ -201,7 +201,7 @@
     "modulePath": "src/tools/eslint/index.ts",
     "sourceLocation": {
       "filePath": "src/tools/eslint/index.ts",
-      "line": 77,
+      "line": 78,
       "column": 1
     },
     "exportPaths": [
@@ -397,6 +397,13 @@
         "name": "includePrettier",
         "kind": "property",
         "type": "boolean | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "javascriptFiles",
+        "kind": "property",
+        "type": "string[] | undefined",
         "required": false,
         "description": null
       },

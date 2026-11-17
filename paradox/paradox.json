@@ -17,7 +17,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.8.3",
+      "value": "v2.8.4",
       "color": "cb3837"
     },
     {
@@ -87,7 +87,7 @@
       "severity": "warning",
       "message": "Exported function createConfig has no documentation description.",
       "sourcePath": "src/tools/eslint/index.ts",
-      "line": 77
+      "line": 78
     }
   ],
   "config": null,
@@ -1291,7 +1291,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 77,
+        "line": 78,
         "column": 1
       },
       "exportPaths": [
@@ -1487,6 +1487,13 @@
           "name": "includePrettier",
           "kind": "property",
           "type": "boolean | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "javascriptFiles",
+          "kind": "property",
+          "type": "string[] | undefined",
           "required": false,
           "description": null
         },
@@ -4205,13 +4212,35 @@
       }
     },
     {
+      "name": "readNextAgentsBlockAsync",
+      "description": "Preserve Next.js's complete managed instruction block when Next owns the target.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 52,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasNextDependency",
+      "description": "Report whether the manifest directly declares Next.js.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 68,
+        "column": 1
+      }
+    },
+    {
       "name": "renderCurrentArchitectureInstructions",
       "description": "Render the current-architecture policy shared by every managed repository.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 50,
+        "line": 75,
         "column": 1
       }
     },
@@ -4222,7 +4251,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 68,
+        "line": 93,
         "column": 1
       }
     },
@@ -4233,7 +4262,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 89,
+        "line": 114,
         "column": 1
       }
     },
@@ -4244,7 +4273,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 113,
+        "line": 138,
         "column": 1
       }
     },
@@ -4255,7 +4284,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 127,
+        "line": 152,
         "column": 1
       }
     },
@@ -4266,7 +4295,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 149,
+        "line": 174,
         "column": 1
       }
     },
@@ -4277,7 +4306,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 159,
+        "line": 184,
         "column": 1
       }
     },
@@ -4288,7 +4317,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 176,
+        "line": 201,
         "column": 1
       }
     },
@@ -4299,7 +4328,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 181,
+        "line": 206,
         "column": 1
       }
     },
@@ -4310,7 +4339,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 186,
+        "line": 211,
         "column": 1
       }
     },
@@ -4398,7 +4427,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 77,
+        "line": 78,
         "column": 1
       }
     },
@@ -4409,7 +4438,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 92,
+        "line": 94,
         "column": 1
       }
     },
@@ -4420,18 +4449,29 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 105,
+        "line": 108,
         "column": 1
       }
     },
     {
-      "name": "createBaseConfig",
+      "name": "createTypeScriptBaseConfig",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 113,
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "createJavaScriptConfigs",
+      "description": "Create the shared JavaScript policy without TypeScript project parsing.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/index.ts",
+        "line": 145,
         "column": 1
       }
     },
@@ -4442,7 +4482,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 141,
+        "line": 166,
         "column": 1
       }
     },
@@ -4453,7 +4493,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 160,
+        "line": 185,
         "column": 1
       }
     },
@@ -4464,7 +4504,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 180,
+        "line": 205,
         "column": 1
       }
     },
@@ -4475,7 +4515,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 188,
+        "line": 213,
         "column": 1
       }
     },
@@ -4486,7 +4526,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 195,
+        "line": 220,
         "column": 1
       }
     },
@@ -4497,7 +4537,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 207,
+        "line": 232,
         "column": 1
       }
     },
@@ -4508,7 +4548,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 230,
+        "line": 255,
         "column": 1
       }
     },
@@ -4519,7 +4559,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 241,
+        "line": 266,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderEslintConfig",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 27,
         "column": 1
       }
     },
@@ -4530,7 +4581,40 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 75,
+        "line": 103,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderManagedEslintConfigAsync",
+      "description": "Render canonical TypeScript and JavaScript scopes for the target's application profile.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 116,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifestAsync",
+      "description": "Read the optional target manifest without changing the default source profile.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 124,
+        "column": 1
+      }
+    },
+    {
+      "name": "isNextApplication",
+      "description": "Report whether a manifest directly declares Next.js.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 134,
         "column": 1
       }
     },
@@ -4541,7 +4625,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 87,
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": null,
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 145,
         "column": 1
       }
     },
@@ -4552,7 +4647,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 92,
+        "line": 150,
         "column": 1
       }
     },
@@ -4563,7 +4658,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 98,
+        "line": 156,
         "column": 1
       }
     },
@@ -4574,7 +4669,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 119,
+        "line": 177,
         "column": 1
       }
     },
@@ -4585,7 +4680,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 124,
+        "line": 182,
         "column": 1
       }
     },
@@ -7765,6 +7860,42 @@
         "sourcePath": "src/tools/agents/index.ts"
       },
       {
+        "fromSymbol": "renderAgentsFile",
+        "toSymbol": "readNextAgentsBlockAsync",
+        "callExpression": "readNextAgentsBlockAsync",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readNextAgentsBlockAsync",
+        "toSymbol": "hasNextDependency",
+        "callExpression": "hasNextDependency",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readNextAgentsBlockAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readNextAgentsBlockAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "readNextAgentsBlockAsync",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "src/tools/agents/index.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
         "fromSymbol": "readPackageManifest",
         "toSymbol": "readFile",
         "callExpression": "readFile",
@@ -7886,8 +8017,14 @@
       },
       {
         "fromSymbol": "createConfig",
-        "toSymbol": "createBaseConfig",
-        "callExpression": "createBaseConfig",
+        "toSymbol": "createTypeScriptBaseConfig",
+        "callExpression": "createTypeScriptBaseConfig",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createConfig",
+        "toSymbol": "createJavaScriptConfigs",
+        "callExpression": "createJavaScriptConfigs",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
@@ -7897,25 +8034,43 @@
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
-        "fromSymbol": "createBaseConfig",
+        "fromSymbol": "createTypeScriptBaseConfig",
         "toSymbol": "createTypeScriptRules",
         "callExpression": "createTypeScriptRules",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
-        "fromSymbol": "createBaseConfig",
+        "fromSymbol": "createTypeScriptBaseConfig",
         "toSymbol": "createImportRules",
         "callExpression": "createImportRules",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
-        "fromSymbol": "createBaseConfig",
+        "fromSymbol": "createTypeScriptBaseConfig",
         "toSymbol": "createQualityRules",
         "callExpression": "createQualityRules",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
-        "fromSymbol": "createBaseConfig",
+        "fromSymbol": "createTypeScriptBaseConfig",
+        "toSymbol": "createSecurityRules",
+        "callExpression": "createSecurityRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createJavaScriptConfigs",
+        "toSymbol": "createImportRules",
+        "callExpression": "createImportRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createJavaScriptConfigs",
+        "toSymbol": "createQualityRules",
+        "callExpression": "createQualityRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "createJavaScriptConfigs",
         "toSymbol": "createSecurityRules",
         "callExpression": "createSecurityRules",
         "sourcePath": "src/tools/eslint/index.ts"
@@ -7951,6 +8106,12 @@
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
+        "fromSymbol": "src/tools/eslint/managed.ts",
+        "toSymbol": "renderEslintConfig",
+        "callExpression": "renderEslintConfig",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
         "fromSymbol": "renderInitialLocalConfig",
         "toSymbol": "readFile",
         "callExpression": "readFile",
@@ -7966,6 +8127,54 @@
         "fromSymbol": "renderInitialLocalConfig",
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "renderManagedEslintConfigAsync",
+        "toSymbol": "readPackageManifestAsync",
+        "callExpression": "readPackageManifestAsync",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "renderManagedEslintConfigAsync",
+        "toSymbol": "isNextApplication",
+        "callExpression": "isNextApplication",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "renderManagedEslintConfigAsync",
+        "toSymbol": "renderEslintConfig",
+        "callExpression": "renderEslintConfig",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "isNodeError",
+        "callExpression": "isNodeError",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "isNextApplication",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/eslint/managed.ts"
+      },
+      {
+        "fromSymbol": "src/tools/eslint/managed.ts",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/tools/eslint/managed.ts"
       },
       {

@@ -60,7 +60,7 @@ Evidence for one exact packed release; inapplicable never means migration-safe.
 
 Kind: `function`
 Module: `src/tools/eslint/index.ts`
-Source: `src/tools/eslint/index.ts:77:1`
+Source: `src/tools/eslint/index.ts:78:1`
 
 ### Signatures
 
@@ -122,6 +122,7 @@ Source: `src/tools/eslint/types.ts:13:1`
 | allowDefaultProject | property | `string[] \| undefined` | no |  |
 | files | property | `string[]` | yes |  |
 | includePrettier | property | `boolean \| undefined` | no |  |
+| javascriptFiles | property | `string[] \| undefined` | no |  |
 | overrides | property | `FlatConfigItem[] \| undefined` | no |  |
 | packageJsonPath | property | `string \| undefined` | no |  |
 | profile | property | `DevtoolsEslintProfile \| undefined` | no |  |

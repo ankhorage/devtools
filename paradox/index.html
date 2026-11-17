@@ -340,7 +340,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/agents/index.ts">
       src/tools/agents/index.ts
-      <small>11 functions</small>
+      <small>13 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/agents/renderRepositorySectionsAsync.ts">
@@ -350,12 +350,12 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/eslint/index.ts">
       src/tools/eslint/index.ts
-      <small>12 functions</small>
+      <small>13 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/eslint/managed.ts">
       src/tools/eslint/managed.ts
-      <small>6 functions</small>
+      <small>11 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/eslint/packageJsonPath.ts">
@@ -515,7 +515,7 @@
     <article class="item" data-search="documentation.public-function.description warning Exported function createConfig has no documentation description. src/tools/eslint/index.ts">
           <h3>documentation.public-function.description</h3>
           <p><strong>warning</strong> — Exported function createConfig has no documentation description.</p>
-          <p class="muted"><code>src/tools/eslint/index.ts:77</code></p>
+          <p class="muted"><code>src/tools/eslint/index.ts:78</code></p>
         </article>
   </section>
     <section class="panel">
@@ -1099,7 +1099,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
               <article class="item" id="symbol-createconfig" data-search="createConfig  function src/tools/eslint/index.ts  DevtoolsConfigOptions (options: DevtoolsConfigOptions) =&gt; Linter.Config&lt;import(&quot;@eslint/core&quot;).RulesConfig&gt;[]">
     <h4>createConfig</h4>
     
-    <p class="muted">function • <code>src/tools/eslint/index.ts:77:1</code></p>
+    <p class="muted">function • <code>src/tools/eslint/index.ts:78:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/eslint/index.ts</code></p>
@@ -1179,6 +1179,12 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
             <td><code>includePrettier</code></td>
             <td>property</td>
             <td><code>boolean | undefined</code></td>
+            <td>no</td>
+            <td></td>
+          </tr><tr>
+            <td><code>javascriptFiles</code></td>
+            <td>property</td>
+            <td><code>string[] | undefined</code></td>
             <td>no</td>
             <td></td>
           </tr><tr>
@@ -4348,54 +4354,64 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <p class="muted"><code>src/tools/agents/index.ts:23:1</code></p>
     <p>Render mandatory repository instructions from the target package identity.</p>
     
+  </article><article class="item" data-search="readNextAgentsBlockAsync src/tools/agents/index.ts Preserve Next.js&#39;s complete managed instruction block when Next owns the target.">
+    <h3>readNextAgentsBlockAsync</h3>
+    <p class="muted"><code>src/tools/agents/index.ts:52:1</code></p>
+    <p>Preserve Next.js&#39;s complete managed instruction block when Next owns the target.</p>
+    
+  </article><article class="item" data-search="hasNextDependency src/tools/agents/index.ts Report whether the manifest directly declares Next.js.">
+    <h3>hasNextDependency</h3>
+    <p class="muted"><code>src/tools/agents/index.ts:68:1</code></p>
+    <p>Report whether the manifest directly declares Next.js.</p>
+    
   </article><article class="item" data-search="renderCurrentArchitectureInstructions src/tools/agents/index.ts Render the current-architecture policy shared by every managed repository.">
     <h3>renderCurrentArchitectureInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:50:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:75:1</code></p>
     <p>Render the current-architecture policy shared by every managed repository.</p>
     
   </article><article class="item" data-search="renderStandaloneRepositoryInstructions src/tools/agents/index.ts Render the mandatory standalone repository and package contract.">
     <h3>renderStandaloneRepositoryInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:68:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:93:1</code></p>
     <p>Render the mandatory standalone repository and package contract.</p>
     
   </article><article class="item" data-search="renderRequiredRepositoryInstructions src/tools/agents/index.ts Render contextual repository skill-selection requirements.">
     <h3>renderRequiredRepositoryInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:89:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:114:1</code></p>
     <p>Render contextual repository skill-selection requirements.</p>
     
   </article><article class="item" data-search="renderDocumentationInstructions src/tools/agents/index.ts Render the release-owned generated documentation policy.">
     <h3>renderDocumentationInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:113:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:138:1</code></p>
     <p>Render the release-owned generated documentation policy.</p>
     
   </article><article class="item" data-search="renderPullRequestInstructions src/tools/agents/index.ts Render canonical pull-request validation commands.">
     <h3>renderPullRequestInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:127:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:152:1</code></p>
     <p>Render canonical pull-request validation commands.</p>
     
   </article><article class="item" data-search="renderSkillScriptInstructions src/tools/agents/index.ts Render the repository rule for executable Agent Skill scripts.">
     <h3>renderSkillScriptInstructions</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:149:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:174:1</code></p>
     <p>Render the repository rule for executable Agent Skill scripts.</p>
     
   </article><article class="item" data-search="readPackageManifest src/tools/agents/index.ts Read the target package manifest used to personalize managed repository instructions.">
     <h3>readPackageManifest</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:159:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:184:1</code></p>
     <p>Read the target package manifest used to personalize managed repository instructions.</p>
     
   </article><article class="item" data-search="isNodeError src/tools/agents/index.ts Check whether an unknown failure carries a Node.js error code.">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:176:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:201:1</code></p>
     <p>Check whether an unknown failure carries a Node.js error code.</p>
     
   </article><article class="item" data-search="isRecord src/tools/agents/index.ts Check whether an unknown value is a plain record-shaped object.">
     <h3>isRecord</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:181:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:206:1</code></p>
     <p>Check whether an unknown value is a plain record-shaped object.</p>
     
   </article><article class="item" data-search="readNonEmptyString src/tools/agents/index.ts Read and trim a non-empty string value from package metadata.">
     <h3>readNonEmptyString</h3>
-    <p class="muted"><code>src/tools/agents/index.ts:186:1</code></p>
+    <p class="muted"><code>src/tools/agents/index.ts:211:1</code></p>
     <p>Read and trim a non-empty string value from package metadata.</p>
     
   </article>
@@ -4445,62 +4461,67 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/eslint/index.ts</h2>
       <article class="item" data-search="createConfig src/tools/eslint/index.ts ">
     <h3>createConfig</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:77:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:78:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="normalizeOptions src/tools/eslint/index.ts ">
     <h3>normalizeOptions</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:92:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:94:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createTypeCheckedConfigs src/tools/eslint/index.ts ">
     <h3>createTypeCheckedConfigs</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:105:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:108:1</code></p>
     <p class="empty">No description available.</p>
     
-  </article><article class="item" data-search="createBaseConfig src/tools/eslint/index.ts ">
-    <h3>createBaseConfig</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:113:1</code></p>
+  </article><article class="item" data-search="createTypeScriptBaseConfig src/tools/eslint/index.ts ">
+    <h3>createTypeScriptBaseConfig</h3>
+    <p class="muted"><code>src/tools/eslint/index.ts:116:1</code></p>
     <p class="empty">No description available.</p>
+    
+  </article><article class="item" data-search="createJavaScriptConfigs src/tools/eslint/index.ts Create the shared JavaScript policy without TypeScript project parsing.">
+    <h3>createJavaScriptConfigs</h3>
+    <p class="muted"><code>src/tools/eslint/index.ts:145:1</code></p>
+    <p>Create the shared JavaScript policy without TypeScript project parsing.</p>
     
   </article><article class="item" data-search="createTypeScriptRules src/tools/eslint/index.ts ">
     <h3>createTypeScriptRules</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:141:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:166:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createImportRules src/tools/eslint/index.ts ">
     <h3>createImportRules</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:160:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:185:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createQualityRules src/tools/eslint/index.ts ">
     <h3>createQualityRules</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:180:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:205:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createSecurityRules src/tools/eslint/index.ts ">
     <h3>createSecurityRules</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:188:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:213:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createProfileConfigs src/tools/eslint/index.ts ">
     <h3>createProfileConfigs</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:195:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:220:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createReactConfig src/tools/eslint/index.ts ">
     <h3>createReactConfig</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:207:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:232:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="createNextConfig src/tools/eslint/index.ts Add Next.js rules without re-registering React, Hooks, TypeScript, or import plugins.">
     <h3>createNextConfig</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:230:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:255:1</code></p>
     <p>Add Next.js rules without re-registering React, Hooks, TypeScript, or import plugins.</p>
     
   </article><article class="item" data-search="createReactNativeConfig src/tools/eslint/index.ts ">
     <h3>createReactNativeConfig</h3>
-    <p class="muted"><code>src/tools/eslint/index.ts:241:1</code></p>
+    <p class="muted"><code>src/tools/eslint/index.ts:266:1</code></p>
     <p class="empty">No description available.</p>
     
   </article>
@@ -4508,34 +4529,59 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </section><section id="view-src-tools-eslint-managed-ts" class="view" data-view="src/tools/eslint/managed.ts" hidden>
     <section class="panel">
       <h2>src/tools/eslint/managed.ts</h2>
-      <article class="item" data-search="renderInitialLocalConfig src/tools/eslint/managed.ts ">
-    <h3>renderInitialLocalConfig</h3>
-    <p class="muted"><code>src/tools/eslint/managed.ts:75:1</code></p>
+      <article class="item" data-search="renderEslintConfig src/tools/eslint/managed.ts ">
+    <h3>renderEslintConfig</h3>
+    <p class="muted"><code>src/tools/eslint/managed.ts:27:1</code></p>
     <p class="empty">No description available.</p>
+    
+  </article><article class="item" data-search="renderInitialLocalConfig src/tools/eslint/managed.ts ">
+    <h3>renderInitialLocalConfig</h3>
+    <p class="muted"><code>src/tools/eslint/managed.ts:103:1</code></p>
+    <p class="empty">No description available.</p>
+    
+  </article><article class="item" data-search="renderManagedEslintConfigAsync src/tools/eslint/managed.ts Render canonical TypeScript and JavaScript scopes for the target&#39;s application profile.">
+    <h3>renderManagedEslintConfigAsync</h3>
+    <p class="muted"><code>src/tools/eslint/managed.ts:116:1</code></p>
+    <p>Render canonical TypeScript and JavaScript scopes for the target&#39;s application profile.</p>
+    
+  </article><article class="item" data-search="readPackageManifestAsync src/tools/eslint/managed.ts Read the optional target manifest without changing the default source profile.">
+    <h3>readPackageManifestAsync</h3>
+    <p class="muted"><code>src/tools/eslint/managed.ts:124:1</code></p>
+    <p>Read the optional target manifest without changing the default source profile.</p>
+    
+  </article><article class="item" data-search="isNextApplication src/tools/eslint/managed.ts Report whether a manifest directly declares Next.js.">
+    <h3>isNextApplication</h3>
+    <p class="muted"><code>src/tools/eslint/managed.ts:134:1</code></p>
+    <p>Report whether a manifest directly declares Next.js.</p>
     
   </article><article class="item" data-search="isNodeError src/tools/eslint/managed.ts ">
     <h3>isNodeError</h3>
-    <p class="muted"><code>src/tools/eslint/managed.ts:87:1</code></p>
+    <p class="muted"><code>src/tools/eslint/managed.ts:141:1</code></p>
+    <p class="empty">No description available.</p>
+    
+  </article><article class="item" data-search="isRecord src/tools/eslint/managed.ts ">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/tools/eslint/managed.ts:145:1</code></p>
     <p class="empty">No description available.</p>
     
   </article><article class="item" data-search="hasTypeScriptExamples src/tools/eslint/managed.ts Report whether the target repository owns TypeScript source examples at its root.">
     <h3>hasTypeScriptExamples</h3>
-    <p class="muted"><code>src/tools/eslint/managed.ts:92:1</code></p>
+    <p class="muted"><code>src/tools/eslint/managed.ts:150:1</code></p>
     <p>Report whether the target repository owns TypeScript source examples at its root.</p>
     
   </article><article class="item" data-search="containsTypeScriptExampleAsync src/tools/eslint/managed.ts Report whether a directory tree contains a TypeScript or TSX source example.">
     <h3>containsTypeScriptExampleAsync</h3>
-    <p class="muted"><code>src/tools/eslint/managed.ts:98:1</code></p>
+    <p class="muted"><code>src/tools/eslint/managed.ts:156:1</code></p>
     <p>Report whether a directory tree contains a TypeScript or TSX source example.</p>
     
   </article><article class="item" data-search="isTypeScriptExampleSource src/tools/eslint/managed.ts Report whether a file is lintable TypeScript example source rather than a declaration.">
     <h3>isTypeScriptExampleSource</h3>
-    <p class="muted"><code>src/tools/eslint/managed.ts:119:1</code></p>
+    <p class="muted"><code>src/tools/eslint/managed.ts:177:1</code></p>
     <p>Report whether a file is lintable TypeScript example source rather than a declaration.</p>
     
   </article><article class="item" data-search="assertExamplesConfigOwnershipAsync src/tools/eslint/managed.ts Require explicit adoption of consumer overrides before managing an existing examples config.">
     <h3>assertExamplesConfigOwnershipAsync</h3>
-    <p class="muted"><code>src/tools/eslint/managed.ts:124:1</code></p>
+    <p class="muted"><code>src/tools/eslint/managed.ts:182:1</code></p>
     <p>Require explicit adoption of consumer overrides before managing an existing examples config.</p>
     
   </article>

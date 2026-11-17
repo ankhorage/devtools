@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.8.4
+
+### Patch Changes
+
+- 29d9fe8: Preserve Next.js-managed AGENTS instructions and lint Next application source roots during repository sync.
+
 ## 2.8.3
 
 ### Patch Changes
