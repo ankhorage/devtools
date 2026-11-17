@@ -104,6 +104,12 @@ test('managed AGENTS.md renders contextual skill, documentation, and delivery in
   expect(contents).toContain(
     'The managed release workflow runs `bun run docs` after the package version bump',
   );
+  expectGitHubTaskLifecycleInstructions(contents);
+  expect(await syncManagedFiles(target, agentsManagedFiles, { dryRun: false })).toEqual([
+    { relativePath: 'AGENTS.md', action: 'unchanged' },
+    { relativePath: 'CLAUDE.md', action: 'unchanged' },
+    { relativePath: 'GEMINI.md', action: 'unchanged' },
+  ]);
   expect(contents).toContain(
     `Before creating a pull request, run all of these commands in this order and resolve every failure:
 
@@ -122,6 +128,29 @@ bun run format
   expect(contents).toContain('Scripts inside an Agent Skill must always be TypeScript files');
   expect(contents).toContain('`.js`, `.mjs`, or `.cjs` are not allowed');
 });
+
+/*** Assert that managed instructions contain the complete GitHub task lifecycle policy once. */
+function expectGitHubTaskLifecycleInstructions(contents: string): void {
+  expect(contents.match(/## GitHub task lifecycle and workspace cleanup/gu)).toHaveLength(1);
+  expect(contents).toContain(
+    'Treat each issue implementation, PR implementation, review, and change request',
+  );
+  expect(contents).toContain(
+    'Concurrent tasks must have distinct writable checkout, temporary, build, and cache paths.',
+  );
+  expect(contents).toContain(
+    'Fetch and check out the current remote PR branch in the new workspace.',
+  );
+  expect(contents).toContain('GitHub has the intended commit on the correct remote branch.');
+  expect(contents).toContain('Report acceptance that was not run as unverified.');
+  expect(contents).toContain(
+    'remove only directories created and owned by the task whose resolved',
+  );
+  expect(contents).toContain('paths are strictly under `/tmp`.');
+  expect(contents).toContain('Use Git-aware removal for worktrees.');
+  expect(contents).toContain('Preserve workspaces outside');
+  expect(contents).toContain("`/tmp`, shared directories, other tasks' directories");
+}
 
 test('managed AGENTS.md renders validated source metadata without consulting README content', async () => {
   const target = await createTarget({

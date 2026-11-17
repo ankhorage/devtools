@@ -34,6 +34,7 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
     renderStandaloneRepositoryInstructions(),
     renderRequiredRepositoryInstructions(),
     renderDocumentationInstructions(),
+    renderGitHubTaskLifecycleInstructions(),
     renderPullRequestInstructions(),
     renderSkillScriptInstructions(),
   ].join('');
@@ -144,6 +145,29 @@ Paradox \`/*** ... */\` comments in \`src\` and leading \`@usage\` comments in r
 \`examples/<example>/...\` source files, plus any repository-owned manual documentation outside the
 generated output. The managed release workflow runs \`bun run docs\` after the package version bump
 and commits the regenerated artifacts in the release commit.
+
+`;
+}
+
+/*** Render the mandatory GitHub task isolation, delivery, and cleanup policy. */
+function renderGitHubTaskLifecycleInstructions(): string {
+  return `## GitHub task lifecycle and workspace cleanup
+
+- **Start.** Treat each issue implementation, PR implementation, review, and change request (CR)
+  as an independent task. Fetch the current remote default branch and read the applicable issue,
+  PR, HEAD, review feedback, and CI state. Use a fresh, uniquely named task checkout or worktree.
+  Concurrent tasks must have distinct writable checkout, temporary, build, and cache paths.
+- **CRs.** Fetch and check out the current remote PR branch in the new workspace. Preserve PR
+  history and scope. Push corrections to the existing PR branch.
+- **Delivery.** Run applicable checks. Commit and push all intended changes, then verify that
+  GitHub has the intended commit on the correct remote branch. Report the exact HEAD, checks, CI,
+  findings, and blockers. Report acceptance that was not run as unverified. Read-only reviews hand
+  off their findings without creating a commit. Merge requires explicit authorization.
+- **Cleanup.** After handoff, remove only directories created and owned by the task whose resolved
+  paths are strictly under \`/tmp\`. Use Git-aware removal for worktrees. Preserve workspaces outside
+  \`/tmp\`, shared directories, other tasks' directories, uncommitted changes, and unpushed commits.
+  If blocked, persist recoverable work first and document what must be retained. Report whether
+  cleanup succeeded, was skipped, or was blocked.
 
 `;
 }
