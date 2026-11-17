@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.0
+
+### Minor Changes
+
+- 75fb852: Standardize managed GitHub task workspace isolation, delivery verification, and safe cleanup guidance.
+
 ## 2.8.4
 
 ### Patch Changes
