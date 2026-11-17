@@ -213,4 +213,4 @@ function readNonEmptyString(value: unknown): string | null {
 }
 
 const NEXT_AGENTS_BLOCK_PATTERN =
-  /<!-- BEGIN:nextjs-agent-rules -->\n[\s\S]*?<!-- END:nextjs-agent-rules -->/u;
+  /<!-- BEGIN:nextjs-agent-rules -->\r?\n[\s\S]*?<!-- END:nextjs-agent-rules -->/u;

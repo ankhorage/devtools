@@ -45,6 +45,41 @@ test('lints standalone nested examples without a root ESLint TypeScript project'
   await expectTypeCheckedLintAsync(target, 'examples/group/app/main.ts');
 });
 
+test('lints managed Next TypeScript and JavaScript scopes while ignoring generated dependencies', async () => {
+  const target = await createTargetAsync({ dependencies: { next: '16.4.6' } });
+  await writeProjectAsync(target, 'tsconfig.json', ['app/**/*.ts', 'components/**/*.tsx']);
+  await writeSourceAsync(target, 'app/page.ts', 'export const value: any = 1;\n');
+  await writeSourceAsync(target, 'components/view.tsx', 'export const view = <div />;\n');
+  await writeSourceAsync(target, 'worker/commerce.mjs', 'const unused = 1;\nexport {};\n');
+  await writeSourceAsync(target, 'scripts/task.cjs', 'const unused = 1;\nmodule.exports = {};\n');
+  await writeSourceAsync(target, 'build/generated.mjs', 'const ignored = 1;\n');
+  await writeSourceAsync(target, 'node_modules/dependency/index.cjs', 'const ignored = 1;\n');
+  await syncManagedFiles(target, eslintManagedFiles, { dryRun: false });
+
+  const eslint = createManagedEslint(target);
+  const results = await eslint.lintFiles([
+    'app/page.ts',
+    'components/view.tsx',
+    'worker/commerce.mjs',
+    'scripts/task.cjs',
+  ]);
+  expect(results).toHaveLength(4);
+  expect(results.flatMap((result) => result.messages.filter((message) => message.fatal))).toEqual(
+    [],
+  );
+  expect(results[0]?.messages.map((message) => message.ruleId)).toContain(
+    '@typescript-eslint/no-explicit-any',
+  );
+  expect(results[2]?.messages.map((message) => message.ruleId)).toContain(
+    'unused-imports/no-unused-vars',
+  );
+  expect(results[3]?.messages.map((message) => message.ruleId)).toContain(
+    'unused-imports/no-unused-vars',
+  );
+  expect(await eslint.isPathIgnored('build/generated.mjs')).toBe(true);
+  expect(await eslint.isPathIgnored('node_modules/dependency/index.cjs')).toBe(true);
+});
+
 test('requires explicit override adoption and preserves local rules across subsequent syncs', async () => {
   const target = await createTargetAsync();
   await writeProjectAsync(target, 'tsconfig.eslint.json', ['examples/**/*.tsx']);
@@ -88,7 +123,7 @@ test('requires explicit override adoption and preserves local rules across subse
 });
 
 /*** Create a consumer with access to the built package through its public export. */
-async function createTargetAsync(): Promise<string> {
+async function createTargetAsync(manifest: Record<string, unknown> = {}): Promise<string> {
   const target = await realpath(await mkdtemp('/tmp/devtools-examples-integration-'));
   targets.push(target);
   await mkdir(join(target, 'examples/basic-usage'), { recursive: true });
@@ -97,8 +132,18 @@ async function createTargetAsync(): Promise<string> {
     resolve(import.meta.dir, '../../..'),
     join(target, 'node_modules/@ankhorage/devtools'),
   );
-  await writeFile(join(target, 'package.json'), '{"name":"examples-consumer","type":"module"}\n');
+  await writeFile(
+    join(target, 'package.json'),
+    `${JSON.stringify({ name: 'examples-consumer', type: 'module', ...manifest })}\n`,
+  );
   return target;
+}
+
+/*** Write one source file, creating its owner directory first. */
+async function writeSourceAsync(target: string, path: string, contents: string): Promise<void> {
+  const filePath = join(target, path);
+  await mkdir(resolve(filePath, '..'), { recursive: true });
+  await writeFile(filePath, contents);
 }
 
 /*** Write the consumer-owned TypeScript project used by an example. */
@@ -126,5 +171,13 @@ function createEslint(target: string): ESLint {
   return new ESLint({
     cwd: target,
     overrideConfigFile: join(target, 'eslint.examples.config.mjs'),
+  });
+}
+
+/*** Load the primary managed ESLint wrapper as a Next.js consumer would. */
+function createManagedEslint(target: string): ESLint {
+  return new ESLint({
+    cwd: target,
+    overrideConfigFile: join(target, 'eslint.config.mjs'),
   });
 }

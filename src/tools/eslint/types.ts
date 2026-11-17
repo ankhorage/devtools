@@ -14,6 +14,8 @@ export interface DevtoolsConfigOptions {
   readonly tsconfigRootDir: string;
   readonly project: string[];
   readonly files: string[];
+  /** JavaScript files that use the shared non-type-aware policy. */
+  readonly javascriptFiles?: string[];
   readonly profile?: DevtoolsEslintProfile;
   readonly packageJsonPath?: string;
   readonly allowDefaultProject?: string[];

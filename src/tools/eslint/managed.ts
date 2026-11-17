@@ -5,6 +5,15 @@ import { EXAMPLES_ESLINT_OWNERSHIP_MARKER } from '../../constants/eslint.js';
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 
 const DEFAULT_SOURCE_GLOBS = ['src/**/*.{ts,tsx}'];
+const NEXT_JAVASCRIPT_SOURCE_GLOBS = [
+  'src/**/*.{js,mjs,cjs}',
+  'app/**/*.{js,mjs,cjs}',
+  'components/**/*.{js,mjs,cjs}',
+  'lib/**/*.{js,mjs,cjs}',
+  'worker/**/*.{js,mjs,cjs}',
+  'scripts/**/*.{js,mjs,cjs}',
+  'tests/**/*.{js,mjs,cjs}',
+];
 const NEXT_SOURCE_GLOBS = [
   ...DEFAULT_SOURCE_GLOBS,
   'app/**/*.{ts,tsx}',
@@ -15,7 +24,10 @@ const NEXT_SOURCE_GLOBS = [
   'tests/**/*.{ts,tsx}',
 ];
 
-function renderEslintConfig(sourceGlobs: readonly string[]): string {
+function renderEslintConfig(
+  sourceGlobs: readonly string[],
+  javascriptSourceGlobs: readonly string[] = [],
+): string {
   return `import { createConfig } from '@ankhorage/devtools/eslint';
 import localConfig from './eslint.local.config.mjs';
 
@@ -24,6 +36,7 @@ const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
 export default [
   ...createConfig({
     files: ${JSON.stringify(sourceGlobs)},
+    javascriptFiles: ${JSON.stringify(javascriptSourceGlobs)},
     project: ['./tsconfig.json'],
     tsconfigRootDir: import.meta.dirname,
   }),
@@ -99,10 +112,12 @@ async function renderInitialLocalConfig(targetDirectory: string): Promise<string
   }
 }
 
-/*** Render canonical TypeScript scopes for the target's application profile. */
+/*** Render canonical TypeScript and JavaScript scopes for the target's application profile. */
 async function renderManagedEslintConfigAsync(targetDirectory: string): Promise<string> {
   const manifest = await readPackageManifestAsync(targetDirectory);
-  return renderEslintConfig(isNextApplication(manifest) ? NEXT_SOURCE_GLOBS : DEFAULT_SOURCE_GLOBS);
+  return isNextApplication(manifest)
+    ? renderEslintConfig(NEXT_SOURCE_GLOBS, NEXT_JAVASCRIPT_SOURCE_GLOBS)
+    : renderEslintConfig(DEFAULT_SOURCE_GLOBS);
 }
 
 /*** Read the optional target manifest without changing the default source profile. */

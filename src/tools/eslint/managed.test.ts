@@ -46,7 +46,7 @@ test('synchronizes the examples config only while a root TypeScript example exis
   expect(await Bun.file(join(target, 'eslint.examples.config.mjs')).exists()).toBe(false);
 });
 
-test('includes Next.js application source roots in the managed TypeScript scope', async () => {
+test('includes Next.js application TypeScript and JavaScript source roots in the managed scope', async () => {
   const target = await mkdtemp('/tmp/devtools-eslint-managed-');
   temporaryDirectories.push(target);
   await writeFile(
@@ -59,6 +59,7 @@ test('includes Next.js application source roots in the managed TypeScript scope'
   const config = await readFile(join(target, 'eslint.config.mjs'), 'utf8');
   for (const directory of ['app', 'components', 'lib', 'worker', 'scripts', 'tests']) {
     expect(config).toContain(`"${directory}/**/*.{ts,tsx}"`);
+    expect(config).toContain(`"${directory}/**/*.{js,mjs,cjs}"`);
   }
   expect(await syncManagedFiles(target, eslintManagedFiles, { dryRun: false })).toContainEqual({
     relativePath: 'eslint.config.mjs',
