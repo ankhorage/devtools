@@ -70,18 +70,26 @@ test('selectively repairs the actual Studio release topology without changing ow
 });
 
 test('rejects ambiguous, duplicate, and broadened token definitions before writing', async () => {
-  for (const [, workflow] of MALFORMED_WORKFLOWS) {
+  for (const [description, workflow] of MALFORMED_WORKFLOWS) {
     const target = await createStudioWorkflowTarget(workflow);
-    const failure = await synchronizeReleaseTokenPermissionsAsync({
-      targetDirectory: target,
-      operation: 'sync',
-      dryRun: false,
-    }).then(
-      () => undefined,
-      (error: unknown) => error,
-    );
-    expect(failure).toBeInstanceOf(Error);
-    expect(await readReleaseWorkflowAsync(target)).toBe(workflow);
+    for (const [operation, dryRun] of [
+      ['status', false],
+      ['sync', true],
+      ['sync', false],
+    ] as const) {
+      const failure = await synchronizeReleaseTokenPermissionsAsync({
+        targetDirectory: target,
+        operation,
+        dryRun,
+      }).then(
+        () => undefined,
+        (error: unknown) => error,
+      );
+      expect(failure, `${description}: ${operation}${dryRun ? ' dry-run' : ''}`).toBeInstanceOf(
+        Error,
+      );
+      expect(await readReleaseWorkflowAsync(target)).toBe(workflow);
+    }
   }
 });
 
@@ -185,6 +193,8 @@ jobs:
 `;
 
 const MALFORMED_WORKFLOWS = [
+  ['invalid YAML', `malformed: [\n${STUDIO_RELEASE_WORKFLOW}`],
+  ['multiple YAML documents', `${STUDIO_RELEASE_WORKFLOW}---\nname: replacement\n`],
   [
     'duplicate token',
     STUDIO_RELEASE_WORKFLOW.replace('  finalize:', '  release:\n    steps: []\n\n  finalize:'),

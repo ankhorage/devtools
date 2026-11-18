@@ -1,6 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
+import { parseAllDocuments } from 'yaml';
+
 type ReleaseTokenPermissionOperation = 'status' | 'sync';
 
 type ReleaseTokenPermissionOperationResult =
@@ -50,6 +52,7 @@ export async function synchronizeReleaseTokenPermissionsAsync(input: {
 
 /*** Recognize the canonical GitHub Actions token topology before changing a permission line. */
 function synchronizeWorkflowPermissions(workflow: string): string {
+  assertValidWorkflowYaml(workflow);
   assertUnixLineEndings(workflow);
   const release = getJob(workflow, 'release');
   const finalize = getJob(workflow, 'finalize');
@@ -59,6 +62,20 @@ function synchronizeWorkflowPermissions(workflow: string): string {
 
   assertExpectedTokenTopology(workflow, releaseToken, finalizeToken, rolloutToken);
   return addMissingWorkflowPermissions(workflow, [releaseToken, finalizeToken]);
+}
+
+/*** Parse the complete workflow before inspecting its security-sensitive token topology. */
+function assertValidWorkflowYaml(workflow: string): void {
+  const documents = parseAllDocuments(workflow, { uniqueKeys: true });
+  if (documents.length !== 1) {
+    throw new Error('Release workflow YAML must contain exactly one document.');
+  }
+  const [document] = documents;
+  if (document.errors.length > 0) {
+    throw new Error(
+      `Release workflow YAML is invalid: ${document.errors.map(({ message }) => message).join('; ')}`,
+    );
+  }
 }
 
 /*** Refuse line endings that would make byte-preserving permission insertion ambiguous. */
