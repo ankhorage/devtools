@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.4
+
+### Patch Changes
+
+- e5bf62c: Update Devtools-owned dependencies: `@ankhorage/doctor`, `knip`.
+
 ## 2.9.3
 
 ### Patch Changes
