@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.2
+
+### Patch Changes
+
+- 76ad959: Add the opt-in durable Renovate pre-publish release-wave acknowledgement gate.
+
 ## 2.9.1
 
 ### Patch Changes
