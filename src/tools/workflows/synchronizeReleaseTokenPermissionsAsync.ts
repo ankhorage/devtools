@@ -22,6 +22,8 @@ interface WorkflowJob {
 
 const RELEASE_WORKFLOW_PATH = '.github/workflows/release.yml';
 const APP_TOKEN_USES = 'uses: actions/create-github-app-token@';
+const APP_TOKEN_ACTION =
+  '        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0';
 const RELEASE_TOKEN_NAME = 'Create the scoped release token';
 const ROLLOUT_TOKEN_NAME = 'Create the scoped rollout token';
 
@@ -140,7 +142,10 @@ function assertStepValues(step: string, name: string, id: string, repository: st
   const requiredLines = [
     `      - name: ${name}`,
     `        id: ${id}`,
+    APP_TOKEN_ACTION,
     '        with:',
+    '          client-id: ${{ vars.ANKHORAGE_RENOVATE_SYNC_CLIENT_ID }}',
+    '          private-key: ${{ secrets.ANKHORAGE_RENOVATE_SYNC_PRIVATE_KEY }}',
     '          owner: ankhorage',
     `          repositories: ${repository}`,
   ];
@@ -148,6 +153,21 @@ function assertStepValues(step: string, name: string, id: string, repository: st
     if (countLine(step, line) !== 1) {
       throw new Error(`Unexpected scoped token definition: expected one ${line.trim()}.`);
     }
+  }
+  assertRecognizedStepSyntax(step, requiredLines);
+}
+
+/*** Reject unrecognized fields so duplicate ownership or action substitutions cannot broaden a token. */
+function assertRecognizedStepSyntax(step: string, requiredLines: readonly string[]): void {
+  const recognizedLines = new Set([
+    ...requiredLines,
+    '        continue-on-error: true',
+    '          permission-contents: write',
+    '          permission-workflows: write',
+    '',
+  ]);
+  if (!step.split('\n').every((line) => recognizedLines.has(line))) {
+    throw new Error('Unexpected syntax in scoped token definition.');
   }
   if (
     step.split('\n').filter((line) => line.startsWith(`        ${APP_TOKEN_USES}`)).length !== 1

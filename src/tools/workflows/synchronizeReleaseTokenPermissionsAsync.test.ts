@@ -70,28 +70,7 @@ test('selectively repairs the actual Studio release topology without changing ow
 });
 
 test('rejects ambiguous, duplicate, and broadened token definitions before writing', async () => {
-  const cases = [
-    [
-      'duplicate token',
-      STUDIO_RELEASE_WORKFLOW.replace('  finalize:', '  release:\n    steps: []\n\n  finalize:'),
-    ],
-    [
-      'unknown token',
-      STUDIO_RELEASE_WORKFLOW.replace(
-        '          permission-contents: write\n\n      - name: Trigger the package consumer rollout',
-        '          permission-contents: write\n          permission-actions: write\n\n      - name: Trigger the package consumer rollout',
-      ),
-    ],
-    [
-      'duplicate permission',
-      STUDIO_RELEASE_WORKFLOW.replace(
-        '          permission-contents: write\n\n      - name: Checkout exact release commit',
-        '          permission-contents: write\n          permission-contents: write\n\n      - name: Checkout exact release commit',
-      ),
-    ],
-  ] as const;
-
-  for (const [, workflow] of cases) {
+  for (const [, workflow] of MALFORMED_WORKFLOWS) {
     const target = await createStudioWorkflowTarget(workflow);
     const failure = await synchronizeReleaseTokenPermissionsAsync({
       targetDirectory: target,
@@ -204,3 +183,45 @@ jobs:
         run: |
           echo "repo: 'renovate'"
 `;
+
+const MALFORMED_WORKFLOWS = [
+  [
+    'duplicate token',
+    STUDIO_RELEASE_WORKFLOW.replace('  finalize:', '  release:\n    steps: []\n\n  finalize:'),
+  ],
+  [
+    'unknown token',
+    STUDIO_RELEASE_WORKFLOW.replace(
+      '          permission-contents: write\n\n      - name: Trigger the package consumer rollout',
+      '          permission-contents: write\n          permission-actions: write\n\n      - name: Trigger the package consumer rollout',
+    ),
+  ],
+  [
+    'duplicate permission',
+    STUDIO_RELEASE_WORKFLOW.replace(
+      '          permission-contents: write\n\n      - name: Checkout exact release commit',
+      '          permission-contents: write\n          permission-contents: write\n\n      - name: Checkout exact release commit',
+    ),
+  ],
+  [
+    'duplicate repository ownership',
+    STUDIO_RELEASE_WORKFLOW.replace(
+      '          owner: ankhorage\n          repositories: ${{ github.event.repository.name }}',
+      '          owner: ankhorage\n          repositories: ${{ github.event.repository.name }}\n          repositories: renovate',
+    ),
+  ],
+  [
+    'substituted token action',
+    STUDIO_RELEASE_WORKFLOW.replace(
+      'uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0',
+      'uses: actions/create-github-app-token@main',
+    ),
+  ],
+  [
+    'unexpected token syntax',
+    STUDIO_RELEASE_WORKFLOW.replace(
+      '          permission-contents: write\n          permission-workflows: write',
+      '          permission-contents: write\n          permission-workflows: write\n          permission-actions: write',
+    ),
+  ],
+] as const;
