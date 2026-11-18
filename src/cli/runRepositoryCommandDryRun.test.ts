@@ -41,4 +41,10 @@ test('validates repository command arguments', () => {
   expect(() => parseRepositoryArguments(['one', 'two'], true)).toThrow(
     'Only one target path may be provided.',
   );
+  expect(
+    parseRepositoryArguments(['.', '--release-token-permissions-only'], true, 'workflows'),
+  ).toMatchObject({ releaseTokenPermissionsOnly: true, targetPath: '.' });
+  expect(() =>
+    parseRepositoryArguments(['--release-token-permissions-only'], true, 'package'),
+  ).toThrow('--release-token-permissions-only is only valid for workflows commands.');
 });

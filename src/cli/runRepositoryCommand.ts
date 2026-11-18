@@ -23,6 +23,7 @@ import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
 import { workflowManagedFiles } from '../tools/workflows/index.js';
+import { synchronizeReleaseTokenPermissionsAsync } from '../tools/workflows/synchronizeReleaseTokenPermissionsAsync.js';
 import type { DevtoolsRepositoryCommandContext } from '../types/provider-command.js';
 import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
 
@@ -32,6 +33,7 @@ export interface DevtoolsRepositoryCommandResult {
 
 interface ParsedRepositoryArguments {
   readonly dryRun: boolean;
+  readonly releaseTokenPermissionsOnly: boolean;
   readonly targetPath: string | undefined;
 }
 
@@ -41,10 +43,13 @@ export async function runRepositoryCommand(
   context: DevtoolsRepositoryCommandContext,
 ): Promise<DevtoolsRepositoryCommandResult> {
   try {
-    const parsed = parseRepositoryArguments(argv, command.operation === 'sync');
+    const parsed = parseRepositoryArguments(argv, command.operation === 'sync', command.scope);
     const targetDirectory = await resolveManagedTargetDirectory(context.cwd, parsed.targetPath);
     const devtoolsVersion = readCurrentDevtoolsVersion();
 
+    if (parsed.releaseTokenPermissionsOnly) {
+      return await runReleaseTokenPermissionsOnly(command, targetDirectory, parsed, context);
+    }
     return command.operation === 'status'
       ? await runStatus(command.scope, targetDirectory, devtoolsVersion, context)
       : await runSync(command.scope, targetDirectory, devtoolsVersion, parsed.dryRun, context);
@@ -57,8 +62,10 @@ export async function runRepositoryCommand(
 export function parseRepositoryArguments(
   argv: readonly string[],
   allowDryRun: boolean,
+  scope?: DevtoolsRepositoryCommandDefinition['scope'],
 ): ParsedRepositoryArguments {
   let dryRun = false;
+  let releaseTokenPermissionsOnly = false;
   let targetPath: string | undefined;
 
   for (const argument of argv) {
@@ -67,6 +74,13 @@ export function parseRepositoryArguments(
         throw new Error('--dry-run is only valid for sync commands.');
       }
       dryRun = true;
+      continue;
+    }
+    if (argument === '--release-token-permissions-only') {
+      if (scope !== 'workflows') {
+        throw new Error('--release-token-permissions-only is only valid for workflows commands.');
+      }
+      releaseTokenPermissionsOnly = true;
       continue;
     }
 
@@ -79,7 +93,27 @@ export function parseRepositoryArguments(
     targetPath = argument;
   }
 
-  return { dryRun, targetPath };
+  return { dryRun, releaseTokenPermissionsOnly, targetPath };
+}
+
+/*** Run the opt-in release-token permission repair without synchronizing unrelated workflow files. */
+async function runReleaseTokenPermissionsOnly(
+  command: DevtoolsRepositoryCommandDefinition,
+  targetDirectory: string,
+  parsed: ParsedRepositoryArguments,
+  context: DevtoolsRepositoryCommandContext,
+): Promise<DevtoolsRepositoryCommandResult> {
+  const result = await synchronizeReleaseTokenPermissionsAsync({
+    targetDirectory,
+    operation: command.operation,
+    dryRun: parsed.dryRun,
+  });
+  if ('state' in result) {
+    writeStatusOutput([result], context);
+    return { exitCode: result.state === 'current' ? 0 : 1 };
+  }
+  writeSyncOutput([result], context);
+  return { exitCode: 0 };
 }
 
 async function runStatus(
