@@ -545,7 +545,7 @@
     "eslint-plugin-security": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^14.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "knip": "^6.45.1",
+    "knip": "^6.46.0",
     "prettier": "^3.10.1",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.73.0"
