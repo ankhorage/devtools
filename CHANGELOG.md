@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.1
+
+### Patch Changes
+
+- 4d7decf: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
 ## 2.9.0
 
 ### Minor Changes
