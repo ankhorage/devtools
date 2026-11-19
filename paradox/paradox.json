@@ -3,6 +3,7 @@
   "packageId": "@ankhorage/devtools",
   "description": "Owns shared repository automation, managed development tooling, workflows, and agent standards for Ankhorage TypeScript projects.",
   "purpose": "Keep standalone repositories aligned through released, reusable tooling instead of copied project-specific automation.",
+  "productDocumentation": null,
   "collaborators": true,
   "donation": {
     "account": "ankhorage"
@@ -17,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.9.5",
+      "value": "v2.9.6",
       "color": "cb3837"
     },
     {
@@ -4586,13 +4587,24 @@
       }
     },
     {
+      "name": "renderEslintStringArray",
+      "description": "Render ESLint glob arrays using the canonical Prettier string style.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/eslint/managed.ts",
+        "line": 49,
+        "column": 1
+      }
+    },
+    {
       "name": "renderInitialLocalConfig",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 103,
+        "line": 110,
         "column": 1
       }
     },
@@ -4603,7 +4615,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 116,
+        "line": 123,
         "column": 1
       }
     },
@@ -4614,7 +4626,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 124,
+        "line": 131,
         "column": 1
       }
     },
@@ -4625,7 +4637,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 134,
+        "line": 141,
         "column": 1
       }
     },
@@ -4636,7 +4648,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 141,
+        "line": 148,
         "column": 1
       }
     },
@@ -4647,7 +4659,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 145,
+        "line": 152,
         "column": 1
       }
     },
@@ -4658,7 +4670,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 150,
+        "line": 157,
         "column": 1
       }
     },
@@ -4669,7 +4681,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 156,
+        "line": 163,
         "column": 1
       }
     },
@@ -4680,7 +4692,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 177,
+        "line": 184,
         "column": 1
       }
     },
@@ -4691,7 +4703,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/managed.ts",
-        "line": 182,
+        "line": 189,
         "column": 1
       }
     },
@@ -8121,6 +8133,12 @@
         "toSymbol": "fixupPluginRules",
         "callExpression": "fixupPluginRules",
         "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
+        "fromSymbol": "renderEslintConfig",
+        "toSymbol": "renderEslintStringArray",
+        "callExpression": "renderEslintStringArray",
+        "sourcePath": "src/tools/eslint/managed.ts"
       },
       {
         "fromSymbol": "src/tools/eslint/managed.ts",

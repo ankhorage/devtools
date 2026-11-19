@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.6
+
+### Patch Changes
+
+- 2e60578: Fix generated ESLint configurations so they satisfy the managed Prettier policy without consumer-side formatting.
+
 ## 2.9.5
 
 ### Patch Changes
