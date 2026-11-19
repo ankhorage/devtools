@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.5
+
+### Patch Changes
+
+- 3639eea: Enable Doctor repository-metadata enforcement in managed CI and release workflows.
+
 ## 2.9.4
 
 ### Patch Changes
