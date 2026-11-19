@@ -25,7 +25,9 @@ describe('managed workflows', () => {
 
     for (const definition of workflowManagedFiles.slice(0, 2)) {
       const rendered = await definition.render?.('.');
-      expect(rendered).toContain(`bunx @ankhorage/doctor@${doctorVersion} validate .`);
+      expect(rendered).toContain(
+        `bunx @ankhorage/doctor@${doctorVersion} validate . --enforce-repository-metadata`,
+      );
     }
   });
 
