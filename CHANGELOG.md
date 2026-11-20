@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.7
+
+### Patch Changes
+
+- f1d2f84: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
 ## 2.9.6
 
 ### Patch Changes
