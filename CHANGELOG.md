@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.8
+
+### Patch Changes
+
+- be459e5: Update Devtools-owned dependencies: `knip`.
+
 ## 2.9.7
 
 ### Patch Changes
