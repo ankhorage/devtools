@@ -245,16 +245,12 @@ Use the same boundary rules across ecosystems; only syntax and wiring style chan
 
 ## Migration Playbook
 
-Use this playbook only for an explicitly authorized migration; do not start migrations
-or change other repositories merely because an architecture improvement is possible.
-
 1. Pick one vertical slice (single endpoint/job) with frequent change pain.
 2. Extract a use-case boundary with explicit input/output types.
 3. Introduce outbound ports around existing infrastructure calls.
 4. Move orchestration logic from controllers/services into the use case.
 5. Keep old adapters, but make them delegate to the new use case.
-6. Add unit tests around the new boundary; adjust existing integration tests when relevant.
-   New non-unit tests require explicit user authorization.
+6. Add tests around the new boundary (unit + adapter integration).
 7. Repeat slice-by-slice; avoid full rewrites.
 
 ### Refactoring Existing Systems

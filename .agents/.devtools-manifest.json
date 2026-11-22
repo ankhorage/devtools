@@ -11,7 +11,7 @@
     "hexagonal-architecture": {
       "files": {
         ".agents/skills/hexagonal-architecture/agents/openai.yaml": "sha256:08b26061855365ad27db2cff8ebefaaf400108362f9b2319e35d93cf64f21646",
-        ".agents/skills/hexagonal-architecture/SKILL.md": "sha256:d4ee75a20081b96d87af17b0d2ca708c0506c7558201c846c05077d3e7f35fdf"
+        ".agents/skills/hexagonal-architecture/SKILL.md": "sha256:4577b536b64aa04bb41ac4cc36efbdba86dd419567f4d341502863ac93316659"
       }
     },
     "ankhorage-project-structure": {
