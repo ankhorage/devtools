@@ -5,12 +5,14 @@ import { join } from 'node:path';
 type RuntimeSafety = 'safe' | 'unsafe';
 
 interface PackedOptionalDependencyFixtureInput {
+  readonly defaultImport?: boolean;
   readonly import?: RuntimeSafety | 'missing';
   readonly isolatedProviderSubpath?: boolean;
   readonly mandatoryDependency?: boolean;
   readonly platformOnly?: boolean;
   readonly reactNativeFlowImport?: boolean;
   readonly require?: RuntimeSafety;
+  readonly topLevelAwaitImport?: boolean;
 }
 
 /*** Create a packed package with independently controlled root runtime conditions. */
@@ -73,11 +75,17 @@ async function writeRuntimeSourcesAsync(
   await Promise.all([
     writeFile(
       join(packageDirectory, 'esm.js'),
-      sourceForRuntime(input.import, 'esm', input.mandatoryDependency, input.reactNativeFlowImport),
+      sourceForRuntime(
+        input.import,
+        'esm',
+        input.mandatoryDependency,
+        input.reactNativeFlowImport,
+        input.topLevelAwaitImport,
+      ),
     ),
     writeFile(
       join(packageDirectory, 'cjs.cjs'),
-      sourceForRuntime(input.require, 'cjs', input.mandatoryDependency, undefined),
+      sourceForRuntime(input.require, 'cjs', input.mandatoryDependency, undefined, undefined),
     ),
   ]);
 }
@@ -107,7 +115,10 @@ function createExports(input: PackedOptionalDependencyFixtureInput): Record<stri
     '.': {
       ...(input.import === undefined
         ? {}
-        : { import: input.import === 'missing' ? './missing.js' : './esm.js' }),
+        : {
+            import: input.import === 'missing' ? './missing.js' : './esm.js',
+            ...(input.defaultImport ? { default: './esm.js' } : {}),
+          }),
       ...(input.require === undefined ? {} : { require: './cjs.cjs' }),
     },
     ...(input.isolatedProviderSubpath ? { './provider': './provider.js' } : {}),
@@ -120,6 +131,7 @@ function sourceForRuntime(
   moduleKind: 'cjs' | 'esm',
   mandatoryDependency: boolean | undefined,
   reactNativeFlowImport: boolean | undefined,
+  topLevelAwaitImport: boolean | undefined,
 ): string {
   if (runtime === 'missing') return "export const missing = 'missing';\n";
   if (runtime === 'unsafe') {
@@ -133,6 +145,9 @@ function sourceForRuntime(
       : "require('is-number');\nexports.value = 'safe';\n";
   }
   if (reactNativeFlowImport) return "import 'react-native';\nexport const value = 'safe';\n";
+  if (topLevelAwaitImport && moduleKind === 'esm') {
+    return "await Promise.resolve();\nexport const value = 'safe';\n";
+  }
   return moduleKind === 'esm' ? "export const value = 'safe';\n" : "exports.value = 'safe';\n";
 }
 

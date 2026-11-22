@@ -25,6 +25,14 @@ test('managed release verifies packed roots without optional dependencies in the
   );
 
   await expectPackedRootIsolationResultAsync({ import: 'safe', require: 'safe' }, 0);
+  await expectPackedRootIsolationResultAsync(
+    {
+      defaultImport: true,
+      import: 'safe',
+      topLevelAwaitImport: true,
+    },
+    0,
+  );
   await expectPackedRootIsolationFailureAsync({ import: 'unsafe', require: 'safe' });
   await expectPackedRootIsolationFailureAsync({ import: 'safe', require: 'unsafe' });
   await expectPackedRootIsolationFailureAsync({ import: 'missing' });
@@ -32,7 +40,7 @@ test('managed release verifies packed roots without optional dependencies in the
   await expectPackedRootIsolationResultAsync({ import: 'safe', mandatoryDependency: true }, 0);
   await expectPackedRootIsolationResultAsync({ platformOnly: true }, 0);
   await expectPackedRootIsolationResultAsync({ import: 'safe', reactNativeFlowImport: true }, 0);
-}, 15_000);
+}, 30_000);
 
 /*** Assert that the rendered packed-root isolation probe has the expected exit code. */
 async function expectPackedRootIsolationResultAsync(

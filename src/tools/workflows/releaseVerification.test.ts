@@ -140,7 +140,7 @@ function expectPackedRuntimeLoaderSelection(release: string): void {
   expect(release).toContain(
     "const importConditions = new Set(['bun', 'default', 'import', 'node']);",
   );
-  expect(release).toContain("const requireConditions = new Set(['default', 'node', 'require']);");
+  expect(release).toContain("const requireConditions = new Set(['require']);");
   expect(release).toContain("const reactNativeConditions = new Set(['react-native']);");
   expect(release).toContain("const platformConditions = new Set(['browser', 'react-native']);");
   expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
@@ -175,10 +175,11 @@ function expectReactNativePlatformFallback(release: string): void {
   expect(release).toContain('grep -Fq \'Unexpected typeof\' "$runtime_log"');
   expect(release).toContain('grep -Fq \'Unexpected typeof\' "$root_runtime_log"');
   expect(release).toContain('verify_react_native_export()');
-  expect(release).toContain('"$consumer_dir/node_modules/.bin/expo" export --platform ios');
+  expect(release).toContain('"$platform_dir/node_modules/.bin/expo" export --platform ios');
   expect(release).toContain("join(appDir, 'package.json')");
   expect(release).toContain("main: './App.tsx'");
-  expect(release).toContain(`APP_DIR="$platform_dir" PACKAGE_SPECIFIER="$specifier" node - <<'NODE'
+  expect(release)
+    .toContain(`APP_DIR="$platform_dir" PACKAGE_SPECIFIER="$specifier" PLATFORM_TOOLCHAIN_DEPENDENCIES="$platform_toolchain_dependencies" node - <<'NODE'
           const { writeFileSync } = require('node:fs');`);
   expect(release).toContain(
     "writeFileSync(join(appDir, 'App.tsx'), `export * from ${JSON.stringify(specifier)};\\n`);",
