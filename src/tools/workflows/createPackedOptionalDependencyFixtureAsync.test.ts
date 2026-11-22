@@ -9,6 +9,7 @@ interface PackedOptionalDependencyFixtureInput {
   readonly isolatedProviderSubpath?: boolean;
   readonly mandatoryDependency?: boolean;
   readonly platformOnly?: boolean;
+  readonly reactNativeFlowImport?: boolean;
   readonly require?: RuntimeSafety;
 }
 
@@ -19,6 +20,8 @@ export async function createPackedOptionalDependencyFixtureAsync(
   readonly artifact: string;
   readonly directory: string;
   readonly packageName: string;
+  readonly reactNativeFlowImport: boolean;
+  readonly reactNativePlatformOnly: boolean;
 }> {
   const directory = await mkdtemp(join(tmpdir(), 'devtools-optional-dependency-'));
   const packageDirectory = join(directory, 'package');
@@ -53,7 +56,13 @@ export async function createPackedOptionalDependencyFixtureAsync(
   await requireSuccessfulBunCommandAsync(packing);
   const artifact = (await readdir(directory)).find((entry) => entry.endsWith('.tgz'));
   if (artifact === undefined) throw new Error('Expected an optional-dependency fixture artifact.');
-  return { artifact: join(directory, artifact), directory, packageName };
+  return {
+    artifact: join(directory, artifact),
+    directory,
+    packageName,
+    reactNativeFlowImport: input.reactNativeFlowImport === true,
+    reactNativePlatformOnly: input.platformOnly === true,
+  };
 }
 
 /*** Write the independently selected ESM and CommonJS fixture runtime sources. */
@@ -64,11 +73,11 @@ async function writeRuntimeSourcesAsync(
   await Promise.all([
     writeFile(
       join(packageDirectory, 'esm.js'),
-      sourceForRuntime(input.import, 'esm', input.mandatoryDependency),
+      sourceForRuntime(input.import, 'esm', input.mandatoryDependency, input.reactNativeFlowImport),
     ),
     writeFile(
       join(packageDirectory, 'cjs.cjs'),
-      sourceForRuntime(input.require, 'cjs', input.mandatoryDependency),
+      sourceForRuntime(input.require, 'cjs', input.mandatoryDependency, undefined),
     ),
   ]);
 }
@@ -110,6 +119,7 @@ function sourceForRuntime(
   runtime: RuntimeSafety | 'missing' | undefined,
   moduleKind: 'cjs' | 'esm',
   mandatoryDependency: boolean | undefined,
+  reactNativeFlowImport: boolean | undefined,
 ): string {
   if (runtime === 'missing') return "export const missing = 'missing';\n";
   if (runtime === 'unsafe') {
@@ -122,6 +132,7 @@ function sourceForRuntime(
       ? "import 'is-number';\nexport const value = 'safe';\n"
       : "require('is-number');\nexports.value = 'safe';\n";
   }
+  if (reactNativeFlowImport) return "import 'react-native';\nexport const value = 'safe';\n";
   return moduleKind === 'esm' ? "export const value = 'safe';\n" : "exports.value = 'safe';\n";
 }
 
