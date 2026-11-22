@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.5
+
+### Patch Changes
+
+- 397f397: Resolve the compatible Expo SDK when verifying packed React Native packages.
+
 ## 2.10.4
 
 ### Patch Changes
