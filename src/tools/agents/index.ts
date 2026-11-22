@@ -299,9 +299,8 @@ Treat each issue, PR, review, and change request as an independent task.
 - Preserve unrelated user work and existing PR history.
 - Use Conventional Commits and PR titles.
 - Assign all issues and PRs to \`artiphishle\`.
-- Request PR reviews exclusively from \`artiphishle\`.
-- Never assign or request reviews from others without explicit approval.
-- If GitHub disallows self-review, report it; select no substitute.
+- Never assign or request PR reviews from any user or team.
+- Leave the requested reviewers list empty; report review readiness in the handoff.
 - Link issues to PRs and close issues only when completed.
 - Never merge without explicit authorization.
 
