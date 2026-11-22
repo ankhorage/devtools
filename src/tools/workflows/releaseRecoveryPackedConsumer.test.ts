@@ -17,7 +17,7 @@ afterEach(async () => {
   );
 });
 
-test('executes recovery selection with a frozen packed Devtools consumer', async () => {
+test('executes release-candidate recovery selection with a frozen packed Devtools consumer', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
   if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
   const scripts = extractReleaseScripts(release);
@@ -74,7 +74,7 @@ function extractReleaseScripts(release: string): {
     ),
     recovery: extractScript(
       release,
-      'Version packages directly on main',
+      'Prepare versioned release candidate',
       'Verify standalone packed install',
     ),
     synchronization: extractScript(

@@ -45,24 +45,42 @@ describe('managed workflows', () => {
     }
   });
 
-  test('renders the canonical Changesets commands into CI and release', async () => {
+  test('renders canonical Changesets commands and verifies release candidates before publication', async () => {
     const ci = await workflowManagedFiles[0].render?.('.');
     const release = await workflowManagedFiles[1].render?.('.');
+
+    if (release === undefined) throw new Error('Expected the managed release workflow renderer.');
 
     expect(ci).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.status);
     expect(release).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.version);
     expect(release).toContain(REPOSITORY_RULE_METADATA.changesets.workflowCommands.publish);
     expect(release).toContain('id: release');
     expect(release).toContain('git checkout -B main origin/main');
-    expect(release).toContain('git rebase origin/main');
     expect(release).toContain('git push origin HEAD:main');
     expect(release).toContain('chore(release): version packages [skip ci]');
+    expectVerifiedReleaseCandidateWorkflow(release);
     expect(release).not.toContain('changesets/action');
     expect(release).not.toContain('changeset-release/main');
     expect(release).toContain('Finalize Changesets v3 tag and GitHub release');
     expect(release).not.toContain('bunx changeset');
   });
 });
+
+/*** Assert that release publication follows the verified candidate rather than committing beforehand. */
+function expectVerifiedReleaseCandidateWorkflow(release: string): void {
+  expect(release).toContain('Prepare versioned release candidate');
+  expect(release).toContain('Verify standalone packed install');
+  expect(release).toContain('Commit verified release candidate');
+  expect(release.indexOf('Prepare versioned release candidate')).toBeLessThan(
+    release.indexOf('Verify standalone packed install'),
+  );
+  expect(release.indexOf('Verify standalone packed install')).toBeLessThan(
+    release.indexOf('Commit verified release candidate'),
+  );
+  expect(release).toContain('id: commit-release');
+  expect(release).toContain('release_sha: ${{ steps.commit-release.outputs.release_sha }}');
+  expect(release).not.toContain('git rebase origin/main');
+}
 
 test('dispatches every published Ankhorage package to the trusted Renovate rollout', async () => {
   const release = await workflowManagedFiles[1].render?.('.');
