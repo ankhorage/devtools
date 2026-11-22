@@ -28,13 +28,14 @@ If the current repository is `ankhorage/contracts`, apply only this profile:
 After enforcing this profile, stop before the remaining source-layout, implementation, utility,
 and migration rules; they do not apply to `ankhorage/contracts`.
 
-## Required skills
+## Architecture reference
 
-Before structural work outside `ankhorage/contracts`, read the repository `AGENTS.md`, inspect its
-source tree and public exports, then load the required Hexagonal Architecture skill from the
-repository root. Do not resolve it relative to this skill's own installation location:
+Before authorized structural work outside `ankhorage/contracts`, read the repository
+`AGENTS.md`, inspect its source tree and public exports, and consult
+`references/hexagonal-architecture.md` relative to this skill.
 
-1. `<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md`
+This unmodified vendor document is reference material, not an independently selectable Agent Skill.
+Its examples do not authorize additional refactoring, migrations, dependencies, or tests.
 
 ## Architecture profiles and source layout
 
