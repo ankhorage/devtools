@@ -217,7 +217,7 @@ describe('managed Renovate workflow', () => {
       'utf8',
     );
     const digestPattern =
-      /ankhorage\\/renovate\\/\\.github\\/workflows\\/changeset\\.yml@([0-9a-f]{40})/u;
+      /ankhorage\/renovate\/\.github\/workflows\/changeset\.yml@([0-9a-f]{40})/u;
     const ownerDigest = ownerWorkflow.match(digestPattern)?.[1];
     expect(ownerDigest).toBeDefined();
     expect(template.match(digestPattern)?.[1]).toBe(ownerDigest);
