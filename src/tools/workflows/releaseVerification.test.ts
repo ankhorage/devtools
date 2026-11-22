@@ -30,19 +30,37 @@ test('managed release verifies the exact npm artifact before finalization', asyn
 
 /*** Assert release ordering and exact release-commit finalization. */
 function expectReleaseOrdering(release: string): void {
+  const candidatePreparationIndex = release.indexOf(
+    '      - name: Prepare versioned release candidate',
+  );
+  const packedVerificationIndex = release.indexOf('      - name: Verify standalone packed install');
+  const candidateCommitIndex = release.indexOf('      - name: Commit verified release candidate');
   const publishIndex = release.indexOf('      - name: Publish unpublished packages');
   const verificationJobIndex = release.indexOf('  verify-publication:');
   const finalizationJobIndex = release.indexOf('  finalize:');
 
+  expect(candidatePreparationIndex).toBeGreaterThanOrEqual(0);
+  expect(packedVerificationIndex).toBeGreaterThan(candidatePreparationIndex);
+  expect(candidateCommitIndex).toBeGreaterThan(packedVerificationIndex);
+  expect(publishIndex).toBeGreaterThan(candidateCommitIndex);
+  const candidatePreparation = release.slice(candidatePreparationIndex, packedVerificationIndex);
+  const candidateCommit = release.slice(candidateCommitIndex, publishIndex);
+  expect(candidatePreparation).toContain('bun run version-packages');
+  expect(candidatePreparation).not.toContain('git commit');
+  expect(candidatePreparation).not.toContain('git push');
+  expect(candidateCommit).toContain('git commit -m "chore(release): version packages [skip ci]"');
+  expect(candidateCommit).toContain('git push origin HEAD:main');
   expect(verificationJobIndex).toBeGreaterThan(publishIndex);
   expect(finalizationJobIndex).toBeGreaterThan(verificationJobIndex);
   expect(release).toContain('needs: release');
   expect(release).toContain("if: needs.release.outputs.versioned == 'true'");
   expect(release).toContain("needs.verify-publication.result == 'success'");
   expect(release).toContain('ref: ${{ needs.release.outputs.release_sha }}');
-  expect(release).toContain('release_sha: ${{ steps.release.outputs.release_sha }}');
+  expect(release).toContain('release_sha: ${{ steps.commit-release.outputs.release_sha }}');
   expect(release).toContain('echo "release_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"');
   expect(release).toContain('git tag "$tag" "$RELEASE_SHA"');
+  expect(release).toContain('git push origin HEAD:main');
+  expect(release).not.toContain('git rebase origin/main');
   expectRepositoryCapabilityMaterialization(release);
   expectReleaseMonotonicity(release);
   expect(release).toContain(

@@ -165,7 +165,7 @@ async function createReleaseFixture(directory: string, releaseCommit: string): P
 }
 
 function extractReleaseScript(release: string): string {
-  const versionStep = release.indexOf('      - name: Version packages directly on main');
+  const versionStep = release.indexOf('      - name: Prepare versioned release candidate');
   const scriptMarker = '        run: |\n';
   const scriptStartIndex = release.indexOf(scriptMarker, versionStep);
   const scriptStart = scriptStartIndex + scriptMarker.length;
