@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.3
+
+### Patch Changes
+
+- 23b186a: Verify React Native package roots with Expo during optional-dependency isolation.
+
 ## 2.10.2
 
 ### Patch Changes
