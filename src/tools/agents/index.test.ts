@@ -17,7 +17,7 @@ afterEach(async () => {
   );
 });
 
-test('managed AGENTS.md renders package identity and current architecture policy', async () => {
+test('managed AGENTS.md renders scope-frozen policy with repository identity', async () => {
   const target = await createTarget({
     name: '@ankhorage/example',
     description: 'Example package.',
@@ -31,14 +31,13 @@ test('managed AGENTS.md renders package identity and current architecture policy
   const contents = await readFile(join(target, 'AGENTS.md'), 'utf8');
   expect(contents).toContain('Package: `@ankhorage/example`');
   expect(contents).toContain('Example package.');
+  expect(contents).toContain('The user\'s explicit requirements and acceptance criteria');
   expect(contents).toContain('Only the current Ankhorage architecture is valid.');
-  expect(contents).toContain(
-    '<!-- This file is managed by @ankhorage/devtools. -->\n\n## Repository',
-  );
-  expect(contents).toContain('Do not add or retain deprecated APIs');
-  expect(contents).toContain('Every repository managed by `@ankhorage/devtools` is standalone.');
-  expect(contents).toContain('consumer-agnostic and reusable outside Ankhorage');
-  expect(contents).toContain('architecture debt to remove, not');
+  expect(contents).toContain('Never independently expand scope or improvise workarounds.');
+  expect(contents).toContain('Architecture and dependencies');
+  expect(contents).toContain('No unpublished sibling sources');
+  expect(contents).toContain('hidden organization-local state, or implicit deployment assumptions');
+  expect(contents).not.toContain('architecture debt to remove, not');
   expect(contents).not.toContain('AGENTS.override.md');
   expect((await lstat(join(target, 'CLAUDE.md'))).isSymbolicLink()).toBe(true);
   expect((await lstat(join(target, 'GEMINI.md'))).isSymbolicLink()).toBe(true);
@@ -85,75 +84,50 @@ test('managed AGENTS.md preserves CRLF Next.js instructions through sync and sta
   ]);
 });
 
-test('managed AGENTS.md renders contextual skill, documentation, and delivery instructions', async () => {
+test('managed AGENTS.md includes scope, safety, testing, delivery and release rules', async () => {
   const target = await createTarget({ name: '@ankhorage/example' });
   await syncManagedFiles(target, agentsManagedFiles, { dryRun: false });
   const contents = await readFile(join(target, 'AGENTS.md'), 'utf8');
 
-  expect(contents).toContain('Before changing any file, read this `AGENTS.md` completely');
-  expect(contents).toContain('Treat skill selection as a mandatory precondition to editing');
-  expect(contents).toContain('.agents/skills/ankhorage-coding-rules/SKILL.md');
-  expect(contents).toContain('.agents/skills/ankhorage-project-structure/SKILL.md');
-  expect(contents).toContain('These rules define mandatory minimums');
-  expect(contents).toContain('allow-list; do not skip a useful relevant skill');
-  expect(contents).toContain('If the task scope expands, inspect');
-  expect(contents).toContain('`.agents/skills/` again and load the newly relevant skills');
-  expect(contents).toContain(
-    '`README.md` and the configured Paradox output are generated release artifacts',
-  );
-  expect(contents).toContain('do not regenerate or commit them in ordinary feature pull requests');
-  expect(contents).toContain('leading `@usage` comments in real');
-  expect(contents).toContain('`examples/<example>/...` source files');
-  expect(contents).toContain(
-    'The managed release workflow runs `bun run docs` after the package version bump',
-  );
-  expectGitHubTaskLifecycleInstructions(contents);
+  const requiredInstructions = [
+    'Scope is frozen unless the user explicitly changes it.',
+    'STOP always means graceful stop:',
+    'If implementation requires changes in another repository, STOP.',
+    'Never add new dependencies without explicit user approval.',
+    'Use `bun update` for authorized existing dependency updates.',
+    'Use `--frozen-lockfile` for reproducible CI and release builds.',
+    'Never directly edit generated or centrally managed files',
+    'Database schema changes, data migrations, destructive operations,',
+    'All security findings (P0–P3) are hard blockers.',
+    'Report all findings as a prioritized P0–P3 list with evidence.',
+    'Create new unit tests only.',
+    'Existing tests of all types may be executed, corrected, and extended',
+    'Never weaken assertions to conceal regressions.',
+    'Request PR reviews exclusively from `artiphishle`.',
+    'If GitHub disallows self-review, report it; select no substitute.',
+    'Verify the exact remote HEAD SHA.',
+    'If remote persistence is technically impossible, preserve local work',
+    'Read-only reviews report findings without creating commits.',
+    'Never claim failing or unverified mandatory checks have passed.',
+    'The release workflow regenerates documentation after the version bump.',
+    'After Changeset creation, run `bun run format`',
+    'Include the Changeset file in formatting.',
+    'Skill scripts must use TypeScript (`.ts`) and run with Bun.',
+  ];
+  for (const instruction of requiredInstructions) {
+    expect(contents).toContain(instruction);
+  }
+  expect(contents).not.toContain('If the task scope expands');
+  expect(contents).not.toContain('resolve every failure');
+  expect(contents).not.toContain('bun run knip:test');
+  expect(contents.match(/## GitHub task lifecycle and delivery/gu)).toHaveLength(1);
+
   expect(await syncManagedFiles(target, agentsManagedFiles, { dryRun: false })).toEqual([
     { relativePath: 'AGENTS.md', action: 'unchanged' },
     { relativePath: 'CLAUDE.md', action: 'unchanged' },
     { relativePath: 'GEMINI.md', action: 'unchanged' },
   ]);
-  expect(contents).toContain(
-    `Before creating a pull request, run all of these commands in this order and resolve every failure:
-
-\`\`\`sh
-bun run build
-bun run check-types
-bun run lint
-bun run knip:check
-bun run changeset
-bun run format
-\`\`\``,
-  );
-  expect(contents).toContain('No Changeset means no release is requested.');
-  expect(contents).toContain('Never add an empty Changeset to satisfy CI');
-  expect(contents).not.toContain('bun run knip:test');
-  expect(contents).toContain('Scripts inside an Agent Skill must always be TypeScript files');
-  expect(contents).toContain('`.js`, `.mjs`, or `.cjs` are not allowed');
 });
-
-/*** Assert that managed instructions contain the complete GitHub task lifecycle policy once. */
-function expectGitHubTaskLifecycleInstructions(contents: string): void {
-  expect(contents.match(/## GitHub task lifecycle and workspace cleanup/gu)).toHaveLength(1);
-  expect(contents).toContain(
-    'Treat each issue implementation, PR implementation, review, and change request',
-  );
-  expect(contents).toContain(
-    'Concurrent tasks must have distinct writable checkout, temporary, build, and cache paths.',
-  );
-  expect(contents).toContain(
-    'Fetch and check out the current remote PR branch in the new workspace.',
-  );
-  expect(contents).toContain('GitHub has the intended commit on the correct remote branch.');
-  expect(contents).toContain('Report acceptance that was not run as unverified.');
-  expect(contents).toContain('resolve every candidate path and remove only task-owned directories');
-  expect(contents).toContain('resolved system path for `/tmp` (`/private/tmp` on');
-  expect(contents).toContain(
-    'Refuse candidates that resolve outside that boundary, including through a symlink.',
-  );
-  expect(contents).toContain('Git-aware removal for worktrees.');
-  expect(contents).toContain('Preserve workspaces outside the boundary, shared directories');
-}
 
 test('managed AGENTS.md renders validated source metadata without consulting README content', async () => {
   const target = await createTarget({
