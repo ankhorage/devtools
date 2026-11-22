@@ -106,6 +106,7 @@ graph TD
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts["src/cli/runStandaloneTool.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runStandaloneTool_ts
@@ -310,6 +311,8 @@ graph TD
   module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts --> module_src_tools_prettier_formatYamlAsync_ts
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts["src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_types_apm_release_validation_ts["src/types/apm-release-validation.ts"]
   package__ankhorage_devtools -.-> module_src_types_apm_release_validation_ts
   module_src_types_provider_command_ts["src/types/provider-command.ts"]

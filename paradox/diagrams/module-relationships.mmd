@@ -84,6 +84,7 @@ graph LR
   module_src_tools_workflows_renderRenovateConfigAsync_ts["src/tools/workflows/renderRenovateConfigAsync.ts"]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts["src/tools/workflows/renderRenovateWorkflowAsync.ts"]
   module_src_tools_workflows_renderWorkflowAsync_ts["src/tools/workflows/renderWorkflowAsync.ts"]
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts["src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"]
   module_src_types_apm_release_validation_ts["src/types/apm-release-validation.ts"]
   module_src_types_provider_command_ts["src/types/provider-command.ts"]
   module_src_types_public_ts["src/types/public.ts"]
@@ -138,6 +139,7 @@ graph LR
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts --> module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --> module_src_cli_runExternalTool_ts

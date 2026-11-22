@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.9.10",
+      "value": "v2.10.0",
       "color": "cb3837"
     },
     {
@@ -364,6 +364,7 @@
         "src/tools/skills/managed.ts",
         "src/tools/vscode/index.ts",
         "src/tools/workflows/index.ts",
+        "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
         "src/types/provider-command.ts"
       ],
       "exports": [
@@ -1040,6 +1041,14 @@
       "exports": [
         "renderWorkflowAsync",
         "WorkflowPolicy"
+      ]
+    },
+    {
+      "path": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "synchronizeReleaseTokenPermissionsAsync"
       ]
     },
     {
@@ -2437,7 +2446,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 38,
+        "line": 40,
         "column": 1
       }
     },
@@ -2448,7 +2457,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 57,
+        "line": 62,
+        "column": 1
+      }
+    },
+    {
+      "name": "runReleaseTokenPermissionsOnly",
+      "description": "Run the opt-in release-token permission repair without synchronizing unrelated workflow files.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/runRepositoryCommand.ts",
+        "line": 100,
         "column": 1
       }
     },
@@ -2459,7 +2479,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 85,
+        "line": 119,
         "column": 1
       }
     },
@@ -2470,7 +2490,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 104,
+        "line": 138,
         "column": 1
       }
     },
@@ -2481,7 +2501,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 134,
+        "line": 168,
         "column": 1
       }
     },
@@ -2492,7 +2512,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 156,
+        "line": 190,
         "column": 1
       }
     },
@@ -2503,7 +2523,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 173,
+        "line": 207,
         "column": 1
       }
     },
@@ -2514,7 +2534,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 183,
+        "line": 217,
         "column": 1
       }
     },
@@ -2525,7 +2545,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 196,
+        "line": 230,
         "column": 1
       }
     },
@@ -2536,7 +2556,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 215,
+        "line": 249,
         "column": 1
       }
     },
@@ -5927,6 +5947,160 @@
         "line": 59,
         "column": 1
       }
+    },
+    {
+      "name": "synchronizeReleaseTokenPermissionsAsync",
+      "description": "Validate and selectively synchronize only the two scoped release-token workflow permissions.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 33,
+        "column": 1
+      }
+    },
+    {
+      "name": "synchronizeWorkflowPermissions",
+      "description": "Recognize the canonical GitHub Actions token topology before changing a permission line.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 54,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertValidWorkflowYaml",
+      "description": "Parse the complete workflow before inspecting its security-sensitive token topology.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 68,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertUnixLineEndings",
+      "description": "Refuse line endings that would make byte-preserving permission insertion ambiguous.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 82,
+        "column": 1
+      }
+    },
+    {
+      "name": "getJob",
+      "description": "Locate exactly one top-level GitHub Actions job without accepting a duplicate job definition.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "getNamedStep",
+      "description": "Locate a unique, complete workflow step by its canonical name.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertExpectedTokenTopology",
+      "description": "Prove the only GitHub App tokens are the two release tokens and one contents-only rollout token.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 123,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertReleaseToken",
+      "description": "Validate that a release token has only the canonical repository ownership and permissions.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 141,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertRolloutToken",
+      "description": "Validate that the rollout token remains limited to the dedicated Renovate repository.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 152,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertStepValues",
+      "description": "Require exact single-valued identifiers and repository ownership in one App-token step.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 158,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertRecognizedStepSyntax",
+      "description": "Reject unrecognized fields so duplicate ownership or action substitutions cannot broaden a token.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertPermissionLines",
+      "description": "Reject unknown, duplicate, or broadened App-token permission declarations.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "addMissingWorkflowPermissions",
+      "description": "Insert only missing release-token workflow permissions, preserving every other byte.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 216,
+        "column": 1
+      }
+    },
+    {
+      "name": "countLine",
+      "description": "Count an exact workflow line to reject duplicate structural declarations.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
+        "line": 229,
+        "column": 1
+      }
     }
   ],
   "sequenceScenarios": [
@@ -6134,6 +6308,11 @@
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/tools/workflows/index.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -7098,6 +7277,12 @@
       },
       {
         "fromSymbol": "runRepositoryCommand",
+        "toSymbol": "runReleaseTokenPermissionsOnly",
+        "callExpression": "runReleaseTokenPermissionsOnly",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runRepositoryCommand",
         "toSymbol": "runStatus",
         "callExpression": "runStatus",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
@@ -7118,6 +7303,24 @@
         "fromSymbol": "runRepositoryCommand",
         "toSymbol": "getErrorMessage",
         "callExpression": "getErrorMessage",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runReleaseTokenPermissionsOnly",
+        "toSymbol": "synchronizeReleaseTokenPermissionsAsync",
+        "callExpression": "synchronizeReleaseTokenPermissionsAsync",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runReleaseTokenPermissionsOnly",
+        "toSymbol": "writeStatusOutput",
+        "callExpression": "writeStatusOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runReleaseTokenPermissionsOnly",
+        "toSymbol": "writeSyncOutput",
+        "callExpression": "writeSyncOutput",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -9615,6 +9818,132 @@
         "toSymbol": "formatYamlAsync",
         "callExpression": "formatYamlAsync",
         "sourcePath": "src/tools/workflows/renderWorkflowAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeReleaseTokenPermissionsAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeReleaseTokenPermissionsAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeReleaseTokenPermissionsAsync",
+        "toSymbol": "synchronizeWorkflowPermissions",
+        "callExpression": "synchronizeWorkflowPermissions",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeReleaseTokenPermissionsAsync",
+        "toSymbol": "writeFile",
+        "callExpression": "writeFile",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeWorkflowPermissions",
+        "toSymbol": "assertValidWorkflowYaml",
+        "callExpression": "assertValidWorkflowYaml",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeWorkflowPermissions",
+        "toSymbol": "assertUnixLineEndings",
+        "callExpression": "assertUnixLineEndings",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeWorkflowPermissions",
+        "toSymbol": "getJob",
+        "callExpression": "getJob",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeWorkflowPermissions",
+        "toSymbol": "getNamedStep",
+        "callExpression": "getNamedStep",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeWorkflowPermissions",
+        "toSymbol": "assertExpectedTokenTopology",
+        "callExpression": "assertExpectedTokenTopology",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "synchronizeWorkflowPermissions",
+        "toSymbol": "addMissingWorkflowPermissions",
+        "callExpression": "addMissingWorkflowPermissions",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertValidWorkflowYaml",
+        "toSymbol": "parseAllDocuments",
+        "callExpression": "parseAllDocuments",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "getNamedStep",
+        "toSymbol": "countLine",
+        "callExpression": "countLine",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpectedTokenTopology",
+        "toSymbol": "assertReleaseToken",
+        "callExpression": "assertReleaseToken",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertExpectedTokenTopology",
+        "toSymbol": "assertRolloutToken",
+        "callExpression": "assertRolloutToken",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertReleaseToken",
+        "toSymbol": "assertStepValues",
+        "callExpression": "assertStepValues",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertReleaseToken",
+        "toSymbol": "assertPermissionLines",
+        "callExpression": "assertPermissionLines",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertRolloutToken",
+        "toSymbol": "assertStepValues",
+        "callExpression": "assertStepValues",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertRolloutToken",
+        "toSymbol": "assertPermissionLines",
+        "callExpression": "assertPermissionLines",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertStepValues",
+        "toSymbol": "countLine",
+        "callExpression": "countLine",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertStepValues",
+        "toSymbol": "assertRecognizedStepSyntax",
+        "callExpression": "assertRecognizedStepSyntax",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
+      },
+      {
+        "fromSymbol": "assertPermissionLines",
+        "toSymbol": "countLine",
+        "callExpression": "countLine",
+        "sourcePath": "src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts"
       },
       {
         "fromSymbol": "runApmReleaseCommandAsync",

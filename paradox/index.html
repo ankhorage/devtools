@@ -190,7 +190,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/cli/runRepositoryCommand.ts">
       src/cli/runRepositoryCommand.ts
-      <small>10 functions</small>
+      <small>11 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/cli/runStandaloneTool.ts">
@@ -472,6 +472,11 @@
       src/tools/workflows/renderWorkflowAsync.ts
       <small>2 functions</small>
     </button>
+  </li><li>
+    <button class="nav-button" type="button" data-target="src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts">
+      src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts
+      <small>14 functions</small>
+    </button>
   </li>
           </ul>
         </nav>
@@ -484,7 +489,7 @@
       <div class="summary">
         <div><strong>20</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
-        <div><strong>89</strong><span class="muted">modules</span></div>
+        <div><strong>90</strong><span class="muted">modules</span></div>
         <div><strong>5</strong><span class="muted">entrypoints</span></div>
       </div>
       <h3>Entrypoints</h3>
@@ -636,10 +641,10 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/cli/commands/apm/sync.ts</code>, <code>src/cli/commands/apm/validate.ts</code>, <code>src/cli/commands/metadata/runMetadataCommandAsync.ts</code>, <code>src/cli/commands/structure/build.ts</code>, <code>src/cli/commands/structure/check.ts</code>, <code>src/cli/runExternalTool.ts</code>, <code>src/cli/runRepositoryCommand.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>runProviderCommand</code></p>
-  </article><article class="item" data-search="src/cli/runRepositoryCommand.ts src/cli/commands.ts src/features/managed-files/managedFiles.ts src/tools/agents/index.ts src/tools/eslint/managed.ts src/tools/gitignore/index.ts src/tools/knip/managed.ts src/tools/package/index.ts src/tools/package/syncBunDependencies.ts src/tools/prettier/managed.ts src/tools/skills/managed.ts src/tools/vscode/index.ts src/tools/workflows/index.ts src/types/provider-command.ts DevtoolsRepositoryCommandResult parseRepositoryArguments runRepositoryCommand">
+  </article><article class="item" data-search="src/cli/runRepositoryCommand.ts src/cli/commands.ts src/features/managed-files/managedFiles.ts src/tools/agents/index.ts src/tools/eslint/managed.ts src/tools/gitignore/index.ts src/tools/knip/managed.ts src/tools/package/index.ts src/tools/package/syncBunDependencies.ts src/tools/prettier/managed.ts src/tools/skills/managed.ts src/tools/vscode/index.ts src/tools/workflows/index.ts src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts src/types/provider-command.ts DevtoolsRepositoryCommandResult parseRepositoryArguments runRepositoryCommand">
     <h3>src/cli/runRepositoryCommand.ts</h3>
     <p class="muted">Referenced module</p>
-    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/agents/index.ts</code>, <code>src/tools/eslint/managed.ts</code>, <code>src/tools/gitignore/index.ts</code>, <code>src/tools/knip/managed.ts</code>, <code>src/tools/package/index.ts</code>, <code>src/tools/package/syncBunDependencies.ts</code>, <code>src/tools/prettier/managed.ts</code>, <code>src/tools/skills/managed.ts</code>, <code>src/tools/vscode/index.ts</code>, <code>src/tools/workflows/index.ts</code>, <code>src/types/provider-command.ts</code></p>
+    <p><strong>Dependencies:</strong> <code>src/cli/commands.ts</code>, <code>src/features/managed-files/managedFiles.ts</code>, <code>src/tools/agents/index.ts</code>, <code>src/tools/eslint/managed.ts</code>, <code>src/tools/gitignore/index.ts</code>, <code>src/tools/knip/managed.ts</code>, <code>src/tools/package/index.ts</code>, <code>src/tools/package/syncBunDependencies.ts</code>, <code>src/tools/prettier/managed.ts</code>, <code>src/tools/skills/managed.ts</code>, <code>src/tools/vscode/index.ts</code>, <code>src/tools/workflows/index.ts</code>, <code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts</code>, <code>src/types/provider-command.ts</code></p>
     <p><strong>Exports:</strong> <code>DevtoolsRepositoryCommandResult</code>, <code>parseRepositoryArguments</code>, <code>runRepositoryCommand</code></p>
   </article><article class="item" data-search="src/cli/runStandaloneTool.ts src/cli/commands.ts src/cli/runExternalTool.ts runStandaloneTool">
     <h3>src/cli/runStandaloneTool.ts</h3>
@@ -946,6 +951,11 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/tools/prettier/formatYamlAsync.ts</code></p>
     <p><strong>Exports:</strong> <code>renderWorkflowAsync</code>, <code>WorkflowPolicy</code></p>
+  </article><article class="item" data-search="src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts synchronizeReleaseTokenPermissionsAsync">
+    <h3>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts</h3>
+    <p class="muted">Referenced module</p>
+    <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
+    <p><strong>Exports:</strong> <code>synchronizeReleaseTokenPermissionsAsync</code></p>
   </article><article class="item" data-search="src/types/apm-release-validation.ts ApmPackedReleaseCandidate ApmReleaseDescriptorPort ApmReleaseValidationOptions ApmReleaseValidationResult">
     <h3>src/types/apm-release-validation.ts</h3>
     <p class="muted">Referenced module</p>
@@ -1756,6 +1766,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runStandaloneTool_ts
@@ -1960,6 +1971,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts[&quot;src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_apm_release_validation_ts
   module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
@@ -2079,6 +2092,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts[&quot;src/cli/runStandaloneTool.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_cli_runStandaloneTool_ts
@@ -2283,6 +2297,8 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_tools_workflows_renderWorkflowAsync_ts
   module_src_tools_workflows_renderWorkflowAsync_ts --&gt; module_src_tools_prettier_formatYamlAsync_ts
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts[&quot;src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts&quot;]
+  package__ankhorage_devtools -.-&gt; module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   package__ankhorage_devtools -.-&gt; module_src_types_apm_release_validation_ts
   module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
@@ -2382,6 +2398,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts[&quot;src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
@@ -2436,6 +2453,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_runExternalTool_ts
@@ -2610,6 +2628,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts[&quot;src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
@@ -2664,6 +2683,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_vscode_index_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_index_ts
+  module_src_cli_runRepositoryCommand_ts --&gt; module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts
   module_src_cli_runRepositoryCommand_ts --&gt; module_src_types_provider_command_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_commands_ts
   module_src_cli_runStandaloneTool_ts --&gt; module_src_cli_runExternalTool_ts
@@ -2840,6 +2860,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts[&quot;src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
@@ -2986,6 +3007,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   module_src_tools_workflows_renderRenovateConfigAsync_ts[&quot;src/tools/workflows/renderRenovateConfigAsync.ts&quot;]
   module_src_tools_workflows_renderRenovateWorkflowAsync_ts[&quot;src/tools/workflows/renderRenovateWorkflowAsync.ts&quot;]
   module_src_tools_workflows_renderWorkflowAsync_ts[&quot;src/tools/workflows/renderWorkflowAsync.ts&quot;]
+  module_src_tools_workflows_synchronizeReleaseTokenPermissionsAsync_ts[&quot;src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts&quot;]
   module_src_types_apm_release_validation_ts[&quot;src/types/apm-release-validation.ts&quot;]
   module_src_types_provider_command_ts[&quot;src/types/provider-command.ts&quot;]
   module_src_types_public_ts[&quot;src/types/public.ts&quot;]
@@ -3344,43 +3366,47 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/cli/runRepositoryCommand.ts</h2>
       <article class="item" data-search="runRepositoryCommand src/cli/runRepositoryCommand.ts ">
     <h3>runRepositoryCommand</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:38:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:40:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="parseRepositoryArguments src/cli/runRepositoryCommand.ts ">
     <h3>parseRepositoryArguments</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:57:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:62:1</code></p>
     <p class="empty">No description available.</p>
+</article><article class="item" data-search="runReleaseTokenPermissionsOnly src/cli/runRepositoryCommand.ts Run the opt-in release-token permission repair without synchronizing unrelated workflow files.">
+    <h3>runReleaseTokenPermissionsOnly</h3>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:100:1</code></p>
+    <p>Run the opt-in release-token permission repair without synchronizing unrelated workflow files.</p>
 </article><article class="item" data-search="runStatus src/cli/runRepositoryCommand.ts ">
     <h3>runStatus</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:85:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:119:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="runSync src/cli/runRepositoryCommand.ts ">
     <h3>runSync</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:104:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:138:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="getManagedFiles src/cli/runRepositoryCommand.ts ">
     <h3>getManagedFiles</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:134:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:168:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="writeStatusOutput src/cli/runRepositoryCommand.ts ">
     <h3>writeStatusOutput</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:156:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:190:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="writeSyncOutput src/cli/runRepositoryCommand.ts ">
     <h3>writeSyncOutput</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:173:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:207:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="getActionPrefix src/cli/runRepositoryCommand.ts ">
     <h3>getActionPrefix</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:183:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:217:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="formatAction src/cli/runRepositoryCommand.ts ">
     <h3>formatAction</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:196:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:230:1</code></p>
     <p class="empty">No description available.</p>
 </article><article class="item" data-search="getErrorMessage src/cli/runRepositoryCommand.ts ">
     <h3>getErrorMessage</h3>
-    <p class="muted"><code>src/cli/runRepositoryCommand.ts:215:1</code></p>
+    <p class="muted"><code>src/cli/runRepositoryCommand.ts:249:1</code></p>
     <p class="empty">No description available.</p>
 </article>
     </section>
@@ -4907,6 +4933,67 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <h3>renderAtlasAuditSteps</h3>
     <p class="muted"><code>src/tools/workflows/renderWorkflowAsync.ts:59:1</code></p>
     <p>Render the centrally managed Atlas audit steps only for applicable repositories.</p>
+</article>
+    </section>
+  </section><section id="view-src-tools-workflows-synchronizereleasetokenpermissionsasync-ts" class="view" data-view="src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts" hidden>
+    <section class="panel">
+      <h2>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts</h2>
+      <article class="item" data-search="synchronizeReleaseTokenPermissionsAsync src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Validate and selectively synchronize only the two scoped release-token workflow permissions.">
+    <h3>synchronizeReleaseTokenPermissionsAsync</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:33:1</code></p>
+    <p>Validate and selectively synchronize only the two scoped release-token workflow permissions.</p>
+</article><article class="item" data-search="synchronizeWorkflowPermissions src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Recognize the canonical GitHub Actions token topology before changing a permission line.">
+    <h3>synchronizeWorkflowPermissions</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:54:1</code></p>
+    <p>Recognize the canonical GitHub Actions token topology before changing a permission line.</p>
+</article><article class="item" data-search="assertValidWorkflowYaml src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Parse the complete workflow before inspecting its security-sensitive token topology.">
+    <h3>assertValidWorkflowYaml</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:68:1</code></p>
+    <p>Parse the complete workflow before inspecting its security-sensitive token topology.</p>
+</article><article class="item" data-search="assertUnixLineEndings src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Refuse line endings that would make byte-preserving permission insertion ambiguous.">
+    <h3>assertUnixLineEndings</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:82:1</code></p>
+    <p>Refuse line endings that would make byte-preserving permission insertion ambiguous.</p>
+</article><article class="item" data-search="getJob src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Locate exactly one top-level GitHub Actions job without accepting a duplicate job definition.">
+    <h3>getJob</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:89:1</code></p>
+    <p>Locate exactly one top-level GitHub Actions job without accepting a duplicate job definition.</p>
+</article><article class="item" data-search="getNamedStep src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Locate a unique, complete workflow step by its canonical name.">
+    <h3>getNamedStep</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:109:1</code></p>
+    <p>Locate a unique, complete workflow step by its canonical name.</p>
+</article><article class="item" data-search="assertExpectedTokenTopology src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Prove the only GitHub App tokens are the two release tokens and one contents-only rollout token.">
+    <h3>assertExpectedTokenTopology</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:123:1</code></p>
+    <p>Prove the only GitHub App tokens are the two release tokens and one contents-only rollout token.</p>
+</article><article class="item" data-search="assertReleaseToken src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Validate that a release token has only the canonical repository ownership and permissions.">
+    <h3>assertReleaseToken</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:141:1</code></p>
+    <p>Validate that a release token has only the canonical repository ownership and permissions.</p>
+</article><article class="item" data-search="assertRolloutToken src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Validate that the rollout token remains limited to the dedicated Renovate repository.">
+    <h3>assertRolloutToken</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:152:1</code></p>
+    <p>Validate that the rollout token remains limited to the dedicated Renovate repository.</p>
+</article><article class="item" data-search="assertStepValues src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Require exact single-valued identifiers and repository ownership in one App-token step.">
+    <h3>assertStepValues</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:158:1</code></p>
+    <p>Require exact single-valued identifiers and repository ownership in one App-token step.</p>
+</article><article class="item" data-search="assertRecognizedStepSyntax src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Reject unrecognized fields so duplicate ownership or action substitutions cannot broaden a token.">
+    <h3>assertRecognizedStepSyntax</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:178:1</code></p>
+    <p>Reject unrecognized fields so duplicate ownership or action substitutions cannot broaden a token.</p>
+</article><article class="item" data-search="assertPermissionLines src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Reject unknown, duplicate, or broadened App-token permission declarations.">
+    <h3>assertPermissionLines</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:197:1</code></p>
+    <p>Reject unknown, duplicate, or broadened App-token permission declarations.</p>
+</article><article class="item" data-search="addMissingWorkflowPermissions src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Insert only missing release-token workflow permissions, preserving every other byte.">
+    <h3>addMissingWorkflowPermissions</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:216:1</code></p>
+    <p>Insert only missing release-token workflow permissions, preserving every other byte.</p>
+</article><article class="item" data-search="countLine src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts Count an exact workflow line to reject duplicate structural declarations.">
+    <h3>countLine</h3>
+    <p class="muted"><code>src/tools/workflows/synchronizeReleaseTokenPermissionsAsync.ts:229:1</code></p>
+    <p>Count an exact workflow line to reject duplicate structural declarations.</p>
 </article>
     </section>
   </section>

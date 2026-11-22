@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.0
+
+### Minor Changes
+
+- e276409: Add a fail-closed selective workflow sync mode for scoped release-token permissions.
+
 ## 2.9.10
 
 ### Patch Changes
