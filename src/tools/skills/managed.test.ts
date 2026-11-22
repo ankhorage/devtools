@@ -64,7 +64,9 @@ describe('managed repository skill synchronization', () => {
       await readFile(join(projectStructureSkill, 'references/hexagonal-architecture.md'), 'utf8'),
     ).toContain('origin: ECC');
   });
+});
 
+describe('managed legacy skill retirement', () => {
   it('retires prior managed Hexagonal files without removing unowned files', async () => {
     const target = await createTarget();
     const legacyRoot = join(target, '.agents/skills/hexagonal-architecture');
