@@ -16,8 +16,11 @@ function selectExpoSdk(dependencies: Readonly<Record<string, string>>): {
   const start = workflow.indexOf(marker);
   const end = workflow.indexOf('\n          NODE\n          )"', start + marker.length);
   if (start < 0 || end < 0) throw new Error('Missing managed Expo SDK selector.');
-  const code = workflow.slice(start + marker.length, end)
-    .split('\n').map((line) => line.slice(10)).join('\n');
+  const code = workflow
+    .slice(start + marker.length, end)
+    .split('\n')
+    .map((line) => line.slice(10))
+    .join('\n');
   const directory = mkdtempSync(join(tmpdir(), 'release-expo-'));
   try {
     writeFileSync(join(directory, 'package.json'), JSON.stringify({ dependencies }));
@@ -37,17 +40,21 @@ function selectExpoSdk(dependencies: Readonly<Record<string, string>>): {
 }
 
 test('uses the declared Expo 57 generation for ZORA SDK 57 modules', () => {
-  expect(selectExpoSdk({
-    'expo-document-picker': '~57.0.3',
-    'expo-image-picker': '~57.0.20',
-  })).toEqual({ code: 0, output: 'expo@~57.0.0', stderr: '' });
+  expect(
+    selectExpoSdk({
+      'expo-document-picker': '~57.0.3',
+      'expo-image-picker': '~57.0.20',
+    }),
+  ).toEqual({ code: 0, output: 'expo@~57.0.0', stderr: '' });
 });
 
 test('honors an explicit Expo version and rejects conflicting SDK packages', () => {
-  expect(selectExpoSdk({
-    expo: '57.0.27',
-    'expo-image-picker': '~57.0.20',
-  })).toEqual({ code: 0, output: 'expo@57.0.27', stderr: '' });
+  expect(
+    selectExpoSdk({
+      expo: '57.0.27',
+      'expo-image-picker': '~57.0.20',
+    }),
+  ).toEqual({ code: 0, output: 'expo@57.0.27', stderr: '' });
   const conflicting = selectExpoSdk({
     'expo-document-picker': '~57.0.3',
     'expo-image-picker': '~58.0.3',
@@ -58,7 +65,9 @@ test('honors an explicit Expo version and rejects conflicting SDK packages', () 
 
 test('keeps unrelated packages and both packed Expo verification gates', () => {
   expect(selectExpoSdk({ 'expo-router': '~6.0.0' })).toEqual({
-    code: 0, output: '', stderr: '',
+    code: 0,
+    output: '',
+    stderr: '',
   });
   expect(workflow).toContain('bun add "$expo_sdk_specifier" --ignore-scripts');
   expect(workflow).toContain('bun add "$expo_sdk_specifier" --ignore-scripts --omit optional');
