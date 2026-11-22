@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.4
+
+### Patch Changes
+
+- f72e79c: Verify versioned packed release candidates before committing their release metadata to main.
+
 ## 2.10.3
 
 ### Patch Changes
