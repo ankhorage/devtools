@@ -218,9 +218,9 @@ describe('managed Renovate workflow', () => {
     );
     const digestPattern =
       /ankhorage\/renovate\/\.github\/workflows\/changeset\.yml@([0-9a-f]{40})/u;
-    const ownerDigest = ownerWorkflow.match(digestPattern)?.[1];
+    const ownerDigest = digestPattern.exec(ownerWorkflow)?.[1];
     expect(ownerDigest).toBeDefined();
-    expect(template.match(digestPattern)?.[1]).toBe(ownerDigest);
+    expect(digestPattern.exec(template)?.[1]).toBe(ownerDigest);
     expect(rendered).toContain('contents: read');
     expect(rendered).toContain('checks: read');
     expect(rendered).toContain('issues: read');
