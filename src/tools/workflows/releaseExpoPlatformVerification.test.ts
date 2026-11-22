@@ -52,7 +52,7 @@ async function renderReleaseWorkflowAsync(): Promise<string> {
 /*** Extract the Expo fallback heredoc from the rendered release workflow. */
 function extractExpoFallbackSource(release: string): string {
   const match =
-    /APP_DIR="\$platform_dir" PACKAGE_SPECIFIER="\$specifier" node - <<'NODE'\n(?<source>[\s\S]*?)\n {10}NODE/u.exec(
+    /APP_DIR="\$platform_dir" PACKAGE_SPECIFIER="\$specifier" node - <<'NODE'\n(?<source>[\s\S]*?)\n +NODE/u.exec(
       release,
     );
   const source = match?.groups?.source;

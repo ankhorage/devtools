@@ -85,16 +85,7 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain(
     'PACKAGE_NAME="$package_name" node - <<\'NODE\' > runtime-entrypoints.txt',
   );
-  expect(release).toContain(
-    "const importConditions = new Set(['bun', 'default', 'import', 'node']);",
-  );
-  expect(release).toContain("const requireConditions = new Set(['default', 'node', 'require']);");
-  expect(release).toContain("const platformConditions = new Set(['browser', 'react-native']);");
-  expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
-  expect(release).toContain('const isPlatformOnlyRuntimeTarget = (target) =>');
-  expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return [];');
-  expect(release).toContain("['import', importConditions],");
-  expect(release).toContain("['require', requireConditions],");
+  expectPackedRuntimeLoaderSelection(release);
   expect(release).toContain('if (exportsMap === undefined)');
   expect(release).toContain("!Object.keys(exportsMap).some((key) => key.startsWith('.'))");
   expect(release).toContain('records.push(`${loader}|${specifier}`);');
@@ -126,6 +117,25 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).not.toContain('--help');
 }
 
+/*** Assert that each declared runtime condition uses the matching consumer. */
+function expectPackedRuntimeLoaderSelection(release: string): void {
+  expect(release).toContain(
+    "const importConditions = new Set(['bun', 'default', 'import', 'node']);",
+  );
+  expect(release).toContain("const requireConditions = new Set(['default', 'node', 'require']);");
+  expect(release).toContain("const reactNativeConditions = new Set(['react-native']);");
+  expect(release).toContain("const platformConditions = new Set(['browser', 'react-native']);");
+  expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
+  expect(release).toContain('const isPlatformOnlyRuntimeTarget = (target) =>');
+  expect(release).toContain('const isReactNativePlatformOnlyRuntimeTarget = (target) =>');
+  expect(release).toContain(
+    "if (isReactNativePlatformOnlyRuntimeTarget(target)) return ['react-native'];",
+  );
+  expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return [];');
+  expect(release).toContain("['import', importConditions],");
+  expect(release).toContain("['require', requireConditions],");
+}
+
 /*** Assert UI-capable packages run their declared consumer proof before standalone validation. */
 function expectOwnerPackedConsumerValidation(release: string): void {
   expect(release).toContain('Validate owner-defined packed consumer');
@@ -139,9 +149,15 @@ function expectOwnerPackedConsumerValidation(release: string): void {
 /*** Assert React Native Flow parse failures are compiled with Expo rather than ignored. */
 function expectReactNativePlatformFallback(release: string): void {
   expect(release).toContain('runtime_log="$(mktemp "${RUNNER_TEMP}/standalone-runtime.XXXXXX")"');
+  expect(release).toContain(
+    'root_runtime_log="$(mktemp "${RUNNER_TEMP}/standalone-optional-runtime.XXXXXX")"',
+  );
   expect(release).toContain('grep -Fq \'react-native/index.js\' "$runtime_log"');
+  expect(release).toContain('grep -Fq \'react-native/index.js\' "$root_runtime_log"');
   expect(release).toContain('grep -Fq \'Unexpected typeof\' "$runtime_log"');
-  expect(release).toContain('"$install_dir/node_modules/.bin/expo" export --platform ios');
+  expect(release).toContain('grep -Fq \'Unexpected typeof\' "$root_runtime_log"');
+  expect(release).toContain('verify_react_native_export()');
+  expect(release).toContain('"$consumer_dir/node_modules/.bin/expo" export --platform ios');
   expect(release).toContain("join(appDir, 'package.json')");
   expect(release).toContain("main: './App.tsx'");
   expect(release).toContain(`APP_DIR="$platform_dir" PACKAGE_SPECIFIER="$specifier" node - <<'NODE'
@@ -151,6 +167,12 @@ function expectReactNativePlatformFallback(release: string): void {
   );
   expect(release).toContain(
     'Packed runtime export failed::$specifier could not load with Bun or compile with Expo.',
+  );
+  expect(release).toContain(
+    'Packed optional-isolation root export failed::$root_runtime_specifier could not load with Bun or compile with Expo.',
+  );
+  expect(release).toContain(
+    'Packed optional-isolation React Native export failed::$root_runtime_specifier could not compile with Expo.',
   );
 }
 /*** Assert capability parity uses the release validator instead of a package dependency. */
@@ -268,67 +290,4 @@ NODE`;
     new Response(subprocess.stderr).text(),
   ]);
   return { exitCode, stderr };
-}
-
-test('packed runtime loader selection retains every server-compatible export condition', () => {
-  expect(selectPackedRuntimeLoaders({ import: './dist/index.js' })).toEqual(['import']);
-  expect(
-    selectPackedRuntimeLoaders({
-      import: './dist/index.js',
-      require: './dist/index.cjs',
-    }),
-  ).toEqual(['import', 'require']);
-  expect(
-    selectPackedRuntimeLoaders({
-      'react-native': './src/index.ts',
-      browser: './src/index.ts',
-      import: './dist/index.js',
-      default: './dist/index.js',
-    }),
-  ).toEqual([]);
-  expect(
-    selectPackedRuntimeLoaders({
-      browser: './dist/browser.js',
-      node: './dist/node.js',
-      import: './dist/index.js',
-    }),
-  ).toEqual(['import', 'require']);
-});
-
-/*** Mirror the managed workflow's environment-aware packed runtime loader decisions. */
-function selectPackedRuntimeLoaders(target: unknown): ('import' | 'require')[] {
-  const importConditions = new Set(['bun', 'default', 'import', 'node']);
-  const requireConditions = new Set(['default', 'node', 'require']);
-  const platformConditions = new Set(['browser', 'react-native']);
-  const explicitServerConditions = new Set(['bun', 'node']);
-  const supportsLoader = (value: unknown, conditions: ReadonlySet<string>): boolean => {
-    if (typeof value === 'string') return true;
-    if (Array.isArray(value)) return value.some((entry) => supportsLoader(entry, conditions));
-    if (!isConditionMap(value)) return false;
-    return Object.entries(value).some(
-      ([condition, entry]) => conditions.has(condition) && supportsLoader(entry, conditions),
-    );
-  };
-  const declaresCondition = (value: unknown, conditions: ReadonlySet<string>): boolean => {
-    if (Array.isArray(value)) return value.some((entry) => declaresCondition(entry, conditions));
-    if (!isConditionMap(value)) return false;
-    return Object.entries(value).some(
-      ([condition, entry]) => conditions.has(condition) || declaresCondition(entry, conditions),
-    );
-  };
-
-  if (
-    declaresCondition(target, platformConditions) &&
-    !declaresCondition(target, explicitServerConditions)
-  ) {
-    return [];
-  }
-  return [['import', importConditions] as const, ['require', requireConditions] as const].flatMap(
-    ([loader, conditions]) => (supportsLoader(target, conditions) ? [loader] : []),
-  );
-}
-
-/*** Narrow conditional export maps used by the workflow contract fixture. */
-function isConditionMap(value: unknown): value is Readonly<Record<string, unknown>> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }

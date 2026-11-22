@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { chmod, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -17,7 +17,7 @@ afterEach(async () => {
   );
 });
 
-test('managed release verifies every server-compatible packed root without optional dependencies', async () => {
+test('managed release verifies packed roots without optional dependencies in their required runtime', async () => {
   const release = await renderReleaseWorkflowAsync();
   expect(release).toContain('bun add "$artifact" --ignore-scripts --omit optional');
   expect(release).toContain(
@@ -31,6 +31,11 @@ test('managed release verifies every server-compatible packed root without optio
   await expectPackedRootIsolationResultAsync({ import: 'safe', isolatedProviderSubpath: true }, 0);
   await expectPackedRootIsolationResultAsync({ import: 'safe', mandatoryDependency: true }, 0);
   await expectPackedRootIsolationResultAsync({ platformOnly: true }, 0);
+  await expectPackedRootIsolationResultAsync({ import: 'safe', reactNativeFlowImport: true }, 0);
+  await expectPackedRootIsolationFailureAsync(
+    { import: 'safe', reactNativeFlowImport: true },
+    true,
+  );
 }, 15_000);
 
 /*** Assert that the rendered packed-root isolation probe has the expected exit code. */
@@ -48,9 +53,11 @@ async function expectPackedRootIsolationResultAsync(
 /*** Assert that an unsafe root condition makes the rendered isolation probe fail. */
 async function expectPackedRootIsolationFailureAsync(
   input: Parameters<typeof createPackedOptionalDependencyFixtureAsync>[0],
+  failExpo = false,
 ): Promise<void> {
   const result = await runPackedRootIsolationWorkflowAsync(
     await createOptionalDependencyFixtureAsync(input),
+    failExpo,
   );
   expect(result.exitCode).not.toBe(0);
 }
@@ -65,10 +72,15 @@ async function createOptionalDependencyFixtureAsync(
 }
 
 /*** Execute the rendered packed-root discovery and optional-isolation probe without altering it. */
-async function runPackedRootIsolationWorkflowAsync(fixture: {
-  readonly artifact: string;
-  readonly packageName: string;
-}): Promise<{ readonly exitCode: number; readonly stderr: string }> {
+async function runPackedRootIsolationWorkflowAsync(
+  fixture: {
+    readonly artifact: string;
+    readonly packageName: string;
+    readonly reactNativeFlowImport: boolean;
+    readonly reactNativePlatformOnly: boolean;
+  },
+  failExpo = false,
+): Promise<{ readonly exitCode: number; readonly stderr: string }> {
   const consumer = await createPackedRootConsumerAsync();
   const installation = Bun.spawn(
     ['bun', 'add', fixture.artifact, '--ignore-scripts', '--omit', 'optional'],
@@ -76,6 +88,9 @@ async function runPackedRootIsolationWorkflowAsync(fixture: {
   );
   if ((await installation.exited) !== 0) {
     return { exitCode: 1, stderr: await new Response(installation.stderr).text() };
+  }
+  if (fixture.reactNativeFlowImport || fixture.reactNativePlatformOnly) {
+    await installReactNativeFlowFixtureAsync(consumer.optionalInstallDirectory, failExpo);
   }
   return executeRenderedRootIsolationAsync(fixture, consumer);
 }
@@ -105,6 +120,7 @@ async function createPackedRootConsumerAsync(): Promise<{
     environment: {
       ...process.env,
       BUN_INSTALL_CACHE_DIR: cacheDirectory,
+      RUNNER_TEMP: temporaryDirectory,
       TMPDIR: temporaryDirectory,
     },
     optionalInstallDirectory,
@@ -147,6 +163,32 @@ ${extractPackedRootIsolationProbe(release)}`;
   return { exitCode, stderr };
 }
 
+/*** Install a Studio-shaped React Native Flow boundary and deterministic Expo consumer probe. */
+async function installReactNativeFlowFixtureAsync(
+  optionalInstallDirectory: string,
+  failExpo: boolean,
+): Promise<void> {
+  const nodeModules = join(optionalInstallDirectory, 'node_modules');
+  const expoBinary = join(nodeModules, '.bin', 'expo');
+  await Promise.all([
+    mkdir(join(nodeModules, 'react-native'), { recursive: true }),
+    mkdir(join(nodeModules, '.bin'), { recursive: true }),
+  ]);
+  await Promise.all([
+    writeFile(
+      join(nodeModules, 'react-native', 'package.json'),
+      '{"name":"react-native","type":"module","exports":"./index.js"}\n',
+    ),
+    writeFile(
+      join(nodeModules, 'react-native', 'index.js'),
+      "import typeof * as ReactNativePublicAPI from './index.js.flow';\nexport default ReactNativePublicAPI;\n",
+    ),
+    writeFile(join(nodeModules, 'react-native', 'index.js.flow'), 'export {};\n'),
+    writeFile(expoBinary, `#!/bin/sh\nexit ${failExpo ? '1' : '0'}\n`),
+  ]);
+  await chmod(expoBinary, 0o755);
+}
+
 /*** Render the managed release workflow used as the executable probe source. */
 async function renderReleaseWorkflowAsync(): Promise<string> {
   const releaseDefinition = workflowManagedFiles.find(
@@ -172,10 +214,10 @@ function extractPackedRuntimeEntrypointDiscovery(release: string): string {
 
 /*** Extract the exact rendered root optional-dependency isolation shell probe. */
 function extractPackedRootIsolationProbe(release: string): string {
-  const start = release.indexOf('            root_runtime_entrypoints=');
+  const start = release.indexOf('            verify_react_native_export()');
   const end = release.indexOf('\n\n            PACKAGE_NAME=', start);
   if (start === -1 || end === -1) {
     throw new Error('Missing packed root optional-dependency isolation probe.');
   }
-  return release.slice(start, end).replaceAll(/^ {12}/gmu, '');
+  return release.slice(start, end).replaceAll(/^ {10}/gmu, '');
 }
