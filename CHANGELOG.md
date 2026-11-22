@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.7
+
+### Patch Changes
+
+- d1863db: Isolate generated Expo verification hosts so Metro DOM transforms cannot reuse another packed consumer's module path.
+
 ## 2.10.6
 
 ### Patch Changes
