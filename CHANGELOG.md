@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.9
+
+### Patch Changes
+
+- f16969c: Fix the managed Renovate workflow's dangling reusable-workflow commit pin.
+
 ## 2.9.8
 
 ### Patch Changes
