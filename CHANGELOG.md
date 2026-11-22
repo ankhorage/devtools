@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.6
+
+### Patch Changes
+
+- 502a4a6: Provision the Expo SDK-compatible Metro runtime in managed packed React Native verification hosts so DOM Components bundle successfully.
+
 ## 2.10.5
 
 ### Patch Changes
