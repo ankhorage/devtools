@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.8
+
+### Patch Changes
+
+- 57faa49: Verify import-only ESM package exports through `import()` and reserve `require()` checks for explicit CommonJS exports.
+
 ## 2.10.7
 
 ### Patch Changes
