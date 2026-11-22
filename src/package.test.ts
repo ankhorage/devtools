@@ -193,10 +193,7 @@ describe('managed skill package contract', () => {
   });
 
   it('keeps bundled baseline skills byte-identical to their synchronized copies', () => {
-    for (const skillName of [
-      'ankhorage-coding-rules',
-      'ankhorage-project-structure',
-    ]) {
+    for (const skillName of ['ankhorage-coding-rules', 'ankhorage-project-structure']) {
       for (const path of ['SKILL.md', 'agents/openai.yaml']) {
         const source = new URL(`./tools/skills/assets/${skillName}/${path}`, import.meta.url);
         const synchronized = new URL(`../.agents/skills/${skillName}/${path}`, import.meta.url);
