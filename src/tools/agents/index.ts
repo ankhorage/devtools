@@ -197,6 +197,7 @@ function renderSecurityInstructions(): string {
 All security findings (P0–P3) are hard blockers.
 
 On detection:
+
 - STOP implementation immediately and perform graceful handoff.
 - Report all findings as a prioritized P0–P3 list with evidence.
 - Do not fix, bypass, merge, or deploy.
@@ -214,6 +215,7 @@ function renderRepositorySkillInstructions(): string {
 Before editing, read \`AGENTS.md\` and inspect \`.agents/skills/\`.
 
 Load:
+
 - \`.agents/skills/ankhorage-coding-rules/SKILL.md\`
 - \`.agents/skills/ankhorage-project-structure/SKILL.md\`
 - Additional repository-local skills when applicable or required.
@@ -306,6 +308,7 @@ Treat each issue, PR, review, and change request as an independent task.
 Review the final diff and remove unauthorized changes.
 
 For every task with changes, including blocked tasks:
+
 1. Commit all recoverable task changes.
 2. Push to the intended remote branch.
 3. Verify the exact remote HEAD SHA.
@@ -349,6 +352,7 @@ After Changeset creation, run \`bun run format\` as the final regular
 file-writing validation operation.
 
 Then run applicable read-only checks:
+
 - \`bun run format:check\`
 - \`bun run changeset:status\`
 
