@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.1
+
+### Patch Changes
+
+- f9aef4e: Align generated agent instructions and canonical skills with strict task scope, security stop rules, and recoverable remote handoff.
+
 ## 2.10.0
 
 ### Minor Changes

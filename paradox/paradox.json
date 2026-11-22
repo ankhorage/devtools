@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.10.0",
+      "value": "v2.10.1",
       "color": "cb3837"
     },
     {
@@ -4239,7 +4239,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 51,
+        "line": 43,
         "column": 1
       }
     },
@@ -4250,84 +4250,139 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 67,
+        "line": 59,
         "column": 1
       }
     },
     {
-      "name": "renderCurrentArchitectureInstructions",
-      "description": "Render the current-architecture policy shared by every managed repository.",
+      "name": "renderSharedAgentPolicy",
+      "description": "Render scope-frozen shared agent policy for managed repositories.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 74,
+        "line": 66,
         "column": 1
       }
     },
     {
-      "name": "renderStandaloneRepositoryInstructions",
-      "description": "Render the mandatory standalone repository and package contract.",
+      "name": "renderTaskAuthorityAndScope",
+      "description": "Render the shared task authority and scope policy.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 92,
+        "line": 83,
         "column": 1
       }
     },
     {
-      "name": "renderRequiredRepositoryInstructions",
-      "description": "Render contextual repository skill-selection requirements.",
+      "name": "renderArchitectureAndDependencies",
+      "description": "Render the shared architecture and dependencies policy.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 113,
+        "line": 114,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDependencyInstructions",
+      "description": "Render the shared dependencies policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 143,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderManagedFileInstructions",
+      "description": "Render the shared managed and generated files policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 160,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderDatabaseAndInfrastructureInstructions",
+      "description": "Render the shared database and infrastructure policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 179,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderSecurityInstructions",
+      "description": "Render the shared security policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 194,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderRepositorySkillInstructions",
+      "description": "Render the shared repository instructions and skills policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 212,
         "column": 1
       }
     },
     {
       "name": "renderDocumentationInstructions",
-      "description": "Render the release-owned generated documentation policy.",
+      "description": "Render the shared documentation policy.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 137,
+        "line": 236,
         "column": 1
       }
     },
     {
-      "name": "renderGitHubTaskLifecycleInstructions",
-      "description": "Render the mandatory GitHub task isolation, delivery, and cleanup policy.",
+      "name": "renderTestingAndReviewInstructions",
+      "description": "Render the shared testing, validation and review policy.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 151,
+        "line": 252,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderGitHubTaskLifecycleAndDelivery",
+      "description": "Render the shared github task lifecycle and delivery policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/agents/index.ts",
+        "line": 290,
         "column": 1
       }
     },
     {
       "name": "renderPullRequestInstructions",
-      "description": "Render canonical pull-request validation commands.",
+      "description": "Render the shared pull requests and release preparation policy.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 176,
-        "column": 1
-      }
-    },
-    {
-      "name": "renderSkillScriptInstructions",
-      "description": "Render the repository rule for executable Agent Skill scripts.",
-      "see": [],
-      "security": [],
-      "sourceLocation": {
-        "filePath": "src/tools/agents/index.ts",
-        "line": 198,
+        "line": 336,
         "column": 1
       }
     },
@@ -4338,7 +4393,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 208,
+        "line": 371,
         "column": 1
       }
     },
@@ -4349,7 +4404,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 225,
+        "line": 388,
         "column": 1
       }
     },
@@ -4360,7 +4415,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 230,
+        "line": 393,
         "column": 1
       }
     },
@@ -4371,7 +4426,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 235,
+        "line": 398,
         "column": 1
       }
     },
@@ -5636,7 +5691,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 29,
+        "line": 28,
         "column": 1
       }
     },
@@ -5647,7 +5702,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 39,
+        "line": 38,
         "column": 1
       }
     },
@@ -5658,7 +5713,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 53,
+        "line": 52,
         "column": 1
       }
     },
@@ -5669,7 +5724,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 70,
+        "line": 69,
         "column": 1
       }
     },
@@ -5680,7 +5735,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 89,
+        "line": 88,
         "column": 1
       }
     },
@@ -5691,7 +5746,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 94,
+        "line": 93,
         "column": 1
       }
     },
@@ -5702,7 +5757,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/skills/selection.ts",
-        "line": 99,
+        "line": 98,
         "column": 1
       }
     },
@@ -8051,44 +8106,8 @@
       },
       {
         "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderCurrentArchitectureInstructions",
-        "callExpression": "renderCurrentArchitectureInstructions",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderStandaloneRepositoryInstructions",
-        "callExpression": "renderStandaloneRepositoryInstructions",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderRequiredRepositoryInstructions",
-        "callExpression": "renderRequiredRepositoryInstructions",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderDocumentationInstructions",
-        "callExpression": "renderDocumentationInstructions",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderGitHubTaskLifecycleInstructions",
-        "callExpression": "renderGitHubTaskLifecycleInstructions",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderPullRequestInstructions",
-        "callExpression": "renderPullRequestInstructions",
-        "sourcePath": "src/tools/agents/index.ts"
-      },
-      {
-        "fromSymbol": "renderAgentsFile",
-        "toSymbol": "renderSkillScriptInstructions",
-        "callExpression": "renderSkillScriptInstructions",
+        "toSymbol": "renderSharedAgentPolicy",
+        "callExpression": "renderSharedAgentPolicy",
         "sourcePath": "src/tools/agents/index.ts"
       },
       {
@@ -8125,6 +8144,72 @@
         "fromSymbol": "src/tools/agents/index.ts",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderTaskAuthorityAndScope",
+        "callExpression": "renderTaskAuthorityAndScope",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderArchitectureAndDependencies",
+        "callExpression": "renderArchitectureAndDependencies",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderDependencyInstructions",
+        "callExpression": "renderDependencyInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderManagedFileInstructions",
+        "callExpression": "renderManagedFileInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderDatabaseAndInfrastructureInstructions",
+        "callExpression": "renderDatabaseAndInfrastructureInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderSecurityInstructions",
+        "callExpression": "renderSecurityInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderRepositorySkillInstructions",
+        "callExpression": "renderRepositorySkillInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderDocumentationInstructions",
+        "callExpression": "renderDocumentationInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderTestingAndReviewInstructions",
+        "callExpression": "renderTestingAndReviewInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderGitHubTaskLifecycleAndDelivery",
+        "callExpression": "renderGitHubTaskLifecycleAndDelivery",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderSharedAgentPolicy",
+        "toSymbol": "renderPullRequestInstructions",
+        "callExpression": "renderPullRequestInstructions",
         "sourcePath": "src/tools/agents/index.ts"
       },
       {
