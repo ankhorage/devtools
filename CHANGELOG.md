@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.10
+
+### Patch Changes
+
+- ad137bf: Permit bootstrap repositories to add their initial package manifest while preserving rollback checks for existing packages.
+
 ## 2.9.9
 
 ### Patch Changes
