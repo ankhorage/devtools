@@ -184,8 +184,9 @@ and do not create repo-local aliases around the shared implementation. For
 every function that could reasonably be reused across repositories, you MUST first inspect the
 published `@ankhorage/utility` public API and its owning topic. Reuse the existing export when its
 semantics match. If the function is missing and is generic without product, manifest, or framework
-policy, implement, test, and export it from the appropriate Utility topic, then consume that public
-export through a declared dependency. Do not duplicate it locally or add a forwarding wrapper.
+policy, report the missing canonical Utility API. If resolving it requires changing another
+repository or adding an unapproved dependency, STOP and obtain explicit user authorization.
+Do not duplicate the implementation locally or add a forwarding wrapper.
 `isRecord` from `@ankhorage/utility/object` is one motivating example of this general rule, not a
 special case.
 
@@ -202,5 +203,5 @@ Separate the decisions for functions and types: reusable functions belong to Uti
 repo-local type groups belong to `src/types/`; repo-crossing types belong to Contracts. Respect
 release boundaries and obtain approval for additional package changes when they exceed the task.
 
-This skill defines the target architecture. Schedule repository migrations separately and in this
-order: Studio, Deploy, Infra, Repository, Navigator, Surface, ZORA.
+This skill defines the target architecture. Do not start migrations or coordinated
+cross-repository changes without an explicitly authorized task.
