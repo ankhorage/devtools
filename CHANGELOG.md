@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.9
+
+### Patch Changes
+
+- a5d1b14: Pin generated CI and release workflow validation to @ankhorage/doctor 0.15.6.
+
 ## 2.10.8
 
 ### Patch Changes
