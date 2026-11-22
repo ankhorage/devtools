@@ -64,6 +64,23 @@ function hasNextDependency(manifest: Record<string, unknown>): boolean {
 
 /*** Render scope-frozen shared agent policy for managed repositories. */
 function renderSharedAgentPolicy(): string {
+  return [
+    renderTaskAuthorityAndScope(),
+    renderArchitectureAndDependencies(),
+    renderDependencyInstructions(),
+    renderManagedFileInstructions(),
+    renderDatabaseAndInfrastructureInstructions(),
+    renderSecurityInstructions(),
+    renderRepositorySkillInstructions(),
+    renderDocumentationInstructions(),
+    renderTestingAndReviewInstructions(),
+    renderGitHubTaskLifecycleAndDelivery(),
+    renderPullRequestInstructions(),
+  ].join('');
+}
+
+/*** Render the shared task authority and scope policy. */
+function renderTaskAuthorityAndScope(): string {
   return `## Task authority and scope
 
 The user's explicit requirements and acceptance criteria define the
@@ -90,7 +107,12 @@ according to the delivery rules below.
 
 Do not stop for unrelated cosmetic issues or optional improvements.
 
-## Architecture and dependencies
+`;
+}
+
+/*** Render the shared architecture and dependencies policy. */
+function renderArchitectureAndDependencies(): string {
+  return `## Architecture and dependencies
 
 Only the current Ankhorage architecture is valid.
 
@@ -114,7 +136,12 @@ Report unrelated architecture violations in a PR Conversation comment
 with location, evidence, and impact. Never fix them independently.
 Link directly to the comment in the final chat response.
 
-## Dependencies
+`;
+}
+
+/*** Render the shared dependencies policy. */
+function renderDependencyInstructions(): string {
+  return `## Dependencies
 
 - Use \`bun install\` for development and restoring existing dependencies.
 - Use \`bun update\` for authorized existing dependency updates.
@@ -126,7 +153,12 @@ Link directly to the comment in the final chat response.
 - Keep \`package.json\` and \`bun.lock\` synchronized and commit their changes.
 - Use \`--frozen-lockfile\` for reproducible CI and release builds.
 
-## Managed and generated files
+`;
+}
+
+/*** Render the shared managed and generated files policy. */
+function renderManagedFileInstructions(): string {
+  return `## Managed and generated files
 
 Never directly edit generated or centrally managed files, including
 \`AGENTS.md\`, \`CLAUDE.md\`, \`GEMINI.md\`, managed workflows, managed skills,
@@ -140,7 +172,12 @@ through the canonical owner or generator.
 If a protected file needs changes, STOP and report its owner.
 Never modify generated output as a workaround.
 
-## Database and infrastructure
+`;
+}
+
+/*** Render the shared database and infrastructure policy. */
+function renderDatabaseAndInfrastructureInstructions(): string {
+  return `## Database and infrastructure
 
 Database schema changes, data migrations, destructive operations,
 and infrastructure mutations require explicit task authorization.
@@ -150,7 +187,12 @@ and rollback requirements.
 
 Never independently modify database structures or existing data.
 
-## Security
+`;
+}
+
+/*** Render the shared security policy. */
+function renderSecurityInstructions(): string {
+  return `## Security
 
 All security findings (P0–P3) are hard blockers.
 
@@ -162,7 +204,12 @@ On detection:
 
 This includes pre-existing security vulnerabilities.
 
-## Repository instructions and skills
+`;
+}
+
+/*** Render the shared repository instructions and skills policy. */
+function renderRepositorySkillInstructions(): string {
+  return `## Repository instructions and skills
 
 Before editing, read \`AGENTS.md\` and inspect \`.agents/skills/\`.
 
@@ -180,7 +227,12 @@ skills.
 Skill scripts must use TypeScript (\`.ts\`) and run with Bun.
 JavaScript skill scripts (\`.js\`, \`.mjs\`, \`.cjs\`) are prohibited.
 
-## Documentation
+`;
+}
+
+/*** Render the shared documentation policy. */
+function renderDocumentationInstructions(): string {
+  return `## Documentation
 
 \`README.md\` and configured Paradox output are release-generated artifacts.
 Never edit or commit them in ordinary feature PRs.
@@ -191,7 +243,12 @@ Update only relevant Paradox \`/*** ... */\` comments, real
 The release workflow regenerates documentation after the version bump.
 Do not generate unrelated documentation or examples.
 
-## Testing, validation and review
+`;
+}
+
+/*** Render the shared testing, validation and review policy. */
+function renderTestingAndReviewInstructions(): string {
+  return `## Testing, validation and review
 
 - Create new unit tests only.
 - Never introduce new E2E, smoke, integration, browser, simulator,
@@ -224,7 +281,12 @@ Document them in PR Conversation comments.
 Reviewers cannot expand scope or introduce acceptance criteria.
 Report failed and unverified checks accurately.
 
-## GitHub task lifecycle and delivery
+`;
+}
+
+/*** Render the shared github task lifecycle and delivery policy. */
+function renderGitHubTaskLifecycleAndDelivery(): string {
+  return `## GitHub task lifecycle and delivery
 
 Treat each issue, PR, review, and change request as an independent task.
 
@@ -265,7 +327,12 @@ Report cleanup success, failure, or omission.
 
 Read-only reviews report findings without creating commits.
 
-## Pull requests and release preparation
+`;
+}
+
+/*** Render the shared pull requests and release preparation policy. */
+function renderPullRequestInstructions(): string {
+  return `## Pull requests and release preparation
 
 Run applicable mandatory validation:
 

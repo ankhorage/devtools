@@ -31,7 +31,7 @@ test('managed AGENTS.md renders scope-frozen policy with repository identity', a
   const contents = await readFile(join(target, 'AGENTS.md'), 'utf8');
   expect(contents).toContain('Package: `@ankhorage/example`');
   expect(contents).toContain('Example package.');
-  expect(contents).toContain('The user\'s explicit requirements and acceptance criteria');
+  expect(contents).toContain("The user's explicit requirements and acceptance criteria");
   expect(contents).toContain('Only the current Ankhorage architecture is valid.');
   expect(contents).toContain('Never independently expand scope or improvise workarounds.');
   expect(contents).toContain('Architecture and dependencies');
