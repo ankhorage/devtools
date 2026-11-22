@@ -140,6 +140,7 @@ ankh devtools prettier sync .
 ankh devtools knip sync .
 ankh devtools package sync .
 ankh devtools workflows sync .
+ankh devtools workflows sync . --release-token-permissions-only
 ankh devtools vscode sync .
 ```
 
@@ -153,6 +154,7 @@ ankh devtools prettier status .
 ankh devtools knip status .
 ankh devtools package status .
 ankh devtools workflows status .
+ankh devtools workflows status . --release-token-permissions-only
 ankh devtools vscode status .
 ```
 
@@ -164,9 +166,15 @@ ankh devtools agents sync . --dry-run
 ankh devtools skills sync . --dry-run
 ankh devtools eslint sync . --dry-run
 ankh devtools package sync . --dry-run
+ankh devtools workflows sync . --release-token-permissions-only --dry-run
 ```
 
 A dry run reports `would create`, `would update`, and `would remove` actions without mutating files. `status` exits with code `1` when managed state has drifted and `0` when it is current.
+
+`workflows sync . --release-token-permissions-only` is an explicit, fail-closed repair for the
+two repository-scoped release tokens in an existing `release.yml`. It validates the complete
+recognized GitHub App token topology before changing only a missing `permission-workflows: write`
+line. It never replaces the workflow or changes rollout-token permissions.
 
 ## Synchronization guarantees
 
