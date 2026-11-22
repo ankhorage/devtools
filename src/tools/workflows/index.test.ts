@@ -25,7 +25,9 @@ describe('managed workflows', () => {
 
     for (const definition of workflowManagedFiles.slice(0, 2)) {
       const rendered = await definition.render?.('.');
-      expect(rendered).toContain(`bunx @ankhorage/doctor@${doctorVersion} validate .`);
+      expect(rendered).toContain(
+        `bunx @ankhorage/doctor@${doctorVersion} validate . --enforce-repository-metadata`,
+      );
     }
   });
 
@@ -210,9 +212,15 @@ describe('managed Renovate workflow', () => {
     );
     expect(rendered).toContain('cancel-in-progress: true');
     const template = await readFile(new URL('./files/renovate.yml', import.meta.url), 'utf8');
-    expect(template).toContain(
-      'ankhorage/renovate/.github/workflows/changeset.yml@60f0b8c853ecc2c3601d947e8c9414c8a89bd481',
+    const ownerWorkflow = await readFile(
+      new URL('../../../.github/workflows/renovate.yml', import.meta.url),
+      'utf8',
     );
+    const digestPattern =
+      /ankhorage\/renovate\/\.github\/workflows\/changeset\.yml@([0-9a-f]{40})/u;
+    const ownerDigest = digestPattern.exec(ownerWorkflow)?.[1];
+    expect(ownerDigest).toBeDefined();
+    expect(digestPattern.exec(template)?.[1]).toBe(ownerDigest);
     expect(rendered).toContain('contents: read');
     expect(rendered).toContain('checks: read');
     expect(rendered).toContain('issues: read');

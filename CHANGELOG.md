@@ -1,5 +1,53 @@
 # Changelog
 
+## 2.9.10
+
+### Patch Changes
+
+- ad137bf: Permit bootstrap repositories to add their initial package manifest while preserving rollback checks for existing packages.
+
+## 2.9.9
+
+### Patch Changes
+
+- f16969c: Fix the managed Renovate workflow's dangling reusable-workflow commit pin.
+
+## 2.9.8
+
+### Patch Changes
+
+- be459e5: Update Devtools-owned dependencies: `knip`.
+
+## 2.9.7
+
+### Patch Changes
+
+- f1d2f84: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
+## 2.9.6
+
+### Patch Changes
+
+- 2e60578: Fix generated ESLint configurations so they satisfy the managed Prettier policy without consumer-side formatting.
+
+## 2.9.5
+
+### Patch Changes
+
+- 3639eea: Enable Doctor repository-metadata enforcement in managed CI and release workflows.
+
+## 2.9.4
+
+### Patch Changes
+
+- e5bf62c: Update Devtools-owned dependencies: `@ankhorage/doctor`, `knip`.
+
+## 2.9.3
+
+### Patch Changes
+
+- fe06775: Update Devtools-owned dependencies: `knip`.
+
 ## 2.9.2
 
 ### Patch Changes

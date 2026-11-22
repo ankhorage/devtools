@@ -35,14 +35,21 @@ const localEntries = Array.isArray(localConfig) ? localConfig : [localConfig];
 
 export default [
   ...createConfig({
-    files: ${JSON.stringify(sourceGlobs)},
-    javascriptFiles: ${JSON.stringify(javascriptSourceGlobs)},
+    files: ${renderEslintStringArray(sourceGlobs)},
+    javascriptFiles: ${renderEslintStringArray(javascriptSourceGlobs)},
     project: ['./tsconfig.json'],
     tsconfigRootDir: import.meta.dirname,
   }),
   ...localEntries,
 ];
 `;
+}
+
+/*** Render ESLint glob arrays using the canonical Prettier string style. */
+function renderEslintStringArray(values: readonly string[]): string {
+  if (values.length === 0) return '[]';
+  if (values.length === 1) return `['${values[0]}']`;
+  return `[\n${values.map((value) => `      '${value}',`).join('\n')}\n    ]`;
 }
 
 const ESLINT_CONFIG = renderEslintConfig(DEFAULT_SOURCE_GLOBS);

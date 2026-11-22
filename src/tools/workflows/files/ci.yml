@@ -37,6 +37,10 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           base_sha='${{ github.event.pull_request.base.sha }}'
+          if ! git cat-file -e "${base_sha}:package.json"; then
+            echo "Base revision has no package.json; accepting initial package manifest."
+            exit 0
+          fi
           base_version="$(git show "${base_sha}:package.json" | node -e "let source=''; process.stdin.on('data',(chunk)=>source+=chunk); process.stdin.on('end',()=>process.stdout.write(JSON.parse(source).version ?? ''))")"
           candidate_version="$(node -p "require('./package.json').version")"
           BASE_VERSION="$base_version" CANDIDATE_VERSION="$candidate_version" node -e '
@@ -71,9 +75,9 @@ jobs:
       - name: Validate Ankhorage repository
         run: |
           if node -e "const p=require('./package.json'); process.exit(p.name === '@ankhorage/doctor' ? 0 : 1)"; then
-            bun ./dist/cli/standalone.js validate .
+            bun ./dist/cli/standalone.js validate . --enforce-repository-metadata
           else
-            BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@__ANKH_DOCTOR_VERSION__ validate .
+            BUN_INSTALL_CACHE_DIR="${RUNNER_TEMP}/doctor-cache" bunx @ankhorage/doctor@__ANKH_DOCTOR_VERSION__ validate . --enforce-repository-metadata
           fi
 
       - name: Run lint

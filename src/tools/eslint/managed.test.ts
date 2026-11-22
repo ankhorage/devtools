@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
+import { format } from 'prettier';
 
 import {
   inspectManagedFiles,
@@ -58,9 +59,50 @@ test('includes Next.js application TypeScript and JavaScript source roots in the
 
   const config = await readFile(join(target, 'eslint.config.mjs'), 'utf8');
   for (const directory of ['app', 'components', 'lib', 'worker', 'scripts', 'tests']) {
-    expect(config).toContain(`"${directory}/**/*.{ts,tsx}"`);
-    expect(config).toContain(`"${directory}/**/*.{js,mjs,cjs}"`);
+    expect(config).toContain(`'${directory}/**/*.{ts,tsx}'`);
+    expect(config).toContain(`'${directory}/**/*.{js,mjs,cjs}'`);
   }
+  expect(await syncManagedFiles(target, eslintManagedFiles, { dryRun: false })).toContainEqual({
+    relativePath: 'eslint.config.mjs',
+    action: 'unchanged',
+  });
+});
+
+test('renders a Prettier-stable managed ESLint config', async () => {
+  const target = await mkdtemp('/tmp/devtools-eslint-managed-');
+  temporaryDirectories.push(target);
+
+  await syncManagedFiles(target, eslintManagedFiles, { dryRun: false });
+  expect(
+    await format(await readFile(join(target, 'eslint.config.mjs'), 'utf8'), {
+      arrowParens: 'always',
+      filepath: 'eslint.config.mjs',
+      printWidth: 100,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: 'all',
+    }),
+  ).toBe(await readFile(join(target, 'eslint.config.mjs'), 'utf8'));
+
+  await writeFile(
+    join(target, 'package.json'),
+    JSON.stringify({ dependencies: { next: '16.4.6' } }),
+  );
+  await syncManagedFiles(target, eslintManagedFiles, { dryRun: false });
+
+  const config = await readFile(join(target, 'eslint.config.mjs'), 'utf8');
+  expect(
+    await format(config, {
+      arrowParens: 'always',
+      filepath: 'eslint.config.mjs',
+      printWidth: 100,
+      semi: true,
+      singleQuote: true,
+      tabWidth: 2,
+      trailingComma: 'all',
+    }),
+  ).toBe(config);
   expect(await syncManagedFiles(target, eslintManagedFiles, { dryRun: false })).toContainEqual({
     relativePath: 'eslint.config.mjs',
     action: 'unchanged',
