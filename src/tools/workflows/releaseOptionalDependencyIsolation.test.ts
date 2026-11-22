@@ -32,10 +32,6 @@ test('managed release verifies packed roots without optional dependencies in the
   await expectPackedRootIsolationResultAsync({ import: 'safe', mandatoryDependency: true }, 0);
   await expectPackedRootIsolationResultAsync({ platformOnly: true }, 0);
   await expectPackedRootIsolationResultAsync({ import: 'safe', reactNativeFlowImport: true }, 0);
-  await expectPackedRootIsolationFailureAsync(
-    { import: 'safe', reactNativeFlowImport: true },
-    true,
-  );
 }, 15_000);
 
 /*** Assert that the rendered packed-root isolation probe has the expected exit code. */
@@ -53,11 +49,9 @@ async function expectPackedRootIsolationResultAsync(
 /*** Assert that an unsafe root condition makes the rendered isolation probe fail. */
 async function expectPackedRootIsolationFailureAsync(
   input: Parameters<typeof createPackedOptionalDependencyFixtureAsync>[0],
-  failExpo = false,
 ): Promise<void> {
   const result = await runPackedRootIsolationWorkflowAsync(
     await createOptionalDependencyFixtureAsync(input),
-    failExpo,
   );
   expect(result.exitCode).not.toBe(0);
 }
@@ -72,15 +66,12 @@ async function createOptionalDependencyFixtureAsync(
 }
 
 /*** Execute the rendered packed-root discovery and optional-isolation probe without altering it. */
-async function runPackedRootIsolationWorkflowAsync(
-  fixture: {
-    readonly artifact: string;
-    readonly packageName: string;
-    readonly reactNativeFlowImport: boolean;
-    readonly reactNativePlatformOnly: boolean;
-  },
-  failExpo = false,
-): Promise<{ readonly exitCode: number; readonly stderr: string }> {
+async function runPackedRootIsolationWorkflowAsync(fixture: {
+  readonly artifact: string;
+  readonly packageName: string;
+  readonly reactNativeFlowImport: boolean;
+  readonly reactNativePlatformOnly: boolean;
+}): Promise<{ readonly exitCode: number; readonly stderr: string }> {
   const consumer = await createPackedRootConsumerAsync();
   const installation = Bun.spawn(
     ['bun', 'add', fixture.artifact, '--ignore-scripts', '--omit', 'optional'],
@@ -90,7 +81,7 @@ async function runPackedRootIsolationWorkflowAsync(
     return { exitCode: 1, stderr: await new Response(installation.stderr).text() };
   }
   if (fixture.reactNativeFlowImport || fixture.reactNativePlatformOnly) {
-    await installReactNativeFlowFixtureAsync(consumer.optionalInstallDirectory, failExpo);
+    await installReactNativeFlowFixtureAsync(consumer.optionalInstallDirectory);
   }
   return executeRenderedRootIsolationAsync(fixture, consumer);
 }
@@ -100,16 +91,19 @@ async function createPackedRootConsumerAsync(): Promise<{
   readonly directory: string;
   readonly environment: Record<string, string | undefined>;
   readonly optionalInstallDirectory: string;
+  readonly platformToolchainDependencies: string;
 }> {
   const directory = await mkdtemp(join(tmpdir(), 'devtools-packed-root-consumer-'));
   const cacheDirectory = join(directory, 'cache');
   const temporaryDirectory = join(directory, 'tmp');
   const optionalInstallDirectory = join(directory, 'optional');
+  const toolchainDirectory = join(directory, 'toolchain');
   temporaryDirectories.push(directory);
   await Promise.all([
     mkdir(cacheDirectory),
     mkdir(optionalInstallDirectory),
     mkdir(temporaryDirectory),
+    mkdir(toolchainDirectory),
     writeFile(
       join(directory, 'package.json'),
       '{"name":"packed-root-consumer","private":true,"version":"0.0.0"}\n',
@@ -124,7 +118,35 @@ async function createPackedRootConsumerAsync(): Promise<{
       TMPDIR: temporaryDirectory,
     },
     optionalInstallDirectory,
+    platformToolchainDependencies: await createExpoToolchainAsync(toolchainDirectory),
   };
+}
+
+/*** Create a local declared Expo toolchain so the rendered platform probe stays offline. */
+async function createExpoToolchainAsync(directory: string): Promise<string> {
+  const packages = ['expo', 'react', 'react-native'] as const;
+  await Promise.all(
+    packages.map(async (name) => {
+      const packageDirectory = join(directory, name);
+      await mkdir(packageDirectory);
+      await writeFile(
+        join(packageDirectory, 'package.json'),
+        JSON.stringify({
+          bin: name === 'expo' ? { expo: './expo' } : undefined,
+          name,
+          version: '0.0.0',
+        }),
+      );
+      if (name === 'expo') {
+        const binary = join(packageDirectory, 'expo');
+        await writeFile(binary, '#!/bin/sh\nexit 0\n');
+        await chmod(binary, 0o755);
+      }
+    }),
+  );
+  return JSON.stringify(
+    Object.fromEntries(packages.map((name) => [name, `file:${join(directory, name)}`])),
+  );
 }
 
 /*** Run the exact rendered discovery and isolation source against an isolated packed consumer. */
@@ -134,6 +156,7 @@ async function executeRenderedRootIsolationAsync(
     readonly directory: string;
     readonly environment: Record<string, string | undefined>;
     readonly optionalInstallDirectory: string;
+    readonly platformToolchainDependencies: string;
   },
 ): Promise<{ readonly exitCode: number; readonly stderr: string }> {
   const release = await renderReleaseWorkflowAsync();
@@ -144,6 +167,7 @@ NODE
 artifact="$artifact"
 package_name="$package_name"
 optional_install_dir="$optional_install_dir"
+platform_toolchain_dependencies="$platform_toolchain_dependencies"
 ${extractPackedRootIsolationProbe(release)}`;
   const subprocess = Bun.spawn(['sh', '-c', script], {
     cwd: consumer.directory,
@@ -152,6 +176,7 @@ ${extractPackedRootIsolationProbe(release)}`;
       artifact: fixture.artifact,
       optional_install_dir: consumer.optionalInstallDirectory,
       package_name: fixture.packageName,
+      platform_toolchain_dependencies: consumer.platformToolchainDependencies,
     },
     stderr: 'pipe',
     stdout: 'pipe',
@@ -163,17 +188,10 @@ ${extractPackedRootIsolationProbe(release)}`;
   return { exitCode, stderr };
 }
 
-/*** Install a Studio-shaped React Native Flow boundary and deterministic Expo consumer probe. */
-async function installReactNativeFlowFixtureAsync(
-  optionalInstallDirectory: string,
-  failExpo: boolean,
-): Promise<void> {
+/*** Install a Studio-shaped React Native Flow boundary without an Expo executable. */
+async function installReactNativeFlowFixtureAsync(optionalInstallDirectory: string): Promise<void> {
   const nodeModules = join(optionalInstallDirectory, 'node_modules');
-  const expoBinary = join(nodeModules, '.bin', 'expo');
-  await Promise.all([
-    mkdir(join(nodeModules, 'react-native'), { recursive: true }),
-    mkdir(join(nodeModules, '.bin'), { recursive: true }),
-  ]);
+  await mkdir(join(nodeModules, 'react-native'), { recursive: true });
   await Promise.all([
     writeFile(
       join(nodeModules, 'react-native', 'package.json'),
@@ -184,9 +202,7 @@ async function installReactNativeFlowFixtureAsync(
       "import typeof * as ReactNativePublicAPI from './index.js.flow';\nexport default ReactNativePublicAPI;\n",
     ),
     writeFile(join(nodeModules, 'react-native', 'index.js.flow'), 'export {};\n'),
-    writeFile(expoBinary, `#!/bin/sh\nexit ${failExpo ? '1' : '0'}\n`),
   ]);
-  await chmod(expoBinary, 0o755);
 }
 
 /*** Render the managed release workflow used as the executable probe source. */

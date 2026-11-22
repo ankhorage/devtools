@@ -403,18 +403,28 @@ jobs:
           fi
           printf '{"name":"standalone-consumer","private":true,"version":"0.0.0"}\n' > "$install_dir/package.json"
           package_name="$(node -p "require('./package.json').name")"
-          expo_sdk_specifier="$(node - <<'NODE'
+          platform_toolchain_dependencies="$(node - <<'NODE'
           const { readFileSync } = require('node:fs');
           const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
           const dependencies = manifest.dependencies ?? {};
-          const declared = dependencies.expo ?? manifest.peerDependencies?.expo;
-          const explicit = typeof declared === 'string'
-            ? /^(?:~|\^)?(\d+)\.(\d+)\.(\d+)$/.exec(declared)
-            : null;
-          if (declared !== undefined && explicit === null) {
-            throw new Error('Expo must have an explicit bounded SDK version.');
-          }
-          const sdkMajors = new Set(Object.entries(dependencies)
+          const peerDependencies = manifest.peerDependencies ?? {};
+          const declared = dependencies.expo ?? peerDependencies.expo;
+          const expoDeclarations = [dependencies.expo, peerDependencies.expo];
+          const expoMajors = expoDeclarations.map((range) => {
+            if (range === undefined) return undefined;
+            const explicit = typeof range === 'string'
+              ? /^(?:~|\^)?(\d+)\.(\d+)\.(\d+)$/.exec(range)
+              : null;
+            if (explicit === null) throw new Error('Expo must have an explicit bounded SDK version.');
+            return Number(explicit[1]);
+          });
+          const expoModuleDeclarations = [
+            ['dependencies', dependencies],
+            ['peerDependencies', peerDependencies],
+          ].flatMap(([source, contract]) => Object.entries(contract)
+            .filter(([name]) => name === 'expo' || name.startsWith('expo-'))
+            .map(([name, range]) => `${source}.${name}=${String(range)}`));
+          const sdkMajors = new Set([dependencies, peerDependencies].flatMap((contract) => Object.entries(contract))
             .filter(([name]) => name.startsWith('expo-'))
             .flatMap(([, range]) => {
               const match = typeof range === 'string'
@@ -423,21 +433,24 @@ jobs:
               const major = match ? Number(match[1]) : 0;
               return major >= 50 ? [major] : [];
             }));
-          if (explicit) sdkMajors.add(Number(explicit[1]));
+          for (const major of expoMajors) if (major !== undefined) sdkMajors.add(major);
           if (sdkMajors.size > 1) {
-            throw new Error('Conflicting Expo SDK majors in the published package dependency contract.');
+            throw new Error(`Conflicting Expo SDK majors in the published package dependency contract: ${expoModuleDeclarations.join(', ')}.`);
           }
           const major = [...sdkMajors][0];
-          const selected = declared ?? (major === undefined ? '' : '~' + major + '.0.0');
-          process.stdout.write(selected ? 'expo@' + selected : '');
+          const expo = declared ?? (major === undefined ? undefined : '~' + major + '.0.0');
+          const react = dependencies.react ?? peerDependencies.react;
+          const reactNative = dependencies['react-native'] ?? peerDependencies['react-native'];
+          if (expo === undefined && react === undefined && reactNative === undefined) process.exit(0);
+          if (typeof expo !== 'string' || typeof react !== 'string' || typeof reactNative !== 'string') {
+            throw new Error(`Expo platform verification requires declared Expo, React, and React Native versions; received Expo=${String(expo)}, React=${String(react)}, React Native=${String(reactNative)}.`);
+          }
+          process.stdout.write(JSON.stringify({ expo, react, 'react-native': reactNative }));
           NODE
           )"
           capability_module_path="$(node --input-type=module -e "import { createRequire } from 'node:module'; console.log(createRequire(import.meta.resolve('@ankhorage/devtools/cli')).resolve('@ankhorage/capability'))")"
           (
             cd "$install_dir"
-            if [ -n "$expo_sdk_specifier" ]; then
-              bun add "$expo_sdk_specifier" --ignore-scripts
-            fi
             bun add "$artifact" --ignore-scripts
             if [ -f node_modules/react/package.json ] && [ -f node_modules/react-dom/package.json ]; then
               react_version="$(node -p "require('./node_modules/react/package.json').version")"
@@ -527,17 +540,20 @@ jobs:
               platform_dir="$(mktemp -d "${consumer_dir}/packed-platform.XXXXXX")"
               platform_output_dir="$(mktemp -d "${RUNNER_TEMP}/standalone-platform-output.XXXXXX")"
               printf '{"expo":{"name":"packed-platform-verification","slug":"packed-platform-verification"}}\n' > "$platform_dir/app.json"
-              APP_DIR="$platform_dir" PACKAGE_SPECIFIER="$specifier" node - <<'NODE'
+              APP_DIR="$platform_dir" PACKAGE_SPECIFIER="$specifier" PLATFORM_TOOLCHAIN_DEPENDENCIES="$platform_toolchain_dependencies" node - <<'NODE'
           const { writeFileSync } = require('node:fs');
           const { join } = require('node:path');
           const appDir = process.env.APP_DIR;
           const specifier = process.env.PACKAGE_SPECIFIER;
-          if (typeof appDir !== 'string' || typeof specifier !== 'string') {
-            throw new Error('The platform verification app and package specifier are required.');
+          const dependencies = process.env.PLATFORM_TOOLCHAIN_DEPENDENCIES;
+          if (typeof appDir !== 'string' || typeof specifier !== 'string' || typeof dependencies !== 'string') {
+            throw new Error('The platform verification app, package specifier, and toolchain are required.');
           }
+          const toolchain = JSON.parse(dependencies);
           writeFileSync(
             join(appDir, 'package.json'),
             `${JSON.stringify({
+              dependencies: toolchain,
               main: './App.tsx',
               name: 'packed-platform-verification',
               private: true,
@@ -548,7 +564,10 @@ jobs:
           NODE
               (
                 cd "$platform_dir"
-                "$consumer_dir/node_modules/.bin/expo" export --platform ios --output-dir "$platform_output_dir"
+                bun install --ignore-scripts
+                bun add "$artifact" --ignore-scripts
+                node -e 'const p=require("./package.json"); for (const name of ["expo", "react", "react-native"]) { const resolved=require(`./node_modules/${name}/package.json`).version; console.log(`Expo platform toolchain ${name}: declared ${p.dependencies[name]}, resolved ${resolved}`); }'
+                "$platform_dir/node_modules/.bin/expo" export --platform ios --output-dir "$platform_output_dir"
               )
             }
 
@@ -557,9 +576,6 @@ jobs:
               (
                 cd "$optional_install_dir"
                 printf '{"name":"standalone-optional-consumer","private":true,"version":"0.0.0"}\n' > package.json
-                if [ -n "$expo_sdk_specifier" ]; then
-                  bun add "$expo_sdk_specifier" --ignore-scripts --omit optional
-                fi
                 bun add "$artifact" --ignore-scripts --omit optional
                 printf '%s\n' "$root_runtime_entrypoints" | while IFS='|' read -r root_runtime_loader root_runtime_specifier; do
                   case "$root_runtime_loader" in
