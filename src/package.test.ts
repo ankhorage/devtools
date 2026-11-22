@@ -132,13 +132,16 @@ describe('package release contract', () => {
       existsSync(new URL('./tools/skills/assets/ankhorage-coding-rules/SKILL.md', import.meta.url)),
     ).toBe(true);
     expect(
-      existsSync(new URL('./tools/skills/assets/hexagonal-architecture/SKILL.md', import.meta.url)),
-    ).toBe(true);
-    expect(
       existsSync(
-        new URL('./tools/skills/assets/hexagonal-architecture/agents/openai.yaml', import.meta.url),
+        new URL(
+          './tools/skills/assets/ankhorage-project-structure/references/hexagonal-architecture.md',
+          import.meta.url,
+        ),
       ),
     ).toBe(true);
+    expect(
+      existsSync(new URL('./tools/skills/assets/hexagonal-architecture/SKILL.md', import.meta.url)),
+    ).toBe(false);
     expect(
       existsSync(
         new URL('./tools/skills/assets/ankhorage-coding-rules/agents/openai.yaml', import.meta.url),
@@ -190,11 +193,7 @@ describe('managed skill package contract', () => {
   });
 
   it('keeps bundled baseline skills byte-identical to their synchronized copies', () => {
-    for (const skillName of [
-      'ankhorage-coding-rules',
-      'hexagonal-architecture',
-      'ankhorage-project-structure',
-    ]) {
+    for (const skillName of ['ankhorage-coding-rules', 'ankhorage-project-structure']) {
       for (const path of ['SKILL.md', 'agents/openai.yaml']) {
         const source = new URL(`./tools/skills/assets/${skillName}/${path}`, import.meta.url);
         const synchronized = new URL(`../.agents/skills/${skillName}/${path}`, import.meta.url);
@@ -230,8 +229,14 @@ function expectZoraDesignerAssetsToExist(): void {
 function expectProjectStructureSkillContents(skillRoot: URL): void {
   const contents = readFileSync(new URL('SKILL.md', skillRoot), 'utf8');
   expect(contents).not.toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
-  expect(contents).toContain('<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md');
-  expect(contents).not.toContain('../hexagonal-architecture/SKILL.md');
+  expect(contents).toContain('references/hexagonal-architecture.md');
+  expect(contents).not.toContain('<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md');
+  const reference = readFileSync(
+    new URL('references/hexagonal-architecture.md', skillRoot),
+    'utf8',
+  );
+  expect(reference).toContain('origin: ECC');
+  expect(reference).toContain('## Migration Playbook');
   expect(contents).toContain('This skill applies to every Ankhorage repository');
   expect(contents).toContain('### Contracts repository profile');
   expect(contents).toContain('only portable, serializable contracts');

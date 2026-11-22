@@ -19,18 +19,14 @@ describe('managed repository skill synchronization', () => {
   it('replaces the canonical skill exactly and preserves unrelated skills', async () => {
     const target = await createTarget();
     const codingRulesSkill = join(target, '.agents/skills/ankhorage-coding-rules');
-    const hexagonalArchitectureSkill = join(target, '.agents/skills/hexagonal-architecture');
     const projectStructureSkill = join(target, '.agents/skills/ankhorage-project-structure');
     const customSkill = join(target, '.agents/skills/custom-skill');
     await mkdir(codingRulesSkill, { recursive: true });
-    await mkdir(hexagonalArchitectureSkill, { recursive: true });
     await mkdir(projectStructureSkill, { recursive: true });
     await mkdir(customSkill, { recursive: true });
     await writeFile(join(codingRulesSkill, 'SKILL.md'), 'old coding rules\n');
-    await writeFile(join(hexagonalArchitectureSkill, 'SKILL.md'), 'old hexagonal architecture\n');
     await writeFile(join(projectStructureSkill, 'SKILL.md'), 'old project structure\n');
     await writeFile(join(codingRulesSkill, 'stale.txt'), 'remove me\n');
-    await writeFile(join(hexagonalArchitectureSkill, 'stale.txt'), 'remove me too\n');
     await writeFile(join(projectStructureSkill, 'stale.txt'), 'remove me too\n');
     await writeFile(join(customSkill, 'SKILL.md'), 'keep me\n');
 
@@ -43,14 +39,9 @@ describe('managed repository skill synchronization', () => {
       relativePath: '.agents/skills/ankhorage-project-structure/stale.txt',
       action: 'removed',
     });
-    expect(results).toContainEqual({
-      relativePath: '.agents/skills/hexagonal-architecture/stale.txt',
-      action: 'removed',
-    });
     expect(await readFile(join(customSkill, 'SKILL.md'), 'utf8')).toBe('keep me\n');
     expect(await Bun.file(join(codingRulesSkill, 'stale.txt')).exists()).toBe(false);
     expect(await Bun.file(join(projectStructureSkill, 'stale.txt')).exists()).toBe(false);
-    expect(await Bun.file(join(hexagonalArchitectureSkill, 'stale.txt')).exists()).toBe(false);
     expect(await readFile(join(codingRulesSkill, 'SKILL.md'), 'utf8')).toContain(
       'name: ankhorage-coding-rules',
     );
@@ -69,9 +60,49 @@ describe('managed repository skill synchronization', () => {
     expect(projectStructureContents).toContain('Every public Ankh command');
     expect(projectStructureContents).toContain('src/cli/commands/config/validate.ts');
     expect(projectStructureContents).not.toContain('A package may start flat.');
-    expect(await readFile(join(hexagonalArchitectureSkill, 'SKILL.md'), 'utf8')).toContain(
-      'name: hexagonal-architecture',
+    expect(
+      await readFile(join(projectStructureSkill, 'references/hexagonal-architecture.md'), 'utf8'),
+    ).toContain('origin: ECC');
+  });
+});
+
+describe('managed legacy skill retirement', () => {
+  it('retires prior managed Hexagonal files without removing unowned files', async () => {
+    const target = await createTarget();
+    const legacyRoot = join(target, '.agents/skills/hexagonal-architecture');
+    await mkdir(join(legacyRoot, 'agents'), { recursive: true });
+    await writeFile(join(legacyRoot, 'SKILL.md'), 'old vendor skill\n');
+    await writeFile(join(legacyRoot, 'agents/openai.yaml'), 'old vendor configuration\n');
+    await writeFile(join(legacyRoot, 'local.txt'), 'unowned file\n');
+    const oldFiles = {
+      '.agents/skills/hexagonal-architecture/SKILL.md': `sha256:${'0'.repeat(64)}`,
+      '.agents/skills/hexagonal-architecture/agents/openai.yaml': `sha256:${'0'.repeat(64)}`,
+    };
+    const previousManifest = {
+      schemaVersion: 1,
+      sourceDevtoolsVersion: 'previous',
+      skills: { 'hexagonal-architecture': { files: oldFiles } },
+    };
+    await writeFile(
+      join(target, '.agents/.devtools-manifest.json'),
+      `${JSON.stringify(previousManifest, null, 2)}\n`,
     );
+
+    const results = await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
+    expect(results).toContainEqual({
+      relativePath: '.agents/skills/hexagonal-architecture/SKILL.md',
+      action: 'removed',
+    });
+    expect(results).toContainEqual({
+      relativePath: '.agents/skills/hexagonal-architecture/agents/openai.yaml',
+      action: 'removed',
+    });
+    expect(await Bun.file(join(legacyRoot, 'local.txt')).exists()).toBe(true);
+    const referencePath = join(
+      target,
+      '.agents/skills/ankhorage-project-structure/references/hexagonal-architecture.md',
+    );
+    expect(await Bun.file(referencePath).exists()).toBe(true);
   });
 });
 
@@ -130,7 +161,6 @@ describe('managed repository skill ownership', () => {
     expect(manifest.sourceDevtoolsVersion).toBe(devtoolsVersion);
     expect(Object.keys(manifest.skills)).toEqual([
       'ankhorage-coding-rules',
-      'hexagonal-architecture',
       'ankhorage-project-structure',
     ]);
     for (const skill of Object.values(manifest.skills)) {
