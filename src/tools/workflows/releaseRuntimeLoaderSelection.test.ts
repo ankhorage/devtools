@@ -1,7 +1,17 @@
 import { expect, test } from 'bun:test';
 
-test('packed runtime loader selection retains every server-compatible export condition', () => {
-  expect(selectPackedRuntimeLoaders({ import: './dist/index.js' })).toEqual(['import']);
+test('packed runtime loader selection uses import for import-only ESM exports', () => {
+  expect(
+    selectPackedRuntimeLoaders({
+      default: './dist/index.js',
+      import: './dist/index.js',
+      node: './dist/index.js',
+    }),
+  ).toEqual(['import']);
+});
+
+test('packed runtime loader selection retains explicit CommonJS and dual-condition verification', () => {
+  expect(selectPackedRuntimeLoaders({ require: './dist/index.cjs' })).toEqual(['require']);
   expect(
     selectPackedRuntimeLoaders({ import: './dist/index.js', require: './dist/index.cjs' }),
   ).toEqual(['import', 'require']);
@@ -13,19 +23,12 @@ test('packed runtime loader selection retains every server-compatible export con
       default: './dist/index.js',
     }),
   ).toEqual(['react-native']);
-  expect(
-    selectPackedRuntimeLoaders({
-      browser: './dist/browser.js',
-      node: './dist/node.js',
-      import: './dist/index.js',
-    }),
-  ).toEqual(['import', 'require']);
 });
 
 /*** Mirror the managed workflow's environment-aware packed runtime loader decisions. */
 function selectPackedRuntimeLoaders(target: unknown): ('import' | 'react-native' | 'require')[] {
   const importConditions = new Set(['bun', 'default', 'import', 'node']);
-  const requireConditions = new Set(['default', 'node', 'require']);
+  const requireConditions = new Set(['require']);
   const reactNativeConditions = new Set(['react-native']);
   const platformConditions = new Set(['browser', 'react-native']);
   const explicitServerConditions = new Set(['bun', 'node']);
