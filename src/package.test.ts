@@ -234,7 +234,10 @@ function expectProjectStructureSkillContents(skillRoot: URL): void {
   expect(contents).not.toContain('<repo-root>/.agents/skills/ankhorage-coding-rules/SKILL.md');
   expect(contents).toContain('references/hexagonal-architecture.md');
   expect(contents).not.toContain('<repo-root>/.agents/skills/hexagonal-architecture/SKILL.md');
-  const reference = readFileSync(new URL('references/hexagonal-architecture.md', skillRoot), 'utf8');
+  const reference = readFileSync(
+    new URL('references/hexagonal-architecture.md', skillRoot),
+    'utf8',
+  );
   expect(reference).toContain('origin: ECC');
   expect(reference).toContain('## Migration Playbook');
   expect(contents).toContain('This skill applies to every Ankhorage repository');

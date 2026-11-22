@@ -64,6 +64,7 @@ describe('managed repository skill synchronization', () => {
       await readFile(join(projectStructureSkill, 'references/hexagonal-architecture.md'), 'utf8'),
     ).toContain('origin: ECC');
   });
+
   it('retires prior managed Hexagonal files without removing unowned files', async () => {
     const target = await createTarget();
     const legacyRoot = join(target, '.agents/skills/hexagonal-architecture');
@@ -75,13 +76,14 @@ describe('managed repository skill synchronization', () => {
       '.agents/skills/hexagonal-architecture/SKILL.md': `sha256:${'0'.repeat(64)}`,
       '.agents/skills/hexagonal-architecture/agents/openai.yaml': `sha256:${'0'.repeat(64)}`,
     };
+    const previousManifest = {
+      schemaVersion: 1,
+      sourceDevtoolsVersion: 'previous',
+      skills: { 'hexagonal-architecture': { files: oldFiles } },
+    };
     await writeFile(
       join(target, '.agents/.devtools-manifest.json'),
-      `${JSON.stringify({
-        schemaVersion: 1,
-        sourceDevtoolsVersion: 'previous',
-        skills: { 'hexagonal-architecture': { files: oldFiles } },
-      }, null, 2)}\n`,
+      `${JSON.stringify(previousManifest, null, 2)}\n`,
     );
 
     const results = await syncManagedSkills(target, devtoolsVersion, { dryRun: false });
@@ -94,11 +96,12 @@ describe('managed repository skill synchronization', () => {
       action: 'removed',
     });
     expect(await Bun.file(join(legacyRoot, 'local.txt')).exists()).toBe(true);
-    expect(
-      await Bun.file(join(target, '.agents/skills/ankhorage-project-structure/references/hexagonal-architecture.md')).exists(),
-    ).toBe(true);
+    const referencePath = join(
+      target,
+      '.agents/skills/ankhorage-project-structure/references/hexagonal-architecture.md',
+    );
+    expect(await Bun.file(referencePath).exists()).toBe(true);
   });
-
 });
 
 describe('managed repository skill ownership', () => {
