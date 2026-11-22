@@ -293,8 +293,8 @@ function renderGitHubTaskLifecycleAndDelivery(): string {
 Treat each issue, PR, review, and change request as an independent task.
 
 - Fetch current origin/main, issue, PR, HEAD, review, and CI state.
-- Use a fresh isolated checkout or worktree for every task.
-- Isolate concurrent workspaces, builds, temporary files, and caches.
+- Start every task in a fresh, uniquely named, task-owned checkout or worktree strictly beneath the resolved system \`/tmp\` path (\`/private/tmp\` on macOS).
+- Isolate concurrent task worktrees, builds, temporary files, and caches.
 - Continue change requests on the existing PR branch.
 - Preserve unrelated user work and existing PR history.
 - Use Conventional Commits and PR titles.
@@ -306,28 +306,35 @@ Treat each issue, PR, review, and change request as an independent task.
 
 Review the final diff and remove unauthorized changes.
 
-For every task with changes, including blocked tasks:
+For every task with safe recoverable changes, including blocked tasks:
 
 1. Commit all recoverable task changes.
-2. Push to the intended remote branch.
-3. Verify the exact remote HEAD SHA.
-4. Document blockers and findings in the PR.
+2. Push every commit to the intended remote branch, even when implementation,
+   validation, CI, or external integration is incomplete.
+3. Create a linked Draft PR when the issue has no existing PR, and document WIP,
+   unverified behavior, and blockers there.
+4. Read back the actual \`origin/<branch>\` or GitHub remote HEAD SHA and its PR
+   association before reporting it.
 5. Keep incomplete or blocked PRs in Draft.
-6. Safely clean up task-owned temporary workspaces.
+6. Only after confirmed remote persistence and a clean, fully recoverable worktree,
+   remove the task-owned worktree with Git-aware removal and its task-owned build,
+   temporary, and cache paths.
+7. Verify that every removed task-owned root no longer exists before final handoff.
 
 A recovery commit does not imply successful completion.
 
-If remote persistence is technically impossible, preserve local work
-and report the failed handoff, unpushed commits, and recovery location.
-Never discard unpushed work to satisfy cleanup requirements.
+If a genuine remote outage or forbidden push prevents persistence, preserve local work,
+report the failed or incomplete handoff, unpushed commits, push failure, and retained path,
+and never discard unpushed work to satisfy cleanup requirements. A push failure is not a
+successful handoff.
 
 Cleanup may remove only task-owned paths strictly beneath the resolved
 system \`/tmp\` path (\`/private/tmp\` on macOS), using Git-aware removal.
 
-Never remove unrelated work, shared paths, or unpersisted data.
-Report cleanup success, failure, or omission.
+Never remove unrelated work, shared paths, symlink-resolved paths outside \`/tmp\`,
+or unpersisted data. Report cleanup success, failure, or omission.
 
-Read-only reviews report findings without creating commits.
+Read-only reviews report findings without creating commits or pushes.
 
 `;
 }
