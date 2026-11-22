@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { afterEach, expect, test } from 'bun:test';
@@ -76,6 +76,35 @@ test('managed React Native fallback derives the DOM Metro runtime from installed
   expect(release).not.toContain('bun add "@expo/dom-webview"');
 });
 
+test('managed React Native fallback gives every generated Expo host a distinct temporary root', async () => {
+  const release = await renderReleaseWorkflowAsync();
+
+  expect(release).toContain(
+    'platform_temporary_directory="$(mktemp -d "${platform_dir}/tmp.XXXXXX")"',
+  );
+  expect(release).toContain(
+    'TMPDIR="$platform_temporary_directory" "$platform_dir/node_modules/.bin/expo" export --platform ios --output-dir "$platform_output_dir"',
+  );
+
+  const hosts = await Promise.all([
+    createExpoTemporaryStateHostAsync(),
+    createExpoTemporaryStateHostAsync(),
+  ]);
+  temporaryDirectories.push(...hosts.map(({ directory }) => directory));
+  const temporaryStateRecords = await Promise.all(
+    hosts.map(({ platformDirectory, platformTemporaryDirectory }) =>
+      runRenderedExpoExportAsync(release, platformDirectory, platformTemporaryDirectory),
+    ),
+  );
+
+  expect(
+    new Set(temporaryStateRecords.map(({ temporaryDirectory }) => temporaryDirectory)).size,
+  ).toBe(2);
+  for (const { platformDirectory, temporaryDirectory } of temporaryStateRecords) {
+    expect(temporaryDirectory.startsWith(`${platformDirectory}/tmp.`)).toBe(true);
+  }
+});
+
 /*** Render the managed release workflow used as the executable probe source. */
 async function renderReleaseWorkflowAsync(): Promise<string> {
   const releaseDefinition = workflowManagedFiles.find(
@@ -128,4 +157,58 @@ async function expectExpoPackageFilesAsync(directory: string): Promise<void> {
   expect(await readFile(join(directory, 'App.tsx'), 'utf8')).toBe(
     'export * from "@example/packed";\n',
   );
+}
+
+/*** Create an executable Expo fixture that records the temporary directory received by its host process. */
+async function createExpoTemporaryStateHostAsync(): Promise<{
+  readonly directory: string;
+  readonly platformDirectory: string;
+  readonly platformTemporaryDirectory: string;
+}> {
+  const directory = await mkdtemp('/tmp/devtools-release-expo-host-');
+  const platformDirectory = join(directory, 'packed-platform');
+  const platformTemporaryDirectory = join(platformDirectory, 'tmp.fixture');
+  const expoBinary = join(platformDirectory, 'node_modules/.bin/expo');
+  await mkdir(join(platformDirectory, 'node_modules/.bin'), { recursive: true });
+  await writeFile(
+    expoBinary,
+    '#!/bin/sh\nprintf "%s" "$TMPDIR" > "$PWD/expo-temporary-directory.txt"\n',
+  );
+  await chmod(expoBinary, 0o755);
+  return { directory, platformDirectory, platformTemporaryDirectory };
+}
+
+/*** Execute the rendered Expo command so the fixture proves host-local temporary-state propagation. */
+async function runRenderedExpoExportAsync(
+  release: string,
+  platformDirectory: string,
+  platformTemporaryDirectory: string,
+): Promise<{ readonly platformDirectory: string; readonly temporaryDirectory: string }> {
+  const command =
+    /TMPDIR="\$platform_temporary_directory" "\$platform_dir\/node_modules\/\.bin\/expo" export --platform ios --output-dir "\$platform_output_dir"/u.exec(
+      release,
+    )?.[0];
+  if (command === undefined) throw new Error('Missing Expo temporary-state export command.');
+  const outputDirectory = join(platformDirectory, 'output');
+  const child = Bun.spawn(['sh', '-c', command], {
+    cwd: platformDirectory,
+    env: {
+      ...process.env,
+      platform_dir: platformDirectory,
+      platform_output_dir: outputDirectory,
+      platform_temporary_directory: platformTemporaryDirectory,
+    },
+    stderr: 'pipe',
+    stdout: 'pipe',
+  });
+  const [exitCode, stderr] = await Promise.all([child.exited, new Response(child.stderr).text()]);
+  expect(exitCode).toBe(0);
+  expect(stderr).toBe('');
+  return {
+    platformDirectory,
+    temporaryDirectory: await readFile(
+      join(platformDirectory, 'expo-temporary-directory.txt'),
+      'utf8',
+    ),
+  };
 }
