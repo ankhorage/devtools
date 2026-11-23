@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.15
+
+### Patch Changes
+
+- 561c77f: Keep managed release Playwright provisioning and optional starter Knip paths valid for repositories that do not use them.
+
 ## 2.10.14
 
 ### Patch Changes

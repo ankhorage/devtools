@@ -380,7 +380,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/knip/index.ts">
       src/tools/knip/index.ts
-      <small>3 functions</small>
+      <small>5 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/tools/package/index.ts">
@@ -1301,7 +1301,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
               <article class="item" id="symbol-createknipconfig" data-search="createKnipConfig  function src/tools/knip/index.ts Build shared Knip configuration while preserving repository-specific discovery. DevtoolsKnipConfigOptions (options?: DevtoolsKnipConfigOptions) =&gt; KnipConfig">
     <h4>createKnipConfig</h4>
     
-    <p class="muted">function • <code>src/tools/knip/index.ts:43:1</code></p>
+    <p class="muted">function • <code>src/tools/knip/index.ts:45:1</code></p>
     <p>Build shared Knip configuration while preserving repository-specific discovery.</p>
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1326,7 +1326,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-createknipmonorepoconfig" data-search="createKnipMonorepoConfig  function src/tools/knip/index.ts Build shared monorepo Knip configuration. DevtoolsKnipMonorepoConfigOptions (options?: DevtoolsKnipMonorepoConfigOptions) =&gt; KnipConfig">
     <h4>createKnipMonorepoConfig</h4>
     
-    <p class="muted">function • <code>src/tools/knip/index.ts:62:1</code></p>
+    <p class="muted">function • <code>src/tools/knip/index.ts:86:1</code></p>
     <p>Build shared monorepo Knip configuration.</p>
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1351,7 +1351,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-devtoolsknipconfigoptions" data-search="DevtoolsKnipConfigOptions  type src/tools/knip/index.ts  DevtoolsKnipWorkspaceConfigOptions">
     <h4>DevtoolsKnipConfigOptions</h4>
     
-    <p class="muted">type • <code>src/tools/knip/index.ts:28:1</code></p>
+    <p class="muted">type • <code>src/tools/knip/index.ts:29:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1408,7 +1408,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-devtoolsknipmonorepoconfigoptions" data-search="DevtoolsKnipMonorepoConfigOptions  type src/tools/knip/index.ts  DevtoolsKnipWorkspaceConfigOptions">
     <h4>DevtoolsKnipMonorepoConfigOptions</h4>
     
-    <p class="muted">type • <code>src/tools/knip/index.ts:32:1</code></p>
+    <p class="muted">type • <code>src/tools/knip/index.ts:33:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -1447,7 +1447,7 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   </article><article class="item" id="symbol-devtoolsknipworkspaceconfigoptions" data-search="DevtoolsKnipWorkspaceConfigOptions  type src/tools/knip/index.ts ">
     <h4>DevtoolsKnipWorkspaceConfigOptions</h4>
     
-    <p class="muted">type • <code>src/tools/knip/index.ts:19:1</code></p>
+    <p class="muted">type • <code>src/tools/knip/index.ts:20:1</code></p>
     
     
     <p><strong>Export paths:</strong> <code>src/tools/knip/index.ts</code></p>
@@ -3073,8 +3073,21 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
     <div class="mermaid">sequenceDiagram
   participant participant_createKnipConfig as createKnipConfig
   participant participant_existsSync as existsSync
+  participant participant_filterOptionalPath as filterOptionalPath
+  participant participant_hasExamplesIndexEntry as hasExamplesIndexEntry
   participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readdirSync as readdirSync
   participant participant_readFileSync as readFileSync
+  participant_createKnipConfig-&gt;&gt;participant_filterOptionalPath: filterOptionalPath()
+  participant_filterOptionalPath--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_hasExamplesIndexEntry: hasExamplesIndexEntry()
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_readdirSync: readdirSync()
+  participant_readdirSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_createKnipConfig: return
   participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
   participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
   participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
@@ -3087,8 +3100,21 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <pre>sequenceDiagram
   participant participant_createKnipConfig as createKnipConfig
   participant participant_existsSync as existsSync
+  participant participant_filterOptionalPath as filterOptionalPath
+  participant participant_hasExamplesIndexEntry as hasExamplesIndexEntry
   participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readdirSync as readdirSync
   participant participant_readFileSync as readFileSync
+  participant_createKnipConfig-&gt;&gt;participant_filterOptionalPath: filterOptionalPath()
+  participant_filterOptionalPath--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_hasExamplesIndexEntry: hasExamplesIndexEntry()
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_readdirSync: readdirSync()
+  participant_readdirSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_createKnipConfig: return
   participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
   participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
   participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
@@ -3104,9 +3130,22 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   participant participant_createKnipConfig as createKnipConfig
   participant participant_createKnipMonorepoConfig as createKnipMonorepoConfig
   participant participant_existsSync as existsSync
+  participant participant_filterOptionalPath as filterOptionalPath
+  participant participant_hasExamplesIndexEntry as hasExamplesIndexEntry
   participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readdirSync as readdirSync
   participant participant_readFileSync as readFileSync
   participant_createKnipMonorepoConfig-&gt;&gt;participant_createKnipConfig: createKnipConfig()
+  participant_createKnipConfig-&gt;&gt;participant_filterOptionalPath: filterOptionalPath()
+  participant_filterOptionalPath--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_hasExamplesIndexEntry: hasExamplesIndexEntry()
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_readdirSync: readdirSync()
+  participant_readdirSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_createKnipConfig: return
   participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
   participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
   participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
@@ -3121,9 +3160,22 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
   participant participant_createKnipConfig as createKnipConfig
   participant participant_createKnipMonorepoConfig as createKnipMonorepoConfig
   participant participant_existsSync as existsSync
+  participant participant_filterOptionalPath as filterOptionalPath
+  participant participant_hasExamplesIndexEntry as hasExamplesIndexEntry
   participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readdirSync as readdirSync
   participant participant_readFileSync as readFileSync
   participant_createKnipMonorepoConfig-&gt;&gt;participant_createKnipConfig: createKnipConfig()
+  participant_createKnipConfig-&gt;&gt;participant_filterOptionalPath: filterOptionalPath()
+  participant_filterOptionalPath--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_hasExamplesIndexEntry: hasExamplesIndexEntry()
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry-&gt;&gt;participant_readdirSync: readdirSync()
+  participant_readdirSync--&gt;&gt;participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry--&gt;&gt;participant_createKnipConfig: return
+  participant_createKnipConfig-&gt;&gt;participant_existsSync: existsSync()
+  participant_existsSync--&gt;&gt;participant_createKnipConfig: return
   participant_createKnipConfig-&gt;&gt;participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
   participant_hasManagedExamplesEslintConfig-&gt;&gt;participant_existsSync: existsSync()
   participant_existsSync--&gt;&gt;participant_hasManagedExamplesEslintConfig: return
@@ -4461,15 +4513,23 @@ lifecycle scripts. expectedIntegrity rejects a stale candidate before any owner 
       <h2>src/tools/knip/index.ts</h2>
       <article class="item" data-search="createKnipConfig src/tools/knip/index.ts Build shared Knip configuration while preserving repository-specific discovery.">
     <h3>createKnipConfig</h3>
-    <p class="muted"><code>src/tools/knip/index.ts:43:1</code></p>
+    <p class="muted"><code>src/tools/knip/index.ts:45:1</code></p>
     <p>Build shared Knip configuration while preserving repository-specific discovery.</p>
+</article><article class="item" data-search="filterOptionalPath src/tools/knip/index.ts Retain an optional starter path only when the target repository contains it.">
+    <h3>filterOptionalPath</h3>
+    <p class="muted"><code>src/tools/knip/index.ts:69:1</code></p>
+    <p>Retain an optional starter path only when the target repository contains it.</p>
+</article><article class="item" data-search="hasExamplesIndexEntry src/tools/knip/index.ts Report whether a conventional starter example entry exists.">
+    <h3>hasExamplesIndexEntry</h3>
+    <p class="muted"><code>src/tools/knip/index.ts:78:1</code></p>
+    <p>Report whether a conventional starter example entry exists.</p>
 </article><article class="item" data-search="createKnipMonorepoConfig src/tools/knip/index.ts Build shared monorepo Knip configuration.">
     <h3>createKnipMonorepoConfig</h3>
-    <p class="muted"><code>src/tools/knip/index.ts:62:1</code></p>
+    <p class="muted"><code>src/tools/knip/index.ts:86:1</code></p>
     <p>Build shared monorepo Knip configuration.</p>
 </article><article class="item" data-search="hasManagedExamplesEslintConfig src/tools/knip/index.ts Report whether the examples ESLint config is owned by Devtools.">
     <h3>hasManagedExamplesEslintConfig</h3>
-    <p class="muted"><code>src/tools/knip/index.ts:86:1</code></p>
+    <p class="muted"><code>src/tools/knip/index.ts:110:1</code></p>
     <p>Report whether the examples ESLint config is owned by Devtools.</p>
 </article>
     </section>
