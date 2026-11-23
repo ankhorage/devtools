@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -51,6 +51,30 @@ describe('createKnipConfig', () => {
       rmSync(target, { recursive: true, force: true });
     }
   });
+});
+
+it('omits missing optional starter paths and retains present paths', () => {
+  const target = mkdtempSync(join(tmpdir(), 'devtools-knip-'));
+  const originalDirectory = process.cwd();
+  const optionalPaths = {
+    entry: ['src/index.ts', 'examples/*/index.ts'],
+    ignoreFiles: ['eslint.examples.config.mjs', 'eslint.config.mjs'],
+  };
+  try {
+    process.chdir(target);
+    expect(createKnipConfig(optionalPaths)).toEqual({
+      entry: ['src/index.ts'],
+      ignoreFiles: ['eslint.config.mjs'],
+    });
+
+    mkdirSync(join(target, 'examples', 'basic'), { recursive: true });
+    writeFileSync(join(target, 'examples', 'basic', 'index.ts'), 'export {};\n');
+    writeFileSync(join(target, 'eslint.examples.config.mjs'), 'export default [];\n');
+    expect(createKnipConfig(optionalPaths)).toEqual(optionalPaths);
+  } finally {
+    process.chdir(originalDirectory);
+    rmSync(target, { recursive: true, force: true });
+  }
 });
 
 describe('createKnipMonorepoConfig', () => {
