@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.13
+
+### Patch Changes
+
+- 6377bf0: Verify React Native packages without an Expo contract through their declared React Native CLI.
+
 ## 2.10.12
 
 ### Patch Changes
