@@ -110,6 +110,21 @@ test('uses a bounded SDK-aligned Expo Router platform contract', () => {
   });
 });
 
+test('uses Surface published React Native contract without inventing Expo', () => {
+  expect(
+    selectExpoToolchain({
+      peerDependencies: {
+        react: '19.2.3 || 19.3.0',
+        'react-native': '0.86.x || 0.87.x || 0.88.x',
+      },
+    }),
+  ).toEqual({
+    code: 0,
+    output: '{"react":"19.2.3 || 19.3.0","react-native":"0.86.x || 0.87.x || 0.88.x"}',
+    stderr: '',
+  });
+});
+
 test('keeps unrelated packages and both packed Expo verification gates', () => {
   expect(selectExpoToolchain({ dependencies: { 'expo-router': '~6.0.0' } })).toEqual({
     code: 0,
@@ -121,5 +136,6 @@ test('keeps unrelated packages and both packed Expo verification gates', () => {
   expect(workflow).toContain('bun install --ignore-scripts');
   expect(workflow).toContain('bun add "$artifact" --ignore-scripts');
   expect(workflow).toContain('"$platform_dir/node_modules/.bin/expo" export');
+  expect(workflow).toContain('"$platform_dir/node_modules/.bin/react-native" bundle');
   expect(workflow).toContain('verify_react_native_export "$optional_install_dir"');
 });

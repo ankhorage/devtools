@@ -460,10 +460,14 @@ jobs:
           const react = dependencies.react ?? peerDependencies.react;
           const reactNative = dependencies['react-native'] ?? peerDependencies['react-native'];
           if (expo === undefined && react === undefined && reactNative === undefined) process.exit(0);
-          if (typeof expo !== 'string' || typeof react !== 'string' || typeof reactNative !== 'string') {
-            throw new Error(`Expo platform verification requires declared Expo, React, and React Native versions; received Expo=${String(expo)}, React=${String(react)}, React Native=${String(reactNative)}.`);
+          if (typeof react !== 'string' || typeof reactNative !== 'string') {
+            throw new Error(`React Native platform verification requires declared React and React Native versions; received React=${String(react)}, React Native=${String(reactNative)}.`);
           }
-          process.stdout.write(JSON.stringify({ expo, react, 'react-native': reactNative }));
+          process.stdout.write(JSON.stringify({
+            ...(expo === undefined ? {} : { expo }),
+            react,
+            'react-native': reactNative,
+          }));
           NODE
           )"
           capability_module_path="$(node --input-type=module -e "import { createRequire } from 'node:module'; console.log(createRequire(import.meta.resolve('@ankhorage/devtools/cli')).resolve('@ankhorage/capability'))")"
@@ -584,7 +588,8 @@ jobs:
               (
                 cd "$platform_dir"
                 bun install --ignore-scripts
-                metro_runtime_dependency="$(node - <<'NODE'
+                if node -e "const dependencies=JSON.parse(process.argv[1]); process.exit(typeof dependencies.expo === 'string' ? 0 : 1)" "$platform_toolchain_dependencies"; then
+                  metro_runtime_dependency="$(node - <<'NODE'
           const { readFileSync } = require('node:fs');
           const expo = JSON.parse(readFileSync('./node_modules/expo/package.json', 'utf8'));
           const bundled = JSON.parse(readFileSync('./node_modules/expo/bundledNativeModules.json', 'utf8'));
@@ -595,11 +600,17 @@ jobs:
           }
           process.stdout.write(`@expo/metro-runtime@${compatibleRange}`);
           NODE
-                )"
-                bun add "$metro_runtime_dependency" --ignore-scripts
+                  )"
+                  bun add "$metro_runtime_dependency" --ignore-scripts
+                fi
                 bun add "$artifact" --ignore-scripts
-                node -e 'const p=require("./package.json"); for (const name of ["expo", "react", "react-native", "@expo/metro-runtime"]) { const resolved=require(`./node_modules/${name}/package.json`).version; console.log(`Expo platform toolchain ${name}: declared ${p.dependencies[name]}, resolved ${resolved}`); }'
-                TMPDIR="$platform_temporary_directory" "$platform_dir/node_modules/.bin/expo" export --platform ios --output-dir "$platform_output_dir"
+                if node -e "const dependencies=JSON.parse(process.argv[1]); process.exit(typeof dependencies.expo === 'string' ? 0 : 1)" "$platform_toolchain_dependencies"; then
+                  node -e 'const p=require("./package.json"); for (const name of ["expo", "react", "react-native", "@expo/metro-runtime"]) { const resolved=require(`./node_modules/${name}/package.json`).version; console.log(`Expo platform toolchain ${name}: declared ${p.dependencies[name]}, resolved ${resolved}`); }'
+                  TMPDIR="$platform_temporary_directory" "$platform_dir/node_modules/.bin/expo" export --platform ios --output-dir "$platform_output_dir"
+                else
+                  node -e 'const p=require("./package.json"); for (const name of ["react", "react-native"]) { const resolved=require(`./node_modules/${name}/package.json`).version; console.log(`React Native platform toolchain ${name}: declared ${p.dependencies[name]}, resolved ${resolved}`); }'
+                  TMPDIR="$platform_temporary_directory" "$platform_dir/node_modules/.bin/react-native" bundle --entry-file App.tsx --platform ios --bundle-output "$platform_output_dir/index.js" --dev false
+                fi
               )
             }
 
