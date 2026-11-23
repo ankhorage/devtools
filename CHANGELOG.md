@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.16
+
+### Patch Changes
+
+- cccb7af: Provision optional package peers when validating packed React Native exports with Metro.
+
 ## 2.10.15
 
 ### Patch Changes
