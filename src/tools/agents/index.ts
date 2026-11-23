@@ -29,7 +29,7 @@ async function renderAgentsFile(targetDirectory: string): Promise<string> {
     description,
     packageName,
   });
-  const sections = renderSharedAgentPolicy();
+  const sections = renderSharedAgentPolicy(manifest);
   const nextAgentsBlock = await readNextAgentsBlockAsync(targetDirectory, manifest);
 
   return `# AGENTS.md
@@ -63,7 +63,7 @@ function hasNextDependency(manifest: Record<string, unknown>): boolean {
 }
 
 /*** Render scope-frozen shared agent policy for managed repositories. */
-function renderSharedAgentPolicy(): string {
+function renderSharedAgentPolicy(manifest: Record<string, unknown>): string {
   return [
     renderTaskAuthorityAndScope(),
     renderArchitectureAndDependencies(),
@@ -75,7 +75,7 @@ function renderSharedAgentPolicy(): string {
     renderDocumentationInstructions(),
     renderTestingAndReviewInstructions(),
     renderGitHubTaskLifecycleAndDelivery(),
-    renderPullRequestInstructions(),
+    renderPullRequestInstructions(manifest),
   ].join('');
 }
 
@@ -333,14 +333,20 @@ Read-only reviews report findings without creating commits.
 }
 
 /*** Render the shared pull requests and release preparation policy. */
-function renderPullRequestInstructions(): string {
+function renderPullRequestInstructions(manifest: Record<string, unknown>): string {
+  const scripts = isRecord(manifest.scripts) ? manifest.scripts : {};
+  const typecheckCommand =
+    readNonEmptyString(scripts['check-types']) !== null
+      ? 'check-types'
+      : readNonEmptyString(scripts.typecheck) === null
+        ? null
+        : 'typecheck';
   return `## Pull requests and release preparation
 
 Run applicable mandatory validation:
 
 - \`bun run build\`
-- \`bun run check-types\`
-- \`bun run lint\`
+${typecheckCommand === null ? '' : `- \`bun run ${typecheckCommand}\`\n`}- \`bun run lint\`
 - \`bun run knip:check\`
 - Relevant unit tests and existing mandatory tests
 
