@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.11
+
+### Patch Changes
+
+- b465c72: Derive an Expo verification toolchain from bounded SDK-aligned Expo Router contracts in managed packed-release workflows.
+
 ## 2.10.10
 
 ### Patch Changes
