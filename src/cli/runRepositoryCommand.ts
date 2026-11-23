@@ -1,3 +1,4 @@
+import { resolveBuildTargetManagedFilesAsync } from '../features/build-targets/application/resolveBuildTargetManagedFilesAsync.js';
 import {
   inspectManagedFiles,
   type ManagedFileDefinition,
@@ -126,7 +127,12 @@ async function runStatus(
   if (scope === 'all' || scope === 'package') {
     statuses.push(await inspectPackageManifest(targetDirectory, devtoolsVersion));
   }
-  statuses.push(...(await inspectManagedFiles(targetDirectory, getManagedFiles(scope))));
+  statuses.push(
+    ...(await inspectManagedFiles(
+      targetDirectory,
+      await getManagedFilesAsync(scope, targetDirectory),
+    )),
+  );
   if (scope === 'all' || scope === 'skills') {
     statuses.push(...(await inspectManagedSkills(targetDirectory, devtoolsVersion)));
   }
@@ -147,7 +153,13 @@ async function runSync(
     const packageResult = await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun });
     results.push(packageResult);
   }
-  results.push(...(await syncManagedFiles(targetDirectory, getManagedFiles(scope), { dryRun })));
+  results.push(
+    ...(await syncManagedFiles(
+      targetDirectory,
+      await getManagedFilesAsync(scope, targetDirectory),
+      { dryRun },
+    )),
+  );
   if (scope === 'all' || scope === 'skills') {
     results.push(...(await syncManagedSkills(targetDirectory, devtoolsVersion, { dryRun })));
   }
@@ -165,9 +177,10 @@ async function runSync(
   return { exitCode: 0 };
 }
 
-function getManagedFiles(
+async function getManagedFilesAsync(
   scope: DevtoolsRepositoryCommandDefinition['scope'],
-): readonly ManagedFileDefinition[] {
+  targetDirectory: string,
+): Promise<readonly ManagedFileDefinition[]> {
   const definitionsByScope = {
     agents: agentsManagedFiles,
     eslint: eslintManagedFiles,
@@ -179,7 +192,11 @@ function getManagedFiles(
   } as const;
 
   if (scope === 'all') {
-    return [...Object.values(definitionsByScope).flat(), ...gitignoreManagedFiles];
+    return [
+      ...Object.values(definitionsByScope).flat(),
+      ...gitignoreManagedFiles,
+      ...(await resolveBuildTargetManagedFilesAsync(targetDirectory)),
+    ];
   }
   if (scope === 'package') {
     return [];

@@ -5,6 +5,8 @@ import type {
   RepositoryImplementationRef,
   RepositoryMetadata,
   RepositoryMetadataArchitecture,
+  RepositoryMetadataBuild,
+  RepositoryMetadataBuildTarget,
   RepositoryMetadataConstraints,
   RepositoryMetadataKind,
 } from '@ankhorage/contracts/metadata';
@@ -82,6 +84,7 @@ function hasValidOptionalFields(metadata: Record<string, unknown>): boolean {
     hasOptionalStringArray(metadata.useCases) &&
     hasValidArchitecture(metadata.architecture) &&
     hasValidImplementations(metadata.implements) &&
+    hasValidBuild(metadata.build) &&
     hasValidConstraints(metadata.constraints)
   );
 }
@@ -95,8 +98,59 @@ function optionalMetadataFields(
     ...optionalTextCollections(metadata),
     ...optionalArchitectureField(metadata.architecture),
     ...optionalImplementsField(metadata.implements),
+    ...optionalBuildField(metadata.build),
     ...optionalConstraintsField(metadata.constraints),
   };
+}
+
+/*** Read declarative build targets after retaining their complete Contract shape. */
+function optionalBuildField(value: unknown): Partial<Pick<RepositoryMetadata, 'build'>> {
+  if (!isRecord(value) || !isRecord(value.targets)) return {};
+  return {
+    build: {
+      targets: Object.fromEntries(
+        Object.entries(value.targets).flatMap(([id, target]) => {
+          const parsed = parseBuildTarget(target);
+          return parsed === undefined ? [] : [[id, parsed]];
+        }),
+      ),
+    },
+  };
+}
+
+/*** Decode one portable build target without introducing a Devtools-local contract. */
+function parseBuildTarget(value: unknown): RepositoryMetadataBuildTarget | undefined {
+  if (!isRecord(value) || !hasStringFields(value, ['language', 'framework', 'entry', 'outDir'])) {
+    return undefined;
+  }
+  const platforms = readStringArray(value.platforms);
+  return platforms === undefined
+    ? undefined
+    : {
+        language: value.language,
+        framework: value.framework,
+        platforms,
+        entry: value.entry,
+        outDir: value.outDir,
+      };
+}
+
+/*** Check the published Contract's optional build declaration exactly rather than dropping it. */
+function hasValidBuild(value: unknown): value is RepositoryMetadataBuild | undefined {
+  return (
+    value === undefined ||
+    (isRecord(value) &&
+      isRecord(value.targets) &&
+      Object.values(value.targets).every((target) => parseBuildTarget(target) !== undefined))
+  );
+}
+
+/*** Check required string-valued target fields. */
+function hasStringFields(
+  value: Record<string, unknown>,
+  fields: readonly string[],
+): value is Record<string, string> {
+  return fields.every((field) => typeof value[field] === 'string' && value[field].length > 0);
 }
 
 /*** Read optional authored text collections from a previously validated document. */
