@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.10
+
+### Patch Changes
+
+- 8970da8: Provision declared Playwright Chromium before packed-consumer release validation.
+
 ## 2.10.9
 
 ### Patch Changes
