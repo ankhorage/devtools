@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.14
+
+### Patch Changes
+
+- f2fcfc0: Update Devtools-owned dependencies: `@ankhorage/contracts`.
+
 ## 2.10.13
 
 ### Patch Changes
