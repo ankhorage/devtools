@@ -91,6 +91,19 @@ Related symbols: `ApmReleaseValidationOptions`, `ApmReleaseValidationResult`
 ## Contributors
 
 <!-- readme: contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/artiphishle">
+                    <img src="https://avatars.githubusercontent.com/u/137318798?v=4" width="100;" alt="artiphishle"/>
+                    <br />
+                    <sub><b>Fabio Gartenmann</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: contributors -end -->
 
 ## Donation
