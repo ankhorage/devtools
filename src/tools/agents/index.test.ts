@@ -130,6 +130,32 @@ test('managed AGENTS.md includes scope, safety, testing, delivery and release ru
   ]);
 });
 
+test('managed AGENTS.md renders the declared typecheck command', async () => {
+  const checkTypesTarget = await createTarget({
+    scripts: { 'check-types': 'tsc --noEmit', typecheck: 'tsc --noEmit' },
+  });
+  const typecheckTarget = await createTarget({ scripts: { typecheck: 'tsc --noEmit' } });
+  const noTypecheckTarget = await createTarget({ scripts: { build: 'tsc' } });
+
+  await Promise.all(
+    [checkTypesTarget, typecheckTarget, noTypecheckTarget].map((target) =>
+      syncManagedFiles(target, agentsManagedFiles, { dryRun: false }),
+    ),
+  );
+
+  const [checkTypesContents, typecheckContents, noTypecheckContents] = await Promise.all(
+    [checkTypesTarget, typecheckTarget, noTypecheckTarget].map((target) =>
+      readFile(join(target, 'AGENTS.md'), 'utf8'),
+    ),
+  );
+  expect(checkTypesContents).toContain('- `bun run check-types`');
+  expect(checkTypesContents).not.toContain('- `bun run typecheck`');
+  expect(typecheckContents).toContain('- `bun run typecheck`');
+  expect(typecheckContents).not.toContain('- `bun run check-types`');
+  expect(noTypecheckContents).not.toContain('bun run check-types');
+  expect(noTypecheckContents).not.toContain('bun run typecheck');
+});
+
 test('managed AGENTS.md renders validated source metadata without consulting README content', async () => {
   const target = await createTarget({
     name: '@ankhorage/example',
