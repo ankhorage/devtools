@@ -94,6 +94,22 @@ test('uses an all-optional Expo Runtime platform contract and rejects conflictin
   expect(conflictingExpo.stderr).toContain('peerDependencies.expo=58.0.0');
 });
 
+test('uses a bounded SDK-aligned Expo Router platform contract', () => {
+  expect(
+    selectExpoToolchain({
+      peerDependencies: {
+        'expo-router': '>=57.0.0 <58.0.0',
+        react: '19.2.3',
+        'react-native': '0.86.x',
+      },
+    }),
+  ).toEqual({
+    code: 0,
+    output: '{"expo":"~57.0.0","react":"19.2.3","react-native":"0.86.x"}',
+    stderr: '',
+  });
+});
+
 test('keeps unrelated packages and both packed Expo verification gates', () => {
   expect(selectExpoToolchain({ dependencies: { 'expo-router': '~6.0.0' } })).toEqual({
     code: 0,
