@@ -7,11 +7,13 @@ import type {
   RepositoryMetadataArchitecture,
   RepositoryMetadataBuild,
   RepositoryMetadataBuildTarget,
+  RepositoryMetadataBuildTargetBuilder,
+  RepositoryMetadataBuildTargetSources,
   RepositoryMetadataConstraints,
   RepositoryMetadataKind,
 } from '@ankhorage/contracts/metadata';
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
-import { isRecord } from '@ankhorage/utility/object';
+import { isRecord, readOwnProperty } from '@ankhorage/utility/object';
 
 export interface RepositoryMetadataFact {
   readonly document: RepositoryMetadata | undefined;
@@ -124,15 +126,50 @@ function parseBuildTarget(value: unknown): RepositoryMetadataBuildTarget | undef
     return undefined;
   }
   const platforms = readStringArray(value.platforms);
-  return platforms === undefined
-    ? undefined
-    : {
-        language: value.language,
-        framework: value.framework,
-        platforms,
-        entry: value.entry,
-        outDir: value.outDir,
-      };
+  const sourceValue = readOwnProperty<unknown>(value, 'sources');
+  const builderValue = readOwnProperty<unknown>(value, 'builder');
+  const sources = parseBuildTargetSources(sourceValue);
+  const builder = parseBuildTargetBuilder(builderValue);
+  if (
+    platforms === undefined ||
+    (sourceValue !== undefined && sources === undefined) ||
+    (builderValue !== undefined && builder === undefined)
+  ) {
+    return undefined;
+  }
+  return {
+    language: value.language,
+    framework: value.framework,
+    platforms,
+    entry: value.entry,
+    outDir: value.outDir,
+    ...(sources === undefined ? {} : { sources }),
+    ...(builder === undefined ? {} : { builder }),
+  };
+}
+
+/*** Decode explicit compiler inputs without inferring them from public package exports. */
+function parseBuildTargetSources(value: unknown): RepositoryMetadataBuildTargetSources | undefined {
+  if (!isRecord(value)) return undefined;
+  const entries = value.entries === undefined ? undefined : readStringArray(value.entries);
+  const include = value.include === undefined ? undefined : readStringArray(value.include);
+  if (
+    (value.entries !== undefined && entries === undefined) ||
+    (value.include !== undefined && include === undefined)
+  ) {
+    return undefined;
+  }
+  return {
+    ...(entries === undefined ? {} : { entries }),
+    ...(include === undefined ? {} : { include }),
+  };
+}
+
+/*** Decode an optional package script key without carrying executable command text in metadata. */
+function parseBuildTargetBuilder(value: unknown): RepositoryMetadataBuildTargetBuilder | undefined {
+  return isRecord(value) && typeof value.script === 'string' && value.script.length > 0
+    ? { script: value.script }
+    : undefined;
 }
 
 /*** Check the published Contract's optional build declaration exactly rather than dropping it. */

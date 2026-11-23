@@ -12,8 +12,13 @@ const OWNERSHIP_MARKER = '// Managed by @ankhorage/devtools.\n';
 interface ResolvedTypeScriptTarget {
   readonly configPath: 'tsconfig.native.json' | 'tsconfig.web.json';
   readonly jsx: 'react-jsx' | 'react-native';
-  readonly sourceEntry: string;
+  readonly sources: ResolvedSourceInputs;
   readonly target: RepositoryMetadataBuildTarget;
+}
+
+interface ResolvedSourceInputs {
+  readonly entries: readonly string[];
+  readonly include: readonly string[];
 }
 
 /*** Resolve the Devtools-owned TypeScript configurations declared by repository metadata. */
@@ -55,9 +60,7 @@ async function resolveTypeScriptTargetInventoryAsync(
       : [
           resolveTypeScriptTargetAsync(targetDirectory, manifest, native, {
             configPath: 'tsconfig.native.json',
-            expectedEntry: '.',
             expectedFramework: 'react-native',
-            exportCondition: 'react-native',
             jsx: 'react-native',
             requiredPlatforms: ['ios', 'android', 'web'],
           }),
@@ -67,9 +70,7 @@ async function resolveTypeScriptTargetInventoryAsync(
       : [
           resolveTypeScriptTargetAsync(targetDirectory, manifest, web, {
             configPath: 'tsconfig.web.json',
-            expectedEntry: './web',
             expectedFramework: 'react',
-            exportCondition: 'browser',
             jsx: 'react-jsx',
             requiredPlatforms: ['web'],
           }),
@@ -77,32 +78,30 @@ async function resolveTypeScriptTargetInventoryAsync(
   ]);
 }
 
-/*** Validate one declared target against its public export, output directory, and build owner. */
+/*** Validate one declared target against its public output, explicit compiler inputs, and build owner. */
 async function resolveTypeScriptTargetAsync(
   targetDirectory: string,
   manifest: Record<string, unknown>,
   target: RepositoryMetadataBuildTarget,
   expected: {
     readonly configPath: ResolvedTypeScriptTarget['configPath'];
-    readonly expectedEntry: string;
     readonly expectedFramework: string;
-    readonly exportCondition: string;
     readonly jsx: ResolvedTypeScriptTarget['jsx'];
     readonly requiredPlatforms: readonly string[];
   },
 ): Promise<ResolvedTypeScriptTarget> {
   if (
     target.framework !== expected.expectedFramework ||
-    target.entry !== expected.expectedEntry ||
     !expected.requiredPlatforms.every((platform) => target.platforms.includes(platform)) ||
-    (expected.expectedEntry === './web' && target.platforms.length !== 1)
+    (expected.configPath === 'tsconfig.web.json' && target.platforms.length !== 1)
   ) {
-    throw new Error(`Invalid ${expected.expectedEntry} build target.`);
+    throw new Error(`Invalid ${expected.configPath} build target.`);
   }
-  const sourceEntry = readSourceEntry(manifest, target, expected.exportCondition);
-  assertTargetBuildScripts(manifest, expected.configPath);
-  await assertSourceEntryExistsAsync(targetDirectory, sourceEntry);
-  return { configPath: expected.configPath, jsx: expected.jsx, sourceEntry, target };
+  assertTargetPublicOutput(manifest, target);
+  const sources = readTargetSources(target);
+  assertTargetBuilderScript(manifest, target);
+  await assertSourceEntriesExistAsync(targetDirectory, sources.entries);
+  return { configPath: expected.configPath, jsx: expected.jsx, sources, target };
 }
 
 /*** Return only target definitions that are active or provably managed from an earlier sync. */
@@ -175,12 +174,11 @@ async function readPackageManifestAsync(targetDirectory: string): Promise<Record
   }
 }
 
-/*** Resolve the source entry and output artifact declared by one public package export. */
-function readSourceEntry(
+/*** Validate that the public export emits the declared artifact independently of compiler inputs. */
+function assertTargetPublicOutput(
   manifest: Record<string, unknown>,
   target: RepositoryMetadataBuildTarget,
-  condition: string,
-): string {
+): void {
   const { exports } = manifest;
   if (!isRecord(exports)) {
     throw new Error(`Missing public export for build target: ${target.entry}.`);
@@ -189,19 +187,12 @@ function readSourceEntry(
   if (!isRecord(entry)) {
     throw new Error(`Missing public export for build target: ${target.entry}.`);
   }
-  const source = readOwnProperty<unknown>(entry, condition);
-  if (typeof source !== 'string' || !source.startsWith('./src/') || !/\.tsx?$/u.test(source)) {
-    throw new Error(
-      `Build target ${target.entry} requires a ${condition} TypeScript source export.`,
-    );
-  }
   const outputDirectory = `./${target.outDir}/`;
   if (!collectExportPaths(entry).some((path) => path.startsWith(outputDirectory))) {
     throw new Error(
       `Build target ${target.entry} does not publish artifacts from ${target.outDir}.`,
     );
   }
-  return source.slice(2);
 }
 
 /*** Traverse nested conditional exports while preserving only package-relative artifact paths. */
@@ -211,32 +202,44 @@ function collectExportPaths(value: unknown): readonly string[] {
   return Object.values(value).flatMap(collectExportPaths);
 }
 
-/*** Require repository-owned build and typecheck commands to consume the generated target config. */
-function assertTargetBuildScripts(manifest: Record<string, unknown>, configPath: string): void {
-  const { scripts } = manifest;
-  if (
-    !isRecord(scripts) ||
-    typeof scripts.build !== 'string' ||
-    typeof scripts.typecheck !== 'string'
-  ) {
-    throw new Error('Build targets require repository-owned build and typecheck scripts.');
-  }
-  const { build, typecheck } = scripts;
-  if (!build.includes(configPath) && !typecheck.includes(configPath)) {
+/*** Resolve Devtools-required explicit compiler inputs without applying source-layout conventions. */
+function readTargetSources(target: RepositoryMetadataBuildTarget): ResolvedSourceInputs {
+  const entries = target.sources?.entries ?? [];
+  const include = target.sources?.include ?? [];
+  if (entries.length === 0 && include.length === 0) {
     throw new Error(
-      `Build target configuration is not consumed by build or typecheck: ${configPath}.`,
+      `Build target ${target.entry} requires explicit sources.entries or sources.include.`,
+    );
+  }
+  return { entries, include };
+}
+
+/*** Validate an explicitly declared repository-owned builder by its package script key. */
+function assertTargetBuilderScript(
+  manifest: Record<string, unknown>,
+  target: RepositoryMetadataBuildTarget,
+): void {
+  if (target.builder === undefined) return;
+  const { scripts } = manifest;
+  if (!isRecord(scripts) || typeof scripts[target.builder.script] !== 'string') {
+    throw new Error(
+      `Build target ${target.entry} references a missing builder script: ${target.builder.script}.`,
     );
   }
 }
 
-/*** Verify that the public source entry exists before generating a compiler root for it. */
-async function assertSourceEntryExistsAsync(
+/*** Verify explicit source entries exist without interpreting public package export conditions. */
+async function assertSourceEntriesExistAsync(
   targetDirectory: string,
-  sourceEntry: string,
+  entries: readonly string[],
 ): Promise<void> {
-  if (!(await Bun.file(join(targetDirectory, sourceEntry)).exists())) {
-    throw new Error(`Build target source entry does not exist: ${sourceEntry}.`);
-  }
+  await Promise.all(
+    entries.map(async (entry) => {
+      if (!(await Bun.file(join(targetDirectory, entry)).exists())) {
+        throw new Error(`Build target source entry does not exist: ${entry}.`);
+      }
+    }),
+  );
 }
 
 /*** Detect a file generated by this owner without treating author-owned files as removable. */
@@ -260,5 +263,5 @@ function renderBaseConfig(): string {
 
 /*** Render one target-specific output configuration while leaving repository builders in control. */
 function renderTargetConfig(target: ResolvedTypeScriptTarget): string {
-  return `${OWNERSHIP_MARKER}${JSON.stringify({ extends: './tsconfig.base.json', compilerOptions: { jsx: target.jsx, outDir: target.target.outDir, rootDir: 'src' }, exclude: ['node_modules', target.target.outDir], files: [target.sourceEntry] }, null, 2)}\n`;
+  return `${OWNERSHIP_MARKER}${JSON.stringify({ extends: './tsconfig.base.json', compilerOptions: { jsx: target.jsx, outDir: target.target.outDir }, exclude: ['node_modules', target.target.outDir], ...(target.sources.entries.length === 0 ? {} : { files: target.sources.entries }), ...(target.sources.include.length === 0 ? {} : { include: target.sources.include }) }, null, 2)}\n`;
 }

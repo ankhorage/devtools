@@ -14,7 +14,7 @@ afterEach(async () => {
   );
 });
 
-test('generates isolated native and web TypeScript roots from public target entries', async () => {
+test('generates isolated native and web TypeScript roots from explicit source inputs', async () => {
   const target = await createTargetAsync();
   const definitions = await resolveBuildTargetManagedFilesAsync(target);
 
@@ -74,12 +74,11 @@ test('rejects targets whose public export omits their declared artifact output',
   const target = await createTargetAsync();
   await writePackageAsync(target, {
     '.': {
-      'react-native': './src/index.ts',
+      'react-native': './dist/index.js',
       import: './dist/index.js',
       types: './dist/index.d.ts',
     },
     './web': {
-      browser: './src/web.ts',
       import: './src/web.ts',
       types: './src/web.ts',
     },
@@ -91,29 +90,54 @@ test('rejects targets whose public export omits their declared artifact output',
   );
 });
 
-test('rejects targets when repository-owned commands do not consume their generated config', async () => {
+test('rejects targets without explicit compiler source inputs', async () => {
   const target = await createTargetAsync();
-  await writePackageAsync(
-    target,
-    {
-      '.': {
-        'react-native': './src/index.ts',
-        import: './dist/index.js',
-        types: './dist/index.d.ts',
-      },
-      './web': {
-        browser: './src/web.ts',
-        import: './web-dist/index.js',
-        types: './web-dist/index.d.ts',
-      },
-    },
-    { build: 'bun scripts/build.ts', typecheck: 'bun x tsc --noEmit' },
-  );
+  await writeMetadataAsync(target, {
+    build: { targets: { native: { ...nativeTarget, sources: undefined } } },
+  });
 
   await expectFailureAsync(
     resolveBuildTargetManagedFilesAsync(target),
-    'Build target configuration is not consumed by build or typecheck: tsconfig.native.json.',
+    'Build target . requires explicit sources.entries or sources.include.',
   );
+});
+
+test('validates an explicit builder script key without inspecting its command text', async () => {
+  const target = await createTargetAsync();
+  await writePackageAsync(target, defaultExports, { build: 'bun scripts/build.ts' });
+
+  await expectFailureAsync(
+    resolveBuildTargetManagedFilesAsync(target),
+    'Build target ./web references a missing builder script: build:web-components.',
+  );
+});
+
+test('accepts the Surface universal export shape with independently declared compiler inputs', async () => {
+  const target = await createTargetAsync({ build: { targets: { native: nativeTarget } } });
+  await writePackageAsync(target, surfaceExports, { build: 'bun x tsc -p tsconfig.build.json' });
+
+  const definitions = await resolveBuildTargetManagedFilesAsync(target);
+
+  expect(definitions.map((definition) => definition.relativePath)).toEqual([
+    'tsconfig.base.json',
+    'tsconfig.native.json',
+  ]);
+});
+
+test('accepts the ZORA web artifact shape and custom Bun builder through explicit include inputs', async () => {
+  const target = await createTargetAsync({ build: { targets: { web: zoraWebTarget } } });
+  await writePackageAsync(target, zoraExports, {
+    build: 'bun x tsc -p tsconfig.json && bun scripts/build-web-components.ts',
+    'build:web-components': 'bun scripts/build-web-components.ts',
+  });
+
+  const definitions = await resolveBuildTargetManagedFilesAsync(target);
+  const webDefinition = definitions.find(
+    (definition) => definition.relativePath === 'tsconfig.web.json',
+  );
+
+  expect(webDefinition?.contents).toContain('"include": [\n    "src/features/web/**/*.ts"\n  ]');
+  expect(webDefinition?.contents).not.toContain('"files"');
 });
 
 test('removes only marked target configs after targets are removed', async () => {
@@ -163,6 +187,8 @@ const nativeTarget = {
   platforms: ['ios', 'android', 'web'],
   entry: '.',
   outDir: 'dist',
+  sources: { entries: ['src/index.ts'] },
+  builder: { script: 'build' },
 };
 
 const webTarget = {
@@ -171,9 +197,17 @@ const webTarget = {
   platforms: ['web'],
   entry: './web',
   outDir: 'web-dist',
+  sources: { entries: ['src/web.ts'] },
+  builder: { script: 'build:web-components' },
 };
 
-/*** Create a repository fixture with real public source entries and target-aware package scripts. */
+const zoraWebTarget = {
+  ...webTarget,
+  entry: './web/*',
+  sources: { include: ['src/features/web/**/*.ts'] },
+};
+
+/*** Create a repository fixture with explicit compiler inputs and target-aware package scripts. */
 async function createTargetAsync(
   metadata: Record<string, unknown> = {
     build: { targets: { native: nativeTarget, web: webTarget } },
@@ -182,6 +216,7 @@ async function createTargetAsync(
   const target = await mkdtemp('/tmp/devtools-build-targets-');
   temporaryDirectories.push(target);
   await mkdir(join(target, 'src/metadata'), { recursive: true });
+  await mkdir(join(target, 'src/features/web'), { recursive: true });
   await writeFile(join(target, 'src/index.ts'), 'export {};\n');
   await writeFile(join(target, 'src/web.ts'), 'export {};\n');
   await writePackageAsync(target, defaultExports);
@@ -191,21 +226,38 @@ async function createTargetAsync(
 
 const defaultExports = {
   '.': {
-    'react-native': './src/index.ts',
+    'react-native': './dist/index.js',
     import: './dist/index.js',
     types: './dist/index.d.ts',
   },
   './web': {
-    browser: './src/web.ts',
+    browser: './web-dist/index.js',
     import: './web-dist/index.js',
     types: './web-dist/index.d.ts',
   },
 };
 
 const defaultScripts = {
-  build: 'bun x tsc -p tsconfig.native.json && bun x tsc -p tsconfig.web.json',
-  typecheck:
-    'bun x tsc --noEmit -p tsconfig.native.json && bun x tsc --noEmit -p tsconfig.web.json',
+  build: 'bun x tsc -p tsconfig.build.json',
+  'build:web-components': 'bun scripts/build-web-components.ts',
+};
+
+const surfaceExports = {
+  '.': {
+    'react-native': './dist/index.js',
+    browser: './dist/index.js',
+    types: './dist/index.d.ts',
+    import: './dist/index.js',
+    default: './dist/index.js',
+  },
+};
+
+const zoraExports = {
+  './web/*': {
+    types: './web-dist/components/*/index.d.ts',
+    import: './web-dist/components/*/index.js',
+    default: './web-dist/components/*/index.js',
+  },
 };
 
 /*** Write the author-owned manifest facts that prove target sources, artifacts, and build ownership. */
