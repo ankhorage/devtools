@@ -156,11 +156,34 @@ function expectPackedRuntimeLoaderSelection(release: string): void {
 
 /*** Assert UI-capable packages run their declared consumer proof before standalone validation. */
 function expectOwnerPackedConsumerValidation(release: string): void {
+  expectDeclaredPlaywrightChromiumInstallation(release);
   expect(release).toContain('Validate owner-defined packed consumer');
   expect(release).toContain("p.scripts?.['test:packed-consumer']");
   expect(release).toContain('bun run test:packed-consumer');
   expect(release.indexOf('Validate owner-defined packed consumer')).toBeLessThan(
     release.indexOf('Verify standalone packed install'),
+  );
+}
+
+/*** Assert declared Playwright Core consumers install their lockfile-matched Chromium before tests. */
+function expectDeclaredPlaywrightChromiumInstallation(release: string): void {
+  const dependencyInstallationIndex = release.indexOf('      - name: Install dependencies');
+  const chromiumInstallationIndex = release.indexOf(
+    '      - name: Install declared Playwright Chromium',
+  );
+  const packedConsumerValidationIndex = release.indexOf(
+    '      - name: Validate owner-defined packed consumer',
+  );
+
+  expect(chromiumInstallationIndex).toBeGreaterThan(dependencyInstallationIndex);
+  expect(chromiumInstallationIndex).toBeLessThan(packedConsumerValidationIndex);
+  expect(release).toContain(
+    "const sections=['dependencies','devDependencies','optionalDependencies'];",
+  );
+  expect(release).toContain("p[section]?.['playwright-core']");
+  expect(release).toContain('bun ./node_modules/.bin/playwright-core install chromium');
+  expect(release).toContain(
+    'No Playwright Core dependency declared; skipping Chromium installation.',
   );
 }
 
