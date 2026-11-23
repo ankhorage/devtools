@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.10.11",
+      "value": "v2.10.12",
       "color": "cb3837"
     },
     {
@@ -4393,7 +4393,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 371,
+        "line": 377,
         "column": 1
       }
     },
@@ -4404,7 +4404,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 388,
+        "line": 394,
         "column": 1
       }
     },
@@ -4415,7 +4415,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 393,
+        "line": 399,
         "column": 1
       }
     },
@@ -4426,7 +4426,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/agents/index.ts",
-        "line": 398,
+        "line": 404,
         "column": 1
       }
     },
@@ -8210,6 +8210,18 @@
         "fromSymbol": "renderSharedAgentPolicy",
         "toSymbol": "renderPullRequestInstructions",
         "callExpression": "renderPullRequestInstructions",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderPullRequestInstructions",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/agents/index.ts"
+      },
+      {
+        "fromSymbol": "renderPullRequestInstructions",
+        "toSymbol": "readNonEmptyString",
+        "callExpression": "readNonEmptyString",
         "sourcePath": "src/tools/agents/index.ts"
       },
       {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.12
+
+### Patch Changes
+
+- 2e4eb66: Render a declared `typecheck` script in managed AGENTS instructions when `check-types` is absent.
+
 ## 2.10.11
 
 ### Patch Changes
