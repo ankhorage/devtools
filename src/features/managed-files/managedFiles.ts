@@ -12,6 +12,7 @@ export interface ManagedFileDefinition {
   readonly symlinkTarget?: string;
   readonly mode?: ManagedFileMode;
   readonly isApplicable?: (targetDirectory: string) => Promise<boolean> | boolean;
+  readonly ownershipMarker?: string;
 }
 
 type ManagedFileState = 'current' | 'missing' | 'obsolete' | 'outdated';
@@ -96,6 +97,13 @@ async function inspectManagedFileAsync(
 
   try {
     const targetStats = await lstat(targetPath);
+    if (
+      definition.ownershipMarker !== undefined &&
+      !(await hasManagedOwnershipAsync(targetPath, targetStats.isSymbolicLink(), definition))
+    ) {
+      if (!isApplicable) return undefined;
+      throw new Error(`Refusing to overwrite unmanaged file: ${definition.relativePath}`);
+    }
     if (!isApplicable) {
       return { relativePath: definition.relativePath, state: 'obsolete' };
     }
@@ -126,6 +134,16 @@ async function inspectManagedFileAsync(
     }
     throw new Error(`Failed to inspect managed file: ${targetPath}`, { cause: error });
   }
+}
+
+/*** Verify that a removable generated file still carries its Devtools ownership marker. */
+async function hasManagedOwnershipAsync(
+  targetPath: string,
+  isSymbolicLink: boolean,
+  definition: ManagedFileDefinition,
+): Promise<boolean> {
+  if (isSymbolicLink || definition.ownershipMarker === undefined) return false;
+  return (await readFile(targetPath, 'utf8')).startsWith(definition.ownershipMarker);
 }
 
 /*** Compare one regular managed file with its canonical rendered contents. */
