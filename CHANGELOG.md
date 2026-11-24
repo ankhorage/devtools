@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.11.0
+
+### Minor Changes
+
+- f38bf36: Generate managed TypeScript target configurations from declared repository build targets.
+
 ## 2.10.17
 
 ### Patch Changes

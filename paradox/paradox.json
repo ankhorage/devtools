@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.10.17",
+      "value": "v2.11.0",
       "color": "cb3837"
     },
     {
@@ -353,6 +353,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/commands.ts",
+        "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
         "src/features/managed-files/managedFiles.ts",
         "src/tools/agents/index.ts",
         "src/tools/eslint/managed.ts",
@@ -495,6 +496,17 @@
       "dependencies": [],
       "exports": [
         "readApmReleaseMetadata"
+      ]
+    },
+    {
+      "path": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/managed-files/managedFiles.ts",
+        "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      ],
+      "exports": [
+        "resolveBuildTargetManagedFilesAsync"
       ]
     },
     {
@@ -2446,7 +2458,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 40,
+        "line": 41,
         "column": 1
       }
     },
@@ -2457,7 +2469,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 62,
+        "line": 63,
         "column": 1
       }
     },
@@ -2468,7 +2480,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 100,
+        "line": 101,
         "column": 1
       }
     },
@@ -2479,7 +2491,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 119,
+        "line": 120,
         "column": 1
       }
     },
@@ -2490,18 +2502,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 138,
+        "line": 144,
         "column": 1
       }
     },
     {
-      "name": "getManagedFiles",
+      "name": "getManagedFilesAsync",
       "description": null,
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 168,
+        "line": 180,
         "column": 1
       }
     },
@@ -2512,7 +2524,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 190,
+        "line": 207,
         "column": 1
       }
     },
@@ -2523,7 +2535,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 207,
+        "line": 224,
         "column": 1
       }
     },
@@ -2534,7 +2546,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 217,
+        "line": 234,
         "column": 1
       }
     },
@@ -2545,7 +2557,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 230,
+        "line": 247,
         "column": 1
       }
     },
@@ -2556,7 +2568,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 249,
+        "line": 266,
         "column": 1
       }
     },
@@ -2792,6 +2804,171 @@
       }
     },
     {
+      "name": "resolveBuildTargetManagedFilesAsync",
+      "description": "Resolve the Devtools-owned TypeScript configurations declared by repository metadata.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 25,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveTypeScriptTargetInventoryAsync",
+      "description": "Validate supported TypeScript targets without inferring an unknown target's platform role.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 43,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveTypeScriptTargetAsync",
+      "description": "Validate one declared target against its public output, explicit compiler inputs, and build owner.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 82,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveManagedTargetDefinitionsAsync",
+      "description": "Return only target definitions that are active or provably managed from an earlier sync.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 108,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveBaseConfigDefinitionAsync",
+      "description": "Resolve the shared base config only while target configs are active or visibly Devtools-owned.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 132,
+        "column": 1
+      }
+    },
+    {
+      "name": "resolveTargetConfigDefinitionAsync",
+      "description": "Resolve one target config only while active or visibly Devtools-owned from an earlier sync.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 148,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifestAsync",
+      "description": "Read the authored package manifest required to prove each declared public build artifact.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 165,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertTargetPublicOutput",
+      "description": "Validate that the public export emits the declared artifact independently of compiler inputs.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 178,
+        "column": 1
+      }
+    },
+    {
+      "name": "collectExportPaths",
+      "description": "Traverse nested conditional exports while preserving only package-relative artifact paths.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 199,
+        "column": 1
+      }
+    },
+    {
+      "name": "readTargetSources",
+      "description": "Resolve Devtools-required explicit compiler inputs without applying source-layout conventions.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 206,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertTargetBuilderScript",
+      "description": "Validate an explicitly declared repository-owned builder by its package script key.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 218,
+        "column": 1
+      }
+    },
+    {
+      "name": "assertSourceEntriesExistAsync",
+      "description": "Verify explicit source entries exist without interpreting public package export conditions.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 232,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasOwnershipMarkerAsync",
+      "description": "Detect a file generated by this owner without treating author-owned files as removable.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 246,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderBaseConfig",
+      "description": "Render shared strict NodeNext compiler options for every declared TypeScript artifact.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 260,
+        "column": 1
+      }
+    },
+    {
+      "name": "renderTargetConfig",
+      "description": "Render one target-specific output configuration while leaving repository builders in control.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "line": 265,
+        "column": 1
+      }
+    },
+    {
       "name": "planCiImpact",
       "description": "Select safe CI checks, using explicit suite ownership and Bun's dependency graph.",
       "see": [],
@@ -2996,7 +3173,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 38,
+        "line": 39,
         "column": 1
       }
     },
@@ -3007,7 +3184,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 59,
+        "line": 60,
         "column": 1
       }
     },
@@ -3018,7 +3195,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 70,
+        "line": 71,
         "column": 1
       }
     },
@@ -3029,7 +3206,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 89,
+        "line": 90,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasManagedOwnershipAsync",
+      "description": "Verify that a removable generated file still carries its Devtools ownership marker.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/managed-files/managedFiles.ts",
+        "line": 140,
         "column": 1
       }
     },
@@ -3040,7 +3228,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 132,
+        "line": 150,
         "column": 1
       }
     },
@@ -3051,7 +3239,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 146,
+        "line": 164,
         "column": 1
       }
     },
@@ -3062,7 +3250,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 155,
+        "line": 173,
         "column": 1
       }
     },
@@ -3073,7 +3261,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 202,
+        "line": 220,
         "column": 1
       }
     },
@@ -3084,7 +3272,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 217,
+        "line": 235,
         "column": 1
       }
     },
@@ -3095,7 +3283,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 233,
+        "line": 251,
         "column": 1
       }
     },
@@ -3106,7 +3294,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 253,
+        "line": 271,
         "column": 1
       }
     },
@@ -3117,7 +3305,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 268,
+        "line": 286,
         "column": 1
       }
     },
@@ -3128,7 +3316,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/managed-files/managedFiles.ts",
-        "line": 273,
+        "line": 291,
         "column": 1
       }
     },
@@ -3139,7 +3327,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 22,
+        "line": 26,
         "column": 1
       }
     },
@@ -3150,7 +3338,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 43,
+        "line": 47,
         "column": 1
       }
     },
@@ -3161,7 +3349,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 67,
+        "line": 71,
         "column": 1
       }
     },
@@ -3172,7 +3360,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 76,
+        "line": 80,
         "column": 1
       }
     },
@@ -3183,7 +3371,73 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 90,
+        "line": 95,
+        "column": 1
+      }
+    },
+    {
+      "name": "optionalBuildField",
+      "description": "Read declarative build targets after retaining their complete Contract shape.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 109,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseBuildTarget",
+      "description": "Decode one portable build target without introducing a Devtools-local contract.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 124,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseBuildTargetSources",
+      "description": "Decode explicit compiler inputs without inferring them from public package exports.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 152,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseBuildTargetBuilder",
+      "description": "Decode an optional package script key without carrying executable command text in metadata.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 169,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidBuild",
+      "description": "Check the published Contract's optional build declaration exactly rather than dropping it.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 176,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasStringFields",
+      "description": "Check required string-valued target fields.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "line": 186,
         "column": 1
       }
     },
@@ -3194,7 +3448,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 103,
+        "line": 194,
         "column": 1
       }
     },
@@ -3205,7 +3459,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 119,
+        "line": 210,
         "column": 1
       }
     },
@@ -3216,7 +3470,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 132,
+        "line": 223,
         "column": 1
       }
     },
@@ -3227,7 +3481,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 143,
+        "line": 234,
         "column": 1
       }
     },
@@ -3238,7 +3492,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 155,
+        "line": 246,
         "column": 1
       }
     },
@@ -3249,7 +3503,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 177,
+        "line": 268,
         "column": 1
       }
     },
@@ -3260,7 +3514,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 182,
+        "line": 273,
         "column": 1
       }
     },
@@ -3271,7 +3525,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 192,
+        "line": 283,
         "column": 1
       }
     },
@@ -3282,7 +3536,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 201,
+        "line": 292,
         "column": 1
       }
     },
@@ -3293,7 +3547,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 213,
+        "line": 304,
         "column": 1
       }
     },
@@ -3304,7 +3558,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 220,
+        "line": 311,
         "column": 1
       }
     },
@@ -3315,7 +3569,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
-        "line": 237,
+        "line": 328,
         "column": 1
       }
     },
@@ -6334,6 +6588,11 @@
       },
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/features/managed-files/managedFiles.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
@@ -6806,6 +7065,16 @@
         "fromPath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/inspectPackedApmReleaseCandidateAsync.ts",
         "sourcePath": "src/features/apm-release-validation/composition/validatePackedApmReleaseAsync.ts"
+      },
+      {
+        "fromPath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromPath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "toPath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
       },
       {
         "fromPath": "src/features/repository-metadata/application/runRepositoryMetadataCommandAsync.ts",
@@ -7414,8 +7683,8 @@
       },
       {
         "fromSymbol": "runStatus",
-        "toSymbol": "getManagedFiles",
-        "callExpression": "getManagedFiles",
+        "toSymbol": "getManagedFilesAsync",
+        "callExpression": "getManagedFilesAsync",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -7444,8 +7713,8 @@
       },
       {
         "fromSymbol": "runSync",
-        "toSymbol": "getManagedFiles",
-        "callExpression": "getManagedFiles",
+        "toSymbol": "getManagedFilesAsync",
+        "callExpression": "getManagedFilesAsync",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -7470,6 +7739,12 @@
         "fromSymbol": "runSync",
         "toSymbol": "writeSyncOutput",
         "callExpression": "writeSyncOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "getManagedFilesAsync",
+        "toSymbol": "resolveBuildTargetManagedFilesAsync",
+        "callExpression": "resolveBuildTargetManagedFilesAsync",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -7978,6 +8253,12 @@
       },
       {
         "fromSymbol": "inspectManagedFileAsync",
+        "toSymbol": "hasManagedOwnershipAsync",
+        "callExpression": "hasManagedOwnershipAsync",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "inspectManagedFileAsync",
         "toSymbol": "isCurrentFileAsync",
         "callExpression": "isCurrentFileAsync",
         "sourcePath": "src/features/managed-files/managedFiles.ts"
@@ -7992,6 +8273,12 @@
         "fromSymbol": "inspectManagedFileAsync",
         "toSymbol": "isMissingFileError",
         "callExpression": "isMissingFileError",
+        "sourcePath": "src/features/managed-files/managedFiles.ts"
+      },
+      {
+        "fromSymbol": "hasManagedOwnershipAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
         "sourcePath": "src/features/managed-files/managedFiles.ts"
       },
       {
@@ -10353,6 +10640,168 @@
         "sourcePath": "src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"
       },
       {
+        "fromSymbol": "resolveBuildTargetManagedFilesAsync",
+        "toSymbol": "readRepositoryMetadataFactAsync",
+        "callExpression": "readRepositoryMetadataFactAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveBuildTargetManagedFilesAsync",
+        "toSymbol": "readPackageManifestAsync",
+        "callExpression": "readPackageManifestAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveBuildTargetManagedFilesAsync",
+        "toSymbol": "resolveTypeScriptTargetInventoryAsync",
+        "callExpression": "resolveTypeScriptTargetInventoryAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveBuildTargetManagedFilesAsync",
+        "toSymbol": "resolveManagedTargetDefinitionsAsync",
+        "callExpression": "resolveManagedTargetDefinitionsAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTypeScriptTargetInventoryAsync",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTypeScriptTargetInventoryAsync",
+        "toSymbol": "resolveTypeScriptTargetAsync",
+        "callExpression": "resolveTypeScriptTargetAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTypeScriptTargetAsync",
+        "toSymbol": "assertTargetPublicOutput",
+        "callExpression": "assertTargetPublicOutput",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTypeScriptTargetAsync",
+        "toSymbol": "readTargetSources",
+        "callExpression": "readTargetSources",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTypeScriptTargetAsync",
+        "toSymbol": "assertTargetBuilderScript",
+        "callExpression": "assertTargetBuilderScript",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTypeScriptTargetAsync",
+        "toSymbol": "assertSourceEntriesExistAsync",
+        "callExpression": "assertSourceEntriesExistAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveManagedTargetDefinitionsAsync",
+        "toSymbol": "resolveBaseConfigDefinitionAsync",
+        "callExpression": "resolveBaseConfigDefinitionAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "toSymbol": "resolveTargetConfigDefinitionAsync",
+        "callExpression": "resolveTargetConfigDefinitionAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveBaseConfigDefinitionAsync",
+        "toSymbol": "hasOwnershipMarkerAsync",
+        "callExpression": "hasOwnershipMarkerAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveBaseConfigDefinitionAsync",
+        "toSymbol": "renderBaseConfig",
+        "callExpression": "renderBaseConfig",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTargetConfigDefinitionAsync",
+        "toSymbol": "hasOwnershipMarkerAsync",
+        "callExpression": "hasOwnershipMarkerAsync",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "resolveTargetConfigDefinitionAsync",
+        "toSymbol": "renderTargetConfig",
+        "callExpression": "renderTargetConfig",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTargetPublicOutput",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTargetPublicOutput",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTargetPublicOutput",
+        "toSymbol": "collectExportPaths",
+        "callExpression": "collectExportPaths",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "collectExportPaths",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "assertTargetBuilderScript",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "hasOwnershipMarkerAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
+        "fromSymbol": "hasOwnershipMarkerAsync",
+        "toSymbol": "join",
+        "callExpression": "join",
+        "sourcePath": "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"
+      },
+      {
         "fromSymbol": "readRepositoryMetadataFactAsync",
         "toSymbol": "pathExistsAsync",
         "callExpression": "pathExistsAsync",
@@ -10426,6 +10875,12 @@
       },
       {
         "fromSymbol": "hasValidOptionalFields",
+        "toSymbol": "hasValidBuild",
+        "callExpression": "hasValidBuild",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidOptionalFields",
         "toSymbol": "hasValidConstraints",
         "callExpression": "hasValidConstraints",
         "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
@@ -10450,8 +10905,86 @@
       },
       {
         "fromSymbol": "optionalMetadataFields",
+        "toSymbol": "optionalBuildField",
+        "callExpression": "optionalBuildField",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalMetadataFields",
         "toSymbol": "optionalConstraintsField",
         "callExpression": "optionalConstraintsField",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "optionalBuildField",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts",
+        "toSymbol": "parseBuildTarget",
+        "callExpression": "parseBuildTarget",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTarget",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTarget",
+        "toSymbol": "hasStringFields",
+        "callExpression": "hasStringFields",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTarget",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTarget",
+        "toSymbol": "readOwnProperty",
+        "callExpression": "readOwnProperty",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTarget",
+        "toSymbol": "parseBuildTargetSources",
+        "callExpression": "parseBuildTargetSources",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTarget",
+        "toSymbol": "parseBuildTargetBuilder",
+        "callExpression": "parseBuildTargetBuilder",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTargetSources",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTargetSources",
+        "toSymbol": "readStringArray",
+        "callExpression": "readStringArray",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "parseBuildTargetBuilder",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
+      },
+      {
+        "fromSymbol": "hasValidBuild",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/features/repository-metadata/application/readRepositoryMetadataFactAsync.ts"
       },
       {

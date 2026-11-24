@@ -95,6 +95,7 @@ graph TD
   module_src_cli_runRepositoryCommand_ts["src/cli/runRepositoryCommand.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_cli_commands_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_agents_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_eslint_managed_ts
@@ -151,6 +152,10 @@ graph TD
   module_src_features_apm_release_validation_composition_validatePackedApmReleaseAsync_ts --> module_src_types_apm_release_validation_ts
   module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts["src/features/apm-release-validation/utils/readApmReleaseMetadata.ts"]
   package__ankhorage_devtools -.-> module_src_features_apm_release_validation_utils_readApmReleaseMetadata_ts
+  module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts["src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts
+  module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts --> module_src_features_repository_metadata_application_readRepositoryMetadataFactAsync_ts
   module_src_features_ci_impact_ciImpact_ts["src/features/ci-impact/ciImpact.ts"]
   package__ankhorage_devtools -.-> module_src_features_ci_impact_ciImpact_ts
   module_src_features_ci_impact_ciImpact_ts --> module_src_features_ci_impact_ciImpactGitHub_ts
