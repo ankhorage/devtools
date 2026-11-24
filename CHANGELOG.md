@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.17
+
+### Patch Changes
+
+- 0725585: Resolve the packaged Playwright CLI through its exported package metadata in managed release workflows.
+
 ## 2.10.16
 
 ### Patch Changes
