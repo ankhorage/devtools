@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.11.1
+
+### Patch Changes
+
+- a87ba27: Update Devtools-owned dependencies: `@ankhorage/doctor`, `@ankhorage/rules-repository`.
+
 ## 2.11.0
 
 ### Minor Changes
