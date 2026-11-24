@@ -72,7 +72,7 @@ Source: `src/tools/eslint/index.ts:78:1`
 
 Kind: `function`
 Module: `src/tools/knip/index.ts`
-Source: `src/tools/knip/index.ts:43:1`
+Source: `src/tools/knip/index.ts:45:1`
 
 Build shared Knip configuration while preserving repository-specific discovery.
 
@@ -86,7 +86,7 @@ Build shared Knip configuration while preserving repository-specific discovery.
 
 Kind: `function`
 Module: `src/tools/knip/index.ts`
-Source: `src/tools/knip/index.ts:62:1`
+Source: `src/tools/knip/index.ts:86:1`
 
 Build shared monorepo Knip configuration.
 
@@ -140,7 +140,7 @@ Source: `src/tools/eslint/types.ts:10:1`
 
 Kind: `type`
 Module: `src/tools/knip/index.ts`
-Source: `src/tools/knip/index.ts:28:1`
+Source: `src/tools/knip/index.ts:29:1`
 
 ### Members
 
@@ -158,7 +158,7 @@ Source: `src/tools/knip/index.ts:28:1`
 
 Kind: `type`
 Module: `src/tools/knip/index.ts`
-Source: `src/tools/knip/index.ts:32:1`
+Source: `src/tools/knip/index.ts:33:1`
 
 ### Members
 
@@ -173,7 +173,7 @@ Source: `src/tools/knip/index.ts:32:1`
 
 Kind: `type`
 Module: `src/tools/knip/index.ts`
-Source: `src/tools/knip/index.ts:19:1`
+Source: `src/tools/knip/index.ts:20:1`
 
 ### Members
 

@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.10.13",
+      "value": "v2.10.16",
       "color": "cb3837"
     },
     {
@@ -1339,7 +1339,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 43,
+        "line": 45,
         "column": 1
       },
       "exportPaths": [
@@ -1377,7 +1377,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 62,
+        "line": 86,
         "column": 1
       },
       "exportPaths": [
@@ -1585,7 +1585,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 28,
+        "line": 29,
         "column": 1
       },
       "exportPaths": [
@@ -1659,7 +1659,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 32,
+        "line": 33,
         "column": 1
       },
       "exportPaths": [
@@ -1712,7 +1712,7 @@
       "modulePath": "src/tools/knip/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 19,
+        "line": 20,
         "column": 1
       },
       "exportPaths": [
@@ -4899,7 +4899,29 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 43,
+        "line": 45,
+        "column": 1
+      }
+    },
+    {
+      "name": "filterOptionalPath",
+      "description": "Retain an optional starter path only when the target repository contains it.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 69,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasExamplesIndexEntry",
+      "description": "Report whether a conventional starter example entry exists.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/knip/index.ts",
+        "line": 78,
         "column": 1
       }
     },
@@ -4910,7 +4932,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 62,
+        "line": 86,
         "column": 1
       }
     },
@@ -4921,7 +4943,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/knip/index.ts",
-        "line": 86,
+        "line": 110,
         "column": 1
       }
     },
@@ -8694,8 +8716,50 @@
       },
       {
         "fromSymbol": "createKnipConfig",
+        "toSymbol": "filterOptionalPath",
+        "callExpression": "filterOptionalPath",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "createKnipConfig",
+        "toSymbol": "hasExamplesIndexEntry",
+        "callExpression": "hasExamplesIndexEntry",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "createKnipConfig",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "createKnipConfig",
         "toSymbol": "hasManagedExamplesEslintConfig",
         "callExpression": "hasManagedExamplesEslintConfig",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "hasExamplesIndexEntry",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "hasExamplesIndexEntry",
+        "toSymbol": "readdirSync",
+        "callExpression": "readdirSync",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "src/tools/knip/index.ts",
+        "toSymbol": "existsSync",
+        "callExpression": "existsSync",
+        "sourcePath": "src/tools/knip/index.ts"
+      },
+      {
+        "fromSymbol": "src/tools/knip/index.ts",
+        "toSymbol": "join",
+        "callExpression": "join",
         "sourcePath": "src/tools/knip/index.ts"
       },
       {

@@ -1,8 +1,21 @@
 sequenceDiagram
   participant participant_createKnipConfig as createKnipConfig
   participant participant_existsSync as existsSync
+  participant participant_filterOptionalPath as filterOptionalPath
+  participant participant_hasExamplesIndexEntry as hasExamplesIndexEntry
   participant participant_hasManagedExamplesEslintConfig as hasManagedExamplesEslintConfig
+  participant participant_readdirSync as readdirSync
   participant participant_readFileSync as readFileSync
+  participant_createKnipConfig->>participant_filterOptionalPath: filterOptionalPath()
+  participant_filterOptionalPath-->>participant_createKnipConfig: return
+  participant_createKnipConfig->>participant_hasExamplesIndexEntry: hasExamplesIndexEntry()
+  participant_hasExamplesIndexEntry->>participant_existsSync: existsSync()
+  participant_existsSync-->>participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry->>participant_readdirSync: readdirSync()
+  participant_readdirSync-->>participant_hasExamplesIndexEntry: return
+  participant_hasExamplesIndexEntry-->>participant_createKnipConfig: return
+  participant_createKnipConfig->>participant_existsSync: existsSync()
+  participant_existsSync-->>participant_createKnipConfig: return
   participant_createKnipConfig->>participant_hasManagedExamplesEslintConfig: hasManagedExamplesEslintConfig()
   participant_hasManagedExamplesEslintConfig->>participant_existsSync: existsSync()
   participant_existsSync-->>participant_hasManagedExamplesEslintConfig: return

@@ -80,6 +80,46 @@ function selectReactNativeVerificationDependencies(version: string): {
   }
 }
 
+/*** Execute the release workflow's optional platform peer selection against a packed manifest. */
+function selectOptionalPlatformPeerDependencies(manifest: {
+  readonly peerDependencies?: Readonly<Record<string, string>>;
+  readonly peerDependenciesMeta?: Readonly<Record<string, { readonly optional?: boolean }>>;
+}): {
+  readonly code: number;
+  readonly output: string;
+  readonly stderr: string;
+} {
+  const marker =
+    'optional_platform_peer_dependencies="$(PACKAGE_NAME="$package_name" node - <<\'NODE\'\n';
+  const start = workflow.indexOf(marker);
+  const end = workflow.indexOf('\n          NODE\n                )"', start + marker.length);
+  if (start < 0 || end < 0) throw new Error('Missing optional platform peer selector.');
+  const code = workflow
+    .slice(start + marker.length, end)
+    .split('\n')
+    .map((line) => line.slice(10))
+    .join('\n');
+  const directory = mkdtempSync(join(tmpdir(), 'release-optional-platform-peers-'));
+  try {
+    const packageDirectory = join(directory, 'node_modules', '@example', 'packed');
+    mkdirSync(packageDirectory, { recursive: true });
+    writeFileSync(join(packageDirectory, 'package.json'), JSON.stringify(manifest));
+    const result = Bun.spawnSync(['node', '-e', code], {
+      cwd: directory,
+      env: { ...process.env, PACKAGE_NAME: '@example/packed' },
+      stdout: 'pipe',
+      stderr: 'pipe',
+    });
+    return {
+      code: result.exitCode,
+      output: result.stdout.toString(),
+      stderr: result.stderr.toString(),
+    };
+  } finally {
+    rmSync(directory, { force: true, recursive: true });
+  }
+}
+
 test('uses the declared Expo 57 generation and React Native contract for ZORA SDK 57 modules', () => {
   expect(
     selectExpoToolchain({
@@ -167,6 +207,26 @@ test('selects the compatible temporary community CLI for React Native 0.81 throu
   expect(selectReactNativeVerificationDependencies('0.88.1')).toEqual({
     code: 0,
     output: '@react-native-community/cli@^20.0.0\n@react-native/metro-config@0.88.1',
+    stderr: '',
+  });
+});
+
+test('installs declared optional peers before compiling a packed React Native export', () => {
+  expect(
+    selectOptionalPlatformPeerDependencies({
+      peerDependencies: {
+        '@ankhorage/permissions': '^0.2.63',
+        expo: '57.0.33',
+        react: '19.2.3',
+      },
+      peerDependenciesMeta: {
+        '@ankhorage/permissions': { optional: true },
+        expo: { optional: true },
+      },
+    }),
+  ).toEqual({
+    code: 0,
+    output: '@ankhorage/permissions@^0.2.63\nexpo@57.0.33',
     stderr: '',
   });
 });

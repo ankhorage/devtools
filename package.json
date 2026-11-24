@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/devtools",
-  "version": "2.10.13",
+  "version": "2.10.16",
   "description": "Shared tooling, repository automation, and agent standards for Ankhorage TypeScript projects",
   "license": "MIT",
   "homepage": "https://github.com/ankhorage/devtools#readme",
@@ -548,13 +548,13 @@
     "knip": "^6.48.0",
     "prettier": "^3.10.1",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.73.0",
+    "typescript-eslint": "^8.74.0",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@ankhorage/paradox": "^0.6.0",
     "@ankhorage/ankh": "^0.13.7",
-    "@ankhorage/doctor": "0.15.9",
+    "@ankhorage/doctor": "0.15.15",
     "@techstark/opencv-js": "^5.0.0-release.1",
     "@types/bun": "^1.4.2",
     "@types/node": "^26.6.6",

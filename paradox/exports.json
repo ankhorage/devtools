@@ -239,7 +239,7 @@
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
       "filePath": "src/tools/knip/index.ts",
-      "line": 43,
+      "line": 45,
       "column": 1
     },
     "exportPaths": [
@@ -277,7 +277,7 @@
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
       "filePath": "src/tools/knip/index.ts",
-      "line": 62,
+      "line": 86,
       "column": 1
     },
     "exportPaths": [
@@ -485,7 +485,7 @@
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
       "filePath": "src/tools/knip/index.ts",
-      "line": 28,
+      "line": 29,
       "column": 1
     },
     "exportPaths": [
@@ -559,7 +559,7 @@
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
       "filePath": "src/tools/knip/index.ts",
-      "line": 32,
+      "line": 33,
       "column": 1
     },
     "exportPaths": [
@@ -612,7 +612,7 @@
     "modulePath": "src/tools/knip/index.ts",
     "sourceLocation": {
       "filePath": "src/tools/knip/index.ts",
-      "line": 19,
+      "line": 20,
       "column": 1
     },
     "exportPaths": [
