@@ -34,6 +34,12 @@ test('managed release executes Playwright Chromium setup for declared and absent
     join(declaredDirectory, 'package.json'),
     `${JSON.stringify({ dependencies: { 'playwright-core': '1.0.0' } })}\n`,
   );
+  await writeFile(
+    join(declaredDirectory, 'node_modules/playwright-core/package.json'),
+    `${JSON.stringify({
+      exports: { './package.json': './package.json' },
+    })}\n`,
+  );
   await writeFile(cliPath, 'process.exit(0);\n');
 
   const absent = await runPlaywrightChromiumInstallationAsync({

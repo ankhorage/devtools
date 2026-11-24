@@ -181,6 +181,7 @@ function expectDeclaredPlaywrightChromiumInstallation(release: string): void {
     "const sections=['dependencies','devDependencies','optionalDependencies'];",
   );
   expect(release).toContain("p[section]?.['playwright-core']");
+  expect(release).toContain("require.resolve('playwright-core/package.json')");
   expect(release).toContain('bun "$playwright_cli" install chromium');
   expect(release).not.toContain('bun ./node_modules/.bin/playwright-core install chromium');
   expect(release).toContain(
