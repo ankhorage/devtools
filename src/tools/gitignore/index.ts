@@ -1,4 +1,4 @@
-import { access, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
@@ -18,26 +18,24 @@ export const gitignoreManagedFiles = [
   {
     relativePath: '.gitignore',
     render: renderGitignore,
-    isApplicable: isGitignorePresent,
   },
 ] as const satisfies readonly ManagedFileDefinition[];
 
 /*** Preserve repository-owned ignore rules while keeping documentation directories trackable. */
 async function renderGitignore(targetDirectory: string): Promise<string> {
-  const contents = await readFile(resolve(targetDirectory, '.gitignore'), 'utf8');
+  const contents = await readGitignoreAsync(targetDirectory);
   return contents
     .split('\n')
     .filter((line) => !TRACKED_DOCUMENTATION_PATTERNS.has(line.trim()))
     .join('\n');
 }
 
-/*** Report whether a repository already owns a `.gitignore` file that can be normalized. */
-async function isGitignorePresent(targetDirectory: string): Promise<boolean> {
+/*** Use the minimal shared ignore defaults only when the repository has no ignore file. */
+async function readGitignoreAsync(targetDirectory: string): Promise<string> {
   try {
-    await access(resolve(targetDirectory, '.gitignore'));
-    return true;
+    return await readFile(resolve(targetDirectory, '.gitignore'), 'utf8');
   } catch (error) {
-    if (isNodeError(error) && error.code === 'ENOENT') return false;
+    if (isNodeError(error) && error.code === 'ENOENT') return 'node_modules\ndist\n';
     throw error;
   }
 }

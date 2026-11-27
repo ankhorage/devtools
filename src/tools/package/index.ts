@@ -18,7 +18,7 @@
  * @readme
  */
 import { existsSync, readFileSync } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
@@ -29,6 +29,8 @@ import type {
 } from '../../features/managed-files/managedFiles.js';
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
 import { isCompatibleDevtoolsRange } from './isCompatibleDevtoolsRange.js';
+import { isPublicPublishingPackage } from './isPublicPublishingPackage.js';
+import { readPackageManifestAsync } from './readPackageManifestAsync.js';
 import { resolvePackageCapabilitiesAsync } from './resolvePackageCapabilitiesAsync.js';
 
 const PACKAGE_PATH = 'package.json';
@@ -147,9 +149,12 @@ export function applyManagedPackageContract(
   }
 
   const scripts = { ...toRecord(manifest.scripts) };
-  const changesetsEnabled = isChangesetsEnabled(scripts, changesetsConfigExists);
+  const changesetsEnabled = isChangesetsEnabled(manifest, changesetsConfigExists);
   delete scripts.knip;
   Object.assign(scripts, STANDARD_SCRIPTS);
+  if (scripts.typecheck === undefined && typeof scripts['check-types'] === 'string') {
+    scripts.typecheck = 'bun run check-types';
+  }
   if (changesetsEnabled) {
     Object.assign(scripts, REPOSITORY_RULE_METADATA.changesets.packageScripts);
   }
@@ -193,10 +198,11 @@ export function isManagedPackageContractCurrent(
   const scripts = toRecord(manifest.scripts);
   const devDependencies = toRecord(manifest.devDependencies);
   const dependencies = toRecord(manifest.dependencies);
-  const changesetsEnabled = isChangesetsEnabled(scripts, changesetsConfigExists);
+  const changesetsEnabled = isChangesetsEnabled(manifest, changesetsConfigExists);
 
   return (
     hasStandardScripts(scripts) &&
+    (typeof scripts['check-types'] !== 'string' || typeof scripts.typecheck === 'string') &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
     dependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
     devDependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
@@ -235,20 +241,12 @@ export function readCurrentDevtoolsVersion(): string {
 
 /*** Read one package manifest snapshot and Changesets applicability state. */
 async function readPackageManifest(targetDirectory: string): Promise<PackageManifestSnapshot> {
-  const changesetsConfigExists = existsSync(resolve(targetDirectory, CHANGESETS_CONFIG_PATH));
-  try {
-    const contents = await readFile(resolve(targetDirectory, PACKAGE_PATH), 'utf8');
-    const parsed = JSON.parse(contents) as unknown;
-    if (!isRecord(parsed)) {
-      throw new Error(`Expected ${PACKAGE_PATH} to contain a JSON object.`);
-    }
-    return { changesetsConfigExists, exists: true, manifest: parsed };
-  } catch (error) {
-    if (isNodeError(error) && error.code === 'ENOENT') {
-      return { changesetsConfigExists, exists: false, manifest: {} };
-    }
-    throw error;
-  }
+  const manifest = await readPackageManifestAsync(targetDirectory);
+  return {
+    changesetsConfigExists: existsSync(resolve(targetDirectory, CHANGESETS_CONFIG_PATH)),
+    exists: manifest !== undefined,
+    manifest: manifest ?? {},
+  };
 }
 
 /*** Check the Bun package manager and Bun type dependency contract. */
@@ -325,15 +323,29 @@ function hasCurrentChangesetsScripts(
 
 /*** Determine whether the repository participates in Changesets synchronization. */
 function isChangesetsEnabled(
-  scripts: Record<string, unknown>,
+  manifest: Record<string, unknown>,
   changesetsConfigExists: boolean,
 ): boolean {
+  const scripts = toRecord(manifest.scripts);
   return (
     changesetsConfigExists ||
+    isPublicPublishingPackage(manifest) ||
     Object.keys(REPOSITORY_RULE_METADATA.changesets.packageScripts).some(
       (scriptName) => scripts[scriptName] !== undefined,
     )
   );
+}
+
+/*** Inspect consumer-owned Changesets configuration without writing or invoking the CLI. */
+export async function inspectChangesetsConfigAsync(
+  targetDirectory: string,
+): Promise<ManagedFileStatus | undefined> {
+  const { manifest, changesetsConfigExists } = await readPackageManifest(targetDirectory);
+  if (!isChangesetsEnabled(manifest, changesetsConfigExists)) return undefined;
+  return {
+    relativePath: CHANGESETS_CONFIG_PATH,
+    state: changesetsConfigExists ? 'current' : 'missing',
+  };
 }
 
 /*** Serialize a package manifest using the repository formatting contract. */
@@ -349,9 +361,4 @@ function toRecord(value: unknown): Record<string, unknown> {
 /*** Narrow an unknown JSON-like value to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/*** Narrow an unknown error to a Node error carrying an error code. */
-function isNodeError(error: unknown): error is NodeJS.ErrnoException {
-  return error instanceof Error && 'code' in error;
 }

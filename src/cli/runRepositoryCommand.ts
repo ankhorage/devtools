@@ -12,14 +12,17 @@ import { eslintManagedFiles } from '../tools/eslint/managed.js';
 import { gitignoreManagedFiles } from '../tools/gitignore/index.js';
 import { knipManagedFiles } from '../tools/knip/managed.js';
 import {
+  inspectChangesetsConfigAsync,
   inspectPackageManifest,
   readCurrentDevtoolsVersion,
   syncPackageManifest,
 } from '../tools/package/index.js';
+import { inspectMissingPackageScriptsAsync } from '../tools/package/inspectMissingPackageScriptsAsync.js';
 import {
   planBunDependencySync,
   syncBunDependencies,
 } from '../tools/package/syncBunDependencies.js';
+import { syncChangesetsConfigAsync } from '../tools/package/syncChangesetsConfigAsync.js';
 import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
@@ -27,6 +30,7 @@ import { workflowManagedFiles } from '../tools/workflows/index.js';
 import { synchronizeReleaseTokenPermissionsAsync } from '../tools/workflows/synchronizeReleaseTokenPermissionsAsync.js';
 import type { DevtoolsRepositoryCommandContext } from '../types/provider-command.js';
 import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
+import { initializeChangesetsAsync } from './initializeChangesetsAsync.js';
 
 export interface DevtoolsRepositoryCommandResult {
   readonly exitCode: number;
@@ -126,6 +130,9 @@ async function runStatus(
   const statuses: ManagedFileStatus[] = [];
   if (scope === 'all' || scope === 'package') {
     statuses.push(await inspectPackageManifest(targetDirectory, devtoolsVersion));
+    const changesets = await inspectChangesetsConfigAsync(targetDirectory);
+    if (changesets !== undefined) statuses.push(changesets);
+    statuses.push(...(await inspectMissingPackageScriptsAsync(targetDirectory)));
   }
   statuses.push(
     ...(await inspectManagedFiles(
@@ -150,8 +157,13 @@ async function runSync(
 ): Promise<DevtoolsRepositoryCommandResult> {
   const results: ManagedFileSyncResult[] = [];
   if (scope === 'all' || scope === 'package') {
-    const packageResult = await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun });
-    results.push(packageResult);
+    const changesets = await syncChangesetsConfigAsync(
+      targetDirectory,
+      dryRun,
+      context.initializeChangesets ?? initializeChangesetsAsync,
+    );
+    if (changesets !== undefined) results.push(changesets);
+    results.push(await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun }));
   }
   results.push(
     ...(await syncManagedFiles(
@@ -174,6 +186,9 @@ async function runSync(
   }
 
   writeSyncOutput(results, context);
+  if (shouldSyncDependencies) {
+    writeStatusOutput(await inspectMissingPackageScriptsAsync(targetDirectory), context);
+  }
   return { exitCode: 0 };
 }
 
