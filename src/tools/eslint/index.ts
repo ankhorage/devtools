@@ -42,6 +42,10 @@ import type {
   RestrictedImport,
 } from './types.js';
 
+// Compatibility wrappers must retain identity across overlapping flat configurations.
+const compatibleReactHooksPlugin = fixupPluginRules({ rules: reactHooksPlugin.rules });
+const compatibleReactNativePlugin = fixupPluginRules(reactNativePlugin);
+
 export const defaultIgnores = [
   '**/ios/**',
   '**/android/**',
@@ -234,7 +238,7 @@ function createReactConfig(files: string[]): FlatConfigItem {
     files,
     plugins: {
       react: reactPlugin,
-      'react-hooks': fixupPluginRules({ rules: reactHooksPlugin.rules }),
+      'react-hooks': compatibleReactHooksPlugin,
     },
     settings: { react: { version: 'detect' } },
     rules: {
@@ -266,7 +270,7 @@ function createNextConfig(files: string[]): FlatConfigItem {
 function createReactNativeConfig(files: string[]): FlatConfigItem {
   return {
     files,
-    plugins: { 'react-native': fixupPluginRules(reactNativePlugin) },
+    plugins: { 'react-native': compatibleReactNativePlugin },
     rules: {
       'react-native/no-inline-styles': 'warn',
       'react-native/no-unused-styles': 'error',
