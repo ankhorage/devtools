@@ -34,18 +34,23 @@ The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Pretti
 
 ## Bootstrap
 
-For a repository that does not yet depend on the shared toolchain:
+For a fresh standalone Node ESM TypeScript package, supply an authored package manifest and
+`src/index.ts`. Put the package identity, description, repository links, license identifier,
+keywords and explicit `publishConfig.access` of `public` in the manifest. Author repository
+metadata with `ankh devtools metadata init .` and complete the indicated fields.
 
 ```bash
-bun add -D @ankhorage/devtools
-bunx @ankhorage/ankh devtools sync .
+ankh devtools init . --base-branch main --license-file /path/to/license.txt --copyright-owner "Copyright Owner"
+ankh devtools sync .
+ankh devtools status .
+ankh doctor validate .
 ```
 
-After the first install, the normal workflow is:
-
-```bash
-ankh devtools sync
-```
+Use `--dry-run` to preview initialization. The explicit base branch is required for creating
+Changesets configuration and must match the managed release workflow. The license source must
+contain the specified copyright owner. Existing license and Changesets files are preserved.
+The default build emits Node ESM and declarations from `src/index.ts`. Author package tests
+before running `bun run test`.
 
 The target path is optional and defaults to the current working directory.
 
@@ -63,6 +68,7 @@ The package is discovered under the `devtools` category and exposes these capabi
 - `devtools.changeset`
 - `devtools.format`
 - `devtools.knip`
+- `devtools.init`
 - `devtools.sync`
 - `devtools.status`
 - `devtools.agents.sync`

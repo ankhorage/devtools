@@ -16,8 +16,8 @@
  * unrelated repository-local skills and create-only local extension files remain repository-owned,
  * and package metadata is merge-updated without replacing unrelated fields.
  *
- * Fresh repositories can bootstrap the standard setup with `ankh devtools sync .` after adding
- * `@ankhorage/devtools`. Existing ESLint configuration is preserved during first migration as a
+ * `ankh devtools init .` initializes a standalone TypeScript package with explicit publication,
+ * base branch, and license inputs. Existing ESLint configuration is preserved during sync as a
  * local extension before the canonical auto-detecting wrapper is installed.
  *
  * APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid

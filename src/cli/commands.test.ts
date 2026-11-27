@@ -51,6 +51,7 @@ describe('devtools command table', () => {
       binName: 'changeset',
     });
     expect(getDevtoolsToolCommand('lint').capability).toBe('devtools.lint');
+    expect(findDevtoolsCommandByPath(['init'])?.capability).toBe('devtools.init');
     expect(findDevtoolsCommandByPath(['agents', 'sync'])?.capability).toBe('devtools.agents.sync');
     expect(findDevtoolsCommandByPath(['skills', 'status'])?.capability).toBe(
       'devtools.skills.status',

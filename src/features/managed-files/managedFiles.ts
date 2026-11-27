@@ -71,15 +71,24 @@ export async function inspectManagedFiles(
 export async function syncManagedFiles(
   targetDirectory: string,
   definitions: readonly ManagedFileDefinition[],
-  options: { readonly dryRun: boolean },
+  options: { readonly dryRun: boolean; readonly preserveExisting?: boolean },
 ): Promise<readonly ManagedFileSyncResult[]> {
-  const statuses = await inspectManagedFiles(targetDirectory, definitions);
+  const inspectionDefinitions =
+    options.preserveExisting === true
+      ? definitions.map((definition) => ({
+          ...definition,
+          mode: 'create-only' as const,
+          ownershipMarker: undefined,
+        }))
+      : definitions;
+  const statuses = await inspectManagedFiles(targetDirectory, inspectionDefinitions);
   const definitionsByPath = new Map(
-    definitions.map((definition) => [definition.relativePath, definition] as const),
+    inspectionDefinitions.map((definition) => [definition.relativePath, definition] as const),
   );
   const results: ManagedFileSyncResult[] = [];
 
   for (const status of statuses) {
+    if (status.state === 'obsolete' && options.preserveExisting === true) continue;
     results.push(await syncManagedFileAsync(targetDirectory, status, definitionsByPath, options));
   }
 
@@ -208,8 +217,15 @@ async function syncManagedFileAsync(
     definition.symlinkTarget === undefined
       ? await readCanonicalContents(definition, targetDirectory)
       : undefined;
-  await prepareManagedTargetAsync(targetPath, definition);
-  await writeManagedArtifactAsync(targetPath, definition, canonicalContents);
+  const createOnly = definition.mode === 'create-only';
+  if (!createOnly) await prepareManagedTargetAsync(targetPath, definition);
+  const written = await writeManagedArtifactAsync(
+    targetPath,
+    definition,
+    canonicalContents,
+    createOnly,
+  );
+  if (!written) return { relativePath: status.relativePath, action: 'unchanged' };
   return {
     relativePath: status.relativePath,
     action: status.state === 'missing' ? 'created' : 'updated',
@@ -236,15 +252,27 @@ async function writeManagedArtifactAsync(
   targetPath: string,
   definition: ManagedFileDefinition,
   canonicalContents: string | undefined,
-): Promise<void> {
-  if (definition.symlinkTarget !== undefined) {
-    await symlink(definition.symlinkTarget, targetPath);
-    return;
+  createOnly = false,
+): Promise<boolean> {
+  try {
+    if (definition.symlinkTarget !== undefined) {
+      await symlink(definition.symlinkTarget, targetPath);
+    } else {
+      if (canonicalContents === undefined) {
+        throw new Error(`Missing canonical file contents for ${definition.relativePath}.`);
+      }
+      await writeFile(targetPath, canonicalContents, {
+        encoding: 'utf8',
+        flag: createOnly ? 'wx' : 'w',
+      });
+    }
+  } catch (error) {
+    if (createOnly && error instanceof Error && 'code' in error && error.code === 'EEXIST') {
+      return false;
+    }
+    throw error;
   }
-  if (canonicalContents === undefined) {
-    throw new Error(`Missing canonical file contents for ${definition.relativePath}.`);
-  }
-  await writeFile(targetPath, canonicalContents, 'utf8');
+  return true;
 }
 
 /*** Resolve canonical contents for one regular managed file definition. */

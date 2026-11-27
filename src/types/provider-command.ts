@@ -3,7 +3,7 @@ import type { ManagedFileSyncResult } from '../features/managed-files/managedFil
 /*** Shared process context for repository-management command adapters. */
 export interface DevtoolsRepositoryCommandContext {
   readonly cwd: string;
-  readonly initializeChangesets?: (targetDirectory: string) => Promise<void>;
+  readonly bootstrap?: boolean;
   readonly syncDependencies?: (targetDirectory: string) => Promise<ManagedFileSyncResult>;
   writeStdout(text: string): void;
   writeStderr(text: string): void;

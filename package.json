@@ -170,6 +170,21 @@
         "description": "Run the shared Knip toolchain."
       },
       {
+        "id": "devtools.init",
+        "owner": "@ankhorage/devtools",
+        "access": [
+          "invoke"
+        ],
+        "binding": {
+          "kind": "action",
+          "bindableAs": [
+            "target"
+          ]
+        },
+        "label": "Initialize repository",
+        "description": "Initialize a standalone public TypeScript package."
+      },
+      {
         "id": "devtools.sync",
         "owner": "@ankhorage/devtools",
         "access": [

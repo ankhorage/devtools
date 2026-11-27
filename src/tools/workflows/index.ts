@@ -16,9 +16,11 @@ import { renderRenovateConfigAsync } from './renderRenovateConfigAsync.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
+const RELEASE_WORKFLOW = createReleaseWorkflowDefinition();
+
 export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
   createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
-  createReleaseWorkflowDefinition(),
+  RELEASE_WORKFLOW,
   createRenovateWorkflowDefinition(),
   {
     relativePath: '.github/scripts/ci-impact.ts',
@@ -29,6 +31,10 @@ export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
     render: renderRenovateConfigAsync,
   },
 ];
+
+export const releaseWorkflowForBootstrap = workflowManagedFiles.map((definition) =>
+  definition === RELEASE_WORKFLOW ? { ...definition, isApplicable: () => true } : definition,
+);
 
 /*** Create a managed workflow definition rendered from current shared runtime policies. */
 function createWorkflowDefinition(relativePath: string, sourcePath: string): ManagedFileDefinition {
