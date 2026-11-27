@@ -15,18 +15,21 @@ test('packed runtime loader selection retains explicit CommonJS and dual-conditi
   expect(
     selectPackedRuntimeLoaders({ import: './dist/index.js', require: './dist/index.cjs' }),
   ).toEqual(['import', 'require']);
-  expect(
-    selectPackedRuntimeLoaders({
-      'react-native': './src/index.ts',
-      browser: './src/index.ts',
-      import: './dist/index.js',
-      default: './dist/index.js',
-    }),
-  ).toEqual(['react-native']);
+  const platformTarget = {
+    'react-native': './src/index.ts',
+    browser: './src/index.ts',
+    import: './dist/index.js',
+    default: './dist/index.js',
+  };
+  expect(selectPackedRuntimeLoaders(platformTarget, true)).toEqual(['react-native']);
+  expect(selectPackedRuntimeLoaders(platformTarget, false)).toEqual(['import']);
 });
 
 /*** Mirror the managed workflow's environment-aware packed runtime loader decisions. */
-function selectPackedRuntimeLoaders(target: unknown): ('import' | 'react-native' | 'require')[] {
+function selectPackedRuntimeLoaders(
+  target: unknown,
+  hasPlatformToolchain = false,
+): ('import' | 'react-native' | 'require')[] {
   const importConditions = new Set(['bun', 'default', 'import', 'node']);
   const requireConditions = new Set(['require']);
   const reactNativeConditions = new Set(['react-native']);
@@ -50,7 +53,10 @@ function selectPackedRuntimeLoaders(target: unknown): ('import' | 'react-native'
   const platformOnly =
     declaresCondition(target, platformConditions) &&
     !declaresCondition(target, explicitServerConditions);
-  if (platformOnly && declaresCondition(target, reactNativeConditions)) return ['react-native'];
+  if (platformOnly && declaresCondition(target, reactNativeConditions)) {
+    if (hasPlatformToolchain) return ['react-native'];
+    return supportsLoader(target, importConditions) ? ['import'] : [];
+  }
   if (platformOnly) return [];
   return [['import', importConditions] as const, ['require', requireConditions] as const].flatMap(
     ([loader, conditions]) => (supportsLoader(target, conditions) ? [loader] : []),
