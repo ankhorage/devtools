@@ -22,6 +22,22 @@ describe('createConfig sanity check', () => {
     expect(recommendedConfig?.files).toEqual(baseOptions.files);
   });
 
+  it('reuses compatibility plugin instances for overlapping React configurations', () => {
+    const first = createConfig({ ...baseOptions, profile: 'react-native' });
+    const second = createConfig({
+      ...baseOptions,
+      files: ['src/**/*.ts', 'test/**/*.ts'],
+      profile: 'react-native',
+    });
+
+    for (const plugin of ['react-hooks', 'react-native'] as const) {
+      const left = first.find((entry) => entry.plugins?.[plugin] !== undefined)?.plugins?.[plugin];
+      const right = second.find((entry) => entry.plugins?.[plugin] !== undefined)?.plugins?.[plugin];
+      expect(left).toBeDefined();
+      expect(right).toBe(left);
+    }
+  });
+
   it('allows the owning Studio DnD package and rejects only the upstream package', () => {
     expect(defaultRestrictedImports).toEqual([
       {
