@@ -28,7 +28,7 @@ src/
 - `knip`: shared Knip configuration helpers and the bundled Knip runner
 - `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
-- `vscode`: canonical `.vscode/settings.json` and `extensions.json`
+- `vscode`: canonical `.vscode/settings.json`, `extensions.json`, and `launch.json` for debugging the active file with Bun
 
 The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/Atlas repository-rule values are owned by `@ankhorage/rules-repository` and rendered by Devtools.
 
