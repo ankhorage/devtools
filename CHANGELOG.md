@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.2
+
+### Patch Changes
+
+- ea0e283: Update Devtools-owned dependencies: `@ankhorage/paradox`, `eslint-config-prettier`.
+
 ## 2.12.1
 
 ### Patch Changes
