@@ -17,6 +17,7 @@ const repositoryCommandPaths = [
   'lint',
   'format',
   'knip',
+  'init',
   'sync',
   'status',
   'agents sync',

@@ -13,6 +13,7 @@ export interface ManagedFileDefinition {
   readonly mode?: ManagedFileMode;
   readonly isApplicable?: (targetDirectory: string) => Promise<boolean> | boolean;
   readonly ownershipMarker?: string;
+  readonly canReplace?: (existing: string) => boolean;
 }
 
 type ManagedFileState = 'current' | 'missing' | 'obsolete' | 'outdated';
@@ -162,10 +163,11 @@ async function isCurrentFileAsync(
   definition: ManagedFileDefinition,
   targetDirectory: string,
 ): Promise<boolean> {
-  if (isSymbolicLink) return false;
+  if (isSymbolicLink) return definition.canReplace !== undefined;
+  const existing = await readFile(targetPath, 'utf8');
   return (
-    (await readFile(targetPath, 'utf8')) ===
-    (await readCanonicalContents(definition, targetDirectory))
+    definition.canReplace?.(existing) === false ||
+    existing === (await readCanonicalContents(definition, targetDirectory))
   );
 }
 

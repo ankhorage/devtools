@@ -15,6 +15,7 @@ const EXPECTED_COMMAND_PATHS = [
   'lint',
   'format',
   'knip',
+  'init',
   'sync',
   'status',
   'agents sync',

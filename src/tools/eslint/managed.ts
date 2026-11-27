@@ -53,6 +53,7 @@ function renderEslintStringArray(values: readonly string[]): string {
 }
 
 const ESLINT_CONFIG = renderEslintConfig(DEFAULT_SOURCE_GLOBS);
+const NEXT_ESLINT_CONFIG = renderEslintConfig(NEXT_SOURCE_GLOBS, NEXT_JAVASCRIPT_SOURCE_GLOBS);
 
 const EMPTY_LOCAL_CONFIG = `export default [];
 `;
@@ -93,12 +94,13 @@ export default [
 export const eslintManagedFiles = [
   {
     relativePath: 'eslint.local.config.mjs',
-    render: renderInitialLocalConfig,
+    contents: EMPTY_LOCAL_CONFIG,
     mode: 'create-only',
   },
   {
     relativePath: 'eslint.config.mjs',
     render: renderManagedEslintConfigAsync,
+    canReplace: (existing) => existing === ESLINT_CONFIG || existing === NEXT_ESLINT_CONFIG,
   },
   {
     relativePath: 'eslint.examples.config.mjs',
@@ -107,24 +109,10 @@ export const eslintManagedFiles = [
   },
 ] as const satisfies readonly ManagedFileDefinition[];
 
-async function renderInitialLocalConfig(targetDirectory: string): Promise<string> {
-  try {
-    const existingConfig = await readFile(resolve(targetDirectory, 'eslint.config.mjs'), 'utf8');
-    return existingConfig === ESLINT_CONFIG ? EMPTY_LOCAL_CONFIG : existingConfig;
-  } catch (error) {
-    if (isNodeError(error) && error.code === 'ENOENT') {
-      return EMPTY_LOCAL_CONFIG;
-    }
-    throw error;
-  }
-}
-
 /*** Render canonical TypeScript and JavaScript scopes for the target's application profile. */
 async function renderManagedEslintConfigAsync(targetDirectory: string): Promise<string> {
   const manifest = await readPackageManifestAsync(targetDirectory);
-  return isNextApplication(manifest)
-    ? renderEslintConfig(NEXT_SOURCE_GLOBS, NEXT_JAVASCRIPT_SOURCE_GLOBS)
-    : renderEslintConfig(DEFAULT_SOURCE_GLOBS);
+  return isNextApplication(manifest) ? NEXT_ESLINT_CONFIG : ESLINT_CONFIG;
 }
 
 /*** Read the optional target manifest without changing the default source profile. */

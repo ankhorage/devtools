@@ -17,8 +17,8 @@
  * and package metadata is merge-updated without replacing unrelated fields.
  *
  * `ankh devtools init .` initializes a standalone TypeScript package with explicit publication,
- * base branch, and license inputs. Existing ESLint configuration is preserved during sync as a
- * local extension before the canonical auto-detecting wrapper is installed.
+ * base branch, and license inputs. Devtools preserves repository-owned ESLint and Prettier
+ * configuration during sync.
  *
  * APM owner releases opt in through `ankh.apm`. `ankh devtools apm sync .` binds a valid
  * descriptor to the selected Changesets version. `ankh devtools apm validate .` checks a

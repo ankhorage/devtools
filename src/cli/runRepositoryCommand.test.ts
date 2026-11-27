@@ -198,8 +198,10 @@ test('preserves an existing Prettier config during first synchronization', async
   const sync = getRepositoryCommand(['prettier', 'sync']);
 
   expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
-  expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(existingConfig);
-  expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toContain('localConfig.overrides');
+  expect(await readFile(join(target, 'prettier.local.config.js'), 'utf8')).toBe(
+    'export default {};\n',
+  );
+  expect(await readFile(join(target, '.prettierrc.js'), 'utf8')).toBe(existingConfig);
 });
 
 test('migrates former shared-only Prettier wrappers to empty local configs', async () => {
@@ -244,8 +246,10 @@ test('preserves an existing ESLint config during first synchronization', async (
   const sync = getRepositoryCommand(['eslint', 'sync']);
 
   expect((await runRepositoryCommand(sync, [], context)).exitCode).toBe(0);
-  expect(await readFile(join(target, 'eslint.local.config.mjs'), 'utf8')).toBe(existingConfig);
-  expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toContain('createConfig');
+  expect(await readFile(join(target, 'eslint.local.config.mjs'), 'utf8')).toBe(
+    'export default [];\n',
+  );
+  expect(await readFile(join(target, 'eslint.config.mjs'), 'utf8')).toBe(existingConfig);
 });
 
 async function assertRepeatedSyncPreservesRenovateDigest(

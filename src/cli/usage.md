@@ -281,7 +281,7 @@ export default [
 ];
 ```
 
-Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.
+Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. Synchronization preserves repository-owned root and local ESLint configurations in place.
 
 Each public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.
 
@@ -303,7 +303,7 @@ The consumer delegates formatting policy to:
 @ankhorage/devtools/prettier
 ```
 
-The wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.
+The wrapper merges shared and local `overrides` in that order. Synchronization preserves repository-owned root and local Prettier configurations in place. A former shared-only Devtools delegate can be updated to the current managed wrapper.
 
 ## Knip
 
