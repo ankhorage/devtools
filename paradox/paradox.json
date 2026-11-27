@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.11.5",
+      "value": "v2.12.2",
       "color": "cb3837"
     },
     {
@@ -1039,6 +1039,16 @@
       ]
     },
     {
+      "path": "src/tools/workflows/createCiImpactRunnerDefinition.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/managed-files/managedFiles.ts"
+      ],
+      "exports": [
+        "createCiImpactRunnerDefinition"
+      ]
+    },
+    {
       "path": "src/tools/workflows/files/ci-impact.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -1054,6 +1064,7 @@
         "src/features/managed-files/managedFiles.ts",
         "src/features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.ts",
         "src/policy/resolveAtlasAuditPolicyAsync.ts",
+        "src/tools/workflows/createCiImpactRunnerDefinition.ts",
         "src/tools/workflows/readCurrentDoctorVersion.ts",
         "src/tools/workflows/readGitHubArtifactReleaseDescriptorAsync.ts",
         "src/tools/workflows/renderRenovateConfigAsync.ts",
@@ -6160,6 +6171,28 @@
       }
     },
     {
+      "name": "createCiImpactRunnerDefinition",
+      "description": "Create the CI impact runner only when the canonical managed CI workflow dispatches it.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/createCiImpactRunnerDefinition.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasCiImpactWorkflowSteps",
+      "description": "Require planning and every conditional test dispatch before synchronizing the runner.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/workflows/createCiImpactRunnerDefinition.ts",
+        "line": 29,
+        "column": 1
+      }
+    },
+    {
       "name": "createWorkflowDefinition",
       "description": "Create a managed workflow definition rendered from current shared runtime policies.",
       "see": [],
@@ -7073,6 +7106,11 @@
         "sourcePath": "src/tools/vscode/index.ts"
       },
       {
+        "fromPath": "src/tools/workflows/createCiImpactRunnerDefinition.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/tools/workflows/createCiImpactRunnerDefinition.ts"
+      },
+      {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/features/apm-release-validation/adapters/outbound/resolveApmReleaseCommandAsync.ts",
         "sourcePath": "src/tools/workflows/index.ts"
@@ -7090,6 +7128,11 @@
       {
         "fromPath": "src/tools/workflows/index.ts",
         "toPath": "src/policy/resolveAtlasAuditPolicyAsync.ts",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromPath": "src/tools/workflows/index.ts",
+        "toPath": "src/tools/workflows/createCiImpactRunnerDefinition.ts",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {
@@ -10289,6 +10332,18 @@
         "sourcePath": "src/tools/skills/zoraDesignerOwnerFixtures.ts"
       },
       {
+        "fromSymbol": "isApplicable",
+        "toSymbol": "hasCiImpactWorkflowSteps",
+        "callExpression": "hasCiImpactWorkflowSteps",
+        "sourcePath": "src/tools/workflows/createCiImpactRunnerDefinition.ts"
+      },
+      {
+        "fromSymbol": "isApplicable",
+        "toSymbol": "render",
+        "callExpression": "ciWorkflow.render",
+        "sourcePath": "src/tools/workflows/createCiImpactRunnerDefinition.ts"
+      },
+      {
         "fromSymbol": "src/tools/workflows/index.ts",
         "toSymbol": "createWorkflowDefinition",
         "callExpression": "createWorkflowDefinition",
@@ -10304,6 +10359,12 @@
         "fromSymbol": "src/tools/workflows/index.ts",
         "toSymbol": "createRenovateWorkflowDefinition",
         "callExpression": "createRenovateWorkflowDefinition",
+        "sourcePath": "src/tools/workflows/index.ts"
+      },
+      {
+        "fromSymbol": "src/tools/workflows/index.ts",
+        "toSymbol": "createCiImpactRunnerDefinition",
+        "callExpression": "createCiImpactRunnerDefinition",
         "sourcePath": "src/tools/workflows/index.ts"
       },
       {

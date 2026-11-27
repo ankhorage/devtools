@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.12.2
+
+### Patch Changes
+
+- ea0e283: Update Devtools-owned dependencies: `@ankhorage/paradox`, `eslint-config-prettier`.
+
+## 2.12.1
+
+### Patch Changes
+
+- 43151cb: Synchronize the CI impact runner only with managed workflows that dispatch it.
+
+## 2.12.0
+
+### Minor Changes
+
+- b7ff1c4: Synchronize a universal Bun launch configuration and enable Bun in the VS Code Debug Terminal.
+
 ## 2.11.5
 
 ### Patch Changes

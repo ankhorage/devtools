@@ -372,6 +372,17 @@ For the **first npm publication** of a new `@ankhorage/*` package, the organizat
 
 The Renovate workflow accepts only same-repository branches created by `renovate[bot]`. It calls the SHA-pinned `ankhorage/renovate` workflow to add a release Changeset for runtime Ankhorage dependency updates or an empty Changeset for dev-only updates. The trusted workflow scopes the Ankhorage Renovate Sync GitHub App token to the current repository and uses it only for the validated commit, allowing every normal pull-request CI workflow to start without manual approval. It never checks out or executes pull-request code in the privileged `pull_request_target` context.
 
+### Renovate Actions event policy
+
+The organization administrator owns the Actions event policy; Devtools does not configure it and consumers must not fork this managed workflow to work around it. Active organization policy **17974** (`Ankhorage Trusted Renovate`) applies to `~ALL` repositories and allows only the `pull_request_target` event for `.github/workflows/renovate.yml` through `restrict_action_events`. This is the reviewed exception required by the canonical Renovate workflow, not a general allowlist for privileged workflow events.
+
+The policy was active before the following representative public-consumer Renovate runs, both of which completed successfully on 2026-11-27:
+
+- [`ankhorage/permissions` run 45967122947](https://github.com/ankhorage/permissions/actions/runs/45967122947)
+- [`ankhorage/state-legend` run 45967072619](https://github.com/ankhorage/state-legend/actions/runs/45967072619)
+
+Those runs verify successful execution under the active explicit policy; they are not final verification of GitHub's December 2, 2026 default-enforcement change. After that change takes effect, the organization administrator must confirm a new public-consumer Renovate run under policy 17974 and use Policy insights to investigate any newly affected managed public repository. Retain the workflow's bot identity, same-repository head, `renovate/` branch, read-only permissions, SHA-pinned reusable workflow, and no-untrusted-checkout boundaries during that verification.
+
 ## Managed VS Code configuration
 
 `vscode` owns exactly:

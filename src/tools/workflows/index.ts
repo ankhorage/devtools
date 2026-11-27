@@ -7,6 +7,7 @@ import { resolveApmReleaseCommandAsync } from '../../features/apm-release-valida
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
 import { resolveStructureReleaseCommandAsync } from '../../features/structure-descriptor-generation/adapters/outbound/resolveStructureReleaseCommandAsync.js';
 import { resolveAtlasAuditPolicyAsync } from '../../policy/resolveAtlasAuditPolicyAsync.js';
+import { createCiImpactRunnerDefinition } from './createCiImpactRunnerDefinition.js';
 import { readCurrentDoctorVersion } from './readCurrentDoctorVersion.js';
 import {
   hasGitHubArtifactReleaseDescriptorAsync,
@@ -16,16 +17,14 @@ import { renderRenovateConfigAsync } from './renderRenovateConfigAsync.js';
 import { renderRenovateWorkflowAsync } from './renderRenovateWorkflowAsync.js';
 import { renderWorkflowAsync } from './renderWorkflowAsync.js';
 
+const ciWorkflowDefinition = createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml');
 const RELEASE_WORKFLOW = createReleaseWorkflowDefinition();
 
 export const workflowManagedFiles: readonly ManagedFileDefinition[] = [
-  createWorkflowDefinition('.github/workflows/ci.yml', './files/ci.yml'),
+  ciWorkflowDefinition,
   RELEASE_WORKFLOW,
   createRenovateWorkflowDefinition(),
-  {
-    relativePath: '.github/scripts/ci-impact.ts',
-    sourceUrl: new URL('./files/ci-impact.ts', import.meta.url),
-  },
+  createCiImpactRunnerDefinition(ciWorkflowDefinition),
   {
     relativePath: 'renovate.json5',
     render: renderRenovateConfigAsync,
