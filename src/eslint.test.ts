@@ -32,7 +32,9 @@ describe('createConfig sanity check', () => {
 
     for (const plugin of ['react-hooks', 'react-native'] as const) {
       const left = first.find((entry) => entry.plugins?.[plugin] !== undefined)?.plugins?.[plugin];
-      const right = second.find((entry) => entry.plugins?.[plugin] !== undefined)?.plugins?.[plugin];
+      const right = second.find((entry) => entry.plugins?.[plugin] !== undefined)?.plugins?.[
+        plugin
+      ];
       expect(left).toBeDefined();
       expect(right).toBe(left);
     }
