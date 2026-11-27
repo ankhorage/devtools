@@ -18,7 +18,7 @@
  * @readme
  */
 import { existsSync, readFileSync } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { REPOSITORY_RULE_METADATA } from '@ankhorage/rules-repository';
@@ -29,6 +29,8 @@ import type {
 } from '../../features/managed-files/managedFiles.js';
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
 import { isCompatibleDevtoolsRange } from './isCompatibleDevtoolsRange.js';
+import { isPublicPublishingPackage } from './isPublicPublishingPackage.js';
+import { readPackageManifestAsync } from './readPackageManifestAsync.js';
 import { resolvePackageCapabilitiesAsync } from './resolvePackageCapabilitiesAsync.js';
 
 const PACKAGE_PATH = 'package.json';
@@ -239,20 +241,12 @@ export function readCurrentDevtoolsVersion(): string {
 
 /*** Read one package manifest snapshot and Changesets applicability state. */
 async function readPackageManifest(targetDirectory: string): Promise<PackageManifestSnapshot> {
-  const changesetsConfigExists = existsSync(resolve(targetDirectory, CHANGESETS_CONFIG_PATH));
-  try {
-    const contents = await readFile(resolve(targetDirectory, PACKAGE_PATH), 'utf8');
-    const parsed = JSON.parse(contents) as unknown;
-    if (!isRecord(parsed)) {
-      throw new Error(`Expected ${PACKAGE_PATH} to contain a JSON object.`);
-    }
-    return { changesetsConfigExists, exists: true, manifest: parsed };
-  } catch (error) {
-    if (isNodeError(error) && error.code === 'ENOENT') {
-      return { changesetsConfigExists, exists: false, manifest: {} };
-    }
-    throw error;
-  }
+  const manifest = await readPackageManifestAsync(targetDirectory);
+  return {
+    changesetsConfigExists: existsSync(resolve(targetDirectory, CHANGESETS_CONFIG_PATH)),
+    exists: manifest !== undefined,
+    manifest: manifest ?? {},
+  };
 }
 
 /*** Check the Bun package manager and Bun type dependency contract. */
@@ -342,11 +336,6 @@ function isChangesetsEnabled(
   );
 }
 
-/*** Recognize explicit public npm release intent without enrolling private applications. */
-function isPublicPublishingPackage(manifest: Record<string, unknown>): boolean {
-  return manifest.private !== true && toRecord(manifest.publishConfig).access === 'public';
-}
-
 /*** Inspect consumer-owned Changesets configuration without writing or invoking the CLI. */
 export async function inspectChangesetsConfigAsync(
   targetDirectory: string,
@@ -357,19 +346,6 @@ export async function inspectChangesetsConfigAsync(
     relativePath: CHANGESETS_CONFIG_PATH,
     state: changesetsConfigExists ? 'current' : 'missing',
   };
-}
-
-/*** Identify project-owned required scripts that cannot be safely inferred by sync. */
-export async function inspectMissingPackageScriptsAsync(
-  targetDirectory: string,
-): Promise<readonly ManagedFileStatus[]> {
-  const { manifest } = await readPackageManifest(targetDirectory);
-  if (!isPublicPublishingPackage(manifest)) return [];
-  const scripts = toRecord(manifest.scripts);
-  return REPOSITORY_RULE_METADATA.publicPackage.requiredScripts
-    .filter(({ name }) => ['build', 'typecheck', 'test', 'docs'].includes(name))
-    .filter(({ name }) => typeof scripts[name] !== 'string' || scripts[name].trim() === '')
-    .map(({ name }) => ({ relativePath: `package.json#scripts.${name}`, state: 'missing' }));
 }
 
 /*** Serialize a package manifest using the repository formatting contract. */
@@ -385,9 +361,4 @@ function toRecord(value: unknown): Record<string, unknown> {
 /*** Narrow an unknown JSON-like value to a non-array record. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/*** Narrow an unknown error to a Node error carrying an error code. */
-function isNodeError(error: unknown): error is NodeJS.ErrnoException {
-  return error instanceof Error && 'code' in error;
 }

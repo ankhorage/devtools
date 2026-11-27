@@ -13,15 +13,16 @@ import { gitignoreManagedFiles } from '../tools/gitignore/index.js';
 import { knipManagedFiles } from '../tools/knip/managed.js';
 import {
   inspectChangesetsConfigAsync,
-  inspectMissingPackageScriptsAsync,
   inspectPackageManifest,
   readCurrentDevtoolsVersion,
   syncPackageManifest,
 } from '../tools/package/index.js';
+import { inspectMissingPackageScriptsAsync } from '../tools/package/inspectMissingPackageScriptsAsync.js';
 import {
   planBunDependencySync,
   syncBunDependencies,
 } from '../tools/package/syncBunDependencies.js';
+import { syncChangesetsConfigAsync } from '../tools/package/syncChangesetsConfigAsync.js';
 import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
@@ -29,8 +30,7 @@ import { workflowManagedFiles } from '../tools/workflows/index.js';
 import { synchronizeReleaseTokenPermissionsAsync } from '../tools/workflows/synchronizeReleaseTokenPermissionsAsync.js';
 import type { DevtoolsRepositoryCommandContext } from '../types/provider-command.js';
 import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
-import { getDevtoolsToolCommand } from './commands.js';
-import { runExternalTool } from './runExternalTool.js';
+import { initializeChangesetsAsync } from './initializeChangesetsAsync.js';
 
 export interface DevtoolsRepositoryCommandResult {
   readonly exitCode: number;
@@ -157,7 +157,11 @@ async function runSync(
 ): Promise<DevtoolsRepositoryCommandResult> {
   const results: ManagedFileSyncResult[] = [];
   if (scope === 'all' || scope === 'package') {
-    const changesets = await syncChangesetsConfigAsync(targetDirectory, dryRun, context);
+    const changesets = await syncChangesetsConfigAsync(
+      targetDirectory,
+      dryRun,
+      context.initializeChangesets ?? initializeChangesetsAsync,
+    );
     if (changesets !== undefined) results.push(changesets);
     results.push(await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun }));
   }
@@ -186,41 +190,6 @@ async function runSync(
     writeStatusOutput(await inspectMissingPackageScriptsAsync(targetDirectory), context);
   }
   return { exitCode: 0 };
-}
-
-/*** Initialize opted-in release repositories via the centrally installed Changesets CLI. */
-async function syncChangesetsConfigAsync(
-  targetDirectory: string,
-  dryRun: boolean,
-  context: DevtoolsRepositoryCommandContext,
-): Promise<ManagedFileSyncResult | undefined> {
-  const status = await inspectChangesetsConfigAsync(targetDirectory);
-  if (status === undefined) return undefined;
-  if (status.state === 'current') {
-    return { relativePath: status.relativePath, action: 'unchanged' };
-  }
-  if (dryRun) return { relativePath: status.relativePath, action: 'would-create' };
-
-  const initialize = context.initializeChangesets ?? initializeChangesetsAsync;
-  await initialize(targetDirectory);
-  const initialized = await inspectChangesetsConfigAsync(targetDirectory);
-  if (initialized?.state !== 'current') {
-    throw new Error('Changesets init did not create .changeset/config.json.');
-  }
-  return { relativePath: status.relativePath, action: 'created' };
-}
-
-/*** Run the interactive Changesets initialization only with a usable terminal. */
-async function initializeChangesetsAsync(targetDirectory: string): Promise<void> {
-  if (!process.stdin.isTTY || !process.stdout.isTTY) {
-    throw new Error(
-      'Changesets initialization requires a terminal. Run ankh devtools changeset init locally, then repeat sync.',
-    );
-  }
-  const result = await runExternalTool(getDevtoolsToolCommand('changeset'), ['init'], {
-    cwd: targetDirectory,
-  });
-  if (result.exitCode !== 0) throw new Error(`Changesets init exited with code ${result.exitCode}.`);
 }
 
 async function getManagedFilesAsync(
