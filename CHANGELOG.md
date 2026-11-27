@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.11.3
+
+### Patch Changes
+
+- 08cdd74: Verify condition-only React Native exports without inventing an undeclared platform toolchain.
+
 ## 2.11.2
 
 ### Patch Changes
