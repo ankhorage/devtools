@@ -152,8 +152,12 @@ test('regenerates structure evidence and docs after versioning before the releas
   const structureIndex = release.indexOf('node ./dist/cli/bin/structure.js build .');
   const docsIndex = release.indexOf('bun run docs');
   const commitIndex = release.indexOf('git commit -m "chore(release): version packages [skip ci]"');
+  const candidateIndex = release.indexOf('      - name: Prepare versioned release candidate');
 
   expect(release).toContain('if [ "$before_version" != "$after_version" ]; then');
+  expect(release.indexOf('GITHUB_TOKEN: ${{ steps.release-token.outputs.token }}')).toBeGreaterThan(
+    candidateIndex,
+  );
   expect(release).toContain('process.exit(p.ankh?.structure === undefined ? 1 : 0)');
   expect(release).toContain('process.exit(p.scripts?.docs ? 0 : 1)');
   expect(versionIndex).toBeGreaterThanOrEqual(0);
