@@ -1,4 +1,5 @@
 import type { ManagedFileDefinition } from '../../features/managed-files/managedFiles.js';
+import { renderLaunchConfigAsync } from './renderLaunchConfigAsync.js';
 
 export const vscodeManagedFiles = [
   {
@@ -11,6 +12,6 @@ export const vscodeManagedFiles = [
   },
   {
     relativePath: '.vscode/launch.json',
-    sourceUrl: new URL('./files/launch.json', import.meta.url),
+    render: renderLaunchConfigAsync,
   },
 ] as const satisfies readonly ManagedFileDefinition[];

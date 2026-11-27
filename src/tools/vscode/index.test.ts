@@ -65,3 +65,14 @@ test('synchronizes the universal Bun launch configuration', async () => {
   await syncManagedFiles(target, vscodeManagedFiles, { dryRun: false });
   expect(await readFile(launch, 'utf8')).toBe(contents);
 });
+
+test('preserves a repository-specific launch configuration in place', async () => {
+  const target = await mkdtemp(join(tmpdir(), 'devtools-vscode-'));
+  targets.push(target);
+  const launch = join(target, '.vscode/launch.json');
+  await syncManagedFiles(target, vscodeManagedFiles, { dryRun: false });
+  const customized = (await readFile(launch, 'utf8')).replace('${file}', 'src/server.ts');
+  await writeFile(launch, customized);
+  await syncManagedFiles(target, vscodeManagedFiles, { dryRun: false });
+  expect(await readFile(launch, 'utf8')).toBe(customized);
+});
