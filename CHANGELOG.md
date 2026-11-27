@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.1
+
+### Patch Changes
+
+- 43151cb: Synchronize the CI impact runner only with managed workflows that dispatch it.
+
 ## 2.12.0
 
 ### Minor Changes

@@ -83,6 +83,7 @@ graph LR
   module_src_tools_skills_selection_ts["src/tools/skills/selection.ts"]
   module_src_tools_skills_zoraDesignerOwnerFixtures_ts["src/tools/skills/zoraDesignerOwnerFixtures.ts"]
   module_src_tools_vscode_index_ts["src/tools/vscode/index.ts"]
+  module_src_tools_workflows_createCiImpactRunnerDefinition_ts["src/tools/workflows/createCiImpactRunnerDefinition.ts"]
   module_src_tools_workflows_files_ci_impact_ts["src/tools/workflows/files/ci-impact.ts"]
   module_src_tools_workflows_index_ts["src/tools/workflows/index.ts"]
   module_src_tools_workflows_readCurrentDoctorVersion_ts["src/tools/workflows/readCurrentDoctorVersion.ts"]
@@ -233,11 +234,13 @@ graph LR
   module_src_tools_skills_managed_ts --> module_src_tools_skills_manifest_ts
   module_src_tools_skills_managed_ts --> module_src_tools_skills_selection_ts
   module_src_tools_vscode_index_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_tools_workflows_createCiImpactRunnerDefinition_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_files_ci_impact_ts --> module_src_ci_impact_ts
   module_src_tools_workflows_index_ts --> module_src_features_apm_release_validation_adapters_outbound_resolveApmReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_workflows_index_ts --> module_src_features_structure_descriptor_generation_adapters_outbound_resolveStructureReleaseCommandAsync_ts
   module_src_tools_workflows_index_ts --> module_src_policy_resolveAtlasAuditPolicyAsync_ts
+  module_src_tools_workflows_index_ts --> module_src_tools_workflows_createCiImpactRunnerDefinition_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_readCurrentDoctorVersion_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_readGitHubArtifactReleaseDescriptorAsync_ts
   module_src_tools_workflows_index_ts --> module_src_tools_workflows_renderRenovateConfigAsync_ts
