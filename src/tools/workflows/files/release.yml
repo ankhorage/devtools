@@ -294,6 +294,7 @@ jobs:
         id: release
         if: hashFiles('.changeset/config.json') != ''
         env:
+          GITHUB_TOKEN: ${{ steps.release-token.outputs.token }}
           HIGHEST_PUBLISHED_VERSION: ${{ steps.release-baseline.outputs.highest_published_version }}
         run: |
           if [ -z "$(find .changeset -maxdepth 1 -type f -name '*.md' ! -name README.md -print -quit)" ]; then
