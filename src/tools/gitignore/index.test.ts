@@ -42,12 +42,20 @@ test('removes documentation directory ignore rules while preserving repository-o
   ]);
 });
 
-test('does not create a gitignore when the repository does not own one', async () => {
+test('creates the minimal gitignore without mutating a dry run', async () => {
   const target = await createTarget();
 
-  expect(await inspectManagedFiles(target, gitignoreManagedFiles)).toEqual([]);
-  expect(await syncManagedFiles(target, gitignoreManagedFiles, { dryRun: false })).toEqual([]);
+  expect(await inspectManagedFiles(target, gitignoreManagedFiles)).toEqual([
+    { relativePath: '.gitignore', state: 'missing' },
+  ]);
+  expect(await syncManagedFiles(target, gitignoreManagedFiles, { dryRun: true })).toEqual([
+    { relativePath: '.gitignore', action: 'would-create' },
+  ]);
   expect(await Bun.file(join(target, '.gitignore')).exists()).toBe(false);
+  expect(await syncManagedFiles(target, gitignoreManagedFiles, { dryRun: false })).toEqual([
+    { relativePath: '.gitignore', action: 'created' },
+  ]);
+  expect(await readFile(join(target, '.gitignore'), 'utf8')).toBe('node_modules\ndist\n');
 });
 
 async function createTarget(): Promise<string> {

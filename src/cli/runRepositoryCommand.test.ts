@@ -155,6 +155,33 @@ test('migrates a Changesets repository and keeps the second sync byte-stable', a
   expect(context.dependencySyncs).toBe(2);
 });
 
+test('initializes a new publishing package once and reports a read-only dry run', async () => {
+  const target = await createTarget();
+  await writeFile(
+    join(target, 'package.json'),
+    JSON.stringify({ name: 'fixture', publishConfig: { access: 'public' } }),
+  );
+  const context = createContext(target);
+  const calls: string[] = [];
+  const initContext = {
+    ...context,
+    initializeChangesets: async (directory: string) => {
+      calls.push(directory);
+      await mkdir(join(directory, '.changeset'));
+      await writeFile(join(directory, '.changeset/config.json'), '{}\n');
+    },
+  };
+  const sync = getRepositoryCommand(['package', 'sync']);
+  expect((await runRepositoryCommand(sync, ['--dry-run'], initContext)).exitCode).toBe(0);
+  expect(context.stdout.join('')).toContain('.changeset/config.json would create');
+  expect(calls).toEqual([]);
+  expect((await runRepositoryCommand(sync, [], initContext)).exitCode).toBe(0);
+  expect((await runRepositoryCommand(sync, [], initContext)).exitCode).toBe(0);
+  expect(calls).toEqual([target]);
+  expect(await readFile(join(target, '.changeset/config.json'), 'utf8')).toBe('{}\n');
+  expect(context.stdout.join('')).toContain('package.json#scripts.build missing');
+});
+
 test('preserves create-only local extensions across repeated synchronization', async () => {
   const target = await createTarget();
   await writeFile(join(target, 'package.json'), '{"name":"fixture","type":"module"}\n');

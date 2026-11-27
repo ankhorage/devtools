@@ -70,6 +70,35 @@ test('centralizes Changesets for repositories with config or release scripts', (
   }
 });
 
+test('bootstraps release scripts for an explicitly public package', () => {
+  const updated = applyManagedPackageContract(
+    {
+      name: 'fixture',
+      publishConfig: { access: 'public' },
+      scripts: { 'check-types': 'tsc --noEmit', build: 'custom-build' },
+    },
+    '2.3.4',
+  );
+  expect(updated).toMatchObject({
+    scripts: {
+      ...REPOSITORY_RULE_METADATA.changesets.packageScripts,
+      'check-types': 'tsc --noEmit',
+      typecheck: 'bun run check-types',
+      build: 'custom-build',
+    },
+  });
+  expect(readNestedValue(updated, 'devDependencies', '@changesets/cli')).toBeUndefined();
+  expect(isManagedPackageContractCurrent(updated, '2.3.4')).toBe(true);
+});
+
+test('does not enroll an explicitly private application', () => {
+  const updated = applyManagedPackageContract(
+    { name: 'fixture', private: true, publishConfig: { access: 'public' } },
+    '2.3.4',
+  );
+  expect(readNestedValue(updated, 'scripts', 'changeset')).toBeUndefined();
+});
+
 test('detects Changesets dependency and script drift', () => {
   const manifest = applyManagedPackageContract(
     { name: 'fixture', scripts: { changeset: 'changeset' } },

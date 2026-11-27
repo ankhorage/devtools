@@ -147,9 +147,12 @@ export function applyManagedPackageContract(
   }
 
   const scripts = { ...toRecord(manifest.scripts) };
-  const changesetsEnabled = isChangesetsEnabled(scripts, changesetsConfigExists);
+  const changesetsEnabled = isChangesetsEnabled(manifest, changesetsConfigExists);
   delete scripts.knip;
   Object.assign(scripts, STANDARD_SCRIPTS);
+  if (scripts.typecheck === undefined && typeof scripts['check-types'] === 'string') {
+    scripts.typecheck = 'bun run check-types';
+  }
   if (changesetsEnabled) {
     Object.assign(scripts, REPOSITORY_RULE_METADATA.changesets.packageScripts);
   }
@@ -193,10 +196,11 @@ export function isManagedPackageContractCurrent(
   const scripts = toRecord(manifest.scripts);
   const devDependencies = toRecord(manifest.devDependencies);
   const dependencies = toRecord(manifest.dependencies);
-  const changesetsEnabled = isChangesetsEnabled(scripts, changesetsConfigExists);
+  const changesetsEnabled = isChangesetsEnabled(manifest, changesetsConfigExists);
 
   return (
     hasStandardScripts(scripts) &&
+    (typeof scripts['check-types'] !== 'string' || typeof scripts.typecheck === 'string') &&
     DEVTOOLS_OWNED_DEV_DEPENDENCIES.every((name) => devDependencies[name] === undefined) &&
     dependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
     devDependencies[REPOSITORY_RULE_METADATA.changesets.packageName] === undefined &&
@@ -325,15 +329,47 @@ function hasCurrentChangesetsScripts(
 
 /*** Determine whether the repository participates in Changesets synchronization. */
 function isChangesetsEnabled(
-  scripts: Record<string, unknown>,
+  manifest: Record<string, unknown>,
   changesetsConfigExists: boolean,
 ): boolean {
+  const scripts = toRecord(manifest.scripts);
   return (
     changesetsConfigExists ||
+    isPublicPublishingPackage(manifest) ||
     Object.keys(REPOSITORY_RULE_METADATA.changesets.packageScripts).some(
       (scriptName) => scripts[scriptName] !== undefined,
     )
   );
+}
+
+/*** Recognize explicit public npm release intent without enrolling private applications. */
+function isPublicPublishingPackage(manifest: Record<string, unknown>): boolean {
+  return manifest.private !== true && toRecord(manifest.publishConfig).access === 'public';
+}
+
+/*** Inspect consumer-owned Changesets configuration without writing or invoking the CLI. */
+export async function inspectChangesetsConfigAsync(
+  targetDirectory: string,
+): Promise<ManagedFileStatus | undefined> {
+  const { manifest, changesetsConfigExists } = await readPackageManifest(targetDirectory);
+  if (!isChangesetsEnabled(manifest, changesetsConfigExists)) return undefined;
+  return {
+    relativePath: CHANGESETS_CONFIG_PATH,
+    state: changesetsConfigExists ? 'current' : 'missing',
+  };
+}
+
+/*** Identify project-owned required scripts that cannot be safely inferred by sync. */
+export async function inspectMissingPackageScriptsAsync(
+  targetDirectory: string,
+): Promise<readonly ManagedFileStatus[]> {
+  const { manifest } = await readPackageManifest(targetDirectory);
+  if (!isPublicPublishingPackage(manifest)) return [];
+  const scripts = toRecord(manifest.scripts);
+  return REPOSITORY_RULE_METADATA.publicPackage.requiredScripts
+    .filter(({ name }) => ['build', 'typecheck', 'test', 'docs'].includes(name))
+    .filter(({ name }) => typeof scripts[name] !== 'string' || scripts[name].trim() === '')
+    .map(({ name }) => ({ relativePath: `package.json#scripts.${name}`, state: 'missing' }));
 }
 
 /*** Serialize a package manifest using the repository formatting contract. */
