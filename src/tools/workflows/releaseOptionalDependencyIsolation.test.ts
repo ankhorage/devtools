@@ -169,13 +169,13 @@ async function executeRenderedRootIsolationAsync(
 ): Promise<{ readonly exitCode: number; readonly stderr: string }> {
   const release = await renderReleaseWorkflowAsync();
   const script = `set -eu
-PACKAGE_NAME="$package_name" node - <<'NODE' > runtime-entrypoints.txt
-${extractPackedRuntimeEntrypointDiscovery(release)}
-NODE
 artifact="$artifact"
 package_name="$package_name"
 optional_install_dir="$optional_install_dir"
 platform_toolchain_dependencies="$platform_toolchain_dependencies"
+PACKAGE_NAME="$package_name" PLATFORM_TOOLCHAIN_DEPENDENCIES="$platform_toolchain_dependencies" node - <<'NODE' > runtime-entrypoints.txt
+${extractPackedRuntimeEntrypointDiscovery(release)}
+NODE
 ${extractPackedRootIsolationProbe(release)}`;
   const subprocess = Bun.spawn(['sh', '-c', script], {
     cwd: consumer.directory,
@@ -227,7 +227,7 @@ async function renderReleaseWorkflowAsync(): Promise<string> {
 /*** Extract the exact rendered Node runtime-entrypoint discovery program. */
 function extractPackedRuntimeEntrypointDiscovery(release: string): string {
   const match =
-    /PACKAGE_NAME="\$package_name" node - <<'NODE' > runtime-entrypoints\.txt\n(?<probe>[\s\S]*?)\n {10}NODE/u.exec(
+    /PACKAGE_NAME="\$package_name" PLATFORM_TOOLCHAIN_DEPENDENCIES="\$platform_toolchain_dependencies" node - <<'NODE' > runtime-entrypoints\.txt\n(?<probe>[\s\S]*?)\n {10}NODE/u.exec(
       release,
     );
   if (match?.groups?.probe === undefined) {
