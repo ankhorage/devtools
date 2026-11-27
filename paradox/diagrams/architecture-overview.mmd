@@ -74,6 +74,10 @@ graph TD
   module_src_cli_index_ts --> module_src_capabilities_index_ts
   module_src_cli_index_ts --> module_src_cli_commands_ts
   module_src_cli_index_ts --> module_src_cli_runProviderCommand_ts
+  module_src_cli_initializeChangesetsAsync_ts["src/cli/initializeChangesetsAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_cli_initializeChangesetsAsync_ts
+  module_src_cli_initializeChangesetsAsync_ts --> module_src_cli_commands_ts
+  module_src_cli_initializeChangesetsAsync_ts --> module_src_cli_runExternalTool_ts
   module_src_cli_runChangesetAsync_ts["src/cli/runChangesetAsync.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runChangesetAsync_ts
   module_src_cli_runChangesetAsync_ts --> module_src_cli_commands_ts
@@ -95,6 +99,7 @@ graph TD
   module_src_cli_runRepositoryCommand_ts["src/cli/runRepositoryCommand.ts"]
   package__ankhorage_devtools -.-> module_src_cli_runRepositoryCommand_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_cli_commands_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_cli_initializeChangesetsAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_agents_index_ts
@@ -102,7 +107,9 @@ graph TD
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_gitignore_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_knip_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_inspectMissingPackageScriptsAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_syncBunDependencies_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_syncChangesetsConfigAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_prettier_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_vscode_index_ts
@@ -258,9 +265,20 @@ graph TD
   module_src_tools_package_index_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
   module_src_tools_package_index_ts --> module_src_tools_package_isCompatibleDevtoolsRange_ts
+  module_src_tools_package_index_ts --> module_src_tools_package_isPublicPublishingPackage_ts
+  module_src_tools_package_index_ts --> module_src_tools_package_readPackageManifestAsync_ts
   module_src_tools_package_index_ts --> module_src_tools_package_resolvePackageCapabilitiesAsync_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts["src/tools/package/inspectMissingPackageScriptsAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_package_inspectMissingPackageScriptsAsync_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts --> module_src_tools_package_isPublicPublishingPackage_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts --> module_src_tools_package_readPackageManifestAsync_ts
   module_src_tools_package_isCompatibleDevtoolsRange_ts["src/tools/package/isCompatibleDevtoolsRange.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_isCompatibleDevtoolsRange_ts
+  module_src_tools_package_isPublicPublishingPackage_ts["src/tools/package/isPublicPublishingPackage.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_package_isPublicPublishingPackage_ts
+  module_src_tools_package_readPackageManifestAsync_ts["src/tools/package/readPackageManifestAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_package_readPackageManifestAsync_ts
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts["src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts["src/tools/package/resolvePackageCapabilitiesAsync.ts"]
@@ -269,6 +287,10 @@ graph TD
   package__ankhorage_devtools -.-> module_src_tools_package_syncBunDependencies_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_package_syncChangesetsConfigAsync_ts["src/tools/package/syncChangesetsConfigAsync.ts"]
+  package__ankhorage_devtools -.-> module_src_tools_package_syncChangesetsConfigAsync_ts
+  module_src_tools_package_syncChangesetsConfigAsync_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_syncChangesetsConfigAsync_ts --> module_src_tools_package_index_ts
   module_src_tools_prettier_formatYamlAsync_ts["src/tools/prettier/formatYamlAsync.ts"]
   package__ankhorage_devtools -.-> module_src_tools_prettier_formatYamlAsync_ts
   module_src_tools_prettier_managed_ts["src/tools/prettier/managed.ts"]

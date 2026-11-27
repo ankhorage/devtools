@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.11.5
+
+### Patch Changes
+
+- 5f794ef: Initialize Changesets for publishing repositories, report missing project scripts, and create a minimal missing gitignore.
+
 ## 2.11.4
 
 ### Patch Changes
