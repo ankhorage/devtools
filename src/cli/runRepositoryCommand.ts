@@ -10,7 +10,7 @@ import {
 import { agentsManagedFiles } from '../tools/agents/index.js';
 import { eslintManagedFiles } from '../tools/eslint/managed.js';
 import { gitignoreManagedFiles } from '../tools/gitignore/index.js';
-import { knipManagedFiles } from '../tools/knip/managed.js';
+import { getKnipManagedFiles } from '../tools/knip/managed.js';
 import {
   inspectChangesetsConfigAsync,
   inspectPackageManifest,
@@ -22,15 +22,13 @@ import {
   planBunDependencySync,
   syncBunDependencies,
 } from '../tools/package/syncBunDependencies.js';
-import { syncChangesetsConfigAsync } from '../tools/package/syncChangesetsConfigAsync.js';
 import { prettierManagedFiles } from '../tools/prettier/managed.js';
 import { inspectManagedSkills, syncManagedSkills } from '../tools/skills/managed.js';
 import { vscodeManagedFiles } from '../tools/vscode/index.js';
-import { workflowManagedFiles } from '../tools/workflows/index.js';
+import { releaseWorkflowForBootstrap, workflowManagedFiles } from '../tools/workflows/index.js';
 import { synchronizeReleaseTokenPermissionsAsync } from '../tools/workflows/synchronizeReleaseTokenPermissionsAsync.js';
 import type { DevtoolsRepositoryCommandContext } from '../types/provider-command.js';
 import type { DevtoolsRepositoryCommandDefinition } from './commands.js';
-import { initializeChangesetsAsync } from './initializeChangesetsAsync.js';
 
 export interface DevtoolsRepositoryCommandResult {
   readonly exitCode: number;
@@ -157,19 +155,13 @@ async function runSync(
 ): Promise<DevtoolsRepositoryCommandResult> {
   const results: ManagedFileSyncResult[] = [];
   if (scope === 'all' || scope === 'package') {
-    const changesets = await syncChangesetsConfigAsync(
-      targetDirectory,
-      dryRun,
-      context.initializeChangesets ?? initializeChangesetsAsync,
-    );
-    if (changesets !== undefined) results.push(changesets);
     results.push(await syncPackageManifest(targetDirectory, devtoolsVersion, { dryRun }));
   }
   results.push(
     ...(await syncManagedFiles(
       targetDirectory,
-      await getManagedFilesAsync(scope, targetDirectory),
-      { dryRun },
+      await getManagedFilesAsync(scope, targetDirectory, context.bootstrap === true),
+      { dryRun, preserveExisting: context.bootstrap === true },
     )),
   );
   if (scope === 'all' || scope === 'skills') {
@@ -186,7 +178,11 @@ async function runSync(
   }
 
   writeSyncOutput(results, context);
-  if (shouldSyncDependencies) {
+  if (shouldSyncDependencies && !(dryRun && context.bootstrap === true)) {
+    const changesets = await inspectChangesetsConfigAsync(targetDirectory);
+    if (changesets?.state === 'missing' && context.bootstrap !== true) {
+      writeStatusOutput([changesets], context);
+    }
     writeStatusOutput(await inspectMissingPackageScriptsAsync(targetDirectory), context);
   }
   return { exitCode: 0 };
@@ -195,15 +191,16 @@ async function runSync(
 async function getManagedFilesAsync(
   scope: DevtoolsRepositoryCommandDefinition['scope'],
   targetDirectory: string,
+  bootstrap = false,
 ): Promise<readonly ManagedFileDefinition[]> {
   const definitionsByScope = {
     agents: agentsManagedFiles,
     eslint: eslintManagedFiles,
-    knip: knipManagedFiles,
+    knip: getKnipManagedFiles(bootstrap),
     prettier: prettierManagedFiles,
     skills: [],
     vscode: vscodeManagedFiles,
-    workflows: workflowManagedFiles,
+    workflows: bootstrap ? releaseWorkflowForBootstrap : workflowManagedFiles,
   } as const;
 
   if (scope === 'all') {

@@ -28,24 +28,29 @@ src/
 - `knip`: shared Knip configuration helpers and the bundled Knip runner
 - `package`: merge-aware synchronization of the shared `package.json` tooling and Bun runtime contract
 - `workflows`: canonical `.github/workflows/ci.yml` and `release.yml`
-- `vscode`: canonical `.vscode/settings.json`, `extensions.json`, and `launch.json` for debugging the active file with Bun
+- `vscode`: canonical `.vscode/settings.json`, `extensions.json`, and `launch.json` for debugging the active file with Bun. Repository-specific launch configurations are preserved.
 
 The package owns the supported Changesets CLI, ESLint, TypeScript ESLint, Prettier, Knip, security, React, React Hooks, React Native, import/sort, unused-import, and formatting-plugin versions used by consuming repositories. The Bun/Node runtime baseline and canonical Changesets/Atlas repository-rule values are owned by `@ankhorage/rules-repository` and rendered by Devtools.
 
 ## Bootstrap
 
-For a repository that does not yet depend on the shared toolchain:
+For a fresh standalone Node ESM TypeScript package, supply an authored package manifest and
+`src/index.ts`. Put the package identity, description, repository links, license identifier,
+keywords and explicit `publishConfig.access` of `public` in the manifest. Author repository
+metadata with `ankh devtools metadata init .` and complete the indicated fields.
 
 ```bash
-bun add -D @ankhorage/devtools
-bunx @ankhorage/ankh devtools sync .
+ankh devtools init . --base-branch main --license-file /path/to/license.txt --copyright-owner "Copyright Owner"
+ankh devtools sync .
+ankh devtools status .
+ankh doctor validate .
 ```
 
-After the first install, the normal workflow is:
-
-```bash
-ankh devtools sync
-```
+Use `--dry-run` to preview initialization. The explicit base branch is required for creating
+Changesets configuration and must match the managed release workflow. The license source must
+contain the specified copyright owner. Existing license and Changesets files are preserved.
+The default build emits Node ESM and declarations from `src/index.ts`. Author package tests
+before running `bun run test`.
 
 The target path is optional and defaults to the current working directory.
 
@@ -63,6 +68,7 @@ The package is discovered under the `devtools` category and exposes these capabi
 - `devtools.changeset`
 - `devtools.format`
 - `devtools.knip`
+- `devtools.init`
 - `devtools.sync`
 - `devtools.status`
 - `devtools.agents.sync`
@@ -275,7 +281,7 @@ export default [
 ];
 ```
 
-Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. On first synchronization, an existing non-canonical `eslint.config.mjs` is preserved as the initial local config before the canonical wrapper is installed. Synchronization never overwrites that local file afterward.
+Use `eslint.local.config.mjs` for narrow repository-specific flat-config overrides, including temporary file-specific migration overrides. Synchronization preserves repository-owned root and local ESLint configurations in place.
 
 Each public example lives in a named directory, such as `examples/basic-usage/*.ts`; example source files do not live directly under `examples/`. The examples wrapper uses root `tsconfig.eslint.json` and `tsconfig.json` when present and discovers TypeScript projects below `examples/`. This covers example directories included only by the root ESLint project as well as standalone applications with their own tsconfig. It applies the same shared policy and appends the same repository-owned local entries.
 
@@ -297,7 +303,7 @@ The consumer delegates formatting policy to:
 @ankhorage/devtools/prettier
 ```
 
-The wrapper merges shared and local `overrides` in that order. On first synchronization, an existing non-canonical `.prettierrc.js` is preserved as `prettier.local.config.js`; former shared-only Devtools delegates become an empty local config. Later synchronization never overwrites the local file.
+The wrapper merges shared and local `overrides` in that order. Synchronization preserves repository-owned root and local Prettier configurations in place. A former shared-only Devtools delegate can be updated to the current managed wrapper.
 
 ## Knip
 

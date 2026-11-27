@@ -44,7 +44,8 @@ export type DevtoolsCommandDefinition =
   | DevtoolsRepositoryCommandDefinition
   | DevtoolsApmReleaseCommandDefinition
   | DevtoolsStructureCommandDefinition
-  | DevtoolsMetadataCommandDefinition;
+  | DevtoolsMetadataCommandDefinition
+  | (DevtoolsCommandBase & { readonly kind: 'init' });
 
 const DEVTOOLS_COMMANDS = [
   {
@@ -105,6 +106,12 @@ const DEVTOOLS_COMMANDS = [
     'prettier',
   ),
   externalCommand('knip', 'devtools.knip', 'Run the shared Knip toolchain.', 'knip', 'knip'),
+  {
+    kind: 'init',
+    path: ['init'],
+    capability: 'devtools.init',
+    summary: 'Initialize a standalone public TypeScript package.',
+  },
   repositoryCommand(
     ['sync'],
     'devtools.sync',

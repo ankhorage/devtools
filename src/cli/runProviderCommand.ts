@@ -2,6 +2,7 @@ import type { DevtoolsProviderCommandContext } from '../types/provider-command.j
 import type { DevtoolsCommandDefinition } from './commands.js';
 import { sync } from './commands/apm/sync.js';
 import { validate } from './commands/apm/validate.js';
+import { init } from './commands/init.js';
 import { runMetadataCommandAsync } from './commands/metadata/runMetadataCommandAsync.js';
 import { build } from './commands/structure/build.js';
 import { check } from './commands/structure/check.js';
@@ -13,6 +14,7 @@ export async function runProviderCommand(
   argv: readonly string[],
   context: DevtoolsProviderCommandContext,
 ): Promise<{ readonly exitCode: number }> {
+  if (command.kind === 'init') return await init(argv, context);
   if (command.kind === 'apm-release') {
     return command.operation === 'sync' ? sync(argv, context) : validate(argv, context);
   }

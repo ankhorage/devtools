@@ -41,6 +41,7 @@ export const prettierManagedFiles = [
   {
     relativePath: '.prettierrc.js',
     render: renderPrettierConfig,
+    canReplace: isSharedOnlyConfig,
   },
   {
     relativePath: '.prettierignore',
@@ -53,16 +54,11 @@ async function renderPrettierConfig(targetDirectory: string): Promise<string> {
   return (await readPackageType(targetDirectory)) === 'module' ? ESM_CONFIG : COMMONJS_CONFIG;
 }
 
-/*** Preserves an existing repository Prettier config as its initial local extension. */
+/*** Render the empty local extension for the package module type. */
 async function renderInitialLocalConfig(targetDirectory: string): Promise<string> {
-  const isModule = (await readPackageType(targetDirectory)) === 'module';
-  try {
-    const existingConfig = await readFile(resolve(targetDirectory, '.prettierrc.js'), 'utf8');
-    if (!isSharedOnlyConfig(existingConfig)) return existingConfig;
-  } catch (error) {
-    if (!isNodeError(error) || error.code !== 'ENOENT') throw error;
-  }
-  return isModule ? EMPTY_ESM_LOCAL_CONFIG : EMPTY_COMMONJS_LOCAL_CONFIG;
+  return (await readPackageType(targetDirectory)) === 'module'
+    ? EMPTY_ESM_LOCAL_CONFIG
+    : EMPTY_COMMONJS_LOCAL_CONFIG;
 }
 
 /*** Preserves repository-owned ignore entries while appending required generated-artifact ignores. */

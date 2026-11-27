@@ -28,6 +28,7 @@ import type {
   ManagedFileSyncResult,
 } from '../../features/managed-files/managedFiles.js';
 import { applyBunRuntimePolicy } from '../../policy/applyBunRuntimePolicy.js';
+import { assertToolchainVersions } from './assertToolchainVersions.js';
 import { isCompatibleDevtoolsRange } from './isCompatibleDevtoolsRange.js';
 import { isPublicPublishingPackage } from './isPublicPublishingPackage.js';
 import { readPackageManifestAsync } from './readPackageManifestAsync.js';
@@ -99,6 +100,7 @@ export async function syncPackageManifest(
   options: { readonly dryRun: boolean },
 ): Promise<ManagedFileSyncResult> {
   const snapshot = await readPackageManifest(targetDirectory);
+  assertToolchainVersions(snapshot.manifest, devtoolsVersion);
   if (
     snapshot.exists &&
     (await isManagedPackageContractCurrentAsync(
