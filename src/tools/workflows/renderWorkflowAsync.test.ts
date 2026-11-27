@@ -8,8 +8,8 @@ import {
   syncManagedFiles,
 } from '../../features/managed-files/managedFiles.js';
 import { formatYamlAsync } from '../prettier/formatYamlAsync.js';
-import { workflowManagedFiles } from './index.js';
 import { createCiImpactRunnerDefinition } from './createCiImpactRunnerDefinition.js';
+import { workflowManagedFiles } from './index.js';
 
 const temporaryDirectories: string[] = [];
 
