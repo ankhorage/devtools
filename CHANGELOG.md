@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.0
+
+### Minor Changes
+
+- b7ff1c4: Synchronize a universal Bun launch configuration and enable Bun in the VS Code Debug Terminal.
+
 ## 2.11.5
 
 ### Patch Changes
