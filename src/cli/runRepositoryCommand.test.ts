@@ -42,6 +42,7 @@ test('syncs only the selected concern and aggregate status reports drift', async
   expect((await runRepositoryCommand(allStatus, [], context)).exitCode).toBe(1);
   expect(context.stdout.join('')).toContain('package.json missing');
   expect(context.stdout.join('')).toContain('.vscode/settings.json missing');
+  expect(context.stdout.join('')).toContain('.vscode/launch.json missing');
   expect(context.stderr).toEqual([]);
 });
 
