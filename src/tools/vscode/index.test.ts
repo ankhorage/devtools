@@ -18,7 +18,7 @@ afterEach(async () => {
   );
 });
 
-test('installs the universal Bun launch and preserves custom debug configuration', async () => {
+test('synchronizes the universal Bun launch configuration', async () => {
   const target = await mkdtemp(join(tmpdir(), 'devtools-vscode-'));
   targets.push(target);
   const launch = join(target, '.vscode/launch.json');
@@ -54,6 +54,14 @@ test('installs the universal Bun launch and preserves custom debug configuration
   expect(await readFile(launch, 'utf8')).toBe(contents);
   const customized = contents.replace('Debug Active File with Bun', 'Repository debugger');
   await writeFile(launch, customized);
+  expect(await inspectManagedFiles(target, vscodeManagedFiles)).toContainEqual({
+    relativePath: '.vscode/launch.json',
+    state: 'outdated',
+  });
+  expect(await syncManagedFiles(target, vscodeManagedFiles, { dryRun: true })).toContainEqual({
+    relativePath: '.vscode/launch.json',
+    action: 'would-update',
+  });
   await syncManagedFiles(target, vscodeManagedFiles, { dryRun: false });
-  expect(await readFile(launch, 'utf8')).toBe(customized);
+  expect(await readFile(launch, 'utf8')).toBe(contents);
 });
