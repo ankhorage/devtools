@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.4
+
+### Patch Changes
+
+- 4e784f6: Update Devtools-owned dependencies: `@ankhorage/contracts`, `@ankhorage/rules-repository`, `eslint`.
+
 ## 2.12.3
 
 ### Patch Changes
