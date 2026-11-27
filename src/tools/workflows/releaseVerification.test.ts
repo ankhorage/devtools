@@ -101,7 +101,7 @@ function expectPackedRuntimeVerification(release: string): void {
   expect(release).toContain('Verify standalone packed install');
   expect(release).toContain('npm pack --ignore-scripts --pack-destination "$pack_dir"');
   expect(release).toContain(
-    'PACKAGE_NAME="$package_name" node - <<\'NODE\' > runtime-entrypoints.txt',
+    'PACKAGE_NAME="$package_name" PLATFORM_TOOLCHAIN_DEPENDENCIES="$platform_toolchain_dependencies" node - <<\'NODE\' > runtime-entrypoints.txt',
   );
   expectPackedRuntimeLoaderSelection(release);
   expect(release).toContain('if (exportsMap === undefined)');
@@ -146,9 +146,9 @@ function expectPackedRuntimeLoaderSelection(release: string): void {
   expect(release).toContain("const explicitServerConditions = new Set(['bun', 'node']);");
   expect(release).toContain('const isPlatformOnlyRuntimeTarget = (target) =>');
   expect(release).toContain('const isReactNativePlatformOnlyRuntimeTarget = (target) =>');
-  expect(release).toContain(
-    "if (isReactNativePlatformOnlyRuntimeTarget(target)) return ['react-native'];",
-  );
+  expect(release).toContain('const hasPlatformToolchain =');
+  expect(release).toContain("if (hasPlatformToolchain) return ['react-native'];");
+  expect(release).toContain("return supportsLoader(target, importConditions) ? ['import'] : [];");
   expect(release).toContain('if (isPlatformOnlyRuntimeTarget(target)) return [];');
   expect(release).toContain("['import', importConditions],");
   expect(release).toContain("['require', requireConditions],");
