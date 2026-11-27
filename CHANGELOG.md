@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.3
+
+### Patch Changes
+
+- 4c4a520: Provide the scoped release token to generated documentation during managed release versioning.
+
 ## 2.12.2
 
 ### Patch Changes
