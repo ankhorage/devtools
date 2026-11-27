@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.11.4
+
+### Patch Changes
+
+- 43479b4: Reuse compatible React Hooks and React Native ESLint plugins across composed configurations.
+
 ## 2.11.3
 
 ### Patch Changes

@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.11.3",
+      "value": "v2.11.4",
       "color": "cb3837"
     },
     {
@@ -88,7 +88,7 @@
       "severity": "warning",
       "message": "Exported function createConfig has no documentation description.",
       "sourcePath": "src/tools/eslint/index.ts",
-      "line": 78
+      "line": 82
     }
   ],
   "config": null,
@@ -1313,7 +1313,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 78,
+        "line": 82,
         "column": 1
       },
       "exportPaths": [
@@ -1427,7 +1427,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 45,
+        "line": 49,
         "column": 14
       },
       "exportPaths": [
@@ -1449,7 +1449,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 58,
+        "line": 62,
         "column": 14
       },
       "exportPaths": [
@@ -4768,7 +4768,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 78,
+        "line": 82,
         "column": 1
       }
     },
@@ -4779,7 +4779,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 94,
+        "line": 98,
         "column": 1
       }
     },
@@ -4790,7 +4790,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 108,
+        "line": 112,
         "column": 1
       }
     },
@@ -4801,7 +4801,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 116,
+        "line": 120,
         "column": 1
       }
     },
@@ -4812,7 +4812,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 145,
+        "line": 149,
         "column": 1
       }
     },
@@ -4823,7 +4823,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 166,
+        "line": 170,
         "column": 1
       }
     },
@@ -4834,7 +4834,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 185,
+        "line": 189,
         "column": 1
       }
     },
@@ -4845,7 +4845,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 205,
+        "line": 209,
         "column": 1
       }
     },
@@ -4856,7 +4856,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 213,
+        "line": 217,
         "column": 1
       }
     },
@@ -4867,7 +4867,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 220,
+        "line": 224,
         "column": 1
       }
     },
@@ -4878,7 +4878,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 232,
+        "line": 236,
         "column": 1
       }
     },
@@ -4889,7 +4889,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 255,
+        "line": 259,
         "column": 1
       }
     },
@@ -4900,7 +4900,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 266,
+        "line": 270,
         "column": 1
       }
     },
@@ -8630,6 +8630,12 @@
         "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
       },
       {
+        "fromSymbol": "src/tools/eslint/index.ts",
+        "toSymbol": "fixupPluginRules",
+        "callExpression": "fixupPluginRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
         "fromSymbol": "createConfig",
         "toSymbol": "normalizeOptions",
         "callExpression": "normalizeOptions",
@@ -8729,18 +8735,6 @@
         "fromSymbol": "createProfileConfigs",
         "toSymbol": "createReactNativeConfig",
         "callExpression": "createReactNativeConfig",
-        "sourcePath": "src/tools/eslint/index.ts"
-      },
-      {
-        "fromSymbol": "createReactConfig",
-        "toSymbol": "fixupPluginRules",
-        "callExpression": "fixupPluginRules",
-        "sourcePath": "src/tools/eslint/index.ts"
-      },
-      {
-        "fromSymbol": "createReactNativeConfig",
-        "toSymbol": "fixupPluginRules",
-        "callExpression": "fixupPluginRules",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
