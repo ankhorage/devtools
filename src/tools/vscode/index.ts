@@ -9,4 +9,8 @@ export const vscodeManagedFiles = [
     relativePath: '.vscode/extensions.json',
     sourceUrl: new URL('./files/extensions.json', import.meta.url),
   },
+  {
+    relativePath: '.vscode/launch.json',
+    sourceUrl: new URL('./files/launch.json', import.meta.url),
+  },
 ] as const satisfies readonly ManagedFileDefinition[];
