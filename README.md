@@ -3,7 +3,7 @@
 
 # Ankhorage Devtools
 
-![license: MIT](././paradox/badges/license.svg) ![npm: v2.11.3](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: configured](././paradox/badges/tests.svg) ![paradox: warnings](././paradox/badges/docs.svg)
+![license: MIT](././paradox/badges/license.svg) ![npm: v2.11.5](././paradox/badges/npm.svg) ![runtime: bun](././paradox/badges/runtime.svg) ![typescript: strict](././paradox/badges/typescript.svg) ![eslint: checked](././paradox/badges/eslint.svg) ![prettier: checked](././paradox/badges/prettier.svg) ![build: checked](././paradox/badges/build.svg) ![tests: configured](././paradox/badges/tests.svg) ![paradox: warnings](././paradox/badges/docs.svg)
 
 Owns shared repository automation, managed development tooling, workflows, and agent standards for Ankhorage TypeScript projects.
 
@@ -90,8 +90,8 @@ Related symbols: `ApmReleaseValidationOptions`, `ApmReleaseValidationResult`
 
 ## Contributors
 
-<!-- readme: contributors -start -->
-<!-- readme: contributors -end -->
+<a href="https://github.com/artiphishle"><img src="https://avatars.githubusercontent.com/u/137318798?s=64" width="40" height="40" alt="artiphishle" /></a>
+<a href="https://github.com/faeb187"><img src="https://avatars.githubusercontent.com/u/389333?s=64" width="40" height="40" alt="faeb187" /></a>
 
 ## Donation
 

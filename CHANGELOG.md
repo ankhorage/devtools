@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.11.5
+
+### Patch Changes
+
+- 5f794ef: Initialize Changesets for publishing repositories, report missing project scripts, and create a minimal missing gitignore.
+
+## 2.11.4
+
+### Patch Changes
+
+- 43479b4: Reuse compatible React Hooks and React Native ESLint plugins across composed configurations.
+
 ## 2.11.3
 
 ### Patch Changes

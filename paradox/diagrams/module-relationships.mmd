@@ -19,6 +19,7 @@ graph LR
   module_src_cli_commands_structure_check_ts["src/cli/commands/structure/check.ts"]
   module_src_cli_commands_structure_runStructureGenerationCommandAsync_ts["src/cli/commands/structure/runStructureGenerationCommandAsync.ts"]
   module_src_cli_index_ts["src/cli/index.ts"]
+  module_src_cli_initializeChangesetsAsync_ts["src/cli/initializeChangesetsAsync.ts"]
   module_src_cli_runChangesetAsync_ts["src/cli/runChangesetAsync.ts"]
   module_src_cli_runExternalTool_ts["src/cli/runExternalTool.ts"]
   module_src_cli_runProviderCommand_ts["src/cli/runProviderCommand.ts"]
@@ -66,10 +67,14 @@ graph LR
   module_src_tools_knip_index_ts["src/tools/knip/index.ts"]
   module_src_tools_knip_managed_ts["src/tools/knip/managed.ts"]
   module_src_tools_package_index_ts["src/tools/package/index.ts"]
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts["src/tools/package/inspectMissingPackageScriptsAsync.ts"]
   module_src_tools_package_isCompatibleDevtoolsRange_ts["src/tools/package/isCompatibleDevtoolsRange.ts"]
+  module_src_tools_package_isPublicPublishingPackage_ts["src/tools/package/isPublicPublishingPackage.ts"]
+  module_src_tools_package_readPackageManifestAsync_ts["src/tools/package/readPackageManifestAsync.ts"]
   module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts["src/tools/package/refreshAnkhorageBunResolutionsAsync.ts"]
   module_src_tools_package_resolvePackageCapabilitiesAsync_ts["src/tools/package/resolvePackageCapabilitiesAsync.ts"]
   module_src_tools_package_syncBunDependencies_ts["src/tools/package/syncBunDependencies.ts"]
+  module_src_tools_package_syncChangesetsConfigAsync_ts["src/tools/package/syncChangesetsConfigAsync.ts"]
   module_src_tools_prettier_formatYamlAsync_ts["src/tools/prettier/formatYamlAsync.ts"]
   module_src_tools_prettier_managed_ts["src/tools/prettier/managed.ts"]
   module_src_tools_skills_assetTestFixture_ts["src/tools/skills/assetTestFixture.ts"]
@@ -116,6 +121,8 @@ graph LR
   module_src_cli_index_ts --> module_src_capabilities_index_ts
   module_src_cli_index_ts --> module_src_cli_commands_ts
   module_src_cli_index_ts --> module_src_cli_runProviderCommand_ts
+  module_src_cli_initializeChangesetsAsync_ts --> module_src_cli_commands_ts
+  module_src_cli_initializeChangesetsAsync_ts --> module_src_cli_runExternalTool_ts
   module_src_cli_runChangesetAsync_ts --> module_src_cli_commands_ts
   module_src_cli_runChangesetAsync_ts --> module_src_cli_runExternalTool_ts
   module_src_cli_runExternalTool_ts --> module_src_cli_commands_ts
@@ -129,6 +136,7 @@ graph LR
   module_src_cli_runProviderCommand_ts --> module_src_cli_runRepositoryCommand_ts
   module_src_cli_runProviderCommand_ts --> module_src_types_provider_command_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_cli_commands_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_cli_initializeChangesetsAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_features_build_targets_application_resolveBuildTargetManagedFilesAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_agents_index_ts
@@ -136,7 +144,9 @@ graph LR
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_gitignore_index_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_knip_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_index_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_inspectMissingPackageScriptsAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_syncBunDependencies_ts
+  module_src_cli_runRepositoryCommand_ts --> module_src_tools_package_syncChangesetsConfigAsync_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_prettier_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_skills_managed_ts
   module_src_cli_runRepositoryCommand_ts --> module_src_tools_vscode_index_ts
@@ -208,9 +218,16 @@ graph LR
   module_src_tools_package_index_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_index_ts --> module_src_policy_applyBunRuntimePolicy_ts
   module_src_tools_package_index_ts --> module_src_tools_package_isCompatibleDevtoolsRange_ts
+  module_src_tools_package_index_ts --> module_src_tools_package_isPublicPublishingPackage_ts
+  module_src_tools_package_index_ts --> module_src_tools_package_readPackageManifestAsync_ts
   module_src_tools_package_index_ts --> module_src_tools_package_resolvePackageCapabilitiesAsync_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts --> module_src_tools_package_isPublicPublishingPackage_ts
+  module_src_tools_package_inspectMissingPackageScriptsAsync_ts --> module_src_tools_package_readPackageManifestAsync_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_package_syncBunDependencies_ts --> module_src_tools_package_refreshAnkhorageBunResolutionsAsync_ts
+  module_src_tools_package_syncChangesetsConfigAsync_ts --> module_src_features_managed_files_managedFiles_ts
+  module_src_tools_package_syncChangesetsConfigAsync_ts --> module_src_tools_package_index_ts
   module_src_tools_prettier_managed_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_skills_managed_ts --> module_src_features_managed_files_managedFiles_ts
   module_src_tools_skills_managed_ts --> module_src_tools_skills_manifest_ts

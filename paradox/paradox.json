@@ -18,7 +18,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v2.11.3",
+      "value": "v2.11.5",
       "color": "cb3837"
     },
     {
@@ -88,7 +88,7 @@
       "severity": "warning",
       "message": "Exported function createConfig has no documentation description.",
       "sourcePath": "src/tools/eslint/index.ts",
-      "line": 78
+      "line": 82
     }
   ],
   "config": null,
@@ -308,6 +308,17 @@
       ]
     },
     {
+      "path": "src/cli/initializeChangesetsAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/cli/commands.ts",
+        "src/cli/runExternalTool.ts"
+      ],
+      "exports": [
+        "initializeChangesetsAsync"
+      ]
+    },
+    {
       "path": "src/cli/runChangesetAsync.ts",
       "isEntrypoint": false,
       "dependencies": [
@@ -353,6 +364,7 @@
       "isEntrypoint": false,
       "dependencies": [
         "src/cli/commands.ts",
+        "src/cli/initializeChangesetsAsync.ts",
         "src/features/build-targets/application/resolveBuildTargetManagedFilesAsync.ts",
         "src/features/managed-files/managedFiles.ts",
         "src/tools/agents/index.ts",
@@ -360,7 +372,9 @@
         "src/tools/gitignore/index.ts",
         "src/tools/knip/managed.ts",
         "src/tools/package/index.ts",
+        "src/tools/package/inspectMissingPackageScriptsAsync.ts",
         "src/tools/package/syncBunDependencies.ts",
+        "src/tools/package/syncChangesetsConfigAsync.ts",
         "src/tools/prettier/managed.ts",
         "src/tools/skills/managed.ts",
         "src/tools/vscode/index.ts",
@@ -844,14 +858,29 @@
         "src/features/managed-files/managedFiles.ts",
         "src/policy/applyBunRuntimePolicy.ts",
         "src/tools/package/isCompatibleDevtoolsRange.ts",
+        "src/tools/package/isPublicPublishingPackage.ts",
+        "src/tools/package/readPackageManifestAsync.ts",
         "src/tools/package/resolvePackageCapabilitiesAsync.ts"
       ],
       "exports": [
         "applyManagedPackageContract",
+        "inspectChangesetsConfigAsync",
         "inspectPackageManifest",
         "isManagedPackageContractCurrent",
         "readCurrentDevtoolsVersion",
         "syncPackageManifest"
+      ]
+    },
+    {
+      "path": "src/tools/package/inspectMissingPackageScriptsAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/managed-files/managedFiles.ts",
+        "src/tools/package/isPublicPublishingPackage.ts",
+        "src/tools/package/readPackageManifestAsync.ts"
+      ],
+      "exports": [
+        "inspectMissingPackageScriptsAsync"
       ]
     },
     {
@@ -860,6 +889,22 @@
       "dependencies": [],
       "exports": [
         "isCompatibleDevtoolsRange"
+      ]
+    },
+    {
+      "path": "src/tools/package/isPublicPublishingPackage.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "isPublicPublishingPackage"
+      ]
+    },
+    {
+      "path": "src/tools/package/readPackageManifestAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "readPackageManifestAsync"
       ]
     },
     {
@@ -888,6 +933,17 @@
       "exports": [
         "planBunDependencySync",
         "syncBunDependencies"
+      ]
+    },
+    {
+      "path": "src/tools/package/syncChangesetsConfigAsync.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/managed-files/managedFiles.ts",
+        "src/tools/package/index.ts"
+      ],
+      "exports": [
+        "syncChangesetsConfigAsync"
       ]
     },
     {
@@ -1313,7 +1369,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 78,
+        "line": 82,
         "column": 1
       },
       "exportPaths": [
@@ -1427,7 +1483,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 45,
+        "line": 49,
         "column": 14
       },
       "exportPaths": [
@@ -1449,7 +1505,7 @@
       "modulePath": "src/tools/eslint/index.ts",
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 58,
+        "line": 62,
         "column": 14
       },
       "exportPaths": [
@@ -2210,6 +2266,17 @@
       }
     },
     {
+      "name": "initializeChangesetsAsync",
+      "description": "Run the interactive Changesets initialization only with a usable terminal.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/cli/initializeChangesetsAsync.ts",
+        "line": 5,
+        "column": 1
+      }
+    },
+    {
       "name": "runChangesetAsync",
       "description": "Run Changesets with rename-aware status validation for a renamed root package.",
       "see": [],
@@ -2458,7 +2525,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 41,
+        "line": 45,
         "column": 1
       }
     },
@@ -2469,7 +2536,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 63,
+        "line": 67,
         "column": 1
       }
     },
@@ -2480,7 +2547,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 101,
+        "line": 105,
         "column": 1
       }
     },
@@ -2491,7 +2558,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 120,
+        "line": 124,
         "column": 1
       }
     },
@@ -2502,7 +2569,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 144,
+        "line": 151,
         "column": 1
       }
     },
@@ -2513,7 +2580,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 180,
+        "line": 195,
         "column": 1
       }
     },
@@ -2524,7 +2591,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 207,
+        "line": 222,
         "column": 1
       }
     },
@@ -2535,7 +2602,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 224,
+        "line": 239,
         "column": 1
       }
     },
@@ -2546,7 +2613,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 234,
+        "line": 249,
         "column": 1
       }
     },
@@ -2557,7 +2624,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 247,
+        "line": 262,
         "column": 1
       }
     },
@@ -2568,7 +2635,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/cli/runRepositoryCommand.ts",
-        "line": 266,
+        "line": 281,
         "column": 1
       }
     },
@@ -4768,7 +4835,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 78,
+        "line": 82,
         "column": 1
       }
     },
@@ -4779,7 +4846,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 94,
+        "line": 98,
         "column": 1
       }
     },
@@ -4790,7 +4857,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 108,
+        "line": 112,
         "column": 1
       }
     },
@@ -4801,7 +4868,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 116,
+        "line": 120,
         "column": 1
       }
     },
@@ -4812,7 +4879,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 145,
+        "line": 149,
         "column": 1
       }
     },
@@ -4823,7 +4890,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 166,
+        "line": 170,
         "column": 1
       }
     },
@@ -4834,7 +4901,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 185,
+        "line": 189,
         "column": 1
       }
     },
@@ -4845,7 +4912,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 205,
+        "line": 209,
         "column": 1
       }
     },
@@ -4856,7 +4923,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 213,
+        "line": 217,
         "column": 1
       }
     },
@@ -4867,7 +4934,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 220,
+        "line": 224,
         "column": 1
       }
     },
@@ -4878,7 +4945,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 232,
+        "line": 236,
         "column": 1
       }
     },
@@ -4889,7 +4956,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 255,
+        "line": 259,
         "column": 1
       }
     },
@@ -4900,7 +4967,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/eslint/index.ts",
-        "line": 266,
+        "line": 270,
         "column": 1
       }
     },
@@ -5120,18 +5187,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/gitignore/index.ts",
-        "line": 26,
+        "line": 25,
         "column": 1
       }
     },
     {
-      "name": "isGitignorePresent",
-      "description": "Report whether a repository already owns a `.gitignore` file that can be normalized.",
+      "name": "readGitignoreAsync",
+      "description": "Use the minimal shared ignore defaults only when the repository has no ignore file.",
       "see": [],
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/gitignore/index.ts",
-        "line": 35,
+        "line": 34,
         "column": 1
       }
     },
@@ -5142,7 +5209,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/gitignore/index.ts",
-        "line": 46,
+        "line": 44,
         "column": 1
       }
     },
@@ -5208,7 +5275,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 71,
+        "line": 73,
         "column": 1
       }
     },
@@ -5219,7 +5286,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 94,
+        "line": 96,
         "column": 1
       }
     },
@@ -5230,7 +5297,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 140,
+        "line": 142,
         "column": 1
       }
     },
@@ -5241,7 +5308,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 172,
+        "line": 177,
         "column": 1
       }
     },
@@ -5252,7 +5319,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 181,
+        "line": 186,
         "column": 1
       }
     },
@@ -5263,7 +5330,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 209,
+        "line": 215,
         "column": 1
       }
     },
@@ -5274,7 +5341,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 226,
+        "line": 232,
         "column": 1
       }
     },
@@ -5285,7 +5352,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 237,
+        "line": 243,
         "column": 1
       }
     },
@@ -5296,7 +5363,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 255,
+        "line": 253,
         "column": 1
       }
     },
@@ -5307,7 +5374,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 264,
+        "line": 262,
         "column": 1
       }
     },
@@ -5318,7 +5385,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 274,
+        "line": 272,
         "column": 1
       }
     },
@@ -5329,7 +5396,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 286,
+        "line": 284,
         "column": 1
       }
     },
@@ -5340,7 +5407,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 296,
+        "line": 294,
         "column": 1
       }
     },
@@ -5351,7 +5418,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 306,
+        "line": 304,
         "column": 1
       }
     },
@@ -5362,7 +5429,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 314,
+        "line": 312,
         "column": 1
       }
     },
@@ -5373,7 +5440,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 327,
+        "line": 325,
+        "column": 1
+      }
+    },
+    {
+      "name": "inspectChangesetsConfigAsync",
+      "description": "Inspect consumer-owned Changesets configuration without writing or invoking the CLI.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/index.ts",
+        "line": 340,
         "column": 1
       }
     },
@@ -5384,7 +5462,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 340,
+        "line": 352,
         "column": 1
       }
     },
@@ -5395,7 +5473,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 345,
+        "line": 357,
         "column": 1
       }
     },
@@ -5406,18 +5484,18 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/tools/package/index.ts",
-        "line": 350,
+        "line": 362,
         "column": 1
       }
     },
     {
-      "name": "isNodeError",
-      "description": "Narrow an unknown error to a Node error carrying an error code.",
+      "name": "inspectMissingPackageScriptsAsync",
+      "description": "Identify project-owned required scripts that cannot be safely inferred by sync.",
       "see": [],
       "security": [],
       "sourceLocation": {
-        "filePath": "src/tools/package/index.ts",
-        "line": 355,
+        "filePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts",
+        "line": 9,
         "column": 1
       }
     },
@@ -5451,6 +5529,28 @@
       "sourceLocation": {
         "filePath": "src/tools/package/isCompatibleDevtoolsRange.ts",
         "line": 34,
+        "column": 1
+      }
+    },
+    {
+      "name": "isPublicPublishingPackage",
+      "description": "Recognize explicit public npm release intent without enrolling private applications.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/isPublicPublishingPackage.ts",
+        "line": 4,
+        "column": 1
+      }
+    },
+    {
+      "name": "readPackageManifestAsync",
+      "description": "Read a repository package manifest, distinguishing an absent file from invalid JSON.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/readPackageManifestAsync.ts",
+        "line": 7,
         "column": 1
       }
     },
@@ -5572,6 +5672,17 @@
       "sourceLocation": {
         "filePath": "src/tools/package/syncBunDependencies.ts",
         "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "syncChangesetsConfigAsync",
+      "description": "Initialize opted-in release repositories via the centrally installed Changesets CLI.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/tools/package/syncChangesetsConfigAsync.ts",
+        "line": 5,
         "column": 1
       }
     },
@@ -6527,6 +6638,16 @@
         "sourcePath": "src/cli/index.ts"
       },
       {
+        "fromPath": "src/cli/initializeChangesetsAsync.ts",
+        "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/initializeChangesetsAsync.ts"
+      },
+      {
+        "fromPath": "src/cli/initializeChangesetsAsync.ts",
+        "toPath": "src/cli/runExternalTool.ts",
+        "sourcePath": "src/cli/initializeChangesetsAsync.ts"
+      },
+      {
         "fromPath": "src/cli/runChangesetAsync.ts",
         "toPath": "src/cli/commands.ts",
         "sourcePath": "src/cli/runChangesetAsync.ts"
@@ -6623,7 +6744,17 @@
       },
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/package/inspectMissingPackageScriptsAsync.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/tools/package/syncBunDependencies.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/tools/package/syncChangesetsConfigAsync.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -6659,6 +6790,11 @@
       {
         "fromPath": "src/cli/runRepositoryCommand.ts",
         "toPath": "src/cli/commands.ts",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromPath": "src/cli/runRepositoryCommand.ts",
+        "toPath": "src/cli/initializeChangesetsAsync.ts",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -6863,8 +6999,33 @@
       },
       {
         "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/tools/package/isPublicPublishingPackage.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
+        "toPath": "src/tools/package/readPackageManifestAsync.ts",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/index.ts",
         "toPath": "src/tools/package/resolvePackageCapabilitiesAsync.ts",
         "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromPath": "src/tools/package/inspectMissingPackageScriptsAsync.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts"
+      },
+      {
+        "fromPath": "src/tools/package/inspectMissingPackageScriptsAsync.ts",
+        "toPath": "src/tools/package/isPublicPublishingPackage.ts",
+        "sourcePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts"
+      },
+      {
+        "fromPath": "src/tools/package/inspectMissingPackageScriptsAsync.ts",
+        "toPath": "src/tools/package/readPackageManifestAsync.ts",
+        "sourcePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts"
       },
       {
         "fromPath": "src/tools/package/syncBunDependencies.ts",
@@ -6875,6 +7036,16 @@
         "fromPath": "src/tools/package/syncBunDependencies.ts",
         "toPath": "src/tools/package/refreshAnkhorageBunResolutionsAsync.ts",
         "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromPath": "src/tools/package/syncChangesetsConfigAsync.ts",
+        "toPath": "src/features/managed-files/managedFiles.ts",
+        "sourcePath": "src/tools/package/syncChangesetsConfigAsync.ts"
+      },
+      {
+        "fromPath": "src/tools/package/syncChangesetsConfigAsync.ts",
+        "toPath": "src/tools/package/index.ts",
+        "sourcePath": "src/tools/package/syncChangesetsConfigAsync.ts"
       },
       {
         "fromPath": "src/tools/prettier/managed.ts",
@@ -7260,6 +7431,18 @@
         "toSymbol": "isNonEmptyString",
         "callExpression": "isNonEmptyString",
         "sourcePath": "src/cli/index.ts"
+      },
+      {
+        "fromSymbol": "initializeChangesetsAsync",
+        "toSymbol": "runExternalTool",
+        "callExpression": "runExternalTool",
+        "sourcePath": "src/cli/initializeChangesetsAsync.ts"
+      },
+      {
+        "fromSymbol": "initializeChangesetsAsync",
+        "toSymbol": "getDevtoolsToolCommand",
+        "callExpression": "getDevtoolsToolCommand",
+        "sourcePath": "src/cli/initializeChangesetsAsync.ts"
       },
       {
         "fromSymbol": "src/cli/runChangesetAsync.ts",
@@ -7677,6 +7860,18 @@
       },
       {
         "fromSymbol": "runStatus",
+        "toSymbol": "inspectChangesetsConfigAsync",
+        "callExpression": "inspectChangesetsConfigAsync",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
+        "toSymbol": "inspectMissingPackageScriptsAsync",
+        "callExpression": "inspectMissingPackageScriptsAsync",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runStatus",
         "toSymbol": "inspectManagedFiles",
         "callExpression": "inspectManagedFiles",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
@@ -7697,6 +7892,12 @@
         "fromSymbol": "runStatus",
         "toSymbol": "writeStatusOutput",
         "callExpression": "writeStatusOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "syncChangesetsConfigAsync",
+        "callExpression": "syncChangesetsConfigAsync",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -7739,6 +7940,18 @@
         "fromSymbol": "runSync",
         "toSymbol": "writeSyncOutput",
         "callExpression": "writeSyncOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "writeStatusOutput",
+        "callExpression": "writeStatusOutput",
+        "sourcePath": "src/cli/runRepositoryCommand.ts"
+      },
+      {
+        "fromSymbol": "runSync",
+        "toSymbol": "inspectMissingPackageScriptsAsync",
+        "callExpression": "inspectMissingPackageScriptsAsync",
         "sourcePath": "src/cli/runRepositoryCommand.ts"
       },
       {
@@ -8630,6 +8843,12 @@
         "sourcePath": "src/tools/agents/renderRepositorySectionsAsync.ts"
       },
       {
+        "fromSymbol": "src/tools/eslint/index.ts",
+        "toSymbol": "fixupPluginRules",
+        "callExpression": "fixupPluginRules",
+        "sourcePath": "src/tools/eslint/index.ts"
+      },
+      {
         "fromSymbol": "createConfig",
         "toSymbol": "normalizeOptions",
         "callExpression": "normalizeOptions",
@@ -8729,18 +8948,6 @@
         "fromSymbol": "createProfileConfigs",
         "toSymbol": "createReactNativeConfig",
         "callExpression": "createReactNativeConfig",
-        "sourcePath": "src/tools/eslint/index.ts"
-      },
-      {
-        "fromSymbol": "createReactConfig",
-        "toSymbol": "fixupPluginRules",
-        "callExpression": "fixupPluginRules",
-        "sourcePath": "src/tools/eslint/index.ts"
-      },
-      {
-        "fromSymbol": "createReactNativeConfig",
-        "toSymbol": "fixupPluginRules",
-        "callExpression": "fixupPluginRules",
         "sourcePath": "src/tools/eslint/index.ts"
       },
       {
@@ -8973,30 +9180,24 @@
       },
       {
         "fromSymbol": "renderGitignore",
+        "toSymbol": "readGitignoreAsync",
+        "callExpression": "readGitignoreAsync",
+        "sourcePath": "src/tools/gitignore/index.ts"
+      },
+      {
+        "fromSymbol": "readGitignoreAsync",
         "toSymbol": "readFile",
         "callExpression": "readFile",
         "sourcePath": "src/tools/gitignore/index.ts"
       },
       {
-        "fromSymbol": "renderGitignore",
+        "fromSymbol": "readGitignoreAsync",
         "toSymbol": "resolve",
         "callExpression": "resolve",
         "sourcePath": "src/tools/gitignore/index.ts"
       },
       {
-        "fromSymbol": "isGitignorePresent",
-        "toSymbol": "access",
-        "callExpression": "access",
-        "sourcePath": "src/tools/gitignore/index.ts"
-      },
-      {
-        "fromSymbol": "isGitignorePresent",
-        "toSymbol": "resolve",
-        "callExpression": "resolve",
-        "sourcePath": "src/tools/gitignore/index.ts"
-      },
-      {
-        "fromSymbol": "isGitignorePresent",
+        "fromSymbol": "readGitignoreAsync",
         "toSymbol": "isNodeError",
         "callExpression": "isNodeError",
         "sourcePath": "src/tools/gitignore/index.ts"
@@ -9237,6 +9438,12 @@
       },
       {
         "fromSymbol": "readPackageManifest",
+        "toSymbol": "readPackageManifestAsync",
+        "callExpression": "readPackageManifestAsync",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifest",
         "toSymbol": "existsSync",
         "callExpression": "existsSync",
         "sourcePath": "src/tools/package/index.ts"
@@ -9245,24 +9452,6 @@
         "fromSymbol": "readPackageManifest",
         "toSymbol": "resolve",
         "callExpression": "resolve",
-        "sourcePath": "src/tools/package/index.ts"
-      },
-      {
-        "fromSymbol": "readPackageManifest",
-        "toSymbol": "readFile",
-        "callExpression": "readFile",
-        "sourcePath": "src/tools/package/index.ts"
-      },
-      {
-        "fromSymbol": "readPackageManifest",
-        "toSymbol": "isRecord",
-        "callExpression": "isRecord",
-        "sourcePath": "src/tools/package/index.ts"
-      },
-      {
-        "fromSymbol": "readPackageManifest",
-        "toSymbol": "isNodeError",
-        "callExpression": "isNodeError",
         "sourcePath": "src/tools/package/index.ts"
       },
       {
@@ -9278,10 +9467,52 @@
         "sourcePath": "src/tools/package/index.ts"
       },
       {
+        "fromSymbol": "isChangesetsEnabled",
+        "toSymbol": "toRecord",
+        "callExpression": "toRecord",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "isChangesetsEnabled",
+        "toSymbol": "isPublicPublishingPackage",
+        "callExpression": "isPublicPublishingPackage",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "inspectChangesetsConfigAsync",
+        "toSymbol": "readPackageManifest",
+        "callExpression": "readPackageManifest",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "inspectChangesetsConfigAsync",
+        "toSymbol": "isChangesetsEnabled",
+        "callExpression": "isChangesetsEnabled",
+        "sourcePath": "src/tools/package/index.ts"
+      },
+      {
         "fromSymbol": "toRecord",
         "toSymbol": "isRecord",
         "callExpression": "isRecord",
         "sourcePath": "src/tools/package/index.ts"
+      },
+      {
+        "fromSymbol": "inspectMissingPackageScriptsAsync",
+        "toSymbol": "readPackageManifestAsync",
+        "callExpression": "readPackageManifestAsync",
+        "sourcePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectMissingPackageScriptsAsync",
+        "toSymbol": "isPublicPublishingPackage",
+        "callExpression": "isPublicPublishingPackage",
+        "sourcePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts"
+      },
+      {
+        "fromSymbol": "inspectMissingPackageScriptsAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/package/inspectMissingPackageScriptsAsync.ts"
       },
       {
         "fromSymbol": "isCompatibleDevtoolsRange",
@@ -9294,6 +9525,30 @@
         "toSymbol": "compareStableVersions",
         "callExpression": "compareStableVersions",
         "sourcePath": "src/tools/package/isCompatibleDevtoolsRange.ts"
+      },
+      {
+        "fromSymbol": "isPublicPublishingPackage",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/package/isPublicPublishingPackage.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "readFile",
+        "callExpression": "readFile",
+        "sourcePath": "src/tools/package/readPackageManifestAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "resolve",
+        "callExpression": "resolve",
+        "sourcePath": "src/tools/package/readPackageManifestAsync.ts"
+      },
+      {
+        "fromSymbol": "readPackageManifestAsync",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/tools/package/readPackageManifestAsync.ts"
       },
       {
         "fromSymbol": "refreshAnkhorageBunResolutionsAsync",
@@ -9474,6 +9729,18 @@
         "toSymbol": "rejectPromise",
         "callExpression": "rejectPromise",
         "sourcePath": "src/tools/package/syncBunDependencies.ts"
+      },
+      {
+        "fromSymbol": "syncChangesetsConfigAsync",
+        "toSymbol": "inspectChangesetsConfigAsync",
+        "callExpression": "inspectChangesetsConfigAsync",
+        "sourcePath": "src/tools/package/syncChangesetsConfigAsync.ts"
+      },
+      {
+        "fromSymbol": "syncChangesetsConfigAsync",
+        "toSymbol": "initialize",
+        "callExpression": "initialize",
+        "sourcePath": "src/tools/package/syncChangesetsConfigAsync.ts"
       },
       {
         "fromSymbol": "src/tools/prettier/formatYamlAsync.ts",

@@ -60,7 +60,7 @@ Evidence for one exact packed release; inapplicable never means migration-safe.
 
 Kind: `function`
 Module: `src/tools/eslint/index.ts`
-Source: `src/tools/eslint/index.ts:78:1`
+Source: `src/tools/eslint/index.ts:82:1`
 
 ### Signatures
 
@@ -100,13 +100,13 @@ Build shared monorepo Knip configuration.
 
 Kind: `value`
 Module: `src/tools/eslint/index.ts`
-Source: `src/tools/eslint/index.ts:45:14`
+Source: `src/tools/eslint/index.ts:49:14`
 
 ## defaultRestrictedImports
 
 Kind: `value`
 Module: `src/tools/eslint/index.ts`
-Source: `src/tools/eslint/index.ts:58:14`
+Source: `src/tools/eslint/index.ts:62:14`
 
 ## DevtoolsConfigOptions
 
