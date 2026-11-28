@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.5
+
+### Patch Changes
+
+- 2057d23: Update Devtools-owned dependencies: `@changesets/cli`, `knip`.
+
 ## 2.12.4
 
 ### Patch Changes
